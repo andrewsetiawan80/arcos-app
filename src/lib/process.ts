@@ -16,12 +16,12 @@ export type ProcessItem = { key: string; label: string };
 
 export function getProcesses(state?: AppState): ProcessItem[] {
   // Prefer state.settings.processes if it exists and is an array
-  const fromState = (state as any)?.settings?.processes;
+  const fromState = state?.settings?.processes;
   if (Array.isArray(fromState) && fromState.length) {
     // sanitize: only keep items with string key/label
     return fromState
-      .filter((p: any) => p && typeof p.key === "string" && typeof p.label === "string")
-      .map((p: any) => ({ key: p.key, label: p.label }));
+      .filter((p) => p && typeof p.key === "string" && typeof p.label === "string")
+      .map((p) => ({ key: p.key, label: p.label }));
   }
   return [...DEFAULT_PROCESSES];
 }

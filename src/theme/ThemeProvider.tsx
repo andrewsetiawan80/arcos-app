@@ -9,9 +9,9 @@ type Ctx = {
 };
 
 const ThemeContext = createContext<Ctx | null>(null);
-const THEME_KEY = "cretewerkz.theme";
+const THEME_KEY = "castura.theme";
 
-export function ThemeProvider({ children, defaultTheme = "concrete" as AppTheme }) {
+export function ThemeProvider({ children, defaultTheme = "dark" as AppTheme }) {
   const [theme, setTheme] = useState<AppTheme>(() => {
     const saved = (localStorage.getItem(THEME_KEY) as AppTheme | null) || defaultTheme;
     return saved;

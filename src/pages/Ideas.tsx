@@ -76,7 +76,7 @@ export default function Ideas(){
     // Seed curated once (if empty) — avoids duplicates
     if (!s.ideas || s.ideas.filter(i=>i.source==="curated").length === 0) {
       s.ideas = [...CURATED, ...(s.ideas||[])];
-      save(s);
+      // No auto-save
     }
     return s;
   });
@@ -88,7 +88,7 @@ export default function Ideas(){
   function saveIdeas(next: Idea[]){
     const nextState = { ...state, ideas: next };
     setState(nextState);
-    save(nextState);
+    // No auto-save
   }
 
   async function getFresh(count = 3){
@@ -141,7 +141,7 @@ export default function Ideas(){
     };
 
     const next = { ...state, materials: mats, recipes: [r, ...state.recipes] };
-    setState(next); save(next);
+    setState(next);
     alert("Added to Recipes: " + r.name);
   }
 
@@ -197,19 +197,37 @@ export default function Ideas(){
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-wide">Ideas & Starters</h1>
-          <div className="text-sm text-gray-400">Curated baselines + fresh AI suggestions. Promote any idea into a Recipe.</div>
+    <div className="space-y-8 animate-in fade-in-0 duration-700">
+      {/* Header */}
+      <header className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
+        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Recipe Ideas</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Ideas & Starters
+            </h1>
+            <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
+              Explore curated baseline recipes and AI-generated suggestions. Promote any idea into a full recipe.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+            <button 
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 text-sm font-bold hover:bg-gray-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center gap-2 disabled:opacity-60"
+              onClick={()=>getFresh(3)} 
+              disabled={loading}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              {loading ? "Fetching…" : "Get Fresh Ideas"}
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="rounded-lg px-4 py-2 text-sm font-semibold bg-white text-black shadow disabled:opacity-60"
-                  onClick={()=>getFresh(3)} disabled={loading}>
-            {loading ? "Fetching…" : "Get Fresh Ideas"}
-          </button>
-        </div>
-      </div>
+      </header>
 
       <Section title="Fresh from AI" items={feed} />
       <Section title="Curated starters" items={curated} />

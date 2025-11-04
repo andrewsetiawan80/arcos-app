@@ -1,3 +1,4 @@
+// src/Layout.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, NavLink } from "react-router-dom";
 import { useUI } from "./state/ui";
@@ -7,48 +8,149 @@ import CommandPalette from "./components/CommandPalette";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import MobileMenu from "./components/MobileMenu";
 import MegaMenuSheet from "./components/MegaMenuSheet";
+import CasturaLogo from "./components/CasturaLogo";
 
-type AreaKey = "engineering" | "production" | "sales" | "settings";
+type AreaKey = "dashboard" | "products" | "recipes" | "planning" | "sales" | "lab" | "settings";
+
+/** Flip to "instant" if you want zero animation */
+const MENU_MODE: "instant" | "smooth" = "smooth";
 
 const NAV: Record<
   AreaKey,
   { header: string; groups: { title?: string; items: { to: string; label: string; roles?: Role[] }[] }[] }
 > = {
-  engineering: {
-    header: "Engineering",
+  dashboard: {
+    header: "Dashboard",
     groups: [
-      { title: "Design & Mix", items: [{ to: "/studio", label: "Mix Studio" }, { to: "/recipes", label: "Recipes" }] },
-      { title: "References", items: [{ to: "/ideas", label: "Ideas & Starters" }] },
+      { 
+        items: [
+          { to: "/app/dashboard", label: "Overview & Quick Actions" },
+        ] 
+      },
     ],
   },
-  production: {
-    header: "Production",
+  products: {
+    header: "Products & Catalog",
     groups: [
-      { title: "Planning", items: [{ to: "/planner/production", label: "Production Planner" }] },
-      { title: "Resources", items: [{ to: "/materials", label: "Materials" }, { to: "/settings/processes", label: "Processes" }] },
+      {
+        title: "Product Management",
+        items: [
+          { to: "/app/products", label: "View Products" },
+          { to: "/app/products/edit", label: "Add/Edit Products", roles: ["admin"] },
+          { to: "/app/settings/catalog", label: "Product Settings" },
+        ],
+      },
+    ],
+  },
+  recipes: {
+    header: "Recipes & Mixes",
+    groups: [
+      {
+        title: "Recipe Management",
+        items: [
+          { to: "/app/recipes", label: "All Recipes" },
+          { to: "/app/product-recipes", label: "Product Recipes" },
+          { to: "/app/derive-recipe", label: "Create Recipe" },
+          { to: "/app/studio", label: "Mix Studio" },
+        ],
+      },
+    ],
+  },
+  planning: {
+    header: "Planning & Estimating",
+    groups: [
+      {
+        title: "Calculators",
+        items: [
+          { to: "/app/planner/tile", label: "Tile Calculator" },
+          { to: "/app/planner/slab", label: "Slab Calculator" },
+          { to: "/app/planner/production", label: "Production Planning" },
+          { to: "/app/cost", label: "Cost Calculator" },
+        ],
+      },
     ],
   },
   sales: {
-    header: "Sales",
+    header: "Sales & Proposals",
     groups: [
-      { title: "Estimating", items: [{ to: "/planner/tile", label: "Tile Planner" }, { to: "/planner/slab", label: "Slab Calculator" }, { to: "/cost", label: "Cost & Profit" }] },
-      { title: "Catalog", items: [{ to: "/products", label: "Catalog" }, { to: "/products/edit", label: "Catalog Admin", roles: ["admin"] }] },
-      { title: "Client Docs", items: [{ to: "/proposal", label: "Proposal / Quotation" }] },
+      {
+        title: "Client Work",
+        items: [
+          { to: "/app/proposal", label: "Create Proposals" },
+          { to: "/app/cost", label: "Pricing Tools" },
+        ],
+      },
     ],
   },
-  settings: { header: "Settings", groups: [{ items: [{ to: "/settings/processes", label: "Processes" }] }] },
+  lab: {
+    header: "Lab & R&D",
+    groups: [
+      {
+        title: "Research & Testing",
+        items: [
+          { to: "/app/lab", label: "Lab Notebook" },
+          { to: "/app/ideas", label: "Experiment Ideas" },
+        ],
+      },
+    ],
+  },
+  settings: {
+    header: "Settings",
+    groups: [
+      {
+        title: "System Configuration",
+        items: [
+          { to: "/app/materials", label: "Materials" },
+          { to: "/app/settings/processes", label: "Processes" },
+          { to: "/app/content/pages", label: "Site Settings" },
+        ],
+      },
+    ],
+  },
 };
 
 function useActiveArea(pathname: string): AreaKey {
-  if (pathname.startsWith("/planner/production") || pathname.startsWith("/materials") || pathname.startsWith("/settings")) return "production";
-  if (pathname.startsWith("/planner/tile") || pathname.startsWith("/planner/slab") || pathname.startsWith("/products") || pathname.startsWith("/proposal") || pathname.startsWith("/cost")) return "sales";
-  if (pathname.startsWith("/studio") || pathname.startsWith("/recipes") || pathname.startsWith("/ideas") || pathname.startsWith("/derive-recipe")) return "engineering";
-  return "engineering";
+  // Dashboard
+  if (pathname.startsWith("/app/dashboard")) return "dashboard";
+
+  // Products & Catalog
+  if (
+    pathname.startsWith("/app/products") ||
+    pathname.startsWith("/app/settings/catalog")
+  ) return "products";
+
+  // Recipes & Mixes
+  if (
+    pathname.startsWith("/app/recipes") ||
+    pathname.startsWith("/app/studio") ||
+    pathname.startsWith("/app/derive-recipe")
+  ) return "recipes";
+
+  // Planning & Estimating
+  if (
+    pathname.startsWith("/app/planner") ||
+    pathname.startsWith("/app/cost")
+  ) return "planning";
+
+  // Sales & Proposals
+  if (pathname.startsWith("/app/proposal")) return "sales";
+
+  // Lab & R&D
+  if (
+    pathname.startsWith("/app/lab") ||
+    pathname.startsWith("/app/ideas")
+  ) return "lab";
+
+  // Settings
+  if (
+    pathname.startsWith("/app/materials") ||
+    pathname.startsWith("/app/settings") ||
+    pathname.startsWith("/app/content")
+  ) return "settings";
+
+  return "dashboard";
 }
 
-const topTab = (active: boolean) =>
-  "px-3 py-1.5 rounded-md text-sm font-medium transition " +
-  (active ? "bg-white/10 text-white" : "text-stone-300 hover:text-white/90 hover:bg-white/5");
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -56,22 +158,24 @@ export default function Layout() {
   const { setCommandOpen } = useUI();
   const role = useAuth((s) => s.role);
 
-  // Desktop: which tab’s sheet is open
   const [openKey, setOpenKey] = useState<AreaKey | null>(null);
   const hoverTimer = useRef<number | null>(null);
+
+  const openNow = (key: AreaKey) => setOpenKey(key);
+  const closeNow = () => setOpenKey(null);
+
   const openWithDelay = (key: AreaKey) => {
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => setOpenKey(key), 80);
+    hoverTimer.current = window.setTimeout(() => setOpenKey(key), MENU_MODE === "smooth" ? 70 : 0);
   };
   const closeWithDelay = () => {
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => setOpenKey(null), 120);
+    hoverTimer.current = window.setTimeout(() => setOpenKey(null), MENU_MODE === "smooth" ? 140 : 0);
   };
 
-  // Mobile drawer
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // ⌘/Ctrl+K
+  // Shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const mac = navigator.platform.toUpperCase().includes("MAC");
@@ -80,47 +184,28 @@ export default function Layout() {
         e.preventDefault();
         setCommandOpen(true);
       }
+      if (e.key === "Escape") closeNow();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [setCommandOpen]);
 
   const tabs: { key: AreaKey; label: string }[] = [
-    { key: "engineering", label: "Engineering" },
-    { key: "production", label: "Production" },
+    { key: "dashboard", label: "Dashboard" },
+    { key: "products", label: "Products" },
+    { key: "recipes", label: "Recipes" },
+    { key: "planning", label: "Planning" },
     { key: "sales", label: "Sales" },
+    { key: "lab", label: "Lab" },
     { key: "settings", label: "Settings" },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[color:var(--bg)] text-stone-100">
-      {/* background */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div
-          className="absolute inset-0 opacity-[.85]"
-          style={{
-            background:
-              "radial-gradient(1200px 600px at 30% -10%, rgba(214,163,98,0.08), transparent 60%)," +
-              "radial-gradient(900px 500px at 110% 10%, rgba(120,113,108,0.08), transparent 60%)," +
-              "linear-gradient(180deg, rgba(12,12,12,.9), rgba(16,16,16,.9))",
-          }}
-        />
-        <div
-          className="absolute inset-0 mix-blend-overlay opacity-[.10]"
-          style={{
-            background:
-              "repeating-linear-gradient(45deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 3px)",
-          }}
-        />
-      </div>
-
-      {/* Sticky header grows smoothly */}
-      <div
-        className="sticky top-0 z-40 bg-[color:var(--panel)]/90 backdrop-blur border-b border-white/10 transition-[max-height] duration-300 ease-in-out"
-        style={{ maxHeight: openKey ? "500px" : "56px" }}
-      >
-        <header className="h-14 max-w-7xl mx-auto px-4 flex items-center gap-3">
-          {/* Hamburger (mobile) */}
+    <div className="min-h-screen flex flex-col bg-[#1A1A1A] text-white">
+      {/* Header */}
+      <div className="sticky top-0 z-40 bg-[#1A1A1A]/95 backdrop-blur border-b border-white/10">
+        <header className="relative h-20 max-w-7xl mx-auto px-6 flex items-center gap-6">
+          {/* Mobile toggle */}
           <button
             className="sm:hidden h-9 w-9 rounded-md hover:bg-white/10"
             onClick={() => setMobileOpen(true)}
@@ -131,65 +216,125 @@ export default function Layout() {
             </svg>
           </button>
 
-          {/* Brand clickable home */}
-          <NavLink to="/" className="flex items-center gap-3 hover:opacity-90 transition">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-stone-400 to-amber-600" />
-            <div className="font-semibold text-sm tracking-wide">CRETEWERKZ</div>
+          {/* Brand → internal home (Castura logo) */}
+          <NavLink to="/app" className="flex items-center hover:opacity-90 transition-opacity duration-300">
+            <CasturaLogo size="medium" className="scale-[1.2]" />
           </NavLink>
 
           {/* Tabs */}
-          <nav className="hidden sm:flex items-center gap-2">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                className={topTab(activeArea === t.key)}
-                onMouseEnter={() => openWithDelay(t.key)}
-                onFocus={() => setOpenKey(t.key)}
-                onMouseLeave={closeWithDelay}
-                onClick={() => setOpenKey((k) => (k === t.key ? null : t.key))}
-                aria-expanded={openKey === t.key}
-                type="button"
-              >
-                {t.label}
-              </button>
-            ))}
+          <nav className="hidden sm:flex items-center gap-1">
+            {tabs.map((t) => {
+              // Dashboard tab should navigate directly, others show dropdown
+              if (t.key === "dashboard") {
+                return (
+                  <NavLink
+                    key={t.key}
+                    to="/app"
+                    className={`px-4 py-2 text-xs uppercase tracking-wider font-bold transition-all relative ${
+                      activeArea === t.key 
+                        ? "text-white" 
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    {t.label}
+                    {activeArea === t.key && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+                    )}
+                  </NavLink>
+                );
+              }
+              
+              return (
+                <button
+                  key={t.key}
+                  className={`px-4 py-2 text-xs uppercase tracking-wider font-bold transition-all relative ${
+                    activeArea === t.key 
+                      ? "text-white" 
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                  onMouseEnter={() => (MENU_MODE === "smooth" ? openWithDelay(t.key) : openNow(t.key))}
+                  onMouseLeave={() => (MENU_MODE === "smooth" ? closeWithDelay() : undefined)}
+                  onFocus={() => openNow(t.key)}
+                  onClick={() => setOpenKey((k) => (k === t.key ? null : t.key))}
+                  aria-expanded={openKey === t.key}
+                  type="button"
+                >
+                  {t.label}
+                  {activeArea === t.key && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-fade-in" />
+                  )}
+                </button>
+              );
+            })}
           </nav>
 
+          {/* Search */}
+          <div className="hidden md:flex items-center ml-auto mr-6">
+            <button
+              onClick={() => setCommandOpen(true)}
+              className="group w-72 px-4 py-2.5 text-sm bg-[#2A2A2A] border border-white/10 rounded-lg text-gray-400 hover:border-white/20 hover:text-white hover:bg-[#333333] transition-all flex items-center gap-2 hover-lift"
+            >
+              <svg className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span className="text-xs uppercase tracking-wider">Search...</span>
+              <span className="ml-auto text-xs text-gray-500 group-hover:text-gray-400 transition-colors">⌘K</span>
+            </button>
+          </div>
+
           {/* Right side */}
-          <div className="ml-auto flex items-center gap-3">
-            <div className="hidden sm:block">
-              <ThemeSwitcher />
-            </div>
-            <div className="text-xs text-stone-400">⌘K / Ctrl+K</div>
+          <div className="flex items-center gap-3">
+            <NavLink
+              to="/"
+              className="text-xs uppercase tracking-wider font-bold px-4 py-2 bg-[#2A2A2A] border border-white/10 hover:bg-[#333333] transition-colors text-gray-300 hover:text-white"
+            >
+              Public Site
+            </NavLink>
+          </div>
+
+          {/* Mega menu overlay */}
+          <div
+            className="absolute left-0 right-0 top-full"
+            onMouseEnter={() => {
+              if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+            }}
+            onMouseLeave={() => (MENU_MODE === "smooth" ? closeWithDelay() : closeNow())}
+          >
+            {(["products", "recipes", "planning", "sales", "lab", "settings"] as AreaKey[]).map((key) => (
+              <MegaMenuSheet key={key} open={openKey === key} groups={NAV[key].groups} role={role} mode={MENU_MODE} onClose={closeNow} />
+            ))}
           </div>
         </header>
-
-        {/* Mega menu sheets (staggered animation inside) */}
-        <div
-          onMouseEnter={() => {
-            if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
-          }}
-          onMouseLeave={closeWithDelay}
-          className="hidden sm:block"
-        >
-          {(["engineering", "production", "sales", "settings"] as AreaKey[]).map((key) => (
-            <MegaMenuSheet key={key} open={openKey === key} groups={NAV[key].groups} role={role} />
-          ))}
-        </div>
       </div>
 
       {/* Main */}
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="space-y-6">
-            <Outlet />
-          </div>
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <Outlet />
         </div>
       </main>
 
-      {/* Mobile menu */}
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} areas={NAV} role={role} />
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-[#1A1A1A]">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-6 text-sm text-gray-400">
+              <CasturaLogo size="small" />
+              <span className="text-xs uppercase tracking-wider">Concrete Management System</span>
+              <span className="text-xs">© 2024</span>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-xs text-gray-400 uppercase tracking-wider">
+                <span>Theme:</span>
+                <ThemeSwitcher />
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
 
+      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} areas={NAV} role={role} />
       <CommandPalette />
     </div>
   );

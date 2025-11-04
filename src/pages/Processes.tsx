@@ -71,35 +71,59 @@ export default function Processes() {
       },
     };
     setState(next);
-    save(next);
+    // No auto-save
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-wide">Processes</h1>
-        <div className="flex gap-2">
-          <button
-            className="rounded-lg px-3 py-2 text-sm border border-white/10 bg-black/20 hover:bg-white/10"
-            onClick={pushDefault}
-            title="Merge any missing defaults (UHPC, GFRC Face/Back, etc.)"
-          >
-            Merge defaults
-          </button>
-          <button
-            className="rounded-lg px-3 py-2 text-sm border border-white/10 bg-black/20 hover:bg-white/10"
-            onClick={addBlank}
-          >
-            + Add process
-          </button>
-          <button
-            className="rounded-lg px-4 py-2 text-sm font-semibold bg-white text-black shadow"
-            onClick={saveAll}
-          >
-            Save
-          </button>
+    <div className="space-y-8 animate-in fade-in-0 duration-700">
+      {/* Header */}
+      <header className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
+        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Process Management</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Processes
+            </h1>
+            <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
+              Manage concrete production processes and categories for organizing your recipes and products.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+            <button
+              className="px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-sm font-semibold transition-all duration-300 hover:border-white/30 hover:shadow-lg hover:scale-105 flex items-center gap-2"
+              onClick={pushDefault}
+              title="Merge any missing defaults (UHPC, GFRC Face/Back, etc.)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Merge Defaults
+            </button>
+            <button
+              className="px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-sm font-semibold transition-all duration-300 hover:border-white/30 hover:shadow-lg hover:scale-105 flex items-center gap-2"
+              onClick={addBlank}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Add Process
+            </button>
+            <button
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 text-sm font-bold hover:bg-gray-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center gap-2"
+              onClick={saveAll}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              Save
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       <section className="rounded-2xl border border-white/10 overflow-hidden">
         <table className="w-full text-left">

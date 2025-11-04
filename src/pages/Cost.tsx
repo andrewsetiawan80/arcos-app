@@ -145,35 +145,59 @@ export default function Cost() {
   }, [costRows, batchKg, overheadPct, wastePct, markupPct]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-in fade-in-0 duration-700">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-wide">Cost & Profit</h1>
-        <div className="flex items-center gap-2">
-          <button
-            className="rounded-lg px-3 py-2 text-sm font-semibold bg-white text-black shadow disabled:opacity-40"
-            onClick={() => {
-              setLoadingFx(true);
-              fetchFx()
-                .then((bundle) => { setFx(bundle); setFxErr(null); })
-                .catch(e => setFxErr(String(e)))
-                .finally(() => setLoadingFx(false));
-            }}
-            disabled={loadingFx}
-            title="Fetch FX (with fallbacks)"
-          >
-            {loadingFx ? "Refreshing FX…" : "Refresh FX"}
-          </button>
+      <header className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
+        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Cost Analysis</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Cost & Profit
+            </h1>
+            <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
+              Calculate material costs, profit margins, and pricing for your concrete products.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+            <button
+              className="px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-sm font-semibold transition-all duration-300 hover:border-white/30 hover:shadow-lg hover:scale-105 flex items-center gap-2 disabled:opacity-40"
+              onClick={() => {
+                setLoadingFx(true);
+                fetchFx()
+                  .then((bundle) => { setFx(bundle); setFxErr(null); })
+                  .catch(e => setFxErr(String(e)))
+                  .finally(() => setLoadingFx(false));
+              }}
+              disabled={loadingFx}
+              title="Fetch FX (with fallbacks)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {loadingFx ? "Refreshing FX…" : "Refresh FX"}
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Controls + FX panel */}
-      <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-4">
-        <div className="grid md:grid-cols-3 gap-3">
-          <div>
-            <div className="text-xs text-gray-400 mb-1">Recipe</div>
-            <select
-              className="w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
+      <section className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
+        <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-2 h-2 rounded-full bg-blue-400" />
+            <h2 className="text-lg font-black text-white">Cost Calculator</h2>
+          </div>
+          <div className="space-y-6">
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-white">Recipe</label>
+                <select
+                  className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
               value={recipeId}
               onChange={(e) => setRecipeId(e.target.value)}
             >
@@ -184,26 +208,31 @@ export default function Cost() {
               ) : (
                 <option value="">— No recipes —</option>
               )}
-            </select>
-          </div>
-
-          <div>
-            <div className="text-xs text-gray-400 mb-1">Batch size (kg)</div>
-            <NumberField
-              className="w-40 rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
-              value={batchKg}
-              onChange={setBatchKg}
-              step="0.1"
-            />
-          </div>
-
-          <div className="text-xs text-gray-400">
-            {fx
-              ? <>FX: {fx.source} — {new Date(fx.fetchedAt).toLocaleString()} (USD→IDR {fx.idrPer.USD.toLocaleString("id-ID")}, EUR→IDR {fx.idrPer.EUR.toLocaleString("id-ID")})</>
-              : <>FX: not loaded</>}
-            {fxErr && <div className="text-red-300 mt-1">Error: {fxErr}</div>}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-white">Batch size (kg)</label>
+                <NumberField
+                  className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
+                  value={batchKg}
+                  onChange={setBatchKg}
+                  step="0.1"
+                  placeholder="Enter batch size"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-white">Cost Parameters</label>
+                <div className="text-xs text-gray-400">
+                  {fx
+                    ? <>FX: {fx.source} — {new Date(fx.fetchedAt).toLocaleString()} (USD→IDR {fx.idrPer.USD.toLocaleString("id-ID")}, EUR→IDR {fx.idrPer.EUR.toLocaleString("id-ID")})</>
+                    : <>FX: not loaded</>}
+                  {fxErr && <div className="text-red-300 mt-1">Error: {fxErr}</div>}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
         {/* Manual FX override */}
         <div className="rounded-xl border border-white/10 p-4 bg-black/10">
@@ -243,7 +272,6 @@ export default function Cost() {
             </div>
           </div>
         </div>
-      </section>
 
       {/* Table */}
       {recipe && costRows ? (

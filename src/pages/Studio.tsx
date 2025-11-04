@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { load, save } from "../store";
 import type { AppState, Material, Recipe, RecipeLine, Unit } from "../types";
 import { getProcesses, getProcessLabel } from "../lib/process";
@@ -43,6 +44,7 @@ function lineMassKg(
 
 export default function Studio(){
   const [state, setState] = useState<AppState>(()=>load());
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const PROC_LIST = getProcesses(state);
 
   // Inputs
@@ -60,7 +62,7 @@ export default function Studio(){
   const [densityOverride, setDensityOverride] = useState<number|undefined>();
   const [batchSizeKg, setBatchSizeKg] = useState<number|undefined>(5);
 
-  useEffect(()=>save(state),[state]);
+  // No auto-save - only manual saves
 
   const materials = state.materials;
   const matsById = useMemo(()=>{
@@ -123,17 +125,58 @@ export default function Studio(){
     list[idx] = { ...list[idx], densityKgM3: densityOverride, updatedAt: now() };
     const next = { ...state, recipes: list };
     setState(next);
-    save(next);
+    setHasUnsavedChanges(true);
   }
 
+  const handleSave = async () => {
+    try {
+      await save(state);
+      setHasUnsavedChanges(false);
+      alert("Studio settings saved successfully!");
+    } catch (error) {
+      console.error("Save failed:", error);
+      alert("Failed to save studio settings. Please try again.");
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-wide">Mix Studio</h1>
-          <div className="text-sm text-gray-400">Plan a mix by area or volume, apply spare, and get ingredient breakdown & batches.</div>
+    <div className="space-y-8 animate-in fade-in-0 duration-700">
+      {/* Header */}
+      <header className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
+        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Mix Studio</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Mix Studio
+            </h1>
+            <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
+              Plan concrete mixes by area or volume, apply spare ratios, and get detailed ingredient breakdowns and batch calculations.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+            {hasUnsavedChanges && (
+              <div className="flex items-center gap-2 text-sm text-orange-400">
+                <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                <span>Unsaved changes</span>
+              </div>
+            )}
+            <button 
+              className="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleSave}
+              disabled={!hasUnsavedChanges}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              Save Settings
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Process & Recipe */}
       <section className="rounded-2xl border border-white/10 p-6 bg-gradient-to-br from-white/5 to-white/0 shadow-lg space-y-4">
@@ -166,13 +209,13 @@ export default function Studio(){
                   )}
                 </select>
               </div>
-              <a
+              <Link
                 className="rounded-lg px-3 py-2 text-sm border border-white/10 bg-black/20 hover:bg-white/10"
-                href="/recipes"
+                to="/app/recipes"
                 title="Manage recipes"
               >
                 Manage
-              </a>
+              </Link>
             </div>
             {recipe && (
               <div className="text-xs text-gray-500 mt-2">

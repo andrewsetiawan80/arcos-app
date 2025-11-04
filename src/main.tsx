@@ -4,14 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import ErrorBoundary from "./ErrorBoundary";
-import { ThemeProvider } from "./theme/ThemeProvider"; // 👈 add this
+import { ThemeProvider } from "./theme/ThemeProvider";
 import "./index.css";
 
-// Create the root and mount the app
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider defaultTheme="concrete"> {/* 👈 wrap the app */}
+      <ThemeProvider defaultTheme="concrete">
         <ErrorBoundary>
           <App />
         </ErrorBoundary>

@@ -7,23 +7,37 @@ import type { Role } from "../state/auth";
 type Item = { label: string; to: string; roles?: Role[] };
 
 const ITEMS: Item[] = [
-  // Engineering
-  { label: "Mix Studio", to: "/studio" },
-  { label: "Recipes", to: "/recipes" },
-  { label: "Ideas & Starters", to: "/ideas" },
-
-  // Production
-  { label: "Production Planner", to: "/planner/production" },
-  { label: "Materials", to: "/materials" },
-  { label: "Processes", to: "/settings/processes" },
-
-  // Sales
-  { label: "Tile Planner", to: "/planner/tile" },
-  { label: "Slab Calculator", to: "/planner/slab" },
-  { label: "Catalog", to: "/products" },
-  { label: "Catalog Admin", to: "/products/edit", roles: ["admin"] },
-  { label: "Cost & Profit", to: "/cost" },
-  { label: "Proposal / Quotation", to: "/proposal" },
+  // Dashboard
+  { label: "Dashboard", to: "/app/dashboard" },
+  
+  // Products & Catalog
+  { label: "View Products", to: "/app/products" },
+  { label: "Add/Edit Products", to: "/app/products/edit", roles: ["admin"] },
+  { label: "Product Settings", to: "/app/settings/catalog" },
+  
+  // Recipes & Mixes
+  { label: "Recipe Library", to: "/app/recipes" },
+  { label: "Create New Recipe", to: "/app/derive-recipe" },
+  { label: "Mix Studio", to: "/app/studio" },
+  
+  // Planning & Estimating
+  { label: "Tile Calculator", to: "/app/planner/tile" },
+  { label: "Slab Calculator", to: "/app/planner/slab" },
+  { label: "Production Planning", to: "/app/planner/production" },
+  { label: "Cost Calculator", to: "/app/cost" },
+  
+  // Sales & Proposals
+  { label: "Create Proposals", to: "/app/proposal" },
+  { label: "Pricing Tools", to: "/app/cost" },
+  
+  // Lab & R&D
+  { label: "Lab Notebook", to: "/app/lab" },
+  { label: "Experiment Ideas", to: "/app/ideas" },
+  
+  // Settings
+  { label: "Materials", to: "/app/materials" },
+  { label: "Processes", to: "/app/settings/processes" },
+  { label: "Site Settings", to: "/app/content/pages" },
 ];
 
 export default function CommandPalette() {
@@ -64,22 +78,27 @@ export default function CommandPalette() {
   return (
     <div className="fixed inset-0 z-50">
       <div
-        className="absolute inset-0 bg-black/60"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={() => setCommandOpen(false)}
       />
-      <div className="relative mx-auto mt-24 w-full max-w-xl rounded-xl border border-white/10 bg-zinc-950 shadow-xl">
-        <div className="px-3 py-2 border-b border-white/10">
+      <div className="relative mx-auto mt-24 w-full max-w-2xl border border-white/10 bg-[#1A1A1A] shadow-2xl">
+        <div className="px-6 py-5 border-b border-white/10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Command Palette</div>
+          </div>
           <input
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search pages…"
-            className="w-full bg-transparent outline-none text-sm text-white placeholder:text-zinc-500 py-2"
+            placeholder="Search commands..."
+            className="w-full bg-[#2A2A2A] border border-white/10 px-4 py-3 outline-none text-base font-medium text-white placeholder:text-gray-500 focus:border-white/20 focus:bg-[#333333] transition-colors"
           />
         </div>
         <div className="p-2 max-h-80 overflow-auto">
           {results.length === 0 ? (
-            <div className="text-xs text-zinc-400 px-2 py-3">No results</div>
+            <div className="text-center py-12 text-gray-400">
+              <div className="text-sm uppercase tracking-wider mb-2">No commands found</div>
+            </div>
           ) : (
             <ul className="space-y-1">
               {results.map((r) => (
@@ -89,18 +108,18 @@ export default function CommandPalette() {
                       setCommandOpen(false);
                       nav(r.to);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-white/5"
+                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#2A2A2A] transition-colors group"
                   >
-                    {r.label}
-                    <span className="text-xs text-zinc-500 ml-2">{r.to}</span>
+                    <div className="font-bold text-white">{r.label}</div>
+                    <div className="text-xs text-gray-500 mt-1 font-mono">{r.to}</div>
                   </button>
                 </li>
               ))}
             </ul>
           )}
         </div>
-        <div className="px-3 py-2 border-t border-white/10 text-[11px] text-zinc-500">
-          Enter to open • Esc to close
+        <div className="px-6 py-3 border-t border-white/10 text-xs text-gray-500 bg-[#2A2A2A] uppercase tracking-wider">
+          ⌘K to open • Esc to close • Enter to navigate
         </div>
       </div>
     </div>

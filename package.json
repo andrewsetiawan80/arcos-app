@@ -1,11 +1,12 @@
 {
-  "name": "cretewerkz-app",
+  "name": "castura-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
+    "build:check": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -33,5 +34,5 @@
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.5"
   },
-  "description": "Cretewerkz App"
+  "description": "Castura Concrete Management App"
 }

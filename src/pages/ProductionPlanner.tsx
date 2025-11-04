@@ -268,55 +268,115 @@ export default function ProductionPlanner() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 justify-between print:hidden">
-        <h1 className="text-2xl font-semibold tracking-wide">Production Planner</h1>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={reloadState}
-            className="rounded-lg px-4 py-2 text-sm font-semibold bg-white/10 text-white shadow border border-white/10"
-          >
-            Reload data
-          </button>
-          <button
-            onClick={handlePrint}
-            className="rounded-lg px-4 py-2 text-sm font-semibold bg-white text-black shadow disabled:opacity-40"
-            disabled={!recipe || !lineTotals || (produceMode === "batch" && !perBatch)}
-            title="Print a clean recipe sheet"
-          >
-            Print Sheet
-          </button>
+    <div className="space-y-8 animate-in fade-in-0 duration-700">
+      {/* Header */}
+      <header className="relative print:hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
+        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Production Planning</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Production Planner
+            </h1>
+            <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
+              Plan concrete production runs with material calculations, batch sizing, and cost analysis.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+            <button
+              onClick={reloadState}
+              className="px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-sm font-semibold transition-all duration-300 hover:border-white/30 hover:shadow-lg hover:scale-105 flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Reload Data
+            </button>
+            <button
+              onClick={handlePrint}
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 text-sm font-bold hover:bg-gray-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center gap-2 disabled:opacity-40"
+              disabled={!recipe || !lineTotals || (produceMode === "batch" && !perBatch)}
+              title="Print a clean recipe sheet"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              Print Sheet
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Selection */}
       <section className="rounded-2xl border border-white/10 p-6 bg-gradient-to-br from-white/5 to-white/0 shadow-lg space-y-4 print:hidden">
-        <div className="grid md:grid-cols-4 gap-3">
-          <div>
-            <div className="text-xs text-gray-400 mb-1">Product</div>
-            <select
-              className="w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
-              value={state.products.find(p => p.id === productId)?.id ?? ""}
-              onChange={(e) => setProductId(e.target.value || "")}
-            >
-              {state.products.map((p) => (
-                <option key={p.id} value={p.id}>{p.title}</option>
-              ))}
-            </select>
+        {/* Product Selection Grid */}
+        <div className="space-y-4">
+          <div className="text-xs font-medium tracking-widest uppercase text-gray-400">Product Selection</div>
+          <div className="text-sm text-gray-300">Choose a product:</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {state.products.map(p => (
+              <button
+                key={p.id}
+                className={`p-4 rounded-xl border transition-all duration-300 text-left hover:scale-[1.02] ${
+                  productId === p.id 
+                    ? 'border-blue-400 bg-blue-400/10 shadow-lg ring-2 ring-blue-400/20' 
+                    : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                }`}
+                onClick={() => setProductId(p.id)}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-white truncate">{p.title}</div>
+                    <div className="text-xs text-gray-400 truncate">
+                      {p.size && `${p.size.w_mm}×${p.size.h_mm}×${p.size.t_mm}mm`}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {p.variants?.length || 0} variant{(p.variants?.length || 0) !== 1 ? 's' : ''}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div>
-            <div className="text-xs text-gray-400 mb-1">Variant</div>
-            <select
-              className="w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
-              value={(product?.variants || []).find(v => v.id === variantId)?.id ?? ""}
-              onChange={(e) => setVariantId(e.target.value || "")}
-            >
-              {(product?.variants || []).map((v) => (
-                <option key={v.id} value={v.id}>{v.name || v.id}</option>
+        {/* Variant Selection */}
+        {product && variants.length > 0 && (
+          <div className="space-y-4">
+            <div className="text-xs font-medium tracking-widest uppercase text-gray-400">Variant Selection</div>
+            <div className="text-sm text-gray-300">Choose a variant:</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {variants.map(v => (
+                <button
+                  key={v.id}
+                  className={`p-3 rounded-lg border transition-all duration-300 text-left hover:scale-[1.01] ${
+                    variantId === v.id 
+                      ? 'border-blue-400 bg-blue-400/10 ring-2 ring-blue-400/20' 
+                      : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                  }`}
+                  onClick={() => setVariantId(v.id)}
+                >
+                  <div className="font-medium text-white">{v.name}</div>
+                  {v.color && (
+                    <div className="text-xs text-gray-400 mt-1">
+                      Color: {v.color}
+                    </div>
+                  )}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
+        )}
+
+        <div className="grid md:grid-cols-2 gap-3">
 
           <div>
             <div className="text-xs text-gray-400 mb-1">Process / Category</div>
@@ -529,6 +589,57 @@ export default function ProductionPlanner() {
           </div>
         </div>
       </section>
+
+      {/* Calculation Preview */}
+      {recipe && !lineTotals && (
+        <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-4 print:hidden">
+          <div className="text-xs font-medium tracking-widest uppercase text-gray-400">Calculation Preview</div>
+          <div className="text-sm text-gray-300">
+            <p className="mb-2">To see the production plan, please set your targets above:</p>
+            <ul className="list-disc list-inside space-y-1 text-gray-400">
+              <li>Set tile count or target area</li>
+              <li>Adjust spare percentage if needed</li>
+              <li>The system will calculate total mass and material requirements</li>
+            </ul>
+          </div>
+          {!tilesNeeded && (
+            <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-3">
+              <div className="text-sm text-amber-300">
+                <strong>Next step:</strong> Set tile count or target area to see calculations
+              </div>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* Production Summary */}
+      {recipe && totalMassKg && totalMassKg > 0 && (
+        <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-4 print:hidden">
+          <div className="text-xs font-medium tracking-widest uppercase text-gray-400">Production Summary</div>
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="rounded-lg border border-white/10 p-4">
+              <div className="text-xs text-gray-400">Total Tiles</div>
+              <div className="text-2xl font-bold text-white mt-1">{tilesNeeded ?? "—"}</div>
+              <div className="text-xs text-gray-500 mt-1">Including {sparePct}% spare</div>
+            </div>
+            <div className="rounded-lg border border-white/10 p-4">
+              <div className="text-xs text-gray-400">Total Mass</div>
+              <div className="text-2xl font-bold text-white mt-1">{fmt(totalMassKg, 1)} kg</div>
+              <div className="text-xs text-gray-500 mt-1">Total concrete needed</div>
+            </div>
+            <div className="rounded-lg border border-white/10 p-4">
+              <div className="text-xs text-gray-400">Per Tile Mass</div>
+              <div className="text-2xl font-bold text-white mt-1">{fmt(perTileMassKg, 2)} kg</div>
+              <div className="text-xs text-gray-500 mt-1">Mass per individual tile</div>
+            </div>
+            <div className="rounded-lg border border-white/10 p-4">
+              <div className="text-xs text-gray-400">Total Area</div>
+              <div className="text-2xl font-bold text-white mt-1">{fmt(tileArea_m2 && tilesNeeded ? tileArea_m2 * tilesNeeded : undefined, 2)} m²</div>
+              <div className="text-xs text-gray-500 mt-1">Total coverage area</div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Materials summary */}
       {recipe && lineTotals ? (

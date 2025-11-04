@@ -1,9 +1,7 @@
-// src/pages/TilePlanner.tsx
 import React, { useMemo, useState } from "react";
 import { load } from "../store";
 import type { AppState, Recipe } from "../types";
 import NumberField from "../components/NumberField";
-import Card from "../components/Card";
 import SectionHeader from "../components/SectionHeader";
 
 type AreaUnit = "cm2" | "m2";
@@ -13,7 +11,8 @@ export default function TilePlanner() {
   const [state] = useState<AppState>(() => load());
 
   // --- Local UI state
-  const [recipeId, setRecipeId] = useState<string>(state.recipes[0]?.id ?? "");
+  const firstRecipeId = state.recipes[0]?.id ?? "";
+  const [recipeId, setRecipeId] = useState<string>(firstRecipeId);
   const recipe: Recipe | undefined = state.recipes.find((r) => r.id === recipeId);
 
   const [tileWidthMm, setTileWidthMm] = useState<number | undefined>();
@@ -23,11 +22,11 @@ export default function TilePlanner() {
 
   const [tileCount, setTileCount] = useState<number | undefined>();
   const [targetAreaM2, setTargetAreaM2] = useState<number | undefined>();
-  const [sparePct, setSparePct] = useState<number | undefined>(7);
+  const [sparePct, setSparePct] = useState<number | undefined>(
+    state.settings?.defaultSparePct ?? 7
+  );
 
   // --- Derived values
-
-  // Tile area (m²)
   const tileAreaM2 = useMemo(() => {
     if (isFiniteNum(tileWidthMm) && isFiniteNum(tileHeightMm)) {
       return (toNum(tileWidthMm) / 1000) * (toNum(tileHeightMm) / 1000);
@@ -39,7 +38,6 @@ export default function TilePlanner() {
     return undefined;
   }, [tileWidthMm, tileHeightMm, tileAreaInput, tileAreaUnit]);
 
-  // Needed tile count (incl. spare)
   const neededTileCount = useMemo(() => {
     if (!isFiniteNum(sparePct)) return undefined;
 
@@ -61,15 +59,14 @@ export default function TilePlanner() {
     return volumeM3 * recipe.densityKgM3;
   }, [neededTileCount, tileAreaM2, recipe]);
 
-  // --- Reusable styles
+  // --- Reusable styles (match ProductionPlanner)
   const inputClass = "w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm";
   const labelClass = "text-xs text-gray-400 mb-1";
-  const groupTitle = "text-[11px] uppercase tracking-wide text-zinc-400";
+  const groupTitle = "text-xs font-medium tracking-widest uppercase text-gray-400";
 
   const hasRecipes = state.recipes.length > 0;
 
   // --- Actions
-
   const canSave = Boolean(
     recipe &&
       isFiniteNum(neededTileCount) &&
@@ -104,10 +101,9 @@ export default function TilePlanner() {
       neededTileCount: isFiniteNum(neededTileCount) ? toNum(neededTileCount) : null,
       totalMassKg: isFiniteNum(totalMassKg) ? toNum(totalMassKg) : null,
 
-      stage: "planned", // future: cast → demold → cure → finish → ship
+      stage: "planned",
     };
 
-    // Persist to localStorage list
     const key = "cretewerkz.batches";
     const existing = safeParseArray(localStorage.getItem(key));
     existing.unshift(batch);
@@ -117,7 +113,6 @@ export default function TilePlanner() {
   }
 
   function handleExportPDF() {
-    // Generate a simple, print-ready HTML report
     const w = window.open("", "_blank");
     if (!w) return;
 
@@ -150,7 +145,7 @@ export default function TilePlanner() {
     :root { color-scheme: light dark; }
     body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 32px; }
     h1 { margin: 0 0 4px 0; font-size: 22px; }
-    .brand { color: #e11d48; letter-spacing: .08em; font-weight: 600; font-size: 12px; text-transform: uppercase; }
+    .brand { color: #e2e8f0; letter-spacing: .12em; font-weight: 700; font-size: 12px; text-transform: uppercase; }
     table { border-collapse: collapse; width: 100%; margin-top: 16px; }
     td { padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,.08); }
     tr:nth-child(even) td { background: rgba(0,0,0,.03); }
@@ -169,7 +164,7 @@ export default function TilePlanner() {
   <h1>${title}</h1>
   <table>
     ${rows
-      .map(([k, v]) => `<tr><td style="width:40%;font-weight:500">${escapeHtml(k)}</td><td>${escapeHtml(v)}</td></tr>`)
+      .map(([k, v]) => `<tr><td style="width:40%;font-weight:600">${escapeHtml(k)}</td><td>${escapeHtml(v)}</td></tr>`)
       .join("")}
   </table>
   <div class="muted">This is a planning summary. Values are estimates and should be verified before production.</div>
@@ -183,24 +178,31 @@ export default function TilePlanner() {
   }
 
   return (
-    <>
-      <SectionHeader
-        title="Tile Planner"
-        subtitle="Plan production by tiles or wall/floor area. Includes spare %."
-      />
+    <div className="space-y-8 animate-in fade-in-0 duration-700">
+      {/* Header */}
+      <header className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
+        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Production Planning</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Tile Planner
+            </h1>
+            <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
+              Plan concrete tile production by dimensions or area, calculate quantities, and include spare percentages.
+            </p>
+          </div>
+        </div>
+      </header>
 
       {/* Recipe */}
-      <Card>
-        <div className="flex items-center justify-between">
-          <div className={groupTitle}>Recipe</div>
-          {recipe?.densityKgM3 ? (
-            <div className="text-xs text-zinc-400">
-              Density: <span className="text-zinc-200">{fmt(recipe.densityKgM3)} kg/m³</span>
-            </div>
-          ) : null}
-        </div>
+      <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-3">
+        <div className={groupTitle}>Recipe</div>
 
-        <div className="mt-3">
+        <div>
           {hasRecipes ? (
             <select className={inputClass} value={recipeId} onChange={(e) => setRecipeId(e.target.value)}>
               {state.recipes.map((r) => (
@@ -210,18 +212,24 @@ export default function TilePlanner() {
               ))}
             </select>
           ) : (
-            <div className="text-sm text-amber-300/90">
+            <div className="text-sm text-stone-300/90">
               No recipes found. Add one in <span className="underline">Engineering → Recipes</span>.
             </div>
           )}
         </div>
-      </Card>
+
+        {recipe?.densityKgM3 ? (
+          <div className="text-xs text-stone-400">
+            Density: <span className="text-stone-200">{fmt(recipe.densityKgM3)} kg/m³</span>
+          </div>
+        ) : null}
+      </section>
 
       {/* Tile info */}
-      <Card>
+      <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-3">
         <div className={groupTitle}>Tile size</div>
 
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <div className={labelClass}>Width (mm)</div>
             <NumberField className={inputClass} value={tileWidthMm} onChange={setTileWidthMm} step="1" />
@@ -248,17 +256,17 @@ export default function TilePlanner() {
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-zinc-400">
+        <div className="text-sm text-stone-400">
           Computed tile area:&nbsp;
-          <span className="text-zinc-100">{isFiniteNum(tileAreaM2) ? fmt(tileAreaM2) : "—"} m²</span>
+          <span className="text-stone-200">{isFiniteNum(tileAreaM2) ? fmt(tileAreaM2) : "—"} m²</span>
         </div>
-      </Card>
+      </section>
 
       {/* Production target */}
-      <Card>
+      <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-3">
         <div className={groupTitle}>Target</div>
 
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <div className={labelClass}>Tiles (pcs)</div>
             <NumberField className={inputClass} value={tileCount} onChange={setTileCount} step="1" />
@@ -269,42 +277,42 @@ export default function TilePlanner() {
           </div>
         </div>
 
-        <div className="mt-3">
+        <div>
           <div className={labelClass}>Spare (%)</div>
           <NumberField className={inputClass} value={sparePct} onChange={setSparePct} step="1" />
         </div>
 
-        <p className="mt-3 text-xs text-zinc-500">
+        <p className="text-xs text-stone-500">
           If both “Tiles” and “Area” are filled, the planner prefers <b>Area</b>.
         </p>
-      </Card>
+      </section>
 
       {/* Results + Actions */}
-      <Card>
+      <section className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Stat label="Tile area" value={isFiniteNum(tileAreaM2) ? `${fmt(tileAreaM2)} m²` : "—"} />
           <Stat label="Tiles needed (incl. spare)" value={isFiniteNum(neededTileCount) ? String(neededTileCount) : "—"} />
           <Stat label="Estimated total mass" value={isFiniteNum(totalMassKg) ? `${fmt(totalMassKg)} kg` : "—"} />
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3">
           <button
-            className="px-4 py-2 rounded-md bg-rose-600 hover:bg-rose-500 text-sm font-medium disabled:opacity-50 disabled:pointer-events-none"
+            className="rounded-lg px-5 py-3 text-sm font-medium bg-white text-black hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
             onClick={handleSaveBatch}
             disabled={!canSave}
           >
             Save Batch
           </button>
           <button
-            className="px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-sm font-medium disabled:opacity-50 disabled:pointer-events-none"
+            className="rounded-lg px-5 py-3 text-sm font-medium border border-white/15 hover:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
             onClick={handleExportPDF}
             disabled={!recipe || (!isFiniteNum(neededTileCount) && !isFiniteNum(tileAreaM2))}
           >
             Export PDF
           </button>
         </div>
-      </Card>
-    </>
+      </section>
+    </div>
   );
 }
 
@@ -312,9 +320,9 @@ export default function TilePlanner() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <div className="text-xs text-zinc-400">{label}</div>
-      <div className="text-lg font-semibold">{value}</div>
+    <div className="rounded-lg border border-white/10 p-3">
+      <div className="text-xs text-gray-400">{label}</div>
+      <div className="text-xl font-semibold mt-1">{value}</div>
     </div>
   );
 }
