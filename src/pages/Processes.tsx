@@ -10,10 +10,7 @@ export default function Processes() {
   const [state, setState] = useState<AppState>(() => load());
 
   // Local working copy (so you can cancel changes if you want later)
-  const initialList = useMemo<ProcessItem[]>(
-    () => getProcesses(state),
-    [state]
-  );
+  const initialList: ProcessItem[] = getProcesses(state);
   const [items, setItems] = useState<ProcessItem[]>(initialList);
 
   // If state changes elsewhere (e.g., in another tab), refresh the editor

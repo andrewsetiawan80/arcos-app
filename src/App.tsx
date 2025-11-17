@@ -1,5 +1,4 @@
 // src/App.tsx
-import React from "react";
 import { Routes, Route, Navigate, Link } from "react-router-dom";
 
 // ===== Public =====
@@ -7,7 +6,14 @@ import PublicLayout from "./public/PublicLayout";
 import PublicHome from "./public/PublicHome";
 import PublicCatalog from "./public/PublicCatalog";
 import PublicProductDetail from "./public/PublicProductDetail";
-import PublicPage from "./public/PublicPage"; // 👈 NEW
+import PublicPage from "./public/PublicPage";
+import PublicServices from "./public/PublicServices";
+import PublicProcess from "./public/PublicProcess";
+import PublicProjects from "./public/PublicProjects";
+import PublicAbout from "./public/PublicAbout";
+import PublicContact from "./public/PublicContact";
+import PublicInspiration from "./public/PublicInspiration";
+import PublicFAQ from "./public/PublicFAQ";
 
 // ===== Internal =====
 import Layout from "./Layout";
@@ -37,6 +43,9 @@ import LabEntryEditor from "./pages/LabEntryEditor";
 // CMS (NEW)
 import CmsPages from "./pages/CmsPages";
 import CmsPageEditor from "./pages/CmsPageEditor";
+import RequireAuth from "./components/RequireAuth";
+import StaffLogin from "./pages/StaffLogin";
+import { AppStateProvider } from "./utils/createAppStateContext";
 
 // ===== 404s =====
 function PublicNotFound() {
@@ -63,7 +72,7 @@ function AppNotFound() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-16">
       <h1 className="text-2xl font-semibold mb-2">Page not found</h1>
-      <Link to="/app" className="text-sm underline text-stone-300">Go to app home</Link>
+      <Link to="/login" className="text-sm underline text-stone-300">Go to staff login</Link>
     </div>
   );
 }
@@ -76,11 +85,20 @@ export default function App() {
         <Route index element={<PublicHome />} /> {/* / */}
         <Route path="/catalog" element={<PublicCatalog />} />
         <Route path="/product/:slug" element={<PublicProductDetail />} />
-        <Route path="/page/:slug" element={<PublicPage />} /> {/* 👈 NEW */}
+        <Route path="/services" element={<PublicServices />} />
+        <Route path="/process" element={<PublicProcess />} />
+        <Route path="/projects" element={<PublicProjects />} />
+        <Route path="/about" element={<PublicAbout />} />
+        <Route path="/inspiration" element={<PublicInspiration />} />
+        <Route path="/faq" element={<PublicFAQ />} />
+        <Route path="/contact" element={<PublicContact />} />
+        <Route path="/page/:slug" element={<PublicPage />} />
       </Route>
 
+      <Route path="/login" element={<StaffLogin />} />
+
       {/* ========= INTERNAL ========= */}
-      <Route element={<Layout />}>
+      <Route element={<RequireAuth><AppStateProvider key="app-state"><Layout /></AppStateProvider></RequireAuth>}>
         {/* App landing → Dashboard */}
         <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
         <Route path="/app/dashboard" element={<AppDashboard />} />

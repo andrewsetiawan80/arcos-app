@@ -51,15 +51,18 @@ export default function Cost() {
     return () => { alive = false; };
   }, []);
 
+  const materials = state.materials || [];
+  const recipes = state.recipes || [];
+  
   const matsById = React.useMemo(() => {
     const m: Record<string, Material> = {};
-    state.materials.forEach(x => m[x.id] = x);
+    materials.forEach(x => m[x.id] = x);
     return m;
-  }, [state.materials]);
+  }, [materials]);
 
-  const firstRecipeId = state.recipes[0]?.id ?? "";
+  const firstRecipeId = recipes[0]?.id ?? "";
   const [recipeId, setRecipeId] = React.useState<string>(firstRecipeId);
-  const recipe: Recipe | undefined = state.recipes.find(r => r.id === recipeId);
+  const recipe: Recipe | undefined = recipes.find(r => r.id === recipeId);
 
   const [batchKg, setBatchKg] = React.useState<number | undefined>(10);
 
@@ -201,8 +204,8 @@ export default function Cost() {
               value={recipeId}
               onChange={(e) => setRecipeId(e.target.value)}
             >
-              {state.recipes.length ? (
-                state.recipes.map(r => (
+              {recipes.length ? (
+                recipes.map(r => (
                   <option key={r.id} value={r.id}>{r.name} — {r.process}</option>
                 ))
               ) : (
@@ -357,7 +360,7 @@ export default function Cost() {
         </>
       ) : (
         <section className="rounded-2xl border border-white/10 p-6 bg-black/20 text-gray-400">
-          {state.recipes.length === 0
+          {recipes.length === 0
             ? "No recipes yet. Add one in Recipes."
             : "Select a recipe, set batch size. FX is optional unless any material uses USD/EUR."}
         </section>

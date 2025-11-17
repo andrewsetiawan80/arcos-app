@@ -48,12 +48,13 @@ export default function Studio(){
   const PROC_LIST = getProcesses(state);
 
   // Inputs
+  const recipes = state.recipes || [];
   const [procKey, setProcKey] = useState<string>(()=> PROC_LIST[0]?.key || "");
-  const recipesForProc = useMemo(()=> state.recipes.filter(r => r.process === procKey), [state.recipes, procKey]);
+  const recipesForProc = useMemo(()=> recipes.filter(r => r.process === procKey), [recipes, procKey]);
   const [recipeId, setRecipeId] = useState<string>(()=> recipesForProc[0]?.id || "");
   useEffect(()=>{ if (!recipesForProc.find(r=>r.id===recipeId)) setRecipeId(recipesForProc[0]?.id || ""); }, [procKey]); // keep selection valid
 
-  const recipe = useMemo<Recipe|undefined>(()=> state.recipes.find(r => r.id===recipeId), [state.recipes, recipeId]);
+  const recipe = useMemo<Recipe|undefined>(()=> recipes.find(r => r.id===recipeId), [recipes, recipeId]);
 
   const [area_m2, setArea] = useState<number|undefined>();
   const [thickness_mm, setThickness] = useState<number|undefined>();
@@ -119,9 +120,10 @@ export default function Studio(){
 
   function setRecipeDensityFromOverride(){
     if (!recipe || densityOverride === undefined) return;
-    const idx = state.recipes.findIndex(r=>r.id===recipe.id);
+    const recipes = state.recipes || [];
+    const idx = recipes.findIndex(r=>r.id===recipe.id);
     if (idx<0) return;
-    const list = [...state.recipes];
+    const list = [...recipes];
     list[idx] = { ...list[idx], densityKgM3: densityOverride, updatedAt: now() };
     const next = { ...state, recipes: list };
     setState(next);

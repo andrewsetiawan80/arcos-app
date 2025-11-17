@@ -11,7 +11,7 @@ export default function PublicProductDetail() {
   const state = load();
   const products = (state.products || []) as Product[];
 
-  const product = useMemo(() => products.find((p) => p.slug === slug) || null, [products, slug]);
+  const product = products.find((p) => p.slug === slug) || null;
 
   const [heroUrl, setHeroUrl] = useState<string | null>(product?.coverImageUrl || null);
   const [sampleOpen, setSampleOpen] = useState(false);
@@ -211,8 +211,8 @@ function Spec({ label, children }: { label: string; children: React.ReactNode })
 
 function Related({ currentSlug }: { currentSlug: string }) {
   const state = load();
-  const all = (state.products || []) as Product[];
-  const related = useMemo(() => all.filter((p) => p.public && p.slug !== currentSlug).slice(0, 3), [all, currentSlug]);
+  const products = (state.products || []) as Product[];
+  const related = products.filter((p) => p.public && p.slug !== currentSlug).slice(0, 3);
 
   if (!related.length) return null;
 

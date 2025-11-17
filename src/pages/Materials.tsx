@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { load, save } from "../store";
 import type { AppState, Material, Currency } from "../types";
 import NumberField from "../components/NumberField";
@@ -6,8 +6,27 @@ import NumberField from "../components/NumberField";
 const newid = () => Math.random().toString(36).slice(2, 10);
 
 export default function Materials() {
-  const [state, setState] = useState<AppState>(() => load());
+  const [state, setState] = useState<AppState | null>(null);
+  const [loading, setLoading] = useState(true);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const appState = await load();
+        setState(appState);
+      } catch (error) {
+        console.error('Failed to load state:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  if (loading || !state) {
+    return <div className="p-6 text-white">Loading...</div>;
+  }
 
   const add = () => {
     const m: Material = {
@@ -24,13 +43,15 @@ export default function Materials() {
 
   const remove = (id: string) => {
     if (!confirm("Delete this material?")) return;
-    const next = { ...state, materials: state.materials.filter(m => m.id !== id) };
+    const materials = state.materials || [];
+    const next = { ...state, materials: materials.filter(m => m.id !== id) };
     setState(next);
     setHasUnsavedChanges(true);
   };
 
   const update = (id: string, patch: Partial<Material>) => {
-    const list = state.materials.map(m => m.id === id ? { ...m, ...patch } : m);
+    const materials = state.materials || [];
+    const list = materials.map(m => m.id === id ? { ...m, ...patch } : m);
     const next = { ...state, materials: list };
     setState(next);
     setHasUnsavedChanges(true);
@@ -47,7 +68,7 @@ export default function Materials() {
     }
   };
 
-  const mats = useMemo(() => state.materials, [state.materials]);
+  const mats = state.materials;
 
   return (
     <div className="space-y-8">

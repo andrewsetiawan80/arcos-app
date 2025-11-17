@@ -11,9 +11,10 @@ export default function TilePlanner() {
   const [state] = useState<AppState>(() => load());
 
   // --- Local UI state
-  const firstRecipeId = state.recipes[0]?.id ?? "";
+  const recipes = state.recipes || [];
+  const firstRecipeId = recipes[0]?.id ?? "";
   const [recipeId, setRecipeId] = useState<string>(firstRecipeId);
-  const recipe: Recipe | undefined = state.recipes.find((r) => r.id === recipeId);
+  const recipe: Recipe | undefined = recipes.find((r) => r.id === recipeId);
 
   const [tileWidthMm, setTileWidthMm] = useState<number | undefined>();
   const [tileHeightMm, setTileHeightMm] = useState<number | undefined>();
@@ -64,7 +65,7 @@ export default function TilePlanner() {
   const labelClass = "text-xs text-gray-400 mb-1";
   const groupTitle = "text-xs font-medium tracking-widest uppercase text-gray-400";
 
-  const hasRecipes = state.recipes.length > 0;
+  const hasRecipes = recipes.length > 0;
 
   // --- Actions
   const canSave = Boolean(
@@ -205,7 +206,7 @@ export default function TilePlanner() {
         <div>
           {hasRecipes ? (
             <select className={inputClass} value={recipeId} onChange={(e) => setRecipeId(e.target.value)}>
-              {state.recipes.map((r) => (
+              {recipes.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.name}
                 </option>

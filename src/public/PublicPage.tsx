@@ -35,10 +35,7 @@ export default function PublicPage() {
   const { slug } = useParams();
   const state: AppState = load();
 
-  const page: Page | undefined = useMemo(
-    () => (state.pages || []).find((p) => p.slug === slug && p.status === "published"),
-    [state.pages, slug]
-  );
+  const page: Page | undefined = (state.pages || []).find((p) => p.slug === slug && p.status === "published");
 
   if (!page) {
     return (

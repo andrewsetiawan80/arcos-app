@@ -16,10 +16,11 @@ export default function RecipeEditor() {
   const [state, setState] = useState<AppState>(() => load());
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  const idx = state.recipes.findIndex(r => r.id === id);
-  const recipe = state.recipes[idx];
+  const recipes = state.recipes || [];
+  const idx = recipes.findIndex(r => r.id === id);
+  const recipe = idx >= 0 ? recipes[idx] : undefined;
 
-  const materials = state.materials;
+  const materials = state.materials || [];
   const matsById = useMemo(() => {
     const m: Record<string, Material> = {};
     materials.forEach(x => (m[x.id] = x));

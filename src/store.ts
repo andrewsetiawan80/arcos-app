@@ -1,138 +1,329 @@
-// src/store.ts
-import type { AppState, Material, Currency, Unit, Recipe } from "./types";
+// src/store.ts - API-backed store
+import type { AppState } from "./types";
+import { api } from "./lib/api";
 
-const KEY = "castura_app_state"; // bump if structure changes
+const listeners = new Set<(state: AppState) => void>();
+const authListeners = new Set<(authorized: boolean) => void>();
 
-export function save(state: AppState): Promise<void> {
-  return new Promise((resolve, reject) => {
+let cachedState: AppState = getEmptyState();
+let initialized = false;
+let publicMode = !tokenAvailable();
+let refreshPromise: Promise<void> | null = null;
+let pendingRedirect = false;
+
+function tokenAvailable(): boolean {
+  try {
+    return Boolean(api.getToken?.());
+  } catch {
+    return false;
+  }
+}
+
+export function load(): AppState {
+  if (!initialized) {
+    initialized = true;
+
+    const storedState = loadFromStorage();
+    if (storedState) {
+      cachedState = storedState;
+    }
+
+    scheduleRefresh();
+  }
+
+  return cachedState;
+}
+
+function loadFromStorage(): AppState | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const raw = window.localStorage.getItem("cw_app_state");
+    if (!raw) {
+      return null;
+    }
+    return JSON.parse(raw);
+  } catch (error) {
+    console.warn("Failed to parse cached state:", error);
+    return null;
+  }
+}
+
+function persistState(state: AppState) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem("cw_app_state", JSON.stringify(state));
+  } catch (error) {
+    console.warn("Unable to persist state to localStorage", error);
+  }
+}
+
+function notifyListeners() {
+  listeners.forEach((listener) => {
     try {
-      localStorage.setItem(KEY, JSON.stringify(state));
-      resolve();
+      listener(cachedState);
     } catch (error) {
-      reject(error);
+      console.error("State listener failed:", error);
     }
   });
 }
 
-export function load(): AppState {
-  const raw = localStorage.getItem(KEY);
-  if (!raw) {
-    const s = seedState();
-    save(s).catch(console.error);
-    return s;
-  }
-  try {
-    const parsed: AppState = JSON.parse(raw);
-    return migrate(parsed);
-  } catch {
-    const s = seedState();
-    save(s).catch(console.error);
-    return s;
-  }
+function notifyAuthListeners(authorized: boolean) {
+  authListeners.forEach((listener) => {
+    try {
+      listener(authorized);
+    } catch (error) {
+      console.error("Auth listener failed:", error);
+    }
+  });
 }
 
-// --- migrations ---
-function migrate(state: AppState): AppState {
-  // Ensure materials have currency defaults
-  const materials = state.materials.map((m) => ({
-    ...m,
-    priceCurrency: (m.priceCurrency as Currency) || "IDR",
+function scheduleRefresh(force = false) {
+  if (refreshPromise && !force) {
+    return refreshPromise;
+  }
+
+  const promise = refreshState()
+    .catch((error) => {
+      console.error("Failed to refresh state:", error);
+    })
+    .finally(() => {
+      if (refreshPromise === promise) {
+        refreshPromise = null;
+      }
+    });
+
+  refreshPromise = promise;
+  return refreshPromise;
+}
+
+async function refreshState() {
+  const newState = await fetchState();
+  cachedState = newState;
+  persistState(newState);
+  notifyListeners();
+}
+
+async function fetchState(): Promise<AppState> {
+  if (!publicMode && tokenAvailable()) {
+    const result = await api.getState();
+    if (!result.error) {
+      publicMode = false;
+      notifyAuthListeners(true);
+      return (result.data as AppState) || getEmptyState();
+    }
+
+    if (result.error === "Access token required") {
+      handleUnauthorized();
+      return loadPublicState();
+    }
+
+    throw new Error(result.error);
+  }
+
+  publicMode = true;
+  return loadPublicState();
+}
+
+async function loadPublicState(): Promise<AppState> {
+  const [productsRes, settingsRes] = await Promise.all([
+    api.getPublicProducts(),
+    api.getPublicSettings(),
+  ]);
+
+  if (productsRes.error) {
+    throw new Error(productsRes.error);
+  }
+
+  if (settingsRes.error) {
+    throw new Error(settingsRes.error);
+  }
+
+  return buildPublicState(
+    (productsRes.data as any[]) || [],
+    (settingsRes.data as Record<string, any>) || {},
+  );
+}
+
+function buildPublicState(productsData: any[], settingsData: Record<string, any>): AppState {
+  const normalizedProducts = (productsData || []).map((product) => ({
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    categorySlug: product.category_slug || product.categorySlug,
+    public: product.public,
+    featured: product.featured,
+    coverImageUrl: product.cover_image_url || product.coverImageUrl,
+    variants: (product.variants || []).map((variant: any) => ({
+      id: variant.id,
+      name: variant.name,
+      color: variant.color,
+      recipeByProcess: {},
+    })),
+    createdAt: product.created_at || product.createdAt,
+    updatedAt: product.updated_at || product.updatedAt,
   }));
-  return { ...state, materials };
-}
 
-// --- seed data (examples only) ---
-const id = () => Math.random().toString(36).slice(2, 10);
-const now = () => new Date().toISOString();
+  const categoryMap = new Map<
+    string,
+    { id: string; name: string; slug: string; description?: string }
+  >();
 
-function seedMaterials(): Material[] {
-  return [
-    { id: id(), name: "Cement (OPC)", densityKgM3: 1500, pricePerKg: 2000, priceCurrency: "IDR" },
-    { id: id(), name: "Silica Fume", densityKgM3: 400, pricePerKg: 1.8, priceCurrency: "USD" },
-    { id: id(), name: "Metakaolin", densityKgM3: 500, pricePerKg: 2.1, priceCurrency: "USD" },
-    { id: id(), name: "Quartz Sand 0–2mm", densityKgM3: 1600, pricePerKg: 1500, priceCurrency: "IDR" },
-    { id: id(), name: "PCE Superplasticizer", densityKgM3: 1050, pricePerKg: 2.4, priceCurrency: "EUR" },
-    { id: id(), name: "Water", densityKgM3: 1000, pricePerKg: 0, priceCurrency: "IDR" },
-    { id: id(), name: "AR Glass Fiber", densityKgM3: 2600, pricePerKg: 4.0, priceCurrency: "USD" },
-    { id: id(), name: "Pigment (Carbon Black)", densityKgM3: 450, pricePerKg: 3.0, priceCurrency: "USD" },
-  ];
-}
+  normalizedProducts.forEach((product) => {
+    if (product.categorySlug && !categoryMap.has(product.categorySlug)) {
+      const slug = product.categorySlug;
+      const name = slug
+        .split("-")
+        .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ");
+      categoryMap.set(slug, {
+        id: slug,
+        name,
+        slug,
+        description: "",
+      });
+    }
+  });
 
-function seedRecipes(materials: Material[]) {
-  const get = (name: string) => materials.find((m) => m.name.includes(name))?.id || "";
-  return [
-    {
-      id: id(),
-      name: "UHPC Base",
-      process: "UHPC",
-      version: "v1.0",
-      densityKgM3: 2450,
-      lines: [
-        { id: id(), materialId: get("Cement"), amount: 1, unit: "ratio" as Unit as Unit },
-        { id: id(), materialId: get("Silica Fume"), amount: 0.2, unit: "ratio" as Unit as Unit },
-        { id: id(), materialId: get("Metakaolin"), amount: 0.1, unit: "ratio" as Unit as Unit },
-        { id: id(), materialId: get("Quartz Sand"), amount: 1.8, unit: "ratio" as Unit as Unit },
-        { id: id(), materialId: get("Water"), amount: 0.22, unit: "ratio" as Unit as Unit },
-        { id: id(), materialId: get("PCE"), amount: 0.02, unit: "ratio" as Unit as Unit },
-      ],
-      createdAt: now(), updatedAt: now(),
-    },
-    {
-      id: id(),
-      name: "GFRC Facecoat",
-      process: "GFRC_FACE",
-      version: "v1.0",
-      densityKgM3: 2150,
-      lines: [
-        { id: id(), materialId: get("Cement"), amount: 1, unit: "ratio" as Unit },
-        { id: id(), materialId: get("Quartz Sand"), amount: 1.2, unit: "ratio" as Unit },
-        { id: id(), materialId: get("Water"), amount: 0.35, unit: "ratio" as Unit },
-        { id: id(), materialId: get("PCE"), amount: 0.01, unit: "ratio" as Unit },
-        { id: id(), materialId: get("Pigment"), amount: 0.02, unit: "ratio" as Unit },
-      ],
-      createdAt: now(), updatedAt: now(),
-    },
-    {
-      id: id(),
-      name: "GFRC Backer",
-      process: "GFRC_BACK",
-      version: "v1.0",
-      densityKgM3: 2200,
-      lines: [
-        { id: id(), materialId: get("Cement"), amount: 1, unit: "ratio" as Unit },
-        { id: id(), materialId: get("Quartz Sand"), amount: 1.5, unit: "ratio" as Unit },
-        { id: id(), materialId: get("Water"), amount: 0.35, unit: "ratio" as Unit },
-        { id: id(), materialId: get("PCE"), amount: 0.01, unit: "ratio" as Unit },
-        { id: id(), materialId: get("AR Glass Fiber"), amount: 0.04, unit: "ratio" as Unit },
-      ],
-      createdAt: now(), updatedAt: now(),
-    },
-  ];
-}
-
-export function addRecipe(state: AppState, recipe: Omit<Recipe, 'id' | 'createdAt' | 'updatedAt'>): AppState {
-  const newRecipe: Recipe = {
-    ...recipe,
-    id: Math.random().toString(36).slice(2, 10),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+  const publicSettings = {
+    ...getEmptyState().settings,
+    ...settingsData,
+    site: settingsData.site || getEmptyState().settings.site,
   };
-  
+
   return {
-    ...state,
-    recipes: [...state.recipes, newRecipe],
+    materials: [],
+    recipes: [],
+    productRecipes: [],
+    products: normalizedProducts,
+    batches: [],
+    proposals: [],
+    labEntries: [],
+    categories: Array.from(categoryMap.values()),
+    pages: [],
+    settings: publicSettings,
+    siteConfig: settingsData.siteConfig || {},
   };
 }
 
-export function seedState(): AppState {
-  const materials = seedMaterials();
-  const recipes = seedRecipes(materials);
+function handleUnauthorized() {
+  publicMode = true;
+  cachedState = getEmptyState();
+  persistState(cachedState);
+  notifyListeners();
+  notifyAuthListeners(false);
+
+  if (typeof api.logout === "function") {
+    try {
+      api.logout();
+    } catch (error) {
+      console.warn("Failed to run logout handler:", error);
+    }
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      window.localStorage.removeItem("auth_token");
+    } catch (error) {
+      console.warn("Failed to clear auth token:", error);
+    }
+  }
+}
+
+export async function refreshStore(force = false) {
+  publicMode = !tokenAvailable();
+  await scheduleRefresh(force);
+  return cachedState;
+}
+
+export function hasAuthToken(): boolean {
+  return tokenAvailable();
+}
+
+export async function verifyAuth(): Promise<boolean> {
+  if (!tokenAvailable()) {
+    return false;
+  }
+
+  try {
+    const result = await api.getState();
+    if (result.error) {
+      if (result.error === "Access token required") {
+        handleUnauthorized();
+      }
+      return false;
+    }
+    notifyAuthListeners(true);
+    return true;
+  } catch (error) {
+    console.error("Failed to verify auth state:", error);
+    return false;
+  }
+}
+
+export function subscribeAuth(listener: (authorized: boolean) => void) {
+  authListeners.add(listener);
+  return () => authListeners.delete(listener);
+}
+
+export function subscribe(listener: (state: AppState) => void) {
+  listeners.add(listener);
+  try {
+    listener(cachedState);
+  } catch (error) {
+    console.error("State listener failed during subscribe:", error);
+  }
+  return () => listeners.delete(listener);
+}
+
+export async function save(state: AppState): Promise<void> {
+  const result = await api.saveState(state);
+  if (result.error) {
+    console.error("Failed to save state:", result.error);
+    throw new Error(result.error);
+  }
+
+  cachedState = state;
+  publicMode = !tokenAvailable();
+  persistState(state);
+  notifyListeners();
+  notifyAuthListeners(!publicMode);
+}
+
+function getEmptyState(): AppState {
   return {
-    materials,
-    recipes,
+    materials: [],
+    recipes: [],
     productRecipes: [],
     products: [],
     batches: [],
-    settings: { units: "metric", defaultSparePct: 7 },
+    proposals: [],
+    labEntries: [],
+    categories: [],
+    pages: [],
+    settings: {
+      units: "metric",
+      defaultSparePct: 7,
+      site: {},
+    },
+    siteConfig: {},
   };
+}
+
+export function migrate(state: AppState): AppState {
+  return state;
+}
+
+export function seedState(): AppState {
+  return getEmptyState();
+}
+
+if (typeof window !== "undefined") {
+  scheduleRefresh();
 }

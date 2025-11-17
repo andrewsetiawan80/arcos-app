@@ -1,8 +1,8 @@
 // src/pages/Products.tsx
 import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { load } from "../store";
 import type { AppState, Product, ProductVariant, Recipe, Material } from "../types";
+import { useAppState } from "../hooks/useAppState";
 
 const mm2ToM2 = (mm2: number) => mm2 / 1_000_000;
 
@@ -43,16 +43,14 @@ function computeBatchWithRatios(
 }
 
 export default function ProductsPage() {
-  // Live state: reload when localStorage changes, and on demand
-  const [state, setState] = useState<AppState>(() => load());
+  const { state, loading, refresh } = useAppState();
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
-      if (e.key === "cw_app_state") setState(load());
+      if (e.key === "cw_app_state") refresh();
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
-  }, []);
-  const reloadState = () => setState(load());
+  }, [refresh]);
 
   // Search and filtering state
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,7 +59,7 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState<"name" | "date" | "category">("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const products = state.products;
+  const products = state.products || [];
   const categories = state.categories || [];
 
   // Filter and sort products
@@ -127,7 +125,10 @@ export default function ProductsPage() {
 
   // Repair selection when catalog changes
   useEffect(() => {
-    if (!filteredProducts.length) { setSelectedId(""); return; }
+    if (!filteredProducts.length) {
+      setSelectedId("");
+      return;
+    }
     if (!selectedId || !filteredProducts.find(p => p.id === selectedId)) {
       setSelectedId(filteredProducts[0].id);
     }
@@ -136,7 +137,7 @@ export default function ProductsPage() {
 
   const matsById = useMemo(() => {
     const m: Record<string, Material> = {};
-    state.materials.forEach((x) => (m[x.id] = x));
+    (state.materials || []).forEach((x: Material) => (m[x.id] = x));
     return m;
   }, [state.materials]);
 
@@ -151,12 +152,21 @@ export default function ProductsPage() {
 
   const [openKey, setOpenKey] = useState<string | null>(null);
 
+  if (loading && !products.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-400">
+        Loading products…
+      </div>
+    );
+  }
+
   function calcFor(
     variant: ProductVariant,
     proc: keyof NonNullable<ProductVariant["recipeByProcess"]>
   ) {
     const recipeId = variant.recipeByProcess?.[proc];
-    const recipe = state.recipes.find((r) => r.id === recipeId) as Recipe | undefined;
+    const recipes = state.recipes || [];
+    const recipe = recipes.find((r) => r.id === recipeId) as Recipe | undefined;
     const density = recipe?.densityKgM3 ?? 2200;
     const perTileKg = +(tileArea_m2 * thickness_m * density).toFixed(3);
     const perM2Kg = +(1 * thickness_m * density).toFixed(3);
@@ -183,7 +193,7 @@ export default function ProductsPage() {
           </div>
           <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
             <button
-              onClick={reloadState}
+              onClick={() => refresh()}
               className="px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-sm font-semibold transition-all duration-300 hover:border-white/30 hover:shadow-lg hover:scale-105 flex items-center gap-2"
               title="Reload saved data"
             >

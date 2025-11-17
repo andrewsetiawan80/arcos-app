@@ -1,0 +1,30 @@
+CLOUDFLARE DNS RECORDS TO CREATE
+================================
+
+Tunnel ID: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9
+Target: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9.cfargotunnel.com
+
+RECORD 1: Root Domain
+---------------------
+Type: CNAME
+Name: @ (or leave blank)
+Target: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9.cfargotunnel.com
+Proxy: ✅ Proxied (orange cloud)
+TTL: Auto
+
+RECORD 2: WWW Subdomain
+------------------------
+Type: CNAME
+Name: www
+Target: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9.cfargotunnel.com
+Proxy: ✅ Proxied (orange cloud)
+TTL: Auto
+
+QUICK LINK: https://dash.cloudflare.com → Select cretewerkz.com → DNS → Records
+
+CLOUDFLARED CLI COMMAND (if authenticated):
+-------------------------------------------
+cloudflared tunnel route dns mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9 cretewerkz.com
+cloudflared tunnel route dns mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9 www.cretewerkz.com
+
+

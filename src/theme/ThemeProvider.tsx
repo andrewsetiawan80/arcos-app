@@ -9,7 +9,7 @@ type Ctx = {
 };
 
 const ThemeContext = createContext<Ctx | null>(null);
-const THEME_KEY = "castura.theme";
+const THEME_KEY = "arqon.theme";
 
 export function ThemeProvider({ children, defaultTheme = "dark" as AppTheme }) {
   const [theme, setTheme] = useState<AppTheme>(() => {

@@ -14,6 +14,10 @@ export default function Recipes() {
   const navigate = useNavigate();
   const [state, setState] = useState<AppState>(() => load());
   const PROC_LIST = getProcesses(state);
+  
+  // Safe array access
+  const recipes = state.recipes || [];
+  const materials = state.materials || [];
 
   // Refresh data when component mounts or becomes visible
   useEffect(() => {
@@ -71,7 +75,7 @@ export default function Recipes() {
   }
 
   function cloneRecipe(id: string) {
-    const src = state.recipes.find(r => r.id === id);
+    const src = recipes.find(r => r.id === id);
     if (!src) return;
     const name = prompt("Clone name:", src.name + " (copy)");
     if (!name) return;
@@ -83,17 +87,17 @@ export default function Recipes() {
       createdAt: now(),
       updatedAt: now(),
     };
-    const next = { ...state, recipes: [r, ...state.recipes] };
+    const next = { ...state, recipes: [r, ...recipes] };
     setState(next);
     save(next);
   }
 
   function deleteRecipe(id: string) {
-    const recipe = state.recipes.find(r => r.id === id);
+    const recipe = recipes.find(r => r.id === id);
     if (!recipe) return;
     const ok = confirm(`Delete recipe "${recipe.name}"? This cannot be undone.`);
     if (!ok) return;
-    const next = { ...state, recipes: state.recipes.filter(r => r.id !== id) };
+    const next = { ...state, recipes: recipes.filter(r => r.id !== id) };
     setState(next);
     save(next);
   }
@@ -137,11 +141,11 @@ export default function Recipes() {
   }
 
   function addDeriveLine() {
-    if (state.materials.length === 0) {
+    if (materials.length === 0) {
       alert("Please create materials first");
       return;
     }
-    const firstMaterial = state.materials[0];
+    const firstMaterial = materials[0];
     const newLine: RecipeLine = {
       id: newid(),
       materialId: firstMaterial.id,
@@ -472,7 +476,7 @@ export default function Recipes() {
               <div className="space-y-4">
                 <p className="text-gray-300 mb-4">Select a base recipe to derive from:</p>
                 <div className="grid gap-3 max-h-60 overflow-y-auto">
-                  {state.recipes.map((recipe) => (
+                  {recipes.map((recipe) => (
                     <button
                       key={recipe.id}
                       onClick={() => startDerivation(recipe)}
@@ -571,7 +575,7 @@ export default function Recipes() {
                   ) : (
                     <div className="space-y-3">
                       {deriveLines.map((line) => {
-                        const material = state.materials.find(m => m.id === line.materialId);
+                        const material = materials.find(m => m.id === line.materialId);
                         return (
                           <div key={line.id} className="p-4 rounded-lg border border-white/10 bg-white/5">
                             <div className="flex items-center justify-between mb-3">

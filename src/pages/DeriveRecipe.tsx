@@ -50,7 +50,10 @@ export default function DeriveRecipe() {
     };
   }, []);
   
-  const base = state.recipes.find(r => r.id === baseId);
+  // Ensure arrays exist
+  const recipes = state.recipes || [];
+  const materials = state.materials || [];
+  const base = recipes.find(r => r.id === baseId);
   
   // Debug logging
   console.log('DeriveRecipe Debug:', {
@@ -59,7 +62,7 @@ export default function DeriveRecipe() {
     variantId,
     processKey,
     base: base ? base.name : 'Not found',
-    recipesCount: state.recipes.length
+    recipesCount: recipes.length
   });
 
   const [name, setName] = useState<string>(() => {
@@ -75,8 +78,9 @@ export default function DeriveRecipe() {
   );
 
   function productVariantTitle(s: AppState, pid: string, vid: string) {
-    const p = s.products.find(x => x.id === pid);
-    const v = p?.variants.find(x => x.id === vid);
+    const products = s.products || [];
+    const p = products.find(x => x.id === pid);
+    const v = p?.variants?.find(x => x.id === vid);
     return p && v ? `${p.title} / ${v.name}` : "";
   }
 
@@ -88,7 +92,7 @@ export default function DeriveRecipe() {
     try {
       const updatedState = {
         ...state,
-        recipes: state.recipes.filter(recipe => recipe.id !== recipeId)
+        recipes: (state.recipes || []).filter(recipe => recipe.id !== recipeId)
       };
       setState(updatedState);
       await save(updatedState);
@@ -100,7 +104,7 @@ export default function DeriveRecipe() {
   }
 
   function addLine() {
-    const firstMat = state.materials[0]?.id || "";
+    const firstMat = materials[0]?.id || "";
     setLines([{ id: newid(), materialId: firstMat, unit: "ratio", amount: 0.01 }, ...lines]);
   }
   function updateLine(lineId: string, patch: Partial<RecipeLine>) {
@@ -112,10 +116,10 @@ export default function DeriveRecipe() {
 
   function quickAddPigment(name: string, amount: number, unit: Unit = "ratio") {
     // find or create material by name
-    let mat = state.materials.find(m => m.name === name);
+    let mat = materials.find(m => m.name === name);
     if (!mat) {
       mat = { id: newid(), name };
-      const nextS = { ...state, materials: [mat, ...state.materials] };
+      const nextS = { ...state, materials: [mat, ...materials] };
       setState(nextS);
     }
     setLines([{ id: newid(), materialId: mat.id, amount, unit }, ...lines]);
@@ -126,10 +130,10 @@ export default function DeriveRecipe() {
     setLines([{ id: newid(), materialId: waterMat.id, amount: deltaRatio, unit: "ratio" }, ...lines]);
   }
   function findOrCreateMaterial(name: string) {
-    let m = state.materials.find(mm => mm.name === name);
+    let m = materials.find(mm => mm.name === name);
     if (!m) {
       m = { id: newid(), name };
-      const nextS = { ...state, materials: [m, ...state.materials] };
+      const nextS = { ...state, materials: [m, ...materials] };
       setState(nextS);
     }
     return m;
@@ -169,18 +173,20 @@ export default function DeriveRecipe() {
     };
 
     if (productId && variantId && processKey) {
-      const pIdx = next.products.findIndex(p => p.id === productId);
+      const products = next.products || [];
+      const pIdx = products.findIndex(p => p.id === productId);
       if (pIdx >= 0) {
-        const prod = { ...next.products[pIdx] };
-        const vIdx = prod.variants.findIndex(v => v.id === variantId);
+        const prod = { ...products[pIdx] };
+        const variants = prod.variants || [];
+        const vIdx = variants.findIndex(v => v.id === variantId);
         if (vIdx >= 0) {
-          const v = { ...prod.variants[vIdx] };
+          const v = { ...variants[vIdx] };
           const map = { ...(v.recipeByProcess || {}) };
           map[processKey] = newProductRecipe.id;
           v.recipeByProcess = map;
-          prod.variants = prod.variants.map((vv, i) => (i === vIdx ? v : vv));
+          prod.variants = variants.map((vv, i) => (i === vIdx ? v : vv));
           prod.updatedAt = now();
-          next.products = next.products.map((pp, i) => (i === pIdx ? prod : pp));
+          next.products = products.map((pp, i) => (i === pIdx ? prod : pp));
         }
       }
     }
@@ -272,7 +278,7 @@ export default function DeriveRecipe() {
             Choose an existing recipe to use as the foundation for your new recipe.
           </p>
           
-          {state.recipes.length === 0 ? (
+          {recipes.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-gray-400 mb-2">No recipes available</div>
               <div className="text-sm text-gray-500">Create some recipes first to use as base recipes.</div>
@@ -280,7 +286,7 @@ export default function DeriveRecipe() {
                 className="mt-4 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
                 onClick={() => {
                   // Reset to seed data
-                  localStorage.removeItem('castura_app_state');
+                  localStorage.removeItem('arqon_app_state');
                   navigate('/app/derive-recipe');
                 }}
               >
@@ -289,7 +295,7 @@ export default function DeriveRecipe() {
             </div>
           ) : (
             <div className="grid gap-3">
-              {state.recipes.map((recipe) => (
+              {recipes.map((recipe) => (
                 <div
                   key={recipe.id}
                   className="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
@@ -419,7 +425,7 @@ export default function DeriveRecipe() {
                     <select className="w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
                       value={line.materialId}
                       onChange={e=>updateLine(line.id, { materialId: e.target.value })}>
-                      {state.materials.map(m=>(
+                      {materials.map(m=>(
                         <option key={m.id} value={m.id}>{m.name}</option>
                       ))}
                     </select>

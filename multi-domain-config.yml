@@ -1,0 +1,34 @@
+# Cloudflare Tunnel Configuration - Multiple Domains Example
+# This shows how to configure multiple domains on one connector
+
+tunnel: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9
+credentials-file: /etc/cloudflared/mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9.json
+
+ingress:
+  # Domain 1: cretewerkz.com
+  - hostname: cretewerkz.com
+    service: http://192.168.2.189:80
+  
+  - hostname: www.cretewerkz.com
+    service: http://192.168.2.189:80
+  
+  # Domain 2: Add another domain here (example)
+  # - hostname: anotherdomain.com
+  #   service: http://192.168.2.189:80
+  # 
+  # - hostname: www.anotherdomain.com
+  #   service: http://192.168.2.189:80
+  
+  # Domain 3: Different server (example)
+  # - hostname: api.example.com
+  #   service: http://192.168.2.190:3001
+  
+  # Catch-all rule (MUST be last)
+  - service: http_status:404
+
+# To add more domains:
+# 1. Add ingress rules above (before catch-all)
+# 2. Create DNS CNAME records in Cloudflare
+# 3. Restart tunnel: sudo systemctl restart cloudflared
+
+

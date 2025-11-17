@@ -15,20 +15,13 @@ export default function PublicCatalog() {
   const products: Product[] = state.products || [];
 
   // ✅ Only show published products that ALSO have a valid slug
-  const visible = useMemo(
-    () => products.filter((p) => !!p.public && !!p.slug),
-    [products]
-  );
-  const tags = useMemo(() => uniqueTags(visible), [visible]);
+  const visible = products.filter((p) => !!p.public && !!p.slug);
+  const tags = uniqueTags(visible);
 
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const filtered = useMemo(
-    () =>
-      activeTag
-        ? visible.filter((p) => (p.tags || []).includes(activeTag))
-        : visible,
-    [visible, activeTag]
-  );
+  const filtered = activeTag
+    ? visible.filter((p) => (p.tags || []).includes(activeTag))
+    : visible;
 
   const catalogTitle =
     state.settings?.site?.catalogTitle || "Architectural Concrete Collection";

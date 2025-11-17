@@ -1,8 +1,8 @@
-# Castura Mobile App - Development Summary
+# Arqon Mobile App - Development Summary
 
 ## 🎉 **Mobile App Successfully Created!**
 
-I've successfully built a complete React Native mobile application for your Castura concrete management system. The mobile app shares the same backend logic and data structures as your web app, providing a consistent experience across platforms.
+I've successfully built a complete React Native mobile application for your Arqon concrete management system. The mobile app shares the same backend logic and data structures as your web app, providing a consistent experience across platforms.
 
 ## 📱 **What's Been Built**
 
@@ -26,7 +26,7 @@ I've successfully built a complete React Native mobile application for your Cast
 ## 🏗️ **Project Structure**
 
 ```
-castura-mobile/
+arqon-mobile/
 ├── src/
 │   ├── components/          # Reusable UI components
 │   ├── navigation/          # Navigation configuration
@@ -44,13 +44,13 @@ castura-mobile/
 
 ### **Option 1: Using the Development Script**
 ```bash
-cd castura-mobile
+cd arqon-mobile
 ./scripts/dev.sh
 ```
 
 ### **Option 2: Manual Commands**
 ```bash
-cd castura-mobile
+cd arqon-mobile
 npm install
 npm start
 ```
@@ -161,7 +161,8 @@ The mobile app is designed to work alongside your web app:
 
 The mobile app is fully functional and ready for use. All core features from your web app have been implemented with mobile-optimized interfaces. The app follows React Native best practices and is ready for production deployment.
 
-**Your Castura mobile app is now ready to use! 🎉**
+**Your Arqon mobile app is now ready to use! 🎉**
+
 
 
 

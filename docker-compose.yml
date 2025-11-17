@@ -1,25 +1,80 @@
+version: '3.8'
+
 services:
-  cretewerkz-app:
-    image: nginx:alpine
-    container_name: cretewerkz-app
-    restart: unless-stopped
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: arqon-postgres
+    environment:
+      POSTGRES_DB: arqon_db
+      POSTGRES_USER: arqon_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-arqon_secure_password_change_me}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "80:80"
-      - "443:443"  # For SSL if you add it later
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U arqon_user -d arqon_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - arqon-network
+
+  # Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: arqon-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://arqon_user:${DB_PASSWORD:-arqon_secure_password_change_me}@postgres:5432/arqon_db?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET:-change-this-jwt-secret-in-production}
+      JWT_EXPIRES_IN: 7d
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:80,http://localhost}
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      # Mount source for development (optional)
+      # - ./backend/src:/app/src
+      - ./backend/logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - arqon-network
+    command: >
+      sh -c "
+        echo 'Waiting for database to be ready...' &&
+        sleep 5 &&
+        npx tsx src/db/migrate.ts &&
+        npx tsx src/db/seed.ts || echo 'Seed skipped (may already exist)' &&
+        node dist/index.js
+      "
+
+  # Frontend Web App (Nginx)
+  frontend:
+    image: nginx:alpine
+    container_name: arqon-frontend
     volumes:
       - ./dist:/usr/share/nginx/html:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
     networks:
-      - cretewerkz-network
+      - arqon-network
+
+volumes:
+  postgres_data:
+    driver: local
 
 networks:
-  cretewerkz-network:
+  arqon-network:
     driver: bridge
-
-

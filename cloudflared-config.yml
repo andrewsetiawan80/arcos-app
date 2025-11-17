@@ -1,0 +1,19 @@
+# Cloudflare Zero Trust Tunnel Configuration
+# This file should be placed on the cloudflared connector machine (192.168.2.145)
+# Location: /etc/cloudflared/config.yml or ~/.cloudflared/config.yml
+
+tunnel: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9
+credentials-file: /etc/cloudflared/mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9.json
+
+# Route cretewerkz.com to internal server
+ingress:
+  # Route cretewerkz.com and www.cretewerkz.com to the app server
+  - hostname: cretewerkz.com
+    service: http://192.168.2.189:80
+  
+  - hostname: www.cretewerkz.com
+    service: http://192.168.2.189:80
+  
+  # Catch-all rule (must be last)
+  - service: http_status:404
+

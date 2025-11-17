@@ -1,8 +1,7 @@
 // src/pages/AppDashboard.tsx
-import React, { useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { load } from "../store";
-import type { AppState, Product, Recipe, Material } from "../types";
+import type { Product, Recipe, Material } from "../types";
 import { 
   Package, 
   Beaker, 
@@ -10,17 +9,163 @@ import {
   Calculator, 
   TrendingUp, 
   Users, 
-  Settings, 
-  Plus,
-  ArrowRight,
-  BarChart3,
-  CheckCircle,
-  Clock,
-  Target
+  Settings
 } from "lucide-react";
+import { useAppState } from "../hooks/useAppState";
+
+/* ---------- UI Components ---------- */
+
+function Action({ to, label, icon, primary = false }: { to: string; label: string; icon?: React.ReactNode; primary?: boolean }) {
+  return (
+    <Link
+      to={to}
+      className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all hover-lift ${
+        primary
+          ? "bg-white text-black hover:bg-gray-100 shadow-lg shadow-white/10"
+          : "bg-[#2A2A2A] border border-white/10 text-white hover:bg-[#333333] hover:border-white/20"
+      }`}
+    >
+      <span className="group-hover:scale-110 transition-transform duration-300">{icon}</span>
+      {label}
+      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
+    </Link>
+  );
+}
+
+function Stat({ label, value, icon }: { label: string; value: number | string; icon?: React.ReactNode }) {
+  return (
+    <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:bg-[#333333] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
+      {/* Subtle gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      <div className="relative flex items-center justify-between mb-3">
+        <div className="text-xs uppercase tracking-[0.2em] text-gray-400 font-bold group-hover:text-gray-300 transition-colors">{label}</div>
+        {icon && <div className="text-gray-400 group-hover:scale-110 transition-transform duration-300">{icon}</div>}
+      </div>
+      <div className="relative text-3xl font-black text-white group-hover:scale-105 transition-transform duration-300">{value}</div>
+    </div>
+  );
+}
+
+function Card({
+  title,
+  action,
+  emptyText,
+  children,
+}: {
+  title: string;
+  action?: React.ReactNode;
+  emptyText?: string;
+  children: React.ReactNode;
+}) {
+  const isEmpty = React.Children.count(children) === 0 || (Array.isArray(children) && children.length === 0);
+  return (
+    <div className="border border-white/10 bg-[#2A2A2A] p-6 hover:border-white/20 transition-all hover-lift">
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+        <h3 className="text-lg font-black uppercase text-white">{title}</h3>
+        {action}
+      </div>
+      {isEmpty ? (
+        <div className="text-sm text-gray-400 italic py-8 text-center">{emptyText || "Nothing here yet."}</div>
+      ) : (
+        children
+      )}
+    </div>
+  );
+}
+
+function List({ children }: { children: React.ReactNode }) {
+  return <ul className="space-y-2">{children}</ul>;
+}
+
+function ListItem({
+  title,
+  to,
+  meta = [],
+}: {
+  title: string;
+  to: string;
+  meta?: string[];
+}) {
+  return (
+    <li>
+      <Link
+        to={to}
+        className="group flex items-center justify-between gap-3 p-3 bg-[#1A1A1A] border border-white/10 hover:bg-[#2A2A2A] hover:border-white/20 transition-all hover-lift"
+      >
+        <div className="truncate font-bold text-sm text-white group-hover:text-gray-100 transition-colors">{title}</div>
+        {meta.length > 0 && (
+          <div className="shrink-0 flex items-center gap-2">
+            {meta.filter(Boolean).map((m, i) => (
+              <span key={i} className="whitespace-nowrap px-2 py-1 text-xs uppercase tracking-wider font-bold text-gray-400 border border-white/10 bg-[#2A2A2A] group-hover:bg-[#333333] group-hover:border-white/20 transition-all">
+                {m}
+              </span>
+            ))}
+          </div>
+        )}
+        <svg className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
+    </li>
+  );
+}
+
+function WorkflowCard({
+  title,
+  description,
+  steps,
+  action,
+}: {
+  title: string;
+  description: string;
+  steps: string[];
+  action: { to: string; label: string };
+}) {
+  return (
+    <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:bg-[#333333] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
+      {/* Subtle gradient accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      <h4 className="font-black uppercase mb-3 text-lg text-white relative">{title}</h4>
+      <p className="text-sm text-gray-300 mb-6 leading-relaxed relative">{description}</p>
+      <div className="space-y-3 mb-6 relative">
+        {steps.map((step, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <span className="w-7 h-7 rounded-full border-2 border-white/20 flex items-center justify-center text-xs font-black text-white bg-gradient-to-br from-white/10 to-white/5 group-hover:from-white/20 group-hover:to-white/10 group-hover:border-white/30 transition-all">
+              {i + 1}
+            </span>
+            <span className="font-bold text-sm text-gray-300 group-hover:text-gray-200 transition-colors">{step}</span>
+          </div>
+        ))}
+      </div>
+      <Link
+        to={action.to}
+        className="relative inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A1A] border border-white/10 text-sm font-bold uppercase tracking-wider text-white hover:bg-[#2A2A2A] hover:border-white/20 transition-all hover-lift"
+      >
+        {action.label}
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
+    </div>
+  );
+}
+
+function currencyIDR(n: number) {
+  try {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(n);
+  } catch {
+    return `IDR ${Math.round(n).toLocaleString("id-ID")}`;
+  }
+}
+
+/* ---------- Main Component ---------- */
 
 export default function AppDashboard() {
-  const state = load() as AppState;
+  const { state, loading } = useAppState();
 
   // Safe fallbacks
   const products = (state.products || []) as Product[];
@@ -32,33 +177,45 @@ export default function AppDashboard() {
   const proposals = state.proposals || [];
 
   // Quick stats
-  const stats = useMemo(
-    () => [
-      { label: "Public Products", value: products.filter(p => p.public).length, icon: <Package className="w-5 h-5 text-blue-400" /> },
-      { label: "Recipes", value: recipes.length, icon: <Beaker className="w-5 h-5 text-green-400" /> },
-      { label: "Materials", value: materials.length, icon: <Settings className="w-5 h-5 text-gray-400" /> },
-      { label: "Open Proposals", value: (proposals || []).filter((p) => p.status !== "won" && p.status !== "lost").length, icon: <Users className="w-5 h-5 text-purple-400" /> },
-    ],
-    [products, recipes, materials, proposals]
-  );
+  const stats = [
+    { label: "Public Products", value: products.filter((p) => p.public).length, icon: <Package className="w-5 h-5 text-blue-400" /> },
+    { label: "Recipes", value: recipes.length, icon: <Beaker className="w-5 h-5 text-green-400" /> },
+    { label: "Materials", value: materials.length, icon: <Settings className="w-5 h-5 text-gray-400" /> },
+    { label: "Open Proposals", value: (proposals || []).filter((p) => p.status !== "won" && p.status !== "lost").length, icon: <Users className="w-5 h-5 text-purple-400" /> },
+  ];
 
   // Derived lists
-  const recentLab = useMemo(
-    () =>
-      [...labEntries].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, 5),
-    [labEntries]
-  );
+  const recentLab = [...labEntries]
+    .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
+    .slice(0, 5);
 
-  const recentRecipes = useMemo(
-    () =>
-      [...recipes].sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || "")).slice(0, 5),
-    [recipes]
-  );
+  const recentRecipes = [...recipes]
+    .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+    .slice(0, 5);
 
-  const lowStock = useMemo(() => {
-    // Only show if you later add inventory fields to materials
-    return materials.filter(m => typeof (m as any).stockKg === "number" && typeof (m as any).reorderPointKg === "number" && (m as any).stockKg <= (m as any).reorderPointKg).slice(0, 5);
-  }, [materials]);
+  const lowStock = materials
+    .filter(
+      (m) =>
+        typeof (m as any).stockKg === "number" &&
+        typeof (m as any).reorderPointKg === "number" &&
+        (m as any).stockKg <= (m as any).reorderPointKg,
+    )
+    .slice(0, 5);
+
+  const showLoading =
+    loading &&
+    products.length === 0 &&
+    recipes.length === 0 &&
+    labEntries.length === 0 &&
+    proposals.length === 0;
+
+  if (showLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-400">
+        Loading dashboard…
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -66,7 +223,7 @@ export default function AppDashboard() {
       <header className="border-b border-white/10 pb-8">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Castura Dashboard</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Arqon Dashboard</p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-tight">
               Welcome Back
             </h1>
@@ -117,7 +274,7 @@ export default function AppDashboard() {
       {/* Stats */}
       <section className="border-b border-white/10 pb-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s, index) => (
+          {stats.map((s) => (
             <div key={s.label}>
               <Stat label={s.label} value={s.value} icon={s.icon} />
             </div>
@@ -269,153 +426,4 @@ export default function AppDashboard() {
       </section>
     </div>
   );
-}
-
-/* ---------- UI bits ---------- */
-
-function Action({ to, label, icon, primary = false }: { to: string; label: string; icon?: React.ReactNode; primary?: boolean }) {
-  return (
-    <Link
-      to={to}
-      className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all hover-lift ${
-        primary
-          ? "bg-white text-black hover:bg-gray-100 shadow-lg shadow-white/10"
-          : "bg-[#2A2A2A] border border-white/10 text-white hover:bg-[#333333] hover:border-white/20"
-      }`}
-    >
-      <span className="group-hover:scale-110 transition-transform duration-300">{icon}</span>
-      {label}
-      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-    </Link>
-  );
-}
-
-function Stat({ label, value, icon }: { label: string; value: number | string; icon?: React.ReactNode }) {
-  return (
-    <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:bg-[#333333] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
-      {/* Subtle gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <div className="relative flex items-center justify-between mb-3">
-        <div className="text-xs uppercase tracking-[0.2em] text-gray-400 font-bold group-hover:text-gray-300 transition-colors">{label}</div>
-        {icon && <div className="text-gray-400 group-hover:scale-110 transition-transform duration-300">{icon}</div>}
-      </div>
-      <div className="relative text-3xl font-black text-white group-hover:scale-105 transition-transform duration-300">{value}</div>
-    </div>
-  );
-}
-
-function Card({
-  title,
-  action,
-  emptyText,
-  children,
-}: {
-  title: string;
-  action?: React.ReactNode;
-  emptyText?: string;
-  children: React.ReactNode;
-}) {
-  const isEmpty = React.Children.count(children) === 0 || (Array.isArray(children) && children.length === 0);
-  return (
-    <div className="border border-white/10 bg-[#2A2A2A] p-6 hover:border-white/20 transition-all hover-lift">
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-        <h3 className="text-lg font-black uppercase text-white">{title}</h3>
-        {action}
-      </div>
-      {isEmpty ? (
-        <div className="text-sm text-gray-400 italic py-8 text-center">{emptyText || "Nothing here yet."}</div>
-      ) : (
-        children
-      )}
-    </div>
-  );
-}
-
-function List({ children }: { children: React.ReactNode }) {
-  return <ul className="space-y-2">{children}</ul>;
-}
-
-function ListItem({
-  title,
-  to,
-  meta = [],
-}: {
-  title: string;
-  to: string;
-  meta?: string[];
-}) {
-  return (
-    <li>
-      <Link
-        to={to}
-        className="group flex items-center justify-between gap-3 p-3 bg-[#1A1A1A] border border-white/10 hover:bg-[#2A2A2A] hover:border-white/20 transition-all hover-lift"
-      >
-        <div className="truncate font-bold text-sm text-white group-hover:text-gray-100 transition-colors">{title}</div>
-        {meta.length > 0 && (
-          <div className="shrink-0 flex items-center gap-2">
-            {meta.filter(Boolean).map((m, i) => (
-              <span key={i} className="whitespace-nowrap px-2 py-1 text-xs uppercase tracking-wider font-bold text-gray-400 border border-white/10 bg-[#2A2A2A] group-hover:bg-[#333333] group-hover:border-white/20 transition-all">
-                {m}
-              </span>
-            ))}
-          </div>
-        )}
-        <svg className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </Link>
-    </li>
-  );
-}
-
-function WorkflowCard({
-  title,
-  description,
-  steps,
-  action,
-}: {
-  title: string;
-  description: string;
-  steps: string[];
-  action: { to: string; label: string };
-}) {
-  return (
-    <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:bg-[#333333] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
-      {/* Subtle gradient accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <h4 className="font-black uppercase mb-3 text-lg text-white relative">{title}</h4>
-      <p className="text-sm text-gray-300 mb-6 leading-relaxed relative">{description}</p>
-      <div className="space-y-3 mb-6 relative">
-        {steps.map((step, i) => (
-          <div key={i} className="flex items-center gap-3">
-            <span className="w-7 h-7 rounded-full border-2 border-white/20 flex items-center justify-center text-xs font-black text-white bg-gradient-to-br from-white/10 to-white/5 group-hover:from-white/20 group-hover:to-white/10 group-hover:border-white/30 transition-all">
-              {i + 1}
-            </span>
-            <span className="font-bold text-sm text-gray-300 group-hover:text-gray-200 transition-colors">{step}</span>
-          </div>
-        ))}
-      </div>
-      <Link
-        to={action.to}
-        className="relative inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A1A] border border-white/10 text-sm font-bold uppercase tracking-wider text-white hover:bg-[#2A2A2A] hover:border-white/20 transition-all hover-lift"
-      >
-        {action.label}
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </Link>
-    </div>
-  );
-}
-
-function currencyIDR(n: number) {
-  try {
-    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(n);
-  } catch {
-    return `IDR ${Math.round(n).toLocaleString("id-ID")}`;
-  }
 }

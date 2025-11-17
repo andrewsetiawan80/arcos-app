@@ -1,0 +1,15 @@
+# Cloudflare Zero Trust Tunnel Configuration
+# Connector IP: 192.162.2.145
+# App Server: 192.168.2.189:80
+
+tunnel: mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9
+credentials-file: /etc/cloudflared/mFf0pCSQhC98LL3CevNFRD2HWqqPelKrkIKX2tE9.json
+
+ingress:
+  - hostname: cretewerkz.com
+    service: http://192.168.2.189:80
+  
+  - hostname: www.cretewerkz.com
+    service: http://192.168.2.189:80
+  
+  - service: http_status:404

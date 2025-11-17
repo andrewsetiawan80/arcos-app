@@ -82,8 +82,8 @@ export default function Ideas(){
   });
   const [loading, setLoading] = useState(false);
 
-  const curated = useMemo(()=> state.ideas.filter(i=>i.source==="curated"), [state.ideas]);
-  const feed    = useMemo(()=> state.ideas.filter(i=>i.source==="ai").sort((a,b)=> (b.createdAt.localeCompare(a.createdAt))), [state.ideas]);
+  const curated = state.ideas.filter(i=>i.source==="curated");
+  const feed    = state.ideas.filter(i=>i.source==="ai").sort((a,b)=> (b.createdAt.localeCompare(a.createdAt)));
 
   function saveIdeas(next: Idea[]){
     const nextState = { ...state, ideas: next };

@@ -197,7 +197,7 @@ export default function CatalogSettings() {
                   className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
                   value={site.heroTitle || ""}
                   onChange={(e) => updateSite({ heroTitle: e.target.value })}
-                  placeholder="e.g., Castura"
+                  placeholder="e.g., Arqon"
                 />
               </div>
               <div className="space-y-2">
@@ -228,7 +228,7 @@ export default function CatalogSettings() {
                   className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
                   value={site.contactEmail || ""}
                   onChange={(e) => updateSite({ contactEmail: e.target.value })}
-                  placeholder="hello@castura.com"
+                  placeholder="hello@arqon.com"
                 />
               </div>
             </div>

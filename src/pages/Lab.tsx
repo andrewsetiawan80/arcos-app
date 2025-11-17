@@ -16,7 +16,7 @@ export default function Lab() {
 
   const navigate = useNavigate();
 
-  const entries = useMemo(() => (state.labEntries || []).slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || "")), [state.labEntries]);
+  const entries = (state.labEntries || []).slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
 
   function createEntry() {
     const now = new Date().toISOString();

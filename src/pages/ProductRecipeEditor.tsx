@@ -17,9 +17,11 @@ export default function ProductRecipeEditor() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const productRecipe = state.productRecipes?.find(r => r.id === id);
-  const product = productRecipe ? state.products.find(p => p.id === productRecipe.productId) : undefined;
-  const variant = productRecipe && product ? product.variants.find(v => v.id === productRecipe.variantId) : undefined;
-  const baseRecipe = productRecipe ? state.recipes.find(r => r.id === productRecipe.baseRecipeId) : undefined;
+  const products = state.products || [];
+  const recipes = state.recipes || [];
+  const product = productRecipe ? products.find(p => p.id === productRecipe.productId) : undefined;
+  const variant = productRecipe && product ? product.variants?.find(v => v.id === productRecipe.variantId) : undefined;
+  const baseRecipe = productRecipe ? recipes.find(r => r.id === productRecipe.baseRecipeId) : undefined;
 
   const materials = state.materials || [];
   const PROC_LIST = getProcesses(state);

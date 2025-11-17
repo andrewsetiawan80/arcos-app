@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Arqon",
+    "slug": "arqon-mobile",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/argon-logo-transparent.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A1A1A"
+    },
+    "description": "Advanced Concrete Solutions - Mobile App",
+    "primaryColor": "#6b7280",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.arqon.mobile",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1A1A1A"
+      },
+      "edgeToEdgeEnabled": false,
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["INTERNET"]
+    },
+    "web": {
+      "favicon": "./assets/argon-logo-transparent.png"
+    },
+    "plugins": [
+      "expo-font",
+      "./app.plugin.js"
+    ],
+    "extra": {
+      "enableLogging": true,
+      "logLevel": "debug",
+      "apiUrl": "https://cretewerkz.com/api",
+      "eas": {
+        "projectId": "b0943146-3b9a-44f0-b9a3-76d1921b4a00"
+      }
+    },
+    "owner": "andrewsetiawan"
+  }
+}

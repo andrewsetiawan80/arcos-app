@@ -48,7 +48,7 @@ export default function CmsPages() {
     persist(next);
   }
 
-  const pages = useMemo(() => (state.pages || []).slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || "")), [state.pages]);
+  const pages = (state.pages || []).slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
 
   return (
     <div className="space-y-8 animate-in fade-in-0 duration-700">

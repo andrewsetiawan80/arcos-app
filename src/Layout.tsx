@@ -8,7 +8,7 @@ import CommandPalette from "./components/CommandPalette";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import MobileMenu from "./components/MobileMenu";
 import MegaMenuSheet from "./components/MegaMenuSheet";
-import CasturaLogo from "./components/CasturaLogo";
+import ArqonLogo from "./components/ArqonLogo";
 
 type AreaKey = "dashboard" | "products" | "recipes" | "planning" | "sales" | "lab" | "settings";
 
@@ -204,21 +204,10 @@ export default function Layout() {
     <div className="min-h-screen flex flex-col bg-[#1A1A1A] text-white">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-[#1A1A1A]/95 backdrop-blur border-b border-white/10">
-        <header className="relative h-20 max-w-7xl mx-auto px-6 flex items-center gap-6">
-          {/* Mobile toggle */}
-          <button
-            className="sm:hidden h-9 w-9 rounded-md hover:bg-white/10"
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
-          >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 6h18M3 12h18M3 18h18" />
-            </svg>
-          </button>
-
-          {/* Brand → internal home (Castura logo) */}
-          <NavLink to="/app" className="flex items-center hover:opacity-90 transition-opacity duration-300">
-            <CasturaLogo size="medium" className="scale-[1.2]" />
+        <header className="relative h-20 max-w-7xl mx-auto px-6 flex items-center justify-between gap-6">
+          {/* Brand → internal home (Arqon logo) */}
+          <NavLink to="/app/dashboard" className="flex items-center hover:opacity-90 transition-opacity duration-300">
+            <ArqonLogo size="medium" className="scale-[1.2]" />
           </NavLink>
 
           {/* Tabs */}
@@ -284,9 +273,19 @@ export default function Layout() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            {/* Mobile toggle - on right side like public site */}
+            <button
+              className="sm:hidden h-9 w-9 rounded-md hover:bg-white/10 flex items-center justify-center"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+            >
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 6h18M3 12h18M3 18h18" />
+              </svg>
+            </button>
             <NavLink
               to="/"
-              className="text-xs uppercase tracking-wider font-bold px-4 py-2 bg-[#2A2A2A] border border-white/10 hover:bg-[#333333] transition-colors text-gray-300 hover:text-white"
+              className="hidden sm:block text-xs uppercase tracking-wider font-bold px-4 py-2 bg-[#2A2A2A] border border-white/10 hover:bg-[#333333] transition-colors text-gray-300 hover:text-white"
             >
               Public Site
             </NavLink>
@@ -319,7 +318,7 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <CasturaLogo size="small" />
+              <ArqonLogo size="small" />
               <span className="text-xs uppercase tracking-wider">Concrete Management System</span>
               <span className="text-xs">© 2024</span>
             </div>

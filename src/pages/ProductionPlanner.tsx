@@ -66,15 +66,19 @@ export default function ProductionPlanner() {
 
   const PROCESSES = getProcesses(state);
 
+  const materials = state.materials || [];
+  const products = state.products || [];
+  const recipes = state.recipes || [];
+  
   const matsById = useMemo(() => {
     const m: Record<string, Material> = {};
-    state.materials.forEach((x) => (m[x.id] = x));
+    materials.forEach((x) => (m[x.id] = x));
     return m;
-  }, [state.materials]);
+  }, [materials]);
 
   // ------- Product & Variant -------
-  const [productId, setProductId] = useState<string>(state.products[0]?.id ?? "");
-  const product: Product | undefined = state.products.find((p) => p.id === productId);
+  const [productId, setProductId] = useState<string>(products[0]?.id ?? "");
+  const product: Product | undefined = products.find((p) => p.id === productId);
   const variants: ProductVariant[] = product?.variants ?? [];
 
   const [variantId, setVariantId] = useState<string>(variants[0]?.id ?? "");
@@ -82,12 +86,12 @@ export default function ProductionPlanner() {
 
   // Initialize/repair selection when products change
   useEffect(() => {
-    if (!state.products.length) { setProductId(""); return; }
-    if (!productId || !state.products.find(p => p.id === productId)) {
-      setProductId(state.products[0].id);
+    if (!products.length) { setProductId(""); return; }
+    if (!productId || !products.find(p => p.id === productId)) {
+      setProductId(products[0].id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.products.length]);
+  }, [products.length]);
 
   // Initialize/repair variant when product changes
   useEffect(() => {
@@ -128,8 +132,8 @@ export default function ProductionPlanner() {
 
   // ------- Recipes for selected process (with cascade default) -------
   const recipeCandidates = useMemo(
-    () => state.recipes.filter((r) => r.process === procKey),
-    [state.recipes, procKey]
+    () => recipes.filter((r) => r.process === procKey),
+    [recipes, procKey]
   );
 
   const assignedRecipeId =
@@ -138,7 +142,7 @@ export default function ProductionPlanner() {
     "";
 
   const [recipeId, setRecipeId] = useState<string>(assignedRecipeId || recipeCandidates[0]?.id || "");
-  const recipe: Recipe | undefined = state.recipes.find((r) => r.id === recipeId);
+  const recipe: Recipe | undefined = recipes.find((r) => r.id === recipeId);
 
   useEffect(() => {
     const assigned =
@@ -247,7 +251,7 @@ export default function ProductionPlanner() {
   function handlePrint() { window.print(); }
 
   // ---- Empty state if no products yet ----
-  if (!state.products.length) {
+  if (!products.length) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between print:hidden">
@@ -317,7 +321,7 @@ export default function ProductionPlanner() {
           <div className="text-xs font-medium tracking-widest uppercase text-gray-400">Product Selection</div>
           <div className="text-sm text-gray-300">Choose a product:</div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {state.products.map(p => (
+            {products.map(p => (
               <button
                 key={p.id}
                 className={`p-4 rounded-xl border transition-all duration-300 text-left hover:scale-[1.02] ${
