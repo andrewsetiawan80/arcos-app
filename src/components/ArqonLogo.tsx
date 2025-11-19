@@ -8,9 +8,9 @@ interface ArqonLogoProps {
 
 export default function ArqonLogo({ size = 'medium', className = '' }: ArqonLogoProps) {
   const sizeStyles = {
-    small: { width: 80, height: 27 },
-    medium: { width: 120, height: 40 },
-    large: { width: 160, height: 53 }
+    small: { width: 100, height: 34 },
+    medium: { width: 150, height: 50 },
+    large: { width: 200, height: 66 }
   };
 
   const currentSize = sizeStyles[size];
