@@ -29,16 +29,16 @@ This guide covers deploying the Cretewerkz app on Proxmox using Docker.
 **Option A: Using Git (if you have a repository)**
 ```bash
 ssh root@your-proxmox-ip
-git clone <your-repo-url> /opt/cretewerkz-app
-cd /opt/cretewerkz-app
+git clone <your-repo-url> /opt/arcos-app
+cd /opt/arcos-app
 ```
 
 **Option B: Using SCP**
 ```bash
 # From your local machine
-scp -r /Users/andrewsetiawan/cretewerkz-app root@your-proxmox-ip:/opt/cretewerkz-app
+scp -r /Users/andrewsetiawan/arcos-app root@your-proxmox-ip:/opt/arcos-app
 ssh root@your-proxmox-ip
-cd /opt/cretewerkz-app
+cd /opt/arcos-app
 ```
 
 **Option C: Manual Upload**
@@ -48,7 +48,7 @@ cd /opt/cretewerkz-app
 ### Step 3: Build and Run with Docker Compose
 
 ```bash
-cd /opt/cretewerkz-app
+cd /opt/arcos-app
 
 # Build and start the container
 docker compose up -d --build
@@ -96,7 +96,7 @@ npm install -g pm2
 ### Step 2: Build the Application
 
 ```bash
-cd /opt/cretewerkz-app
+cd /opt/arcos-app
 npm install
 npm run build
 ```
@@ -105,10 +105,10 @@ npm run build
 
 ```bash
 # Copy nginx config
-cp nginx.conf /etc/nginx/sites-available/cretewerkz-app
-ln -s /etc/nginx/sites-available/cretewerkz-app /etc/nginx/sites-enabled/
+cp nginx.conf /etc/nginx/sites-available/arcos-app
+ln -s /etc/nginx/sites-available/arcos-app /etc/nginx/sites-enabled/
 
-# Update nginx.conf to point to /opt/cretewerkz-app/dist
+# Update nginx.conf to point to /opt/arcos-app/dist
 # Edit the root path in the nginx config
 
 # Test and reload nginx
@@ -120,7 +120,7 @@ systemctl reload nginx
 
 ```bash
 # Create systemd service
-cat > /etc/systemd/system/cretewerkz-app.service << EOF
+cat > /etc/systemd/system/arcos-app.service << EOF
 [Unit]
 Description=Cretewerkz App
 After=network.target
@@ -128,7 +128,7 @@ After=network.target
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/cretewerkz-app
+WorkingDirectory=/opt/arcos-app
 ExecStart=/usr/bin/npm run preview -- --host 0.0.0.0 --port 5173
 Restart=always
 
@@ -137,8 +137,8 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-systemctl enable cretewerkz-app
-systemctl start cretewerkz-app
+systemctl enable arcos-app
+systemctl start arcos-app
 ```
 
 ## Option 3: Deploy with SSL/HTTPS (Recommended for Production)
@@ -202,7 +202,7 @@ docker system prune -a
 
 ```bash
 # Backup the entire application directory
-tar -czf cretewerkz-backup-$(date +%Y%m%d).tar.gz /opt/cretewerkz-app
+tar -czf cretewerkz-backup-$(date +%Y%m%d).tar.gz /opt/arcos-app
 
 # Backup Docker volumes (if using volumes)
 docker run --rm -v cretewerkz-data:/data -v $(pwd):/backup alpine tar czf /backup/data-backup.tar.gz -C /data .
@@ -212,7 +212,7 @@ docker run --rm -v cretewerkz-data:/data -v $(pwd):/backup alpine tar czf /backu
 
 ### Container won't start
 ```bash
-docker compose logs cretewerkz-app
+docker compose logs arcos-app
 docker compose ps
 ```
 

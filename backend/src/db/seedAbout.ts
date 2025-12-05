@@ -16,7 +16,7 @@ const MILESTONES = [
   },
   {
     year: "2025",
-    headline: "Arqon Launch",
+    headline: "Arcos Launch",
     detail: "Full-service partner for architectural concrete surfaces—interiors, exteriors, and structural components.",
     displayOrder: 3,
   },

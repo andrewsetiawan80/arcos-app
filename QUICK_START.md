@@ -34,14 +34,14 @@ echo "VITE_API_URL=http://localhost:3001/api" > .env
 
 **Mobile app:**
 ```bash
-# Create .env file in arqon-mobile
-cd arqon-mobile
+# Create .env file in arcos-mobile
+cd arcos-mobile
 echo "EXPO_PUBLIC_API_URL=http://localhost:3001/api" > .env
 ```
 
 ## 4. Login
 
-- Email: `admin@arqon.com`
+- Email: `admin@arcos.com`
 - Password: `admin123`
 
 ## Done! 🎉

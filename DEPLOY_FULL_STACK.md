@@ -1,6 +1,6 @@
 # Full Stack Deployment Guide
 
-Complete guide for deploying the Arqon app (Frontend + Backend + Database) on Proxmox LXC using Docker.
+Complete guide for deploying the Arcos app (Frontend + Backend + Database) on Proxmox LXC using Docker.
 
 ## Quick Start
 
@@ -56,7 +56,7 @@ Internet
 
 ## Default Credentials
 
-- **Email**: admin@arqon.com
+- **Email**: admin@arcos.com
 - **Password**: admin123
 
 ⚠️ **Change these in production!**
@@ -71,14 +71,14 @@ Database data is stored in Docker volume `postgres_data` which persists across r
 
 ```bash
 # On server
-docker compose exec postgres pg_dump -U arqon_user arqon_db > backup.sql
+docker compose exec postgres pg_dump -U arcos_user arcos_db > backup.sql
 ```
 
 ### Restore Database
 
 ```bash
 # On server
-docker compose exec -T postgres psql -U arqon_user arqon_db < backup.sql
+docker compose exec -T postgres psql -U arcos_user arcos_db < backup.sql
 ```
 
 ## Maintenance

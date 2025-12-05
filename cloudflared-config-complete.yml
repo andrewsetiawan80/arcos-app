@@ -3,7 +3,7 @@ tunnel: 65b25c90-4cdd-41b9-815b-f1e4a91b59cf
 credentials-file: /root/.cloudflared/65b25c90-4cdd-41b9-815b-f1e4a91b59cf.json
 
 ingress:
-  # Cretewerkz.com - Arqon app
+  # Cretewerkz.com - Arcos app
   - hostname: cretewerkz.com
     service: http://192.168.2.189:80
   

@@ -1,6 +1,6 @@
 # Docker Deployment Guide - Full Stack
 
-This guide explains how to deploy the complete Arqon app (Frontend + Backend + Database) on your Proxmox LXC container using Docker.
+This guide explains how to deploy the complete Arcos app (Frontend + Backend + Database) on your Proxmox LXC container using Docker.
 
 ## Architecture
 
@@ -41,7 +41,7 @@ This script will:
 
 - **Frontend**: http://your-server-ip
 - **Backend API**: http://your-server-ip:3001
-- **Admin Login**: admin@arqon.com / admin123
+- **Admin Login**: admin@arcos.com / admin123
 
 ## Manual Deployment
 
@@ -93,7 +93,7 @@ git pull
 
 ```bash
 # Connect to PostgreSQL container
-docker compose exec postgres psql -U arqon_user -d arqon_db
+docker compose exec postgres psql -U arcos_user -d arcos_db
 
 # Run migrations manually
 docker compose exec backend npm run db:migrate
@@ -106,10 +106,10 @@ docker compose exec backend npm run db:seed
 
 ```bash
 # Create backup
-docker compose exec postgres pg_dump -U arqon_user arqon_db > backup.sql
+docker compose exec postgres pg_dump -U arcos_user arcos_db > backup.sql
 
 # Restore backup
-docker compose exec -T postgres psql -U arqon_user arqon_db < backup.sql
+docker compose exec -T postgres psql -U arcos_user arcos_db < backup.sql
 ```
 
 ## Environment Variables
@@ -133,12 +133,12 @@ Database data is stored in a Docker volume `postgres_data` which persists across
 
 To backup:
 ```bash
-docker run --rm -v arqon_postgres_data:/data -v $(pwd):/backup alpine tar czf /backup/postgres-backup.tar.gz /data
+docker run --rm -v arcos_postgres_data:/data -v $(pwd):/backup alpine tar czf /backup/postgres-backup.tar.gz /data
 ```
 
 To restore:
 ```bash
-docker run --rm -v arqon_postgres_data:/data -v $(pwd):/backup alpine tar xzf /backup/postgres-backup.tar.gz -C /
+docker run --rm -v arcos_postgres_data:/data -v $(pwd):/backup alpine tar xzf /backup/postgres-backup.tar.gz -C /
 ```
 
 ## Troubleshooting
@@ -161,7 +161,7 @@ docker compose ps postgres
 docker compose logs postgres
 
 # Test connection
-docker compose exec postgres psql -U arqon_user -d arqon_db -c "SELECT 1;"
+docker compose exec postgres psql -U arcos_user -d arcos_db -c "SELECT 1;"
 ```
 
 ### Backend errors

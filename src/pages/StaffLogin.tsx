@@ -8,7 +8,7 @@ export default function StaffLogin() {
   const location = useLocation() as any;
   const redirectTo = location.state?.from?.pathname || "/app/dashboard";
 
-  const [email, setEmail] = useState("admin@arqon.com");
+  const [email, setEmail] = useState("admin@arcos.com");
   const [password, setPassword] = useState("admin123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,9 +38,9 @@ export default function StaffLogin() {
         <div className="text-center space-y-3">
           <h1 className="text-3xl font-bold tracking-tight">Staff Login</h1>
           <p className="text-sm text-gray-400">
-            Access the Arqon operations console. Need help? Contact
+            Access the Arcos operations console. Need help? Contact
             {' '}
-            <a href="mailto:hello@arqon.com" className="text-white underline">hello@arqon.com</a>.
+            <a href="mailto:hello@arcos.com" className="text-white underline">hello@arcos.com</a>.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export default function StaffLogin() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 className="mt-2 w-full rounded-lg border border-white/10 bg-[#101010] px-4 py-3 text-sm focus:border-white/30 focus:outline-none"
-                placeholder="admin@arqon.com"
+                placeholder="admin@arcos.com"
                 autoComplete="username"
                 required
               />

@@ -10,48 +10,77 @@ const INSPIRATION_CATEGORIES = [
   { id: "bespoke", name: "Bespoke Projects", nameId: "Proyek Kustom", displayOrder: 5 },
 ];
 
+// Helper function to generate image URLs
+const getImageUrls = (baseName: string, index: number) => {
+  const padded = String(index).padStart(2, '0');
+  return {
+    thumbnail: `/assets/images/inspiration/${baseName}-${padded}.webp`,
+    full: `/assets/images/inspiration/high-res/${baseName}-${padded}-full.webp`,
+  };
+};
+
 // Inspiration images data - converted from static imports to URL paths
 const INSPIRATION_IMAGES = [
   // 3D Tiles (105 images)
-  ...Array.from({ length: 105 }, (_, i) => ({
-    categoryId: "3d-tiles",
-    imageUrl: `/assets/images/inspiration/3d-tile-${String(i + 1).padStart(2, '0')}.png`,
-    title: `3D Tile Pattern ${String(i + 1).padStart(2, '0')}`,
-    titleId: `Pola Ubin 3D ${String(i + 1).padStart(2, '0')}`,
-    displayOrder: i + 1,
-  })),
+  ...Array.from({ length: 105 }, (_, i) => {
+    const urls = getImageUrls('3d-tile', i + 1);
+    return {
+      categoryId: "3d-tiles",
+      imageUrl: urls.thumbnail,
+      fullImageUrl: urls.full,
+      title: `3D Tile Pattern ${String(i + 1).padStart(2, '0')}`,
+      titleId: `Pola Ubin 3D ${String(i + 1).padStart(2, '0')}`,
+      displayOrder: i + 1,
+    };
+  }),
   // Concrete Panels (6 images)
-  ...Array.from({ length: 6 }, (_, i) => ({
-    categoryId: "concrete-panels",
-    imageUrl: `/assets/images/inspiration/concrete-panel-${String(i + 1).padStart(2, '0')}.png`,
-    title: `Concrete Panel ${String(i + 1).padStart(2, '0')}`,
-    titleId: `Panel Beton ${String(i + 1).padStart(2, '0')}`,
-    displayOrder: i + 1,
-  })),
+  ...Array.from({ length: 6 }, (_, i) => {
+    const urls = getImageUrls('concrete-panel', i + 1);
+    return {
+      categoryId: "concrete-panels",
+      imageUrl: urls.thumbnail,
+      fullImageUrl: urls.full,
+      title: `Concrete Panel ${String(i + 1).padStart(2, '0')}`,
+      titleId: `Panel Beton ${String(i + 1).padStart(2, '0')}`,
+      displayOrder: i + 1,
+    };
+  }),
   // Microcement (3 images)
-  ...Array.from({ length: 3 }, (_, i) => ({
-    categoryId: "microcement",
-    imageUrl: `/assets/images/inspiration/microcement-${String(i + 1).padStart(2, '0')}.png`,
-    title: `Seamless Microcement ${String(i + 1).padStart(2, '0')}`,
-    titleId: `Microcement Tanpa Sambungan ${String(i + 1).padStart(2, '0')}`,
-    displayOrder: i + 1,
-  })),
+  ...Array.from({ length: 3 }, (_, i) => {
+    const urls = getImageUrls('microcement', i + 1);
+    return {
+      categoryId: "microcement",
+      imageUrl: urls.thumbnail,
+      fullImageUrl: urls.full,
+      title: `Seamless Microcement ${String(i + 1).padStart(2, '0')}`,
+      titleId: `Microcement Tanpa Sambungan ${String(i + 1).padStart(2, '0')}`,
+      displayOrder: i + 1,
+    };
+  }),
   // Textured Microcement (6 images)
-  ...Array.from({ length: 6 }, (_, i) => ({
-    categoryId: "textured",
-    imageUrl: `/assets/images/inspiration/textured-microcement-${String(i + 1).padStart(2, '0')}.png`,
-    title: `Textured Microcement ${String(i + 1).padStart(2, '0')}`,
-    titleId: `Microcement Bertekstur ${String(i + 1).padStart(2, '0')}`,
-    displayOrder: i + 1,
-  })),
+  ...Array.from({ length: 6 }, (_, i) => {
+    const urls = getImageUrls('textured-microcement', i + 1);
+    return {
+      categoryId: "textured",
+      imageUrl: urls.thumbnail,
+      fullImageUrl: urls.full,
+      title: `Textured Microcement ${String(i + 1).padStart(2, '0')}`,
+      titleId: `Microcement Bertekstur ${String(i + 1).padStart(2, '0')}`,
+      displayOrder: i + 1,
+    };
+  }),
   // Bespoke Projects (6 images)
-  ...Array.from({ length: 6 }, (_, i) => ({
-    categoryId: "bespoke",
-    imageUrl: `/assets/images/inspiration/bespoke-${String(i + 1).padStart(2, '0')}.png`,
-    title: `Bespoke Project ${String(i + 1).padStart(2, '0')}`,
-    titleId: `Proyek Kustom ${String(i + 1).padStart(2, '0')}`,
-    displayOrder: i + 1,
-  })),
+  ...Array.from({ length: 6 }, (_, i) => {
+    const urls = getImageUrls('bespoke', i + 1);
+    return {
+      categoryId: "bespoke",
+      imageUrl: urls.thumbnail,
+      fullImageUrl: urls.full,
+      title: `Bespoke Project ${String(i + 1).padStart(2, '0')}`,
+      titleId: `Proyek Kustom ${String(i + 1).padStart(2, '0')}`,
+      displayOrder: i + 1,
+    };
+  }),
 ];
 
 export async function seedInspiration() {
@@ -95,9 +124,9 @@ export async function seedInspiration() {
     console.log('🌱 Seeding inspiration images...');
     for (const image of INSPIRATION_IMAGES) {
       await client.query(
-        `INSERT INTO inspiration_images (category_id, image_url, title, title_id, display_order)
-         VALUES ($1, $2, $3, $4, $5)`,
-        [image.categoryId, image.imageUrl, image.title, image.titleId, image.displayOrder]
+        `INSERT INTO inspiration_images (category_id, image_url, full_image_url, title, title_id, display_order)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [image.categoryId, image.imageUrl, image.fullImageUrl, image.title, image.titleId, image.displayOrder]
       );
     }
     console.log(`✅ Seeded ${INSPIRATION_IMAGES.length} images`);

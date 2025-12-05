@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useFadeIn } from "../utils/useAnimation";
 import { useLanguage } from "../i18n/LanguageContext";
 import { api } from "../lib/api";
-import tile01 from "../assets/images/inspiration/3d-tile-01.png";
-import microcement01 from "../assets/images/inspiration/microcement-01.png";
-import structuralPanels from "../assets/images/structural-panels.jpg";
+import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
+import microcement01 from "../assets/images/inspiration/microcement-01.webp";
+import structuralPanels from "../assets/images/structural-panels.webp";
 
 interface FAQCategory {
   id: string;

@@ -12,7 +12,7 @@ if [ -z "$1" ]; then
 fi
 
 REMOTE_HOST=$1
-REMOTE_DIR="/opt/cretewerkz-app"
+REMOTE_DIR="/opt/arcos-app"
 
 echo "🚀 Deploying full stack to $REMOTE_HOST..."
 
@@ -23,7 +23,7 @@ if [ ! -f .env.production ]; then
         cp .env.production.example .env.production
     else
         cat > .env.production << EOF
-DB_PASSWORD=arqon_secure_password_change_me
+DB_PASSWORD=arcos_secure_password_change_me
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production-min-32-chars
 CORS_ORIGIN=http://localhost:80,http://localhost
 VITE_API_URL=http://localhost:3001/api
@@ -46,7 +46,7 @@ cd ..
 
 # Create deployment archive
 echo "📦 Creating deployment package..."
-tar czf /tmp/cretewerkz-full-deploy.tar.gz \
+tar czf /tmp/arcos-full-deploy.tar.gz \
     dist/ \
     backend/dist/ \
     backend/package.json \
@@ -60,7 +60,7 @@ tar czf /tmp/cretewerkz-full-deploy.tar.gz \
 
 # Transfer to remote
 echo "📤 Transferring files to $REMOTE_HOST..."
-scp /tmp/cretewerkz-full-deploy.tar.gz $REMOTE_HOST:/tmp/
+scp /tmp/arcos-full-deploy.tar.gz $REMOTE_HOST:/tmp/
 
 # Extract and deploy on remote
 echo "🚀 Deploying on remote server..."
@@ -72,8 +72,8 @@ mkdir -p $REMOTE_DIR
 cd $REMOTE_DIR
 
 # Extract files
-tar xzf /tmp/cretewerkz-full-deploy.tar.gz
-rm /tmp/cretewerkz-full-deploy.tar.gz
+tar xzf /tmp/arcos-full-deploy.tar.gz
+rm /tmp/arcos-full-deploy.tar.gz
 
 # Install backend dependencies in container (if needed)
 # The Dockerfile handles this, but we can pre-install
@@ -103,5 +103,5 @@ echo ""
 echo "✅ Remote deployment complete!"
 echo ""
 echo "Access your app at: http://${REMOTE_HOST#*@}"
-echo "Default admin: admin@arqon.com / admin123"
+echo "Default admin: admin@arcos.com / admin123"
 

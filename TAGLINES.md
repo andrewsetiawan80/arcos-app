@@ -1,4 +1,4 @@
-# Arqon Taglines
+# Arcos Taglines
 
 ## Primary Hero Taglines (Short & Impactful)
 

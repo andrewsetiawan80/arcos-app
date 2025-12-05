@@ -14,7 +14,7 @@ send "$REMOTE_PASS\r"
 expect eof
 
 puts "🚀 Copying files and rebuilding backend..."
-spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $REMOTE_USER@$REMOTE_HOST "cd /opt/cretewerkz-app && cp /tmp/docker-compose.yml . && cp /tmp/client.ts backend/src/db/ && docker compose build backend && docker compose up -d backend && sleep 15 && docker compose logs backend --tail 15"
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $REMOTE_USER@$REMOTE_HOST "cd /opt/arcos-app && cp /tmp/docker-compose.yml . && cp /tmp/client.ts backend/src/db/ && docker compose build backend && docker compose up -d backend && sleep 15 && docker compose logs backend --tail 15"
 expect "password:"
 send "$REMOTE_PASS\r"
 expect eof

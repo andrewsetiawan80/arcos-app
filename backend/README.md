@@ -1,6 +1,6 @@
-# Arqon Backend API
+# Arcos Backend API
 
-RESTful API server for the Arqon app, providing database-backed storage and synchronization for all devices.
+RESTful API server for the Arcos app, providing database-backed storage and synchronization for all devices.
 
 ## Tech Stack
 
@@ -36,12 +36,12 @@ Edit `.env` and set:
 Make sure PostgreSQL is running and create a database:
 
 ```sql
-CREATE DATABASE arqon_db;
+CREATE DATABASE arcos_db;
 ```
 
 Or using psql:
 ```bash
-createdb arqon_db
+createdb arcos_db
 ```
 
 ### 4. Run Migrations
@@ -111,7 +111,7 @@ All user data is isolated by `user_id` for multi-user support.
 
 ## Frontend Integration
 
-The frontend stores (`src/store.ts` and `arqon-mobile/src/store.ts`) need to be updated to call these API endpoints instead of using local storage.
+The frontend stores (`src/store.ts` and `arcos-mobile/src/store.ts`) need to be updated to call these API endpoints instead of using local storage.
 
 See the frontend integration guide for details.
 

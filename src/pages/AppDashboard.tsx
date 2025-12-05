@@ -223,7 +223,7 @@ export default function AppDashboard() {
       <header className="border-b border-white/10 pb-8">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Arqon Dashboard</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Arcos Dashboard</p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-tight">
               Welcome Back
             </h1>

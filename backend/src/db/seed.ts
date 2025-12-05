@@ -10,7 +10,7 @@ async function seed() {
     // Ensure migrations are run first
     await runMigrations();
     // Create admin user
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@arqon.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@arcos.com';
     const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
     
     const passwordHash = await bcrypt.hash(adminPassword, 10);
@@ -82,7 +82,7 @@ async function seed() {
           site: {
             heroTitle: "ARCHITECTURAL CONCRETE, REFINED.",
             heroSubtitle: "UHPC & GFRC panels, modular tiles, and microcement finishes — engineered for strength, durability, and beauty.",
-            contactEmail: "hello@arqon.com",
+            contactEmail: "hello@arcos.com",
           },
         })]
       );

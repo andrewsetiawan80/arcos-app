@@ -36,7 +36,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     // Get from localStorage or default to English
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("arqon_language");
+      const saved = localStorage.getItem("arcos_language");
       if (saved === "en" || saved === "id") {
         return saved;
       }
@@ -47,7 +47,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Save to localStorage when language changes
     if (typeof window !== "undefined") {
-      localStorage.setItem("arqon_language", language);
+      localStorage.setItem("arcos_language", language);
     }
   }, [language]);
 

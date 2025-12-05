@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import ArqonLogo from "./ArqonLogo";
+import ArcosLogo from "./ArcosLogo";
 
 type Role = string;
 type Item = { to: string; label: string; roles?: Role[] };
@@ -55,7 +55,7 @@ export default function MobileMenu({
       >
         <div className="h-16 px-4 flex items-center justify-between border-b border-white/10">
           <NavLink to="/app/dashboard" onClick={onClose} className="flex items-center hover:opacity-90 transition-opacity">
-            <ArqonLogo size="small" />
+            <ArcosLogo size="small" />
           </NavLink>
           <button
             onClick={onClose}

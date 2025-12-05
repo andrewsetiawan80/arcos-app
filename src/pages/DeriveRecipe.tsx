@@ -286,7 +286,7 @@ export default function DeriveRecipe() {
                 className="mt-4 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
                 onClick={() => {
                   // Reset to seed data
-                  localStorage.removeItem('arqon_app_state');
+                  localStorage.removeItem('arcos_app_state');
                   navigate('/app/derive-recipe');
                 }}
               >

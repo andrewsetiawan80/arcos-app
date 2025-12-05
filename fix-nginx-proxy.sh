@@ -17,9 +17,9 @@ scp nginx.conf $REMOTE_HOST:/tmp/nginx.conf
 
 echo "🚀 Restarting frontend container..."
 ssh $REMOTE_HOST << 'EOF'
-cd /opt/cretewerkz-app
-docker cp /tmp/nginx.conf arqon-frontend:/etc/nginx/conf.d/default.conf
-docker exec arqon-frontend nginx -s reload
+cd /opt/arcos-app
+docker cp /tmp/nginx.conf arcos-frontend:/etc/nginx/conf.d/default.conf
+docker exec arcos-frontend nginx -s reload
 echo "✅ Nginx reloaded with new configuration"
 EOF
 

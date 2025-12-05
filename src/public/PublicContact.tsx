@@ -1,17 +1,17 @@
 import React from "react";
-import heroFacade from "../assets/images/hero-facade.jpg";
+import heroFacade from "../assets/images/hero-facade.webp";
 
 const CONTACT_CARDS = [
   {
     label: "Email",
-    value: "hello@arqon.com",
-    href: "mailto:hello@arqon.com",
+    value: "hello@arcos.com",
+    href: "mailto:hello@arcos.com",
     description: "General enquiries, samples, and collaboration.",
   },
   {
     label: "Specifications",
-    value: "specs@arqon.com",
-    href: "mailto:specs@arqon.com",
+    value: "specs@arcos.com",
+    href: "mailto:specs@arcos.com",
     description: "Design-assist, technical sheets, and BIM requests.",
   },
   {
@@ -32,7 +32,7 @@ export default function PublicContact() {
           <div className="absolute inset-0">
             <img
               src={heroFacade}
-              alt="Contact Arqon"
+              alt="Contact Arcos"
               className="w-full h-full object-cover"
             />
           </div>
@@ -80,8 +80,8 @@ export default function PublicContact() {
             <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-white/80">Project Submission</h2>
             <p className="text-sm text-gray-300 leading-relaxed">
               Send PDF drawings, renders, and performance notes to{" "}
-              <a href="mailto:specs@arqon.com" className="underline hover:text-white transition-colors">
-                specs@arqon.com
+              <a href="mailto:specs@arcos.com" className="underline hover:text-white transition-colors">
+                specs@arcos.com
               </a>
               . We'll review and schedule a workshop to map surface build-ups, joints, and installation logistics.
             </p>

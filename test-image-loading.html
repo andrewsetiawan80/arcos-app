@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Image Test</title></head>
+<body>
+<h1>Testing Images</h1>
+<script>
+const images = [
+  '/assets/images/inspiration/3d-tile-01.png',
+  '/assets/images/inspiration/3d-tile-50.png',
+  '/assets/images/inspiration/3d-tile-105.png',
+  '/assets/images/inspiration/microcement-01.png',
+  '/assets/images/inspiration/bespoke-01.png'
+];
+
+images.forEach(url => {
+  const img = document.createElement('img');
+  img.src = 'http://192.168.2.189' + url;
+  img.style.width = '200px';
+  img.style.margin = '10px';
+  img.onerror = () => console.error('Failed:', url);
+  img.onload = () => console.log('Loaded:', url);
+  document.body.appendChild(img);
+});
+</script>
+</body>
+</html>

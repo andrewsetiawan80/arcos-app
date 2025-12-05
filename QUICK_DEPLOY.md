@@ -15,12 +15,12 @@ apt-get install -y docker-compose-plugin
 # Transfer your app files (use SCP, git clone, or Proxmox file manager)
 # For example:
 cd /opt
-git clone <your-repo> cretewerkz-app
+git clone <your-repo> arcos-app
 # OR
-# scp -r ./cretewerkz-app root@proxmox-ip:/opt/
+# scp -r ./arcos-app root@proxmox-ip:/opt/
 
 # Navigate to app directory
-cd /opt/cretewerkz-app
+cd /opt/arcos-app
 
 # Deploy
 chmod +x deploy.sh
@@ -66,12 +66,12 @@ apt-get install -y docker-compose-plugin
 ### Step 3: Transfer Files
 ```bash
 # From your local machine
-scp -r ./cretewerkz-app root@proxmox-ip:/opt/
+scp -r ./arcos-app root@proxmox-ip:/opt/
 ```
 
 ### Step 4: Deploy
 ```bash
-cd /opt/cretewerkz-app
+cd /opt/arcos-app
 ./deploy.sh
 ```
 

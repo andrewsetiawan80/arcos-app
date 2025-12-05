@@ -2,10 +2,10 @@
 set -euo pipefail
 
 OLD_NAME="uhpc-gfrc-calculator"
-NEW_NAME="cretewerkz-app"
+NEW_NAME="arcos-app"
 APP_TITLE="Cretewerkz App"
 APP_SHORT="Cretewerkz"
-SLUG="cretewerkz-app"
+SLUG="arcos-app"
 
 bold(){ printf "\033[1m%s\033[0m\n" "$*"; }
 ok(){ echo "✅ $*"; }

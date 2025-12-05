@@ -8,7 +8,7 @@ import CommandPalette from "./components/CommandPalette";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import MobileMenu from "./components/MobileMenu";
 import MegaMenuSheet from "./components/MegaMenuSheet";
-import ArqonLogo from "./components/ArqonLogo";
+import ArcosLogo from "./components/ArcosLogo";
 
 type AreaKey = "dashboard" | "products" | "recipes" | "planning" | "sales" | "lab" | "settings";
 
@@ -205,9 +205,9 @@ export default function Layout() {
       {/* Header */}
       <div className="sticky top-0 z-40 bg-[#1A1A1A]/95 backdrop-blur border-b border-white/10">
         <header className="relative h-20 max-w-7xl mx-auto px-6 flex items-center justify-between gap-6">
-          {/* Brand → internal home (Arqon logo) */}
+          {/* Brand → internal home (Arcos logo) */}
           <NavLink to="/app/dashboard" className="flex items-center hover:opacity-90 transition-opacity duration-300">
-            <ArqonLogo size="medium" className="scale-[1.2]" />
+            <ArcosLogo size="medium" className="scale-[1.2]" />
           </NavLink>
 
           {/* Tabs */}
@@ -318,7 +318,7 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <ArqonLogo size="small" />
+              <ArcosLogo size="small" />
               <span className="text-xs uppercase tracking-wider">Concrete Management System</span>
               <span className="text-xs">© 2024</span>
             </div>

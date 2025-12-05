@@ -85,17 +85,33 @@ export default function PublicCatalog() {
       {/* Grid */}
       <section ref={gridAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 ${gridAnim.isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
         {filtered.length === 0 ? (
-          <div className="border border-white/10 bg-white/[0.02] p-6 sm:p-8 text-gray-400 text-center text-sm sm:text-base">
+          <div className="border border-white/10 bg-white/[0.02] p-8 sm:p-12 md:p-16 text-center">
             {activeTag ? (
-              <>
-                No public products for{" "}
+              <p className="text-gray-400 text-sm sm:text-base">
+                No products found for{" "}
                 <span className="text-white font-medium">{activeTag}</span>.
-              </>
+              </p>
             ) : (
-              <>
-                No public products yet. Ensure items are <em>Published</em> and
-                have a valid <em>slug</em> in <strong className="text-white">Catalog Admin</strong>.
-              </>
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-white/5 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Coming Soon</h3>
+                <p className="text-gray-400 text-sm sm:text-base mb-6">
+                  Our product catalog is being curated. Check back soon to explore our architectural concrete collection.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors"
+                >
+                  Contact Us
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
             )}
           </div>
         ) : (

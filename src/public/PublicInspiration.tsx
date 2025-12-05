@@ -4,8 +4,10 @@ import { useFadeIn } from "../utils/useAnimation";
 import { useLanguage } from "../i18n/LanguageContext";
 import { api } from "../lib/api";
 
-// Fallback hero image
-import tile01 from "../assets/images/inspiration/3d-tile-01.png";
+// High-quality hero image for inspiration page
+import heroImage from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
+// Fallback image
+import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
 
 interface InspirationCategory {
   id: string;
@@ -18,6 +20,7 @@ interface InspirationImage {
   id: number;
   categoryId: string;
   imageUrl: string;
+  fullImageUrl?: string;
   title: string;
   titleId: string;
   displayOrder: number;
@@ -32,12 +35,12 @@ export default function PublicInspiration() {
   const [images, setImages] = useState<InspirationImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const heroAnim = useFadeIn({ delay: 100 });
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const galleryAnim = useFadeIn({ delay: 200 });
 
-  // Fetch categories and images on mount
+  // Fetch categories and images on mount with retry logic
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (retryCount = 0) => {
       try {
         setLoading(true);
         setError(null);
@@ -54,35 +57,69 @@ export default function PublicInspiration() {
           throw new Error(imagesRes.error);
         }
 
-        setCategories(categoriesRes.data || []);
-        setImages(imagesRes.data || []);
+        const fetchedCategories = categoriesRes.data || [];
+        const fetchedImages = imagesRes.data || [];
+
+        // Validate that we got data
+        if (fetchedCategories.length === 0) {
+          throw new Error("No categories found");
+        }
+        if (fetchedImages.length === 0) {
+          throw new Error("No images found");
+        }
+
+        setCategories(fetchedCategories);
+        setImages(fetchedImages);
+        setInitialLoadComplete(true);
       } catch (err) {
         console.error("Failed to fetch inspiration data:", err);
-        setError(err instanceof Error ? err.message : "Failed to load inspiration data");
+        
+        // Retry up to 2 times with exponential backoff
+        if (retryCount < 2) {
+          const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s
+          console.log(`Retrying in ${delay}ms... (attempt ${retryCount + 1}/2)`);
+          setTimeout(() => fetchData(retryCount + 1), delay);
+        } else {
+          setError(err instanceof Error ? err.message : "Failed to load inspiration data");
+          setLoading(false);
+        }
       } finally {
-        setLoading(false);
+        if (retryCount === 0 || retryCount >= 2) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
   }, []);
 
-  // Fetch images when category changes
+  // Fetch images when category changes (only after initial load to avoid race condition)
   useEffect(() => {
-    if (selectedCategory === "all") {
-      api.getInspirationImages().then((res) => {
+    // Skip if initial load hasn't completed yet
+    if (!initialLoadComplete) return;
+    
+    // Skip if category is "all" and we already have images (avoid duplicate fetch)
+    if (selectedCategory === "all" && images.length > 0) return;
+
+    const fetchCategoryImages = async () => {
+      try {
+        setLoading(true);
+        const res = selectedCategory === "all" 
+          ? await api.getInspirationImages()
+          : await api.getInspirationImages(selectedCategory);
+        
         if (!res.error && res.data) {
           setImages(res.data);
         }
-      });
-    } else {
-      api.getInspirationImages(selectedCategory).then((res) => {
-        if (!res.error && res.data) {
-          setImages(res.data);
-        }
-      });
-    }
-  }, [selectedCategory]);
+      } catch (err) {
+        console.error("Failed to fetch category images:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategoryImages();
+  }, [selectedCategory, initialLoadComplete]); // Only refetch when category changes after initial load
 
   // Handle hash navigation from home page links
   useEffect(() => {
@@ -164,14 +201,16 @@ export default function PublicInspiration() {
         <div className="absolute inset-0">
           <div className="absolute inset-0">
             <img
-              src={tile01}
+              src={heroImage}
               alt="Design inspiration"
               className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/70 via-[#131313]/50 to-[#131313]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/60 via-[#131313]/40 to-[#131313]/60" />
         </div>
-        <div ref={heroAnim.ref} className={`relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full ${heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full animate-fade-in-up">
           <div className="max-w-3xl space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
               {language === "id" ? "Inspirasi Desain" : "Design Inspiration"}
@@ -213,7 +252,7 @@ export default function PublicInspiration() {
 
       {/* Gallery Grid */}
       <section className="bg-[#131313]">
-        <div ref={galleryAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 transition-opacity duration-500 ${galleryAnim.isVisible ? "animate-fade-in-up opacity-100" : "opacity-0"}`}>
+        <div ref={galleryAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 transition-opacity duration-500 ${galleryAnim.isVisible || images.length > 0 ? "animate-fade-in-up opacity-100" : "opacity-0"}`}>
           <div className="mb-8">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
               {language === "id" ? `${images.length} Gambar` : `${images.length} Images`}
@@ -225,28 +264,49 @@ export default function PublicInspiration() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {images.map((image) => (
-                <div
-                  key={image.id}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] cursor-pointer hover:border-white/30 transition-all hover:-translate-y-1"
-                  onClick={() => setSelectedImage(image.id)}
-                >
-                  <div className="aspect-square overflow-hidden bg-white/5">
-                    <img
-                      src={image.imageUrl}
-                      alt={language === "id" ? image.titleId : image.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
+              {images.map((image, index) => {
+                // Ensure imageUrl is absolute if it's relative
+                const imageSrc = image.imageUrl.startsWith('http') 
+                  ? image.imageUrl 
+                  : image.imageUrl.startsWith('/') 
+                    ? image.imageUrl 
+                    : `/${image.imageUrl}`;
+                
+                return (
+                  <div
+                    key={`image-${image.id}-${index}`}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] cursor-pointer hover:border-white/30 transition-all hover:-translate-y-1"
+                    onClick={() => setSelectedImage(image.id)}
+                  >
+                    <div className="aspect-square overflow-hidden bg-white/5 relative">
+                      <img
+                        key={`img-${image.id}-${image.imageUrl}`}
+                        src={imageSrc}
+                        alt={language === "id" ? image.titleId : image.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        loading={index < 16 ? "eager" : "lazy"}
+                        decoding={index < 16 ? "sync" : "async"}
+                        onLoad={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.opacity = '1';
+                          target.style.visibility = 'visible';
+                        }}
+                        onError={(e) => {
+                          console.error('Image failed to load:', imageSrc, image.id);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <p className="text-sm font-semibold text-white">
+                        {language === "id" ? image.titleId : image.title}
+                      </p>
+                    </div>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-sm font-semibold text-white">
-                      {language === "id" ? image.titleId : image.title}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -271,9 +331,20 @@ export default function PublicInspiration() {
             <div className="bg-[#1A1A1A] rounded-2xl overflow-hidden border border-white/10">
               <div className="aspect-square max-h-[80vh] overflow-hidden">
                 <img
-                  src={selectedImageData.imageUrl}
+                  src={selectedImageData.fullImageUrl || selectedImageData.imageUrl}
                   alt={language === "id" ? selectedImageData.titleId : selectedImageData.title}
                   className="w-full h-full object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    // If full image failed, try thumbnail
+                    if (selectedImageData.fullImageUrl && target.src === selectedImageData.fullImageUrl) {
+                      target.src = selectedImageData.imageUrl;
+                    } else {
+                      // Fallback to hero image
+                      console.error('Modal image failed to load:', target.src);
+                      target.src = tile01;
+                    }
+                  }}
                 />
               </div>
               <div className="p-6 border-t border-white/10">

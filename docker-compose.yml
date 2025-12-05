@@ -1,52 +1,29 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
-    container_name: arqon-postgres
-    environment:
-      POSTGRES_DB: arqon_db
-      POSTGRES_USER: arqon_user
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-arqon_secure_password_change_me}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U arqon_user -d arqon_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-    networks:
-      - arqon-network
-
   # Backend API Server
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: arqon-backend
+    container_name: arcos-backend
     environment:
       NODE_ENV: production
       PORT: 3001
-      DATABASE_URL: postgresql://arqon_user:${DB_PASSWORD:-arqon_secure_password_change_me}@postgres:5432/arqon_db?sslmode=disable
+      # Using external PostgreSQL server at 192.168.2.124
+      DATABASE_URL: postgresql://arcos_user:${DB_PASSWORD:-arcos_secure_password_change_me}@192.168.2.124:5432/arcos_db?sslmode=disable
       JWT_SECRET: ${JWT_SECRET:-change-this-jwt-secret-in-production}
       JWT_EXPIRES_IN: 7d
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:80,http://localhost}
     ports:
       - "3001:3001"
-    depends_on:
-      postgres:
-        condition: service_healthy
     volumes:
       # Mount source for development (optional)
       # - ./backend/src:/app/src
       - ./backend/logs:/app/logs
     restart: unless-stopped
     networks:
-      - arqon-network
+      - arcos-network
     command: >
       sh -c "
         echo 'Waiting for database to be ready...' &&
@@ -59,7 +36,7 @@ services:
   # Frontend Web App (Nginx)
   frontend:
     image: nginx:alpine
-    container_name: arqon-frontend
+    container_name: arcos-frontend
     volumes:
       - ./dist:/usr/share/nginx/html:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -69,12 +46,8 @@ services:
       - backend
     restart: unless-stopped
     networks:
-      - arqon-network
-
-volumes:
-  postgres_data:
-    driver: local
+      - arcos-network
 
 networks:
-  arqon-network:
+  arcos-network:
     driver: bridge

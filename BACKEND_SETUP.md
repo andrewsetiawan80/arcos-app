@@ -1,6 +1,6 @@
 # Backend Database Setup Guide
 
-This guide will help you set up the backend database for the Arqon app so all devices can sync to one central source.
+This guide will help you set up the backend database for the Arcos app so all devices can sync to one central source.
 
 ## Prerequisites
 
@@ -27,11 +27,11 @@ npm install
 psql postgres
 
 # Create database
-CREATE DATABASE arqon_db;
+CREATE DATABASE arcos_db;
 
 # Create user (optional)
-CREATE USER arqon_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE arqon_db TO arqon_user;
+CREATE USER arcos_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE arcos_db TO arcos_user;
 
 # Exit psql
 \q
@@ -46,7 +46,7 @@ cp .env.example .env
 
 Edit `.env` and update:
 ```env
-DATABASE_URL=postgresql://arqon_user:your_password@localhost:5432/arqon_db
+DATABASE_URL=postgresql://arcos_user:your_password@localhost:5432/arcos_db
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 CORS_ORIGIN=http://localhost:5173,http://localhost:8081
 ```
@@ -66,7 +66,7 @@ npm run db:seed
 ```
 
 This creates:
-- Admin user (email: `admin@arqon.com`, password: `admin123`)
+- Admin user (email: `admin@arcos.com`, password: `admin123`)
 - Sample materials
 - Sample categories
 
@@ -95,7 +95,7 @@ The frontend stores need to be updated to use the API. See integration steps bel
 
 ### Mobile App
 
-1. Create `.env` file in `arqon-mobile`:
+1. Create `.env` file in `arcos-mobile`:
    ```env
    EXPO_PUBLIC_API_URL=http://localhost:3001/api
    ```
@@ -105,7 +105,7 @@ The frontend stores need to be updated to use the API. See integration steps bel
    EXPO_PUBLIC_API_URL=http://192.168.2.189:3001/api
    ```
 
-2. Update `arqon-mobile/src/store.ts` to use API calls
+2. Update `arcos-mobile/src/store.ts` to use API calls
 
 ## Testing
 
@@ -118,7 +118,7 @@ The frontend stores need to be updated to use the API. See integration steps bel
    ```bash
    curl -X POST http://localhost:3001/api/auth/login \
      -H "Content-Type: application/json" \
-     -d '{"email":"admin@arqon.com","password":"admin123"}'
+     -d '{"email":"admin@arcos.com","password":"admin123"}'
    ```
 
 ## Production Deployment

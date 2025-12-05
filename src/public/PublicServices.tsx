@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import landmarkInstallation from "../assets/images/landmark-installation.jpg";
-import microcementStairs from "../assets/images/grey-microcement-stairs-stairs-viewed-from-modern-design-innovative-material-metal-railing.jpg";
-import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.jpg";
-import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.jpg";
-import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.jpg";
-import tile01 from "../assets/images/inspiration/3d-tile-01.png";
-import tile02 from "../assets/images/inspiration/3d-tile-02.png";
-import tile07 from "../assets/images/inspiration/3d-tile-07.png";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.jpg";
-import mosaicInterior from "../assets/images/mosaic-interior.jpg";
-import concreteInstallation from "../assets/images/concrete-installation.jpg";
-import workshopCloseup from "../assets/images/workshop-closeup.jpg";
+import landmarkInstallation from "../assets/images/landmark-installation.webp";
+import microcementStairs from "../assets/images/grey-microcement-stairs-stairs-viewed-from-modern-design-innovative-material-metal-railing.webp";
+import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
+import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
+import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
+import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
+import tile02 from "../assets/images/inspiration/3d-tile-02.webp";
+import tile07 from "../assets/images/inspiration/3d-tile-07.webp";
+import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
+import mosaicInterior from "../assets/images/mosaic-interior.webp";
+import concreteInstallation from "../assets/images/concrete-installation.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import { api } from "../lib/api";
 
 interface Service {
@@ -102,7 +102,7 @@ export default function PublicServices() {
                 Full-spectrum concrete innovation, tailored to your project.
               </h1>
               <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                Arqon delivers Southeast Asia–specific concrete solutions: seamless microcement finishes, polished concrete overlays, terrazzo systems, 3D tiles, and architectural panels—all engineered, fabricated, and installed by our in-house team of mix lab specialists, fabrication experts, and certified installers.
+                Arcos delivers Southeast Asia–specific concrete solutions: seamless microcement finishes, polished concrete overlays, terrazzo systems, 3D tiles, and architectural panels—all engineered, fabricated, and installed by our in-house team of mix lab specialists, fabrication experts, and certified installers.
               </p>
             </div>
             <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-300 max-w-xl">
@@ -111,7 +111,7 @@ export default function PublicServices() {
                 <p>Design-assist, substrate diagnostics, mockups, and on-site supervision backed by digital progress reporting.</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
-                <p className="uppercase text-xs tracking-[0.25em] text-white/60 font-semibold mb-2">Why Arqon</p>
+                    <p className="uppercase text-xs tracking-[0.25em] text-white/60 font-semibold mb-2">Why Arcos</p>
                 <p>Certified applicators, JCtec training lineage, and real-time QA to guarantee the finish you approved.</p>
               </div>
             </div>
@@ -520,7 +520,7 @@ export default function PublicServices() {
               </h2>
             </div>
             <p className="max-w-xl text-sm text-gray-300">
-              Arqon surfaces and structures land impact—from skyline icons and hospitality environments to bespoke residences and cultural destinations.
+              Arcos surfaces and structures land impact—from skyline icons and hospitality environments to bespoke residences and cultural destinations.
             </p>
           </div>
 

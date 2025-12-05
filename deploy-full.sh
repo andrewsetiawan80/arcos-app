@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Full stack deployment script for Arqon App
+# Full stack deployment script for Arcos App
 # This builds and deploys: Frontend, Backend API, and PostgreSQL Database
 
 set -e
 
-echo "🚀 Starting full stack deployment of Arqon App..."
+echo "🚀 Starting full stack deployment of Arcos App..."
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
@@ -88,7 +88,7 @@ echo "  🔌 Backend:   http://localhost:3001"
 echo "  🗄️  Database:  localhost:5432"
 echo ""
 echo "Default admin credentials:"
-echo "  Email:    admin@arqon.com"
+echo "  Email:    admin@arcos.com"
 echo "  Password: admin123"
 echo ""
 echo "View logs with: docker compose logs -f"

@@ -8,7 +8,7 @@ set -e
 REMOTE_HOST="192.168.2.189"
 REMOTE_USER="root"
 REMOTE_PASS="Andrewis0380"
-REMOTE_PATH="/opt/cretewerkz-app"
+REMOTE_PATH="/opt/arcos-app"
 
 # Colors
 GREEN='\033[0;32m'
@@ -17,7 +17,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-echo -e "${BLUE}🚀 Deploying Full Stack Arqon App to Proxmox${NC}"
+echo -e "${BLUE}🚀 Deploying Full Stack Arcos App to Proxmox${NC}"
 echo "===================================="
 echo "   Host: $REMOTE_HOST"
 echo "   User: $REMOTE_USER"
@@ -87,7 +87,7 @@ fi
 if [ ! -f .env.production ]; then
     echo -e "${YELLOW}📝 Creating .env.production file...${NC}"
     cat > .env.production << EOF
-DB_PASSWORD=arqon_secure_password_$(date +%s)
+DB_PASSWORD=arcos_secure_password_$(date +%s)
 JWT_SECRET=$(openssl rand -hex 32)
 CORS_ORIGIN=http://$REMOTE_HOST,http://localhost:80,http://localhost
 VITE_API_URL=http://localhost:3001/api
@@ -124,7 +124,7 @@ ssh_cmd "mkdir -p $REMOTE_PATH"
 
 # Create deployment tarball
 echo -e "${YELLOW}📦 Creating deployment package...${NC}"
-tar czf /tmp/cretewerkz-fullstack-deploy.tar.gz \
+tar czf /tmp/arcos-fullstack-deploy.tar.gz \
     --exclude='node_modules' \
     --exclude='.git' \
     --exclude='*.log' \
@@ -138,8 +138,8 @@ tar czf /tmp/cretewerkz-fullstack-deploy.tar.gz \
     docker-compose.yml \
     nginx.conf \
     .env.production \
-    cretewerkz-fullstack.service 2>/dev/null || \
-tar czf /tmp/cretewerkz-fullstack-deploy.tar.gz \
+    arcos-fullstack.service 2>/dev/null || \
+tar czf /tmp/arcos-fullstack-deploy.tar.gz \
     dist/ \
     backend/dist/ \
     backend/package.json \
@@ -149,11 +149,11 @@ tar czf /tmp/cretewerkz-fullstack-deploy.tar.gz \
     docker-compose.yml \
     nginx.conf \
     .env.production \
-    cretewerkz-fullstack.service
+    arcos-fullstack.service
 
 # Transfer tarball
 echo -e "${YELLOW}📤 Transferring files to server...${NC}"
-scp_cmd /tmp/cretewerkz-fullstack-deploy.tar.gz root@$REMOTE_HOST:/tmp/
+scp_cmd /tmp/arcos-fullstack-deploy.tar.gz root@$REMOTE_HOST:/tmp/
 
 # Extract and deploy on remote
 echo -e "${YELLOW}🚀 Deploying on remote server...${NC}"
@@ -162,8 +162,8 @@ ssh_cmd << ENDSSH
     cd $REMOTE_PATH
     
     echo "Extracting files..."
-    tar xzf /tmp/cretewerkz-fullstack-deploy.tar.gz
-    rm /tmp/cretewerkz-fullstack-deploy.tar.gz
+    tar xzf /tmp/arcos-fullstack-deploy.tar.gz
+    rm /tmp/arcos-fullstack-deploy.tar.gz
     
     echo "Stopping existing containers..."
     docker compose down || true
@@ -179,7 +179,7 @@ ssh_cmd << ENDSSH
 ENDSSH
 
 # Clean up local tarball
-rm /tmp/cretewerkz-fullstack-deploy.tar.gz
+rm /tmp/arcos-fullstack-deploy.tar.gz
 
 echo ""
 echo -e "${GREEN}✅ Deployment complete!${NC}"
@@ -190,7 +190,7 @@ echo "   🔌 Backend:   http://$REMOTE_HOST:3001"
 echo "   🗄️  Database:  localhost:5432 (internal)"
 echo ""
 echo -e "${BLUE}🔐 Default Admin Credentials:${NC}"
-echo "   Email:    admin@arqon.com"
+echo "   Email:    admin@arcos.com"
 echo "   Password: admin123"
 echo ""
 echo -e "${BLUE}📝 Useful Commands:${NC}"

@@ -5,62 +5,62 @@ import { useFadeIn } from "../utils/useAnimation";
 import { useLanguage } from "../i18n/LanguageContext";
 import { api } from "../lib/api";
 
-import heroFacade from "../assets/images/hero-facade.jpg";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.jpg";
-import mosaicInterior from "../assets/images/mosaic-interior.jpg";
-import workshopCloseup from "../assets/images/workshop-closeup.jpg";
-import qualityReview from "../assets/images/quality-review.jpg";
-import landmarkInstallation from "../assets/images/landmark-installation.jpg";
-import concreteFinish from "../assets/images/concrete-finish.jpg";
-import concreteTexture2 from "../assets/images/concrete-texture-2.jpg";
-import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.jpg";
-import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.jpg";
-import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.jpg";
-import microcementStairs from "../assets/images/grey-microcement-stairs-stairs-viewed-from-modern-design-innovative-material-metal-railing.jpg";
-import structuralPanels from "../assets/images/structural-panels.jpg";
-import concretePanelDetail from "../assets/images/concrete-panel-detail.jpg";
-import concreteInstallation from "../assets/images/concrete-installation.jpg";
-import mixDesign from "../assets/images/mix-design.jpg";
+import heroFacade from "../assets/images/hero-facade.webp";
+import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
+import mosaicInterior from "../assets/images/mosaic-interior.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
+import qualityReview from "../assets/images/quality-review.webp";
+import landmarkInstallation from "../assets/images/landmark-installation.webp";
+import concreteFinish from "../assets/images/concrete-finish.webp";
+import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
+import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
+import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
+import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
+import microcementStairs from "../assets/images/grey-microcement-stairs-stairs-viewed-from-modern-design-innovative-material-metal-railing.webp";
+import structuralPanels from "../assets/images/structural-panels.webp";
+import concretePanelDetail from "../assets/images/concrete-panel-detail.webp";
+import concreteInstallation from "../assets/images/concrete-installation.webp";
+import mixDesign from "../assets/images/mix-design.webp";
 // Inspiration images for showcase
-import tile01 from "../assets/images/inspiration/3d-tile-01.png";
-import tile02 from "../assets/images/inspiration/3d-tile-02.png";
-import tile03 from "../assets/images/inspiration/3d-tile-03.png";
-import tile04 from "../assets/images/inspiration/3d-tile-04.png";
-import tile05 from "../assets/images/inspiration/3d-tile-05.png";
-import tile07 from "../assets/images/inspiration/3d-tile-07.png";
-import tile10 from "../assets/images/inspiration/3d-tile-10.png";
-import tile15 from "../assets/images/inspiration/3d-tile-15.png";
-import tile20 from "../assets/images/inspiration/3d-tile-20.png";
-import tile25 from "../assets/images/inspiration/3d-tile-25.png";
-import tile30 from "../assets/images/inspiration/3d-tile-30.png";
-import tile35 from "../assets/images/inspiration/3d-tile-35.png";
-import tile40 from "../assets/images/inspiration/3d-tile-40.png";
-import tile45 from "../assets/images/inspiration/3d-tile-45.png";
-import tile50 from "../assets/images/inspiration/3d-tile-50.png";
-import tile55 from "../assets/images/inspiration/3d-tile-55.png";
-import tile60 from "../assets/images/inspiration/3d-tile-60.png";
-import tile65 from "../assets/images/inspiration/3d-tile-65.png";
-import tile70 from "../assets/images/inspiration/3d-tile-70.png";
-import tile75 from "../assets/images/inspiration/3d-tile-75.png";
-import tile80 from "../assets/images/inspiration/3d-tile-80.png";
-import tile85 from "../assets/images/inspiration/3d-tile-85.png";
-import tile90 from "../assets/images/inspiration/3d-tile-90.png";
-import tile95 from "../assets/images/inspiration/3d-tile-95.png";
-import tile100 from "../assets/images/inspiration/3d-tile-100.png";
-import microcementInsp01 from "../assets/images/inspiration/microcement-01.png";
-import microcementInsp02 from "../assets/images/inspiration/microcement-02.png";
-import microcementInsp03 from "../assets/images/inspiration/microcement-03.png";
-import concretePanelInsp01 from "../assets/images/inspiration/concrete-panel-01.png";
-import concretePanelInsp02 from "../assets/images/inspiration/concrete-panel-02.png";
-import concretePanelInsp03 from "../assets/images/inspiration/concrete-panel-03.png";
-import bespokeInsp01 from "../assets/images/inspiration/bespoke-01.png";
-import bespokeInsp02 from "../assets/images/inspiration/bespoke-02.png";
-import bespokeInsp03 from "../assets/images/inspiration/bespoke-03.png";
-import texturedMicrocement01 from "../assets/images/inspiration/textured-microcement-01.png";
-import texturedMicrocement02 from "../assets/images/inspiration/textured-microcement-02.png";
-import texturedMicrocement03 from "../assets/images/inspiration/textured-microcement-03.png";
-import bespokeHero from "../assets/images/inspiration/bespoke-01.png";
-import concretePanelHero from "../assets/images/inspiration/concrete-panel-01.png";
+import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
+import tile02 from "../assets/images/inspiration/3d-tile-02.webp";
+import tile03 from "../assets/images/inspiration/3d-tile-03.webp";
+import tile04 from "../assets/images/inspiration/3d-tile-04.webp";
+import tile05 from "../assets/images/inspiration/3d-tile-05.webp";
+import tile07 from "../assets/images/inspiration/3d-tile-07.webp";
+import tile10 from "../assets/images/inspiration/3d-tile-10.webp";
+import tile15 from "../assets/images/inspiration/3d-tile-15.webp";
+import tile20 from "../assets/images/inspiration/3d-tile-20.webp";
+import tile25 from "../assets/images/inspiration/3d-tile-25.webp";
+import tile30 from "../assets/images/inspiration/3d-tile-30.webp";
+import tile35 from "../assets/images/inspiration/3d-tile-35.webp";
+import tile40 from "../assets/images/inspiration/3d-tile-40.webp";
+import tile45 from "../assets/images/inspiration/3d-tile-45.webp";
+import tile50 from "../assets/images/inspiration/3d-tile-50.webp";
+import tile55 from "../assets/images/inspiration/3d-tile-55.webp";
+import tile60 from "../assets/images/inspiration/3d-tile-60.webp";
+import tile65 from "../assets/images/inspiration/3d-tile-65.webp";
+import tile70 from "../assets/images/inspiration/3d-tile-70.webp";
+import tile75 from "../assets/images/inspiration/3d-tile-75.webp";
+import tile80 from "../assets/images/inspiration/3d-tile-80.webp";
+import tile85 from "../assets/images/inspiration/3d-tile-85.webp";
+import tile90 from "../assets/images/inspiration/3d-tile-90.webp";
+import tile95 from "../assets/images/inspiration/3d-tile-95.webp";
+import tile100 from "../assets/images/inspiration/3d-tile-100.webp";
+import microcementInsp01 from "../assets/images/inspiration/microcement-01.webp";
+import microcementInsp02 from "../assets/images/inspiration/microcement-02.webp";
+import microcementInsp03 from "../assets/images/inspiration/microcement-03.webp";
+import concretePanelInsp01 from "../assets/images/inspiration/concrete-panel-01.webp";
+import concretePanelInsp02 from "../assets/images/inspiration/concrete-panel-02.webp";
+import concretePanelInsp03 from "../assets/images/inspiration/concrete-panel-03.webp";
+import bespokeInsp01 from "../assets/images/inspiration/bespoke-01.webp";
+import bespokeInsp02 from "../assets/images/inspiration/bespoke-02.webp";
+import bespokeInsp03 from "../assets/images/inspiration/bespoke-03.webp";
+import texturedMicrocement01 from "../assets/images/inspiration/textured-microcement-01.webp";
+import texturedMicrocement02 from "../assets/images/inspiration/textured-microcement-02.webp";
+import texturedMicrocement03 from "../assets/images/inspiration/textured-microcement-03.webp";
+import bespokeHero from "../assets/images/inspiration/bespoke-01.webp";
+import concretePanelHero from "../assets/images/inspiration/concrete-panel-01.webp";
 
 // Inspiration Showcase Component with Randomization
 function InspirationShowcase({ inspirationAnim }: { inspirationAnim: ReturnType<typeof useFadeIn> }) {
@@ -312,13 +312,8 @@ export default function PublicHome() {
   const heroTitle = site.heroTitle || t("home.heroTitle");
   const heroSubtitle = site.heroSubtitle || t("home.heroSubtitle");
 
-  // Hero animation
+  // Hero animation - no longer needed since we use CSS animation directly
   const heroRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (heroRef.current) {
-      heroRef.current.classList.add("animate-fade-in-up");
-    }
-  }, []);
 
   // Section animations
   const aboutAnim = useFadeIn({ delay: 200 });
@@ -355,12 +350,12 @@ export default function PublicHome() {
           <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-white/3 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
         </div>
 
-        <div ref={heroRef} className="relative max-w-7xl mx-auto px-4 sm:px-6 w-full pt-8 sm:pt-12 md:pt-16 pb-20 sm:pb-28 md:pb-32 opacity-0">
+        <div ref={heroRef} className="relative max-w-7xl mx-auto px-4 sm:px-6 w-full pt-8 sm:pt-12 md:pt-16 pb-20 sm:pb-28 md:pb-32 animate-fade-in-up">
           <div className="relative rounded-[36px] overflow-hidden border border-white/10 bg-black/20 backdrop-blur-md shadow-[0_40px_120px_-60px_rgba(0,0,0,0.75)]">
             <div className="absolute inset-0">
               <img
                 src={heroFacade}
-                alt="Arqon crew installing architectural concrete panels"
+                alt="Arcos crew installing architectural concrete panels"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/60 to-black/20" />
@@ -860,14 +855,14 @@ export default function PublicHome() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
-                quote: "The quality and precision of Arqon's UHPC panels exceeded our expectations. The installation was seamless and the final result is stunning.",
+                quote: "The quality and precision of Arcos's UHPC panels exceeded our expectations. The installation was seamless and the final result is stunning.",
                 author: "Sarah Chen",
                 role: "Project Architect",
                 company: "Modern Architecture Studio",
                 project: "Commercial Tower, Jakarta",
               },
               {
-                quote: "Working with Arqon transformed our design vision into reality. Their expertise in custom fabrication allowed us to create unique architectural elements.",
+                quote: "Working with Arcos transformed our design vision into reality. Their expertise in custom fabrication allowed us to create unique architectural elements.",
                 author: "Michael Rodriguez",
                 role: "Lead Designer",
                 company: "Urban Design Collective",
@@ -974,7 +969,7 @@ export default function PublicHome() {
                 </svg>
               </Link>
               <a
-                href="mailto:hello@arqon.com"
+                href="mailto:hello@arcos.com"
                 className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#2A2A2A] border-2 border-white/20 text-white text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-[#333333] hover:border-white/30 transition-all min-h-[52px] touch-manipulation hover-lift rounded-xl"
               >
                 {t("home.requestSample")}

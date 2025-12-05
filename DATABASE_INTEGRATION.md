@@ -13,14 +13,14 @@ The app now uses a PostgreSQL database backend instead of local storage. All dev
 
 ### Frontend Stores
 - ✅ **Web app** (`src/store.ts`): Now uses API calls instead of localStorage
-- ✅ **Mobile app** (`arqon-mobile/src/store.ts`): Now uses API calls instead of AsyncStorage
+- ✅ **Mobile app** (`arcos-mobile/src/store.ts`): Now uses API calls instead of AsyncStorage
 - ✅ **Web auth** (`src/state/auth.ts`): Now uses API authentication
-- ✅ **Mobile auth** (`arqon-mobile/src/store/auth.ts`): Now uses API authentication
+- ✅ **Mobile auth** (`arcos-mobile/src/store/auth.ts`): Now uses API authentication
 - ✅ **Login screens**: Updated to use email/password authentication
 
 ### API Clients
 - ✅ `src/lib/api.ts` - Web app API client
-- ✅ `arqon-mobile/src/lib/api.ts` - Mobile app API client
+- ✅ `arcos-mobile/src/lib/api.ts` - Mobile app API client
 
 ## Setup Instructions
 
@@ -47,7 +47,7 @@ sudo systemctl start postgresql
 psql postgres
 
 # Create database
-CREATE DATABASE arqon_db;
+CREATE DATABASE arcos_db;
 
 # Exit
 \q
@@ -63,7 +63,7 @@ cp .env.example .env
 
 Edit `backend/.env`:
 ```env
-DATABASE_URL=postgresql://your_username@localhost:5432/arqon_db
+DATABASE_URL=postgresql://your_username@localhost:5432/arcos_db
 JWT_SECRET=your-super-secret-jwt-key-change-this
 CORS_ORIGIN=http://localhost:5173,http://localhost:8081
 ```
@@ -78,7 +78,7 @@ npm run db:seed
 
 This creates:
 - All database tables
-- Admin user: `admin@arqon.com` / `admin123`
+- Admin user: `admin@arcos.com` / `admin123`
 
 ### 5. Start Backend Server
 
@@ -98,7 +98,7 @@ VITE_API_URL=http://localhost:3001/api
 ```
 
 **Mobile app:**
-Create `.env` file in `arqon-mobile`:
+Create `.env` file in `arcos-mobile`:
 ```env
 EXPO_PUBLIC_API_URL=http://localhost:3001/api
 ```
@@ -111,7 +111,7 @@ EXPO_PUBLIC_API_URL=http://192.168.2.189:3001/api
 ## Usage
 
 ### Login
-- **Email**: `admin@arqon.com`
+- **Email**: `admin@arcos.com`
 - **Password**: `admin123`
 
 ### Data Sync
@@ -143,7 +143,7 @@ For production:
 **Database connection failed:**
 - Check PostgreSQL is running: `psql -l`
 - Verify DATABASE_URL in `.env`
-- Check database exists: `psql -l | grep arqon_db`
+- Check database exists: `psql -l | grep arcos_db`
 
 **API not working:**
 - Check backend server is running: `curl http://localhost:3001/health`

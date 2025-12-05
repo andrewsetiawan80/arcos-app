@@ -29,6 +29,7 @@ router.get('/images', async (req: Request, res: Response) => {
         id,
         category_id as "categoryId",
         image_url as "imageUrl",
+        full_image_url as "fullImageUrl",
         title,
         title_id as "titleId",
         display_order as "displayOrder"
@@ -65,6 +66,7 @@ router.get('/images/:id', async (req: Request, res: Response) => {
         id,
         category_id as "categoryId",
         image_url as "imageUrl",
+        full_image_url as "fullImageUrl",
         title,
         title_id as "titleId",
         display_order as "displayOrder"

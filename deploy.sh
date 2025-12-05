@@ -52,7 +52,7 @@ echo -e "${YELLOW}⏳ Waiting for container to be healthy...${NC}"
 sleep 5
 
 # Check if container is running
-if docker ps | grep -q cretewerkz-app; then
+if docker ps | grep -q arcos-app; then
     echo -e "${GREEN}✓ Container is running${NC}"
 else
     echo -e "${RED}❌ Container failed to start. Check logs with: docker compose logs${NC}"
@@ -60,13 +60,13 @@ else
 fi
 
 # Get container IP or host IP
-CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cretewerkz-app 2>/dev/null || echo "localhost")
+CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' arcos-app 2>/dev/null || echo "localhost")
 
 echo ""
 echo -e "${GREEN}✅ Deployment successful!${NC}"
 echo ""
 echo "📋 Deployment Information:"
-echo "   - Container: cretewerkz-app"
+echo "   - Container: arcos-app"
 echo "   - Status: Running"
 echo "   - Access: http://localhost"
 echo "   - Health: http://localhost/health"

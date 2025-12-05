@@ -1,13 +1,31 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
 
 /**
  * Hook for scroll-triggered fade-in animations
+ * Now checks if element is already visible on mount to prevent jitter
  */
 export function useFadeIn(options?: { delay?: number; threshold?: number }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  // Check immediately on mount if element is in viewport (prevents flash for above-fold content)
+  useLayoutEffect(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+      if (isInViewport) {
+        // Small delay to let styles settle, then show
+        requestAnimationFrame(() => {
+          setIsVisible(true);
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
+    // Skip if already visible
+    if (isVisible) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -32,7 +50,7 @@ export function useFadeIn(options?: { delay?: number; threshold?: number }) {
         observer.unobserve(ref.current);
       }
     };
-  }, [options?.threshold]);
+  }, [options?.threshold, isVisible]);
 
   return { ref, isVisible };
 }

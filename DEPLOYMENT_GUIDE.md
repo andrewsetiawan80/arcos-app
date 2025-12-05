@@ -1,6 +1,6 @@
 # Full Stack Deployment Guide - Proxmox LXC with Docker
 
-Complete guide for deploying Arqon app (Frontend + Backend + Database) on Proxmox LXC container.
+Complete guide for deploying Arcos app (Frontend + Backend + Database) on Proxmox LXC container.
 
 ## Architecture
 
@@ -92,15 +92,15 @@ ssh root@192.168.2.189
 
 # Extract
 cd /opt
-mkdir -p cretewerkz-app
-cd cretewerkz-app
+mkdir -p arcos-app
+cd arcos-app
 tar xzf ../cretewerkz-full.tar.gz
 ```
 
 #### 4. Deploy on Server
 
 ```bash
-cd /opt/cretewerkz-app
+cd /opt/arcos-app
 
 # Start all services
 docker compose up -d
@@ -120,7 +120,7 @@ docker compose logs -f
 
 ## Default Credentials
 
-- **Email**: admin@arqon.com
+- **Email**: admin@arcos.com
 - **Password**: admin123
 
 ⚠️ **Change these immediately after first login!**
@@ -153,19 +153,19 @@ docker compose up -d
 
 ```bash
 # Backup
-docker compose exec postgres pg_dump -U arqon_user arqon_db > backup.sql
+docker compose exec postgres pg_dump -U arcos_user arcos_db > backup.sql
 
 # Restore
-docker compose exec -T postgres psql -U arqon_user arqon_db < backup.sql
+docker compose exec -T postgres psql -U arcos_user arcos_db < backup.sql
 ```
 
 ## Auto-Start on Boot
 
 ```bash
 # On server
-sudo cp cretewerkz-fullstack.service /etc/systemd/system/
-sudo systemctl enable cretewerkz-fullstack.service
-sudo systemctl start cretewerkz-fullstack.service
+sudo cp arcos-fullstack.service /etc/systemd/system/
+sudo systemctl enable arcos-fullstack.service
+sudo systemctl start arcos-fullstack.service
 ```
 
 ## Environment Variables
@@ -189,7 +189,7 @@ docker compose ps
 ### Database connection errors
 ```bash
 docker compose logs postgres
-docker compose exec postgres psql -U arqon_user -d arqon_db -c "SELECT 1;"
+docker compose exec postgres psql -U arcos_user -d arcos_db -c "SELECT 1;"
 ```
 
 ### Backend errors
@@ -230,5 +230,5 @@ netstat -tulpn | grep -E ':(80|3001|5432)'
 
 - **Web App**: http://your-server-ip
 - **API**: http://your-server-ip/api (proxied through Nginx)
-- **Admin Login**: admin@arqon.com / admin123
+- **Admin Login**: admin@arcos.com / admin123
 

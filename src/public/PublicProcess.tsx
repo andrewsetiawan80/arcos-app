@@ -1,8 +1,8 @@
 import React from "react";
-import mixDesign from "../assets/images/mix-design.jpg";
-import structuralPanels from "../assets/images/structural-panels.jpg";
-import workshopCloseup from "../assets/images/workshop-closeup.jpg";
-import landmarkInstallation from "../assets/images/landmark-installation.jpg";
+import mixDesign from "../assets/images/mix-design.webp";
+import structuralPanels from "../assets/images/structural-panels.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
+import landmarkInstallation from "../assets/images/landmark-installation.webp";
 
 const PHASES = [
   {
@@ -45,7 +45,7 @@ export default function PublicProcess() {
           <div className="absolute inset-0">
             <img
               src={workshopCloseup}
-              alt="Arqon fabrication process"
+              alt="Arcos fabrication process"
               className="w-full h-full object-cover"
             />
           </div>
@@ -250,7 +250,7 @@ export default function PublicProcess() {
       <section className="border-b border-white/10 bg-[#131313]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="text-center mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Why Arqon</p>
+            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Why Arcos</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
               Integrated expertise, seamless delivery
             </h2>

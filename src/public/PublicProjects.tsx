@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 import { load } from "../store";
 import type { Product, Category } from "../types";
-import landmarkInstallation from "../assets/images/landmark-installation.jpg";
-import mosaicInterior from "../assets/images/mosaic-interior.jpg";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.jpg";
-import structuralPanels from "../assets/images/structural-panels.jpg";
-import concreteInstallation from "../assets/images/concrete-installation.jpg";
-import concreteFinish from "../assets/images/concrete-finish.jpg";
-import concreteTexture2 from "../assets/images/concrete-texture-2.jpg";
-import concretePanelDetail from "../assets/images/concrete-panel-detail.jpg";
-import workshopCloseup from "../assets/images/workshop-closeup.jpg";
-import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.jpg";
+import landmarkInstallation from "../assets/images/landmark-installation.webp";
+import mosaicInterior from "../assets/images/mosaic-interior.webp";
+import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
+import structuralPanels from "../assets/images/structural-panels.webp";
+import concreteInstallation from "../assets/images/concrete-installation.webp";
+import concreteFinish from "../assets/images/concrete-finish.webp";
+import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
+import concretePanelDetail from "../assets/images/concrete-panel-detail.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
+import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
 
 type FeaturedProject = {
   id: string;
@@ -86,7 +86,7 @@ export default function PublicProjects() {
           <div className="absolute inset-0">
             <img
               src={landmarkInstallation}
-              alt="Arqon projects portfolio"
+              alt="Arcos projects portfolio"
               className="w-full h-full object-cover"
             />
           </div>

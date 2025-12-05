@@ -100,7 +100,7 @@ pct create 100 \
   --cores 2 \
   --memory 2048 \
   --swap 512 \
-  --hostname cretewerkz-app \
+  --hostname arcos-app \
   --password YourSecurePassword \
   --features nesting=1,keyctl=1
 

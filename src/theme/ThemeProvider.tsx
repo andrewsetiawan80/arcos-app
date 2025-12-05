@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState, useLayoutEffect } from "react";
 
 export type AppTheme = "concrete" | "dark" | "light"; // ✅ type export
 
@@ -9,15 +9,28 @@ type Ctx = {
 };
 
 const ThemeContext = createContext<Ctx | null>(null);
-const THEME_KEY = "arqon.theme";
+const THEME_KEY = "arcos.theme";
 
-export function ThemeProvider({ children, defaultTheme = "dark" as AppTheme }) {
-  const [theme, setTheme] = useState<AppTheme>(() => {
-    const saved = (localStorage.getItem(THEME_KEY) as AppTheme | null) || defaultTheme;
+// Read theme from DOM (set by inline script in index.html) to avoid flash
+function getInitialTheme(defaultTheme: AppTheme): AppTheme {
+  // First check what's already set on the document (from inline script)
+  const domTheme = document.documentElement.getAttribute("data-theme") as AppTheme | null;
+  if (domTheme && ["concrete", "dark", "light"].includes(domTheme)) {
+    return domTheme;
+  }
+  // Fallback to localStorage
+  const saved = localStorage.getItem(THEME_KEY) as AppTheme | null;
+  if (saved && ["concrete", "dark", "light"].includes(saved)) {
     return saved;
-  });
+  }
+  return defaultTheme;
+}
 
-  useEffect(() => {
+export function ThemeProvider({ children, defaultTheme = "concrete" as AppTheme }) {
+  const [theme, setTheme] = useState<AppTheme>(() => getInitialTheme(defaultTheme));
+
+  // Use useLayoutEffect to sync theme immediately before paint
+  useLayoutEffect(() => {
     localStorage.setItem(THEME_KEY, theme);
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);

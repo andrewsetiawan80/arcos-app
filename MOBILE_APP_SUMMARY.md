@@ -1,8 +1,8 @@
-# Arqon Mobile App - Development Summary
+# Arcos Mobile App - Development Summary
 
 ## 🎉 **Mobile App Successfully Created!**
 
-I've successfully built a complete React Native mobile application for your Arqon concrete management system. The mobile app shares the same backend logic and data structures as your web app, providing a consistent experience across platforms.
+I've successfully built a complete React Native mobile application for your Arcos concrete management system. The mobile app shares the same backend logic and data structures as your web app, providing a consistent experience across platforms.
 
 ## 📱 **What's Been Built**
 
@@ -26,7 +26,7 @@ I've successfully built a complete React Native mobile application for your Arqo
 ## 🏗️ **Project Structure**
 
 ```
-arqon-mobile/
+arcos-mobile/
 ├── src/
 │   ├── components/          # Reusable UI components
 │   ├── navigation/          # Navigation configuration
@@ -44,13 +44,13 @@ arqon-mobile/
 
 ### **Option 1: Using the Development Script**
 ```bash
-cd arqon-mobile
+cd arcos-mobile
 ./scripts/dev.sh
 ```
 
 ### **Option 2: Manual Commands**
 ```bash
-cd arqon-mobile
+cd arcos-mobile
 npm install
 npm start
 ```
@@ -161,7 +161,7 @@ The mobile app is designed to work alongside your web app:
 
 The mobile app is fully functional and ready for use. All core features from your web app have been implemented with mobile-optimized interfaces. The app follows React Native best practices and is ready for production deployment.
 
-**Your Arqon mobile app is now ready to use! 🎉**
+**Your Arcos mobile app is now ready to use! 🎉**
 
 
 

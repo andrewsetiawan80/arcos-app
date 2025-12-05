@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Arcos",
+    "slug": "arcos-mobile",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/arcos-logo-transparent.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A1A1A"
+    },
+    "description": "Advanced Concrete Solutions - Mobile App",
+    "primaryColor": "#6b7280",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.arcos.mobile",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1A1A1A"
+      },
+      "edgeToEdgeEnabled": false,
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["INTERNET"]
+    },
+    "web": {
+      "favicon": "./assets/arcos-logo-transparent.png"
+    },
+    "plugins": [
+      "expo-font",
+      "./app.plugin.js"
+    ],
+    "extra": {
+      "enableLogging": true,
+      "logLevel": "debug",
+      "apiUrl": "http://192.168.2.189:3001/api",
+      "eas": {}
+
+    },
+    "owner": "andrewsetiawan"
+  }
+}

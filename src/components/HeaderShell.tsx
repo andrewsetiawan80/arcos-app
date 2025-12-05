@@ -26,7 +26,7 @@ export default function HeaderShell({ children, showTheme = true }: Props) {
           aria-label="Home"
         >
           <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-stone-400 to-amber-600" />
-          <div className="font-semibold text-sm tracking-wide">CRETEWERKZ</div>
+          <div className="font-semibold text-sm tracking-wide">ARCOS</div>
         </NavLink>
 
         {/* Middle navigation block */}

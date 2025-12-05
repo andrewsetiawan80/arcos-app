@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.jpg";
-import workshopCloseup from "../assets/images/workshop-closeup.jpg";
+import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import { api } from "../lib/api";
 
 interface Milestone {
@@ -86,7 +86,7 @@ export default function PublicAbout() {
           <div className="absolute inset-0">
             <img
               src={mosaicFacadeDetail}
-              alt="About Arqon"
+              alt="About Arcos"
               className="w-full h-full object-cover"
             />
           </div>
@@ -95,14 +95,14 @@ export default function PublicAbout() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
           <div className="max-w-3xl space-y-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              About Arqon
+              About Arcos
               <span className="h-px w-16 bg-white/20" />
             </p>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1]">
               Engineered concrete artistry for visionaries.
             </h1>
             <p className="text-gray-200 text-base sm:text-lg leading-relaxed">
-              Arqon formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to collapse
+              Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to collapse
               the gap between avant-garde design intent and construction reality.
             </p>
           </div>
@@ -113,7 +113,7 @@ export default function PublicAbout() {
         <div className="space-y-10">
           <div className="space-y-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              About Arqon
+              About Arcos
               <span className="h-px w-16 bg-white/20" />
             </p>
             <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
@@ -167,7 +167,7 @@ export default function PublicAbout() {
           <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-[0_40px_120px_-60px_rgba(0,0,0,0.8)]">
             <img
               src={mosaicFacadeDetail}
-              alt="Arqon fabrication team preparing UHPC panels"
+              alt="Arcos fabrication team preparing UHPC panels"
               className="w-full h-[480px] object-cover"
               loading="lazy"
             />
@@ -202,7 +202,7 @@ export default function PublicAbout() {
           <div className="rounded-[32px] overflow-hidden border border-white/10 shadow-[0_30px_90px_-50px_rgba(0,0,0,0.7)]">
             <img
               src={workshopCloseup}
-              alt="Arqon laboratory engineers testing concrete mixes"
+              alt="Arcos laboratory engineers testing concrete mixes"
               className="w-full h-64 object-cover"
               loading="lazy"
             />
@@ -370,7 +370,7 @@ export default function PublicAbout() {
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold">Signature Systems</p>
                   <p className="mt-2 text-sm text-gray-200">
-                    Arqon UHPC-X, GFRC-Aero, and Microveil surfaces engineered for bespoke interiors and exterior envelopes.
+                    Arcos UHPC-X, GFRC-Aero, and Microveil surfaces engineered for bespoke interiors and exterior envelopes.
                   </p>
                 </div>
                 <div>

@@ -155,6 +155,7 @@ const migrations = [
     id SERIAL PRIMARY KEY,
     category_id VARCHAR(50) REFERENCES inspiration_categories(id) ON DELETE CASCADE,
     image_url TEXT NOT NULL,
+    full_image_url TEXT,
     title VARCHAR(255) NOT NULL,
     title_id VARCHAR(255),
     display_order INTEGER DEFAULT 0,

@@ -7,7 +7,7 @@ set timeout 600
 set REMOTE_HOST "192.168.2.189"
 set REMOTE_USER "root"
 set REMOTE_PASS "Andrewis0380"
-set REMOTE_DIR "/opt/cretewerkz-app"
+set REMOTE_DIR "/opt/arcos-app"
 
 puts "🚀 Deploying Full Stack to Proxmox LXC"
 puts "======================================"
@@ -19,7 +19,7 @@ puts ""
 if {![file exists .env.production]} {
     puts "⚠️  .env.production not found. Creating from template..."
     set fp [open .env.production w]
-    puts $fp "DB_PASSWORD=arqon_secure_password_change_me"
+    puts $fp "DB_PASSWORD=arcos_secure_password_change_me"
     puts $fp "JWT_SECRET=your-super-secret-jwt-key-change-this-in-production-min-32-chars"
     puts $fp "CORS_ORIGIN=http://localhost:80,http://localhost,http://192.168.2.189"
     puts $fp "VITE_API_URL=http://localhost:3001/api"
@@ -59,8 +59,17 @@ if {[lindex $result 3] != 0} {
 }
 puts "✅ Backend built successfully"
 
+puts "📦 Copying WebP images to dist..."
+spawn bash -c "mkdir -p dist/assets/images/inspiration && cp src/assets/images/inspiration/*.webp dist/assets/images/inspiration/ 2>/dev/null && echo 'Copied WebP images' && ls dist/assets/images/inspiration/*.webp | wc -l | xargs echo 'WebP images in dist:'"
+expect {
+    timeout {
+        puts "⚠️  WebP copy timeout (may already exist)"
+    }
+    eof
+}
+
 puts "📦 Creating deployment package..."
-spawn bash -c "tar czf /tmp/cretewerkz-full-deploy.tar.gz --exclude='node_modules' --exclude='.git' dist/ backend/src/ backend/package.json backend/package-lock.json backend/tsconfig.json backend/Dockerfile backend/.dockerignore docker-compose.yml nginx.conf .env.production cretewerkz-fullstack.service 2>&1"
+spawn bash -c "tar czf /tmp/arcos-full-deploy.tar.gz --exclude='node_modules' --exclude='.git' dist/ backend/src/ backend/package.json backend/package-lock.json backend/tsconfig.json backend/Dockerfile backend/.dockerignore docker-compose.yml nginx.conf .env.production 2>&1 && echo 'Package created' && tar -tzf /tmp/arcos-full-deploy.tar.gz | grep 'dist/assets/images/inspiration.*webp' | wc -l | xargs echo 'WebP images in package:'"
 expect {
     timeout {
         puts "❌ Package creation timeout"
@@ -120,7 +129,7 @@ expect {
 }
 
 puts "📤 Transferring files to $REMOTE_HOST..."
-spawn scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /tmp/cretewerkz-full-deploy.tar.gz $REMOTE_USER@$REMOTE_HOST:/tmp/
+spawn scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /tmp/arcos-full-deploy.tar.gz $REMOTE_USER@$REMOTE_HOST:/tmp/
 expect {
     "password:" {
         send "$REMOTE_PASS\r"
@@ -134,7 +143,7 @@ expect {
 puts "✅ Files transferred"
 
 puts "🚀 Deploying on remote server..."
-set deploy_script "mkdir -p $REMOTE_DIR && cd $REMOTE_DIR && tar xzf /tmp/cretewerkz-full-deploy.tar.gz && rm /tmp/cretewerkz-full-deploy.tar.gz && docker stop cretewerkz-app 2>/dev/null || true && docker rm cretewerkz-app 2>/dev/null || true && docker compose --env-file .env.production down 2>/dev/null || true && docker compose --env-file .env.production up -d --build && sleep 15 && docker compose --env-file .env.production ps && echo '' && echo '✅ Deployment complete!' && echo 'Services running:' && echo '  🌐 Frontend:  http://$REMOTE_HOST' && echo '  🔌 Backend:   http://$REMOTE_HOST:3001' && echo '' && echo 'Default admin: admin@arqon.com / admin123'"
+    set deploy_script "mkdir -p $REMOTE_DIR && cd $REMOTE_DIR && tar xzf /tmp/arcos-full-deploy.tar.gz && rm /tmp/arcos-full-deploy.tar.gz && mkdir -p /opt/arcos-app/dist/assets/images && cp -r dist/assets/images/* /opt/arcos-app/dist/assets/images/ 2>/dev/null || true && cd backend && npm install --production && npm run build && cd .. && systemctl restart arcos-backend.service && systemctl reload nginx 2>/dev/null || true && echo '' && echo '✅ Deployment complete!' && echo 'Services running:' && echo '  🌐 Frontend:  http://$REMOTE_HOST' && echo '  🔌 Backend:   http://$REMOTE_HOST:3001 (runs directly via systemd)' && echo '' && echo 'Default admin: admin@arcos.com / admin123'"
 spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $REMOTE_USER@$REMOTE_HOST $deploy_script
 
 expect "password:"
@@ -151,7 +160,7 @@ puts ""
 puts "✅ Remote deployment complete!"
 puts ""
 puts "Access your app at: http://$REMOTE_HOST"
-puts "Default admin: admin@arqon.com / admin123"
+puts "Default admin: admin@arcos.com / admin123"
 puts ""
 puts "To view logs on server:"
 puts "  ssh $REMOTE_USER@$REMOTE_HOST 'cd $REMOTE_DIR && docker compose logs -f'"
