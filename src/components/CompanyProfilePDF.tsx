@@ -34,7 +34,7 @@ const COLORS = {
   black: '#232323',
   gray: '#353535',
   white: '#ffffff',
-  textMuted: 'rgba(255,255,255,0.6)',
+  textMuted: '#999999',
 };
 
 // Create styles following brand guidelines
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   pageHeader: {
     marginBottom: 25,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
+    borderBottomColor: COLORS.gray,
     paddingBottom: 12,
     display: 'flex',
     flexDirection: 'row',
@@ -194,20 +194,27 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 10,
     lineHeight: 1.7,
-    color: 'rgba(255,255,255,0.85)',
+    color: COLORS.textMuted,
     marginBottom: 12,
   },
   bodyTextSmall: {
     fontSize: 9,
     lineHeight: 1.6,
-    color: 'rgba(255,255,255,0.75)',
+    color: COLORS.textMuted,
   },
 
-  // Layout components
+  // Layout components - NO gap property (causes green lines in react-pdf)
   twoColumn: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 25,
+  },
+  columnLeft: {
+    flex: 1,
+    marginRight: 12,
+  },
+  columnRight: {
+    flex: 1,
+    marginLeft: 12,
   },
   column: {
     flex: 1,
@@ -218,11 +225,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   boxLight: {
-    backgroundColor: 'rgba(255,255,255,0.04)',
+    backgroundColor: COLORS.gray,
     padding: 18,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
   },
   
   // Image styles
@@ -239,22 +244,31 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   
-  // Grid layouts
+  // Grid layouts - using margins instead of gap
   grid2: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
   },
-  gridItem2: {
+  gridItem2Left: {
     width: '48%',
+    marginRight: '2%',
+    marginBottom: 12,
+  },
+  gridItem2Right: {
+    width: '48%',
+    marginLeft: '2%',
+    marginBottom: 12,
   },
   grid4: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 10,
   },
   gridItem4: {
+    flex: 1,
+    marginRight: 8,
+  },
+  gridItem4Last: {
     flex: 1,
   },
 
@@ -267,7 +281,7 @@ const styles = StyleSheet.create({
   listBullet: {
     width: 5,
     height: 5,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: COLORS.textMuted,
     borderRadius: 2,
     marginRight: 10,
     marginTop: 4,
@@ -275,7 +289,7 @@ const styles = StyleSheet.create({
   listText: {
     flex: 1,
     fontSize: 9,
-    color: 'rgba(255,255,255,0.8)',
+    color: COLORS.textMuted,
   },
 
   // Metrics/stats
@@ -283,7 +297,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
+    borderBottomColor: COLORS.gray,
   },
   metricValue: {
     fontFamily: 'Helvetica-Bold',
@@ -309,7 +323,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.1)',
+    borderTopColor: COLORS.gray,
     paddingTop: 12,
   },
   footerLogo: {
@@ -359,14 +373,12 @@ const CompanyProfileDocument = () => (
     {/* Cover Page with Hero Image */}
     <Page size="A4" style={styles.page}>
       <View style={styles.coverPage}>
-        {/* Hero Image */}
         <View style={styles.coverImageSection}>
           <Image src={heroFacade} style={styles.coverImage} />
           <View style={styles.coverOverlay} />
           <ArcosLogoPDF />
         </View>
         
-        {/* Title Section */}
         <View style={styles.coverContent}>
           <Text style={styles.coverLabel}>Company Profile 2025</Text>
           <Text style={styles.coverTitle}>
@@ -378,7 +390,6 @@ const CompanyProfileDocument = () => (
           </Text>
         </View>
         
-        {/* Stats Footer */}
         <View style={styles.coverFooter}>
           <View style={styles.coverStat}>
             <Text style={styles.coverStatValue}>2025</Text>
@@ -400,7 +411,7 @@ const CompanyProfileDocument = () => (
       </View>
     </Page>
 
-    {/* Page 2: About Us with Image */}
+    {/* Page 2: About Us */}
     <Page size="A4" style={[styles.page, styles.contentPage]}>
       <View style={styles.pageHeader}>
         <Text style={styles.pageNumber}>About Arcos</Text>
@@ -414,7 +425,7 @@ const CompanyProfileDocument = () => (
       <Text style={styles.heading1}>Collapsing the gap between design and reality</Text>
       
       <View style={styles.twoColumn}>
-        <View style={styles.column}>
+        <View style={styles.columnLeft}>
           <Text style={styles.bodyText}>
             Arcos formed in 2025 when a collective of materials scientists, architects, 
             and fabrication engineers set out to collapse the gap between avant-garde 
@@ -426,7 +437,7 @@ const CompanyProfileDocument = () => (
             delivered through one accountable partner.
           </Text>
         </View>
-        <View style={styles.column}>
+        <View style={styles.columnRight}>
           <View style={styles.box}>
             <Text style={styles.heading3}>Material Lab</Text>
             <Text style={styles.bodyTextSmall}>
@@ -447,7 +458,7 @@ const CompanyProfileDocument = () => (
       <PageFooter pageNum={2} />
     </Page>
 
-    {/* Page 3: Services with Images */}
+    {/* Page 3: Services */}
     <Page size="A4" style={[styles.page, styles.contentPage]}>
       <View style={styles.pageHeader}>
         <Text style={styles.pageNumber}>Our Services</Text>
@@ -459,7 +470,7 @@ const CompanyProfileDocument = () => (
       <Text style={styles.heading1}>Full-spectrum concrete innovation</Text>
       
       <View style={[styles.grid2, { marginTop: 15 }]}>
-        <View style={styles.gridItem2}>
+        <View style={styles.gridItem2Left}>
           <Image src={microcementInterior} style={styles.smallImage} />
           <View style={styles.boxLight}>
             <Text style={styles.heading3}>Seamless Microcement</Text>
@@ -469,7 +480,7 @@ const CompanyProfileDocument = () => (
           </View>
         </View>
         
-        <View style={styles.gridItem2}>
+        <View style={styles.gridItem2Right}>
           <Image src={concretePanelDetail} style={styles.smallImage} />
           <View style={styles.boxLight}>
             <Text style={styles.heading3}>Architectural Panels</Text>
@@ -479,7 +490,7 @@ const CompanyProfileDocument = () => (
           </View>
         </View>
         
-        <View style={styles.gridItem2}>
+        <View style={styles.gridItem2Left}>
           <Image src={mosaicFacade} style={styles.smallImage} />
           <View style={styles.boxLight}>
             <Text style={styles.heading3}>3D Concrete Tiles</Text>
@@ -489,7 +500,7 @@ const CompanyProfileDocument = () => (
           </View>
         </View>
         
-        <View style={styles.gridItem2}>
+        <View style={styles.gridItem2Right}>
           <Image src={microcementWalls} style={styles.smallImage} />
           <View style={styles.boxLight}>
             <Text style={styles.heading3}>Polished Concrete</Text>
@@ -503,7 +514,7 @@ const CompanyProfileDocument = () => (
       <PageFooter pageNum={3} />
     </Page>
 
-    {/* Page 4: Process with Image */}
+    {/* Page 4: Process */}
     <Page size="A4" style={[styles.page, styles.contentPage]}>
       <View style={styles.pageHeader}>
         <Text style={styles.pageNumber}>Our Process</Text>
@@ -511,10 +522,10 @@ const CompanyProfileDocument = () => (
       </View>
       
       <View style={styles.twoColumn}>
-        <View style={styles.column}>
+        <View style={styles.columnLeft}>
           <Image src={workshopCloseup} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
         </View>
-        <View style={styles.column}>
+        <View style={styles.columnRight}>
           <View style={styles.accentBar} />
           <Text style={styles.sectionLabel}>How We Work</Text>
           <Text style={styles.heading2}>From concept to completion</Text>
@@ -550,7 +561,7 @@ const CompanyProfileDocument = () => (
           </Text>
         </View>
         
-        <View style={[styles.gridItem4, styles.box]}>
+        <View style={[styles.gridItem4Last, styles.box]}>
           <Text style={[styles.sectionLabel, { marginBottom: 4 }]}>04</Text>
           <Text style={styles.heading3}>Installation</Text>
           <Text style={styles.bodyTextSmall}>
@@ -562,7 +573,7 @@ const CompanyProfileDocument = () => (
       <View style={[styles.boxLight, { marginTop: 15 }]}>
         <Text style={styles.heading3}>Why Arcos</Text>
         <View style={[styles.grid2, { marginTop: 8 }]}>
-          <View style={styles.gridItem2}>
+          <View style={styles.gridItem2Left}>
             <View style={styles.listItem}>
               <View style={styles.listBullet} />
               <Text style={styles.listText}>One partner from concept to handover</Text>
@@ -572,7 +583,7 @@ const CompanyProfileDocument = () => (
               <Text style={styles.listText}>Material science expertise</Text>
             </View>
           </View>
-          <View style={styles.gridItem2}>
+          <View style={styles.gridItem2Right}>
             <View style={styles.listItem}>
               <View style={styles.listBullet} />
               <Text style={styles.listText}>Certified installation teams</Text>
@@ -602,23 +613,23 @@ const CompanyProfileDocument = () => (
       <Text style={styles.heading1}>Built to endure</Text>
       
       <View style={[styles.twoColumn, { marginTop: 15 }]}>
-        <View style={styles.column}>
+        <View style={styles.columnLeft}>
           <View style={styles.metric}>
-            <Text style={styles.metricValue}>≥120 MPa</Text>
+            <Text style={styles.metricValue}>120+ MPa</Text>
             <Text style={styles.metricLabel}>Compressive Strength</Text>
           </View>
           <View style={styles.metric}>
-            <Text style={styles.metricValue}>≥25 MPa</Text>
+            <Text style={styles.metricValue}>25+ MPa</Text>
             <Text style={styles.metricLabel}>Flexural Strength</Text>
           </View>
           <View style={styles.metric}>
-            <Text style={styles.metricValue}>≤3%</Text>
+            <Text style={styles.metricValue}>3% max</Text>
             <Text style={styles.metricLabel}>Water Absorption</Text>
           </View>
         </View>
-        <View style={styles.column}>
+        <View style={styles.columnRight}>
           <View style={styles.metric}>
-            <Text style={styles.metricValue}>-30 to +80°C</Text>
+            <Text style={styles.metricValue}>-30 to +80C</Text>
             <Text style={styles.metricLabel}>Thermal Tolerance</Text>
           </View>
           <View style={styles.metric}>
@@ -635,13 +646,13 @@ const CompanyProfileDocument = () => (
       <View style={[styles.boxLight, { marginTop: 10 }]}>
         <Text style={styles.heading3}>Quality Assurance</Text>
         <View style={[styles.grid2, { marginTop: 8 }]}>
-          <View style={styles.gridItem2}>
-            <Text style={styles.bodyTextSmall}>• Tolerance: ±1mm</Text>
-            <Text style={styles.bodyTextSmall}>• Flatness: ≤2mm/3m</Text>
+          <View style={styles.gridItem2Left}>
+            <Text style={styles.bodyTextSmall}>Tolerance: +/-1mm</Text>
+            <Text style={styles.bodyTextSmall}>Flatness: 2mm/3m max</Text>
           </View>
-          <View style={styles.gridItem2}>
-            <Text style={styles.bodyTextSmall}>• Color ΔE: ≤ 2</Text>
-            <Text style={styles.bodyTextSmall}>• Defects: less than 0.1%</Text>
+          <View style={styles.gridItem2Right}>
+            <Text style={styles.bodyTextSmall}>Color Delta E: 2 max</Text>
+            <Text style={styles.bodyTextSmall}>Defects: 0.1% max</Text>
           </View>
         </View>
       </View>
@@ -649,17 +660,15 @@ const CompanyProfileDocument = () => (
       <PageFooter pageNum={5} />
     </Page>
 
-    {/* Page 6: Contact with Image */}
+    {/* Page 6: Contact */}
     <Page size="A4" style={styles.page}>
       <View style={styles.coverPage}>
-        {/* Contact Image */}
         <View style={styles.coverImageSection}>
           <Image src={microcementInterior} style={styles.coverImage} />
           <View style={styles.coverOverlay} />
           <ArcosLogoPDF />
         </View>
         
-        {/* CTA Section */}
         <View style={styles.coverContent}>
           <Text style={styles.coverLabel}>Get In Touch</Text>
           <Text style={styles.coverTitle}>
@@ -671,7 +680,6 @@ const CompanyProfileDocument = () => (
           </Text>
         </View>
         
-        {/* Contact Footer */}
         <View style={[styles.coverFooter, { backgroundColor: COLORS.black }]}>
           <View>
             <Text style={styles.coverLabel}>Email</Text>
@@ -699,12 +707,9 @@ export function CompanyProfileDownloadButton({ className = '' }: { className?: s
     if (isGenerating) return;
     
     setIsGenerating(true);
-    console.log('Starting PDF generation...');
     
     try {
       const blob = await pdf(<CompanyProfileDocument />).toBlob();
-      console.log('PDF blob created, size:', blob.size);
-      
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -713,13 +718,10 @@ export function CompanyProfileDownloadButton({ className = '' }: { className?: s
       document.body.appendChild(link);
       link.click();
       
-      // Cleanup
       setTimeout(() => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }, 100);
-      
-      console.log('PDF download triggered');
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
