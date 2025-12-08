@@ -108,7 +108,7 @@ function InspirationShowcase({ inspirationAnim }: { inspirationAnim: ReturnType<
   }, [language]);
 
   return (
-    <section id="inspiration" className="border-b border-white/10 bg-[#0B0B0B]">
+    <section id="inspiration" className="border-b border-white/10 bg-[#353535]">
       <div ref={inspirationAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${inspirationAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
         <div className="text-center mb-12 space-y-4">
           <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.designInspiration")}</p>
@@ -327,13 +327,13 @@ export default function PublicHome() {
   const contactAnim = useFadeIn({ delay: 700 });
 
   return (
-    <div className="bg-[#1A1A1A] text-white">
+    <div className="bg-[#232323] text-white">
       {/* ===== HERO ===== */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[90vh] flex items-center">
-        {/* Hero Background - Enhanced Multi-Layer */}
+        {/* Hero Background - Arcos Brand */}
         <div className="absolute inset-0">
           {/* Main Background Image */}
-          <div className="absolute inset-0 opacity-35">
+          <div className="absolute inset-0 opacity-30">
             <img
               src={heroFacade}
               alt="Architectural concrete installation"
@@ -341,24 +341,24 @@ export default function PublicHome() {
             />
           </div>
 
-          {/* Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/85 to-[#1A1A1A]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-transparent to-transparent" />
+          {/* Brand-compliant Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#232323] via-[#232323]/85 to-[#232323]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#232323] via-transparent to-transparent" />
 
-          {/* Animated Gradient Orbs for Depth */}
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-white/3 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
+          {/* Subtle depth elements - monochrome only */}
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#353535]/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#353535]/15 rounded-full blur-3xl" />
         </div>
 
         <div ref={heroRef} className="relative max-w-7xl mx-auto px-4 sm:px-6 w-full pt-8 sm:pt-12 md:pt-16 pb-20 sm:pb-28 md:pb-32 animate-fade-in-up">
-          <div className="relative rounded-[36px] overflow-hidden border border-white/10 bg-black/20 backdrop-blur-md shadow-[0_40px_120px_-60px_rgba(0,0,0,0.75)]">
+          <div className="relative rounded-[36px] overflow-hidden border border-white/10 bg-[#353535]/40 backdrop-blur-md shadow-[0_40px_120px_-60px_rgba(0,0,0,0.75)]">
             <div className="absolute inset-0">
               <img
                 src={heroFacade}
                 alt="Arcos crew installing architectural concrete panels"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/60 to-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#232323]/90 via-[#232323]/70 to-[#232323]/30" />
             </div>
 
             <div className="relative z-10 grid gap-10 lg:gap-12 lg:grid-cols-[1.15fr_0.9fr] items-center px-6 sm:px-10 md:px-12 py-14 sm:py-16 md:py-20">
@@ -389,7 +389,7 @@ export default function PublicHome() {
                   </Link>
                   <a
                     href="#contact"
-                    className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-black/40 border border-white/30 text-white text-sm sm:text-base font-bold uppercase tracking-[0.18em] hover:bg-black/25 hover:border-white/50 transition-all min-h-[52px] touch-manipulation hover-lift"
+                    className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#353535]/80 border border-white/30 text-white text-sm sm:text-base font-bold uppercase tracking-[0.18em] hover:bg-[#353535] hover:border-white/50 transition-all min-h-[52px] touch-manipulation hover-lift"
                   >
                     {t("home.getStarted")}
                     <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -477,7 +477,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== ABOUT OVERVIEW ===== */}
-      <section id="about" className="border-b border-white/10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.08),_transparent_55%)]">
+      <section id="about" className="border-b border-white/10 bg-[#232323]">
         <div ref={aboutAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${aboutAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.aboutTitle")}</p>
@@ -516,7 +516,7 @@ export default function PublicHome() {
           <div className="text-center mt-12">
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#2A2A2A] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#333333] transition-all min-h-[52px]"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#353535] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#232323] transition-all min-h-[52px]"
             >
               {t("home.learnMoreAboutUs")}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -528,7 +528,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== SERVICES OVERVIEW ===== */}
-      <section id="services" className="border-b border-white/10 bg-[#131313]">
+      <section id="services" className="border-b border-white/10 bg-[#353535]">
         <div ref={servicesAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${servicesAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.servicesTitle")}</p>
@@ -592,7 +592,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== FEATURED SERVICES DETAIL ===== */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div ref={servicesDetailAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${servicesDetailAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.featuredSolutions")}</p>
@@ -697,7 +697,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== PROCESS OVERVIEW ===== */}
-      <section id="process" className="border-b border-white/10 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.06),_transparent_65%)]">
+      <section id="process" className="border-b border-white/10 bg-[#353535]">
         <div ref={processAnim.ref} className={`max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${processAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -751,7 +751,7 @@ export default function PublicHome() {
           <div className="text-center">
             <Link
               to="/process"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#2A2A2A] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#333333] transition-all min-h-[52px]"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#232323] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#353535] transition-all min-h-[52px]"
             >
               Learn More About Our Process
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -763,7 +763,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== PROJECTS PREVIEW ===== */}
-      <section id="projects" className="border-b border-white/10 bg-[#131313]">
+      <section id="projects" className="border-b border-white/10 bg-[#232323]">
         <div ref={projectsAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${projectsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.featuredWork")}</p>
@@ -795,7 +795,7 @@ export default function PublicHome() {
       <InspirationShowcase inspirationAnim={inspirationAnim} />
 
       {/* ===== TECHNICAL SPECIFICATIONS PREVIEW ===== */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div ref={technicalAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${technicalAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.materialPerformance")}</p>
@@ -830,7 +830,7 @@ export default function PublicHome() {
           <div className="text-center">
             <Link
               to="/about#specifications"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#2A2A2A] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#333333] transition-all min-h-[52px]"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#353535] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#232323] transition-all min-h-[52px]"
             >
               {t("home.viewFullSpecifications")}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -842,7 +842,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section id="testimonials" className="border-b border-white/10 bg-[#1A1A1A]">
+      <section id="testimonials" className="border-b border-white/10 bg-[#353535]">
         <div ref={testimonialsAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 md:py-28 ${testimonialsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="text-center mb-12 sm:mb-16">
             <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold mb-3 sm:mb-4">
@@ -878,7 +878,7 @@ export default function PublicHome() {
             ].map((testimonial, i) => (
               <div
                 key={i}
-                className={`group border border-white/10 bg-[#2A2A2A] p-6 sm:p-8 hover:border-white/30 transition-all hover-lift rounded-xl shadow-lg shadow-black/20 ${testimonialsAnim.isVisible ? `animate-fade-in-up stagger-${Math.min(i + 1, 6)}` : "opacity-0"}`}
+                className={`group border border-white/10 bg-[#232323] p-6 sm:p-8 hover:border-white/30 transition-all hover-lift rounded-xl shadow-lg shadow-black/20 ${testimonialsAnim.isVisible ? `animate-fade-in-up stagger-${Math.min(i + 1, 6)}` : "opacity-0"}`}
                 style={{ animationDelay: testimonialsAnim.isVisible ? `${i * 0.15}s` : "0s" }}
               >
                 <div className="mb-5">
@@ -902,7 +902,7 @@ export default function PublicHome() {
       </section>
 
       {/* ===== STATS ===== */}
-      <section className="border-b border-white/10 bg-[#1A1A1A] relative overflow-hidden">
+      <section className="border-b border-white/10 bg-[#232323] relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
@@ -944,7 +944,7 @@ export default function PublicHome() {
             className="w-full h-full object-cover parallax-bg"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-[#1A1A1A]" />
+          <div className="absolute inset-0 bg-[#232323]" />
         </div>
 
         <div ref={contactAnim.ref} className={`relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 md:py-28 ${contactAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
@@ -970,7 +970,7 @@ export default function PublicHome() {
               </Link>
               <a
                 href="mailto:hello@arcos.com"
-                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#2A2A2A] border-2 border-white/20 text-white text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-[#333333] hover:border-white/30 transition-all min-h-[52px] touch-manipulation hover-lift rounded-xl"
+                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#353535] border-2 border-white/20 text-white text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-[#232323] hover:border-white/30 transition-all min-h-[52px] touch-manipulation hover-lift rounded-xl"
               >
                 {t("home.requestSample")}
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

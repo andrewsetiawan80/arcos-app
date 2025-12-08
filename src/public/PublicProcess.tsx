@@ -37,7 +37,7 @@ const PHASES = [
 
 export default function PublicProcess() {
   return (
-    <div className="bg-[#1A1A1A] text-white min-h-screen">
+    <div className="bg-[#232323] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
         {/* Hero Background */}
@@ -49,7 +49,7 @@ export default function PublicProcess() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/70 via-[#1A1A1A]/50 to-[#1A1A1A]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
         </div>
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
           <div className="text-center mb-16 space-y-4">
@@ -65,7 +65,7 @@ export default function PublicProcess() {
       </section>
 
       {/* Process Steps */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {PHASES.map((phase) => (
@@ -104,7 +104,7 @@ export default function PublicProcess() {
       </section>
 
       {/* Detailed Workflow */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Detailed Workflow</p>
@@ -194,7 +194,7 @@ export default function PublicProcess() {
       </section>
 
       {/* Quality Assurance */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -247,7 +247,7 @@ export default function PublicProcess() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Why Arcos</p>

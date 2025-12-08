@@ -201,9 +201,9 @@ export default function Layout() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1A1A1A] text-white">
+    <div className="min-h-screen flex flex-col bg-[#232323] text-white">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-[#1A1A1A]/95 backdrop-blur border-b border-white/10">
+      <div className="sticky top-0 z-40 bg-[#232323]/95 backdrop-blur border-b border-white/10">
         <header className="relative h-20 max-w-7xl mx-auto px-6 flex items-center justify-between gap-6">
           {/* Brand → internal home (Arcos logo) */}
           <NavLink to="/app/dashboard" className="flex items-center hover:opacity-90 transition-opacity duration-300">
@@ -261,7 +261,7 @@ export default function Layout() {
           <div className="hidden md:flex items-center ml-auto mr-6">
             <button
               onClick={() => setCommandOpen(true)}
-              className="group w-72 px-4 py-2.5 text-sm bg-[#2A2A2A] border border-white/10 rounded-lg text-gray-400 hover:border-white/20 hover:text-white hover:bg-[#333333] transition-all flex items-center gap-2 hover-lift"
+              className="group w-72 px-4 py-2.5 text-sm bg-[#353535] border border-white/10 rounded-lg text-gray-400 hover:border-white/20 hover:text-white hover:bg-[#232323] transition-all flex items-center gap-2 hover-lift"
             >
               <svg className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -285,7 +285,7 @@ export default function Layout() {
             </button>
             <NavLink
               to="/"
-              className="hidden sm:block text-xs uppercase tracking-wider font-bold px-4 py-2 bg-[#2A2A2A] border border-white/10 hover:bg-[#333333] transition-colors text-gray-300 hover:text-white"
+              className="hidden sm:block text-xs uppercase tracking-wider font-bold px-4 py-2 bg-[#353535] border border-white/10 hover:bg-[#232323] transition-colors text-gray-300 hover:text-white"
             >
               Public Site
             </NavLink>
@@ -314,7 +314,7 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-[#1A1A1A]">
+      <footer className="border-t border-white/10 bg-[#232323]">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-6 text-sm text-gray-400">

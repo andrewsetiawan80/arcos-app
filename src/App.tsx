@@ -50,13 +50,13 @@ import { AppStateProvider } from "./utils/createAppStateContext";
 // ===== 404s =====
 function PublicNotFound() {
   return (
-    <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+    <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
       <div className="max-w-7xl mx-auto px-6 py-20 text-center">
         <h1 className="text-7xl sm:text-8xl font-black uppercase mb-6">404</h1>
         <p className="text-gray-400 mb-8 text-lg">Sorry, the page you're looking for doesn't exist.</p>
         <Link 
           to="/" 
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2A2A2A] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors border border-white/10"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#353535] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10"
         >
           Back to Home
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

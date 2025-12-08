@@ -102,7 +102,7 @@ export default function Materials() {
               Save Materials
             </button>
             <button 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#2A2A2A] border border-white/10 text-white text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#353535] border border-white/10 text-white text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors"
               onClick={add}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,13 +115,13 @@ export default function Materials() {
       </header>
 
       <section>
-        <div className="border border-white/10 bg-[#2A2A2A]">
+        <div className="border border-white/10 bg-[#353535]">
           <div className="p-6 border-b border-white/10">
             <h2 className="text-lg font-black uppercase text-white">Material Database</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-[#1A1A1A]">
+              <thead className="bg-[#232323]">
                 <tr>
                   <th className="text-xs uppercase tracking-wider text-gray-400 font-bold py-4 px-6 border-b border-white/10">Material Name</th>
                   <th className="text-xs uppercase tracking-wider text-gray-400 font-bold py-4 px-6 border-b border-white/10">Density (kg/m³)</th>
@@ -132,10 +132,10 @@ export default function Materials() {
               </thead>
           <tbody>
               {mats.map(m => (
-                <tr key={m.id} className="hover:bg-[#1A1A1A] transition-colors">
+                <tr key={m.id} className="hover:bg-[#232323] transition-colors">
                   <td className="py-4 px-6 border-b border-white/10">
                     <input
-                      className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/20 focus:bg-[#2A2A2A] transition-colors"
+                      className="w-full bg-[#232323] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/20 focus:bg-[#353535] transition-colors"
                       value={m.name}
                       onChange={e => update(m.id, { name: e.target.value })}
                       placeholder="Material name"
@@ -143,7 +143,7 @@ export default function Materials() {
                   </td>
                   <td className="py-4 px-6 border-b border-white/10">
                     <NumberField
-                      className="w-40 bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/20 focus:bg-[#2A2A2A] transition-colors"
+                      className="w-40 bg-[#232323] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/20 focus:bg-[#353535] transition-colors"
                       value={m.densityKgM3}
                       onChange={(v) => update(m.id, { densityKgM3: v ?? undefined })}
                       step="1"
@@ -152,7 +152,7 @@ export default function Materials() {
                   </td>
                   <td className="py-4 px-6 border-b border-white/10">
                     <NumberField
-                      className="w-40 bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/20 focus:bg-[#2A2A2A] transition-colors"
+                      className="w-40 bg-[#232323] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/20 focus:bg-[#353535] transition-colors"
                       value={m.pricePerKg}
                       onChange={(v) => update(m.id, { pricePerKg: v ?? undefined })}
                       step="0.01"
@@ -161,7 +161,7 @@ export default function Materials() {
                   </td>
                   <td className="py-4 px-6 border-b border-white/10">
                     <select
-                      className="w-32 bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white/20 focus:bg-[#2A2A2A] transition-colors"
+                      className="w-32 bg-[#232323] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white/20 focus:bg-[#353535] transition-colors"
                       value={m.priceCurrency || "IDR"}
                     onChange={e => update(m.id, { priceCurrency: e.target.value as Currency })}
                   >

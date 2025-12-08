@@ -21,7 +21,7 @@ export default function Modal({ open, onClose, title, children }: Props) {
         onClick={onClose}
       />
       {/* Panel */}
-      <div className="relative w-[92vw] max-w-lg border border-white/10 bg-[#1A1A1A] p-6 shadow-2xl">
+      <div className="relative w-[92vw] max-w-lg border border-white/10 bg-[#232323] p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-black uppercase tracking-wide">{title}</h3>
           <button

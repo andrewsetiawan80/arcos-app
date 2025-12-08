@@ -78,7 +78,7 @@ export default function PublicProjects() {
   const categoryName = (slug?: string) => categories.find((c) => c.slug === slug)?.name;
 
   return (
-    <div className="bg-[#131313] text-white min-h-screen">
+    <div className="bg-[#353535] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
         {/* Hero Background */}
@@ -90,7 +90,7 @@ export default function PublicProjects() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/70 via-[#131313]/50 to-[#131313]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#353535]/70 via-[#353535]/50 to-[#353535]/70" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
@@ -119,7 +119,7 @@ export default function PublicProjects() {
       </section>
 
       {/* Projects Grid */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {display.map((project, index) => {
@@ -173,7 +173,7 @@ export default function PublicProjects() {
       </section>
 
       {/* Project Solutions Section - Moved from Home */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -255,7 +255,7 @@ export default function PublicProjects() {
       </section>
 
              {/* Project Types & Applications */}
-             <section className="border-b border-white/10 bg-[#131313]">
+             <section className="border-b border-white/10 bg-[#353535]">
                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
                  <div className="mb-12 space-y-4">
                    <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -320,7 +320,7 @@ export default function PublicProjects() {
              </section>
 
              {/* CTA Section */}
-             <section className="bg-[#0B0B0B]">
+             <section className="bg-[#232323]">
                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
                  <div className="text-center space-y-6">
                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
@@ -341,7 +341,7 @@ export default function PublicProjects() {
                      </Link>
                      <Link
                        to="/catalog"
-                       className="inline-flex items-center gap-2 px-8 py-4 bg-[#2A2A2A] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#333333] transition-all min-h-[52px]"
+                       className="inline-flex items-center gap-2 px-8 py-4 bg-[#353535] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#232323] transition-all min-h-[52px]"
                      >
                        View Catalog
                      </Link>

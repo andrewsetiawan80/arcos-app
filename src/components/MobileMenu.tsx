@@ -48,7 +48,7 @@ export default function MobileMenu({
       {/* Drawer - matching public menu style, slides from right */}
       <aside
         ref={panelRef}
-        className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-[#1A1A1A] border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-[#232323] border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${open ? 'translate-x-0' : 'translate-x-full'}`}
         role="dialog"
         aria-modal="true"
         aria-label="Menu"

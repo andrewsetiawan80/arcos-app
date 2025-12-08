@@ -86,7 +86,7 @@ export default function PublicFAQ() {
 
   if (loading) {
     return (
-      <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-gray-400">Loading FAQ...</p>
@@ -97,7 +97,7 @@ export default function PublicFAQ() {
 
   if (error) {
     return (
-      <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">Error: {error}</p>
           <button
@@ -112,7 +112,7 @@ export default function PublicFAQ() {
   }
 
   return (
-    <div className="bg-[#1A1A1A] text-white min-h-screen">
+    <div className="bg-[#232323] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[50vh] flex items-center">
         <div className="absolute inset-0">
@@ -123,7 +123,7 @@ export default function PublicFAQ() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/80 via-[#131313]/60 to-[#131313]/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#353535]/80 via-[#353535]/60 to-[#353535]/80" />
         </div>
         <div ref={heroAnim.ref} className={`relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full ${heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
           <div className="max-w-3xl space-y-4">
@@ -145,7 +145,7 @@ export default function PublicFAQ() {
       </section>
 
       {/* Category Filter */}
-      <section className="border-b border-white/10 bg-[#131313] sticky top-16 sm:top-20 z-20">
+      <section className="border-b border-white/10 bg-[#353535] sticky top-16 sm:top-20 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
@@ -166,7 +166,7 @@ export default function PublicFAQ() {
       </section>
 
       {/* FAQ Content */}
-      <section className="bg-[#131313]">
+      <section className="bg-[#353535]">
         <div ref={contentAnim.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 transition-opacity duration-500 ${contentAnim.isVisible ? "animate-fade-in-up opacity-100" : "opacity-0"}`}>
           {filteredItems.length === 0 ? (
             <div className="text-center py-20">
@@ -177,7 +177,7 @@ export default function PublicFAQ() {
               {filteredItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-[#1A1A1A] border border-white/10 rounded-2xl p-6 sm:p-8 hover:border-white/20 transition-all"
+                  className="bg-[#232323] border border-white/10 rounded-2xl p-6 sm:p-8 hover:border-white/20 transition-all"
                 >
                   <h3 className="text-xl sm:text-2xl font-bold mb-4">
                     {getQuestion(item.question, item.questionId)}

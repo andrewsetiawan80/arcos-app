@@ -22,7 +22,7 @@ function Action({ to, label, icon, primary = false }: { to: string; label: strin
       className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all hover-lift ${
         primary
           ? "bg-white text-black hover:bg-gray-100 shadow-lg shadow-white/10"
-          : "bg-[#2A2A2A] border border-white/10 text-white hover:bg-[#333333] hover:border-white/20"
+          : "bg-[#353535] border border-white/10 text-white hover:bg-[#232323] hover:border-white/20"
       }`}
     >
       <span className="group-hover:scale-110 transition-transform duration-300">{icon}</span>
@@ -36,7 +36,7 @@ function Action({ to, label, icon, primary = false }: { to: string; label: strin
 
 function Stat({ label, value, icon }: { label: string; value: number | string; icon?: React.ReactNode }) {
   return (
-    <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:bg-[#333333] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
+    <div className="group border border-white/10 bg-[#353535] p-6 hover:bg-[#232323] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
       {/* Subtle gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
@@ -62,7 +62,7 @@ function Card({
 }) {
   const isEmpty = React.Children.count(children) === 0 || (Array.isArray(children) && children.length === 0);
   return (
-    <div className="border border-white/10 bg-[#2A2A2A] p-6 hover:border-white/20 transition-all hover-lift">
+    <div className="border border-white/10 bg-[#353535] p-6 hover:border-white/20 transition-all hover-lift">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
         <h3 className="text-lg font-black uppercase text-white">{title}</h3>
         {action}
@@ -93,13 +93,13 @@ function ListItem({
     <li>
       <Link
         to={to}
-        className="group flex items-center justify-between gap-3 p-3 bg-[#1A1A1A] border border-white/10 hover:bg-[#2A2A2A] hover:border-white/20 transition-all hover-lift"
+        className="group flex items-center justify-between gap-3 p-3 bg-[#232323] border border-white/10 hover:bg-[#353535] hover:border-white/20 transition-all hover-lift"
       >
         <div className="truncate font-bold text-sm text-white group-hover:text-gray-100 transition-colors">{title}</div>
         {meta.length > 0 && (
           <div className="shrink-0 flex items-center gap-2">
             {meta.filter(Boolean).map((m, i) => (
-              <span key={i} className="whitespace-nowrap px-2 py-1 text-xs uppercase tracking-wider font-bold text-gray-400 border border-white/10 bg-[#2A2A2A] group-hover:bg-[#333333] group-hover:border-white/20 transition-all">
+              <span key={i} className="whitespace-nowrap px-2 py-1 text-xs uppercase tracking-wider font-bold text-gray-400 border border-white/10 bg-[#353535] group-hover:bg-[#232323] group-hover:border-white/20 transition-all">
                 {m}
               </span>
             ))}
@@ -125,7 +125,7 @@ function WorkflowCard({
   action: { to: string; label: string };
 }) {
   return (
-    <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:bg-[#333333] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
+    <div className="group border border-white/10 bg-[#353535] p-6 hover:bg-[#232323] hover:border-white/20 transition-all hover-lift relative overflow-hidden">
       {/* Subtle gradient accent */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
@@ -143,7 +143,7 @@ function WorkflowCard({
       </div>
       <Link
         to={action.to}
-        className="relative inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A1A] border border-white/10 text-sm font-bold uppercase tracking-wider text-white hover:bg-[#2A2A2A] hover:border-white/20 transition-all hover-lift"
+        className="relative inline-flex items-center gap-2 px-5 py-2.5 bg-[#232323] border border-white/10 text-sm font-bold uppercase tracking-wider text-white hover:bg-[#353535] hover:border-white/20 transition-all hover-lift"
       >
         {action.label}
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,7 +284,7 @@ export default function AppDashboard() {
 
       {/* Visual Analytics */}
       <section className="grid gap-6 lg:grid-cols-2 border-b border-white/10 pb-8">
-        <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:border-white/20 transition-all hover-lift">
+        <div className="group border border-white/10 bg-[#353535] p-6 hover:border-white/20 transition-all hover-lift">
           <div className="mb-6">
             <h3 className="text-lg font-black uppercase mb-2 text-white">Monthly Overview</h3>
             <p className="text-sm text-gray-400">Project activity and performance metrics</p>
@@ -315,7 +315,7 @@ export default function AppDashboard() {
             </div>
           </div>
 
-        <div className="group border border-white/10 bg-[#2A2A2A] p-6 hover:border-white/20 transition-all hover-lift">
+        <div className="group border border-white/10 bg-[#353535] p-6 hover:border-white/20 transition-all hover-lift">
           <div className="mb-6">
             <h3 className="text-lg font-black uppercase mb-2 text-white">Project Status</h3>
             <p className="text-sm text-gray-400">Current project pipeline overview</p>
@@ -327,7 +327,7 @@ export default function AppDashboard() {
               { label: 'Completed', value: 24, color: 'from-green-500 to-emerald-500' },
               { label: 'On Hold', value: 3, color: 'from-gray-500 to-gray-600' },
             ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-[#1A1A1A] border border-white/10 hover:bg-[#2A2A2A] hover:border-white/20 transition-all group/item">
+              <div key={i} className="flex items-center justify-between p-4 bg-[#232323] border border-white/10 hover:bg-[#353535] hover:border-white/20 transition-all group/item">
                 <div className="flex items-center gap-3">
                   <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${item.color} opacity-80 group-hover/item:opacity-100 transition-opacity`} />
                   <span className="text-sm font-bold text-gray-300 uppercase tracking-wider group-hover/item:text-white transition-colors">{item.label}</span>

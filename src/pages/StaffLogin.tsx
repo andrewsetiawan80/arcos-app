@@ -44,7 +44,7 @@ export default function StaffLogin() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-[#1A1A1A] border border-white/10 rounded-2xl p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-[#232323] border border-white/10 rounded-2xl p-8 space-y-6">
           <div className="space-y-4">
             <label className="block text-left text-sm font-medium text-gray-200">
               Email

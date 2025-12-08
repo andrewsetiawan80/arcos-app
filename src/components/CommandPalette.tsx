@@ -81,7 +81,7 @@ export default function CommandPalette() {
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={() => setCommandOpen(false)}
       />
-      <div className="relative mx-auto mt-24 w-full max-w-2xl border border-white/10 bg-[#1A1A1A] shadow-2xl">
+      <div className="relative mx-auto mt-24 w-full max-w-2xl border border-white/10 bg-[#232323] shadow-2xl">
         <div className="px-6 py-5 border-b border-white/10">
           <div className="flex items-center gap-3 mb-4">
             <div className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Command Palette</div>
@@ -91,7 +91,7 @@ export default function CommandPalette() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search commands..."
-            className="w-full bg-[#2A2A2A] border border-white/10 px-4 py-3 outline-none text-base font-medium text-white placeholder:text-gray-500 focus:border-white/20 focus:bg-[#333333] transition-colors"
+            className="w-full bg-[#353535] border border-white/10 px-4 py-3 outline-none text-base font-medium text-white placeholder:text-gray-500 focus:border-white/20 focus:bg-[#232323] transition-colors"
           />
         </div>
         <div className="p-2 max-h-80 overflow-auto">
@@ -108,7 +108,7 @@ export default function CommandPalette() {
                       setCommandOpen(false);
                       nav(r.to);
                     }}
-                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#2A2A2A] transition-colors group"
+                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#353535] transition-colors group"
                   >
                     <div className="font-bold text-white">{r.label}</div>
                     <div className="text-xs text-gray-500 mt-1 font-mono">{r.to}</div>
@@ -118,7 +118,7 @@ export default function CommandPalette() {
             </ul>
           )}
         </div>
-        <div className="px-6 py-3 border-t border-white/10 text-xs text-gray-500 bg-[#2A2A2A] uppercase tracking-wider">
+        <div className="px-6 py-3 border-t border-white/10 text-xs text-gray-500 bg-[#353535] uppercase tracking-wider">
           ⌘K to open • Esc to close • Enter to navigate
         </div>
       </div>

@@ -33,12 +33,12 @@ export default function PublicLayout() {
   }, [mobileMenuOpen]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1A1A1A] text-white font-sans">
-      {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#1A1A1A]/95 backdrop-blur">
+    <div className="min-h-screen flex flex-col bg-[#232323] text-white font-sans">
+      {/* Header - Arcos Brand */}
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#232323]/95 backdrop-blur">
         <div className="h-16 sm:h-20 max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           <NavLink to="/" className="flex items-center hover:opacity-90 transition-opacity duration-300">
-            <ArcosLogo size="medium" className="m-0 p-0" />
+            <ArcosLogo size="medium" variant="light" className="m-0 p-0" />
           </NavLink>
           <nav className="hidden sm:flex items-center gap-4 lg:gap-6 text-xs uppercase tracking-[0.2em] font-bold">
             <NavLink to="/catalog" className="text-gray-300 hover:text-white transition-colors">
@@ -93,14 +93,14 @@ export default function PublicLayout() {
         {/* Drawer - slides from right with ease-in-out animation */}
         <aside
           ref={panelRef}
-          className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-[#1A1A1A] border-l border-white/10 shadow-2xl sm:hidden transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-[#232323] border-l border-white/10 shadow-2xl sm:hidden transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
         >
           <div className="h-16 px-4 flex items-center justify-between border-b border-white/10">
             <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center hover:opacity-90 transition-opacity">
-              <ArcosLogo size="small" />
+              <ArcosLogo size="small" variant="light" />
             </NavLink>
             <div className="flex items-center gap-3">
               <LanguageToggle />
@@ -161,15 +161,15 @@ export default function PublicLayout() {
         <Outlet />
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 bg-[#0f0f0f]">
+      {/* Footer - Arcos Brand */}
+      <footer className="border-t border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           {/* Main Footer Grid */}
           <div className="grid gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4 text-sm mb-12">
             {/* Brand Column */}
             <div className="lg:col-span-1">
               <div className="mb-4 sm:mb-6">
-                <ArcosLogo size="small" />
+                <ArcosLogo size="small" variant="light" />
               </div>
               <p className="text-gray-400 leading-relaxed text-sm mb-6">
                 {t("footer.description")}

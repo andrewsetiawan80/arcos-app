@@ -24,7 +24,7 @@ const CONTACT_CARDS = [
 
 export default function PublicContact() {
   return (
-    <div className="bg-[#1A1A1A] text-white min-h-screen">
+    <div className="bg-[#232323] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
         {/* Hero Background */}
@@ -36,7 +36,7 @@ export default function PublicContact() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/70 via-[#1A1A1A]/50 to-[#1A1A1A]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
           <div className="space-y-4">
@@ -59,7 +59,7 @@ export default function PublicContact() {
             <a
               key={card.label}
               href={card.href}
-              className="block px-5 sm:px-6 py-5 bg-[#2A2A2A] border border-white/10 hover:bg-[#333333] hover:border-white/20 transition-all rounded-xl"
+              className="block px-5 sm:px-6 py-5 bg-[#353535] border border-white/10 hover:bg-[#232323] hover:border-white/20 transition-all rounded-xl"
             >
               <div className="flex items-center justify-between gap-3 mb-3">
                 <div>
@@ -95,7 +95,7 @@ export default function PublicContact() {
         </div>
 
         {/* Contact Form */}
-        <div className="mt-12 rounded-[32px] border border-white/10 bg-[#1F1F1F] p-8 sm:p-10 shadow-2xl">
+        <div className="mt-12 rounded-[32px] border border-white/10 bg-[#353535] p-8 sm:p-10 shadow-2xl">
           <h2 className="text-2xl sm:text-3xl font-bold uppercase mb-6">Send us a message</h2>
           <form className="space-y-6">
             <div className="grid sm:grid-cols-2 gap-6">

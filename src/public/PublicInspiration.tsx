@@ -169,7 +169,7 @@ export default function PublicInspiration() {
 
   if (loading) {
     return (
-      <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-gray-400">Loading inspiration...</p>
@@ -180,7 +180,7 @@ export default function PublicInspiration() {
 
   if (error) {
     return (
-      <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">Error: {error}</p>
           <button
@@ -195,7 +195,7 @@ export default function PublicInspiration() {
   }
 
   return (
-    <div className="bg-[#1A1A1A] text-white min-h-screen">
+    <div className="bg-[#232323] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
         <div className="absolute inset-0">
@@ -208,7 +208,7 @@ export default function PublicInspiration() {
               fetchPriority="high"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/60 via-[#131313]/40 to-[#131313]/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#353535]/60 via-[#353535]/40 to-[#353535]/60" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full animate-fade-in-up">
           <div className="max-w-3xl space-y-4">
@@ -230,7 +230,7 @@ export default function PublicInspiration() {
       </section>
 
       {/* Category Filter */}
-      <section className="border-b border-white/10 bg-[#131313] sticky top-16 sm:top-20 z-20">
+      <section className="border-b border-white/10 bg-[#353535] sticky top-16 sm:top-20 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
@@ -251,7 +251,7 @@ export default function PublicInspiration() {
       </section>
 
       {/* Gallery Grid */}
-      <section className="bg-[#131313]">
+      <section className="bg-[#353535]">
         <div ref={galleryAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 transition-opacity duration-500 ${galleryAnim.isVisible || images.length > 0 ? "animate-fade-in-up opacity-100" : "opacity-0"}`}>
           <div className="mb-8">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -328,7 +328,7 @@ export default function PublicInspiration() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <div className="bg-[#1A1A1A] rounded-2xl overflow-hidden border border-white/10">
+            <div className="bg-[#232323] rounded-2xl overflow-hidden border border-white/10">
               <div className="aspect-square max-h-[80vh] overflow-hidden">
                 <img
                   src={selectedImageData.fullImageUrl || selectedImageData.imageUrl}

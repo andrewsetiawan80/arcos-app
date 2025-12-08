@@ -3,85 +3,55 @@
 @reference "tailwindcss";
 
 /* ===================== */
+/* Arcos Brand System    */
+/* ===================== */
+@import "./styles/brand.css";
+
+/* ===================== */
 /* Design Tokens (Themes) */
 /* ===================== */
 
-/* PREMIUM BANKING-INSPIRED THEME */
+/* ARCOS BRAND THEME - Primary */
 :root {
-  --font-ui: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  /* Use brand tokens as primary theme */
+  --font-ui: var(--arcos-font-body);
 
-  /* Sophisticated dark theme */
-  --bg:    #0f0f0f;   /* deep black background */
-  --panel: #1a1a1a;   /* elevated panels */
-  --surface: #242424; /* card surfaces */
-  --surface-elevated: #2a2a2a; /* higher elevation */
-  --text:  #ffffff;   /* pure white text */
-  --text-secondary: #b3b3b3; /* secondary text */
-  --text-muted: #808080; /* muted text */
-  --border: #333333;  /* subtle borders */
-  --border-light: #404040; /* lighter borders */
+  /* Map to brand colors */
+  --bg:    var(--arcos-black);   /* #232323 */
+  --panel: var(--arcos-gray);    /* #353535 */
+  --surface: var(--arcos-gray);
+  --surface-elevated: #3a3a3a;
+  --text:  var(--arcos-white);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --border: var(--arcos-border);
+  --border-light: var(--arcos-border-light);
 
-  /* Premium accent colors */
-  --accent: #6b7280;  /* neutral gray */
-  --accent-hover: #4b5563;
-  --accent-light: #9ca3af;
-  --success: #4caf50; /* green */
-  --warning: #ff9800; /* amber */
-  --error: #f44336;   /* red */
-  --info: #2196f3;    /* blue */
-  --ring: 220 6% 40%; /* gray focus ring */
+  /* Minimal accent - stay monochrome */
+  --accent: rgba(255, 255, 255, 0.8);
+  --accent-hover: var(--arcos-white);
+  --accent-light: rgba(255, 255, 255, 0.6);
+  --success: #4caf50;
+  --warning: #ff9800;
+  --error: #f44336;
+  --info: rgba(255, 255, 255, 0.5);
+  --ring: 0 0% 50%;
   
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-  --gradient-surface: linear-gradient(135deg, #242424 0%, #1a1a1a 100%);
-  --gradient-card: linear-gradient(135deg, #2a2a2a 0%, #242424 100%);
+  /* Minimal gradients */
+  --gradient-primary: linear-gradient(135deg, var(--arcos-gray) 0%, var(--arcos-black) 100%);
+  --gradient-surface: linear-gradient(135deg, var(--arcos-gray) 0%, var(--arcos-black) 100%);
+  --gradient-card: linear-gradient(135deg, #3a3a3a 0%, var(--arcos-gray) 100%);
 }
 
-/* Modern Concrete Theme */
-:root[data-theme="concrete"] {
-  /* Concrete-inspired color palette */
-  --bg:    #1a1a1a;   /* Raw concrete base */
-  --panel: #2a2a2a;   /* Polished concrete */
-  --surface: #3a3a3a; /* Textured concrete */
-  --surface-elevated: #4a4a4a; /* High-polish concrete */
-  --text:  #f5f5f5;   /* Pure white text */
-  --text-secondary: #d0d0d0; /* Light gray text */
-  --text-muted: #a0a0a0; /* Medium gray text */
-  --border: #404040;  /* Concrete joints */
-  --border-light: #505050; /* Lighter joints */
-
-  /* Concrete-inspired accent colors */
-  --accent: #ff6b35;  /* Rust/iron accent */
-  --accent-hover: #ff5722;
-  --accent-light: #ff8a65;
-  --success: #4caf50; /* Moss green */
-  --warning: #ff9800; /* Amber warning */
-  --error: #f44336;   /* Red error */
-  --info: #2196f3;    /* Steel blue */
-  --ring: 14 100% 60%; /* Orange focus ring */
-  
-  /* Concrete gradients */
-  --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ff5722 100%);
-  --gradient-surface: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
-  --gradient-card: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
-}
-
-/* Optional other themes kept monochrome-friendly too */
-:root[data-theme="dark"] {
-  --bg:    #0b0c0d;
-  --panel: #121315;
-  --text:  #e6e7e9;
-  --muted: #9aa0a6;
-  --accent:#c9cbd1;
-  --ring:  220 6% 60%;
-}
+/* Light theme for contrast sections */
 :root[data-theme="light"] {
-  --bg:    #f6f7f9;
-  --panel: #ffffff;
-  --text:  #0b0c0d;
-  --muted: #616a72;
-  --accent:#6b7280;
-  --ring:  220 6% 40%;
+  --bg:    var(--arcos-white);
+  --panel: #f5f5f5;
+  --text:  var(--arcos-black);
+  --text-secondary: rgba(35, 35, 35, 0.7);
+  --text-muted: rgba(35, 35, 35, 0.5);
+  --accent: var(--arcos-black);
+  --ring:  0 0% 30%;
 }
 
 /* ========== */
@@ -91,31 +61,19 @@
   html, body, #root { height: 100%; }
 
   body {
-    font-family: var(--font-ui);
-    color: var(--text);
-    /* Premium banking-style background */
-    background:
-      radial-gradient(1400px 900px at 15% -5%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 60%),
-      radial-gradient(1200px 700px at 85% 15%, color-mix(in srgb, var(--info) 3%, transparent), transparent 60%),
-      var(--bg);
+    font-family: var(--arcos-font-body);
+    color: var(--arcos-white);
+    background: var(--arcos-black);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Concrete theme specific background */
-  :root[data-theme="concrete"] body {
-    background:
-      /* Concrete texture overlay */
-      radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.01) 0%, transparent 50%),
-      /* Subtle concrete grain */
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        rgba(255, 255, 255, 0.01) 2px,
-        rgba(255, 255, 255, 0.01) 4px
-      ),
-      /* Base concrete color */
-      var(--bg);
+  /* Headings use brand typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--arcos-font-heading);
+    font-weight: 700;
+    line-height: var(--arcos-leading-heading);
+    letter-spacing: var(--arcos-tracking-tight);
   }
 
 
@@ -214,56 +172,53 @@
 a.active > span[aria-hidden] { opacity: 1 !important; }
 
 /* ========== */
-/* Public Site Dark Theme Enhancements */
+/* Public Site - Arcos Brand Enhancement */
 /* ========== */
 @layer base {
-  /* Ensure clean, modern sans-serif for public pages */
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
   /* Smooth scrolling for anchor links */
   html {
     scroll-behavior: smooth;
   }
 }
 
-/* Enhanced typography for public pages */
+/* Enhanced typography for public pages - Arcos Brand */
 @layer utilities {
-  /* Uppercase headings with proper tracking */
+  /* Uppercase headings with proper tracking - using brand fonts */
   .public-heading {
-    font-weight: 900;
+    font-family: var(--arcos-font-heading);
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+    letter-spacing: var(--arcos-tracking-tight);
+    line-height: var(--arcos-leading-tight);
   }
 
-  /* Section labels */
+  /* Section labels - using brand fonts */
   .public-label {
-    font-size: 0.75rem;
+    font-family: var(--arcos-font-heading);
+    font-size: var(--arcos-size-label);
     text-transform: uppercase;
-    letter-spacing: 0.3em;
-    font-weight: 700;
-    color: rgb(156, 163, 175); /* gray-400 */
+    letter-spacing: var(--arcos-tracking-widest);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
   }
 
-  /* Button styles matching Quarra design */
+  /* Button styles - Arcos brand */
   .public-button {
-    background-color: #2A2A2A;
-    color: white;
-    font-size: 0.875rem;
+    background-color: var(--arcos-gray);
+    color: var(--arcos-white);
+    font-family: var(--arcos-font-heading);
+    font-size: var(--arcos-size-small);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background-color 0.2s ease;
+    letter-spacing: var(--arcos-tracking-wider);
+    padding: 1rem 2rem;
+    border: 1px solid var(--arcos-border);
+    transition: all 0.3s ease;
   }
 
   .public-button:hover {
-    background-color: #333333;
+    background-color: var(--arcos-black);
+    transform: translateY(-2px);
   }
 
   /* Touch-friendly interactions */

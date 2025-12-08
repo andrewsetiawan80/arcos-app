@@ -58,7 +58,7 @@ export default function PublicAbout() {
 
   if (loading) {
     return (
-      <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-gray-400">Loading...</p>
@@ -69,7 +69,7 @@ export default function PublicAbout() {
 
   if (error) {
     return (
-      <div className="bg-[#1A1A1A] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">Error loading content</p>
           <p className="text-gray-400 text-sm">{error}</p>
@@ -78,7 +78,7 @@ export default function PublicAbout() {
     );
   }
   return (
-    <div className="bg-[#1A1A1A] text-white min-h-screen">
+    <div className="bg-[#232323] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
         {/* Hero Background */}
@@ -90,7 +90,7 @@ export default function PublicAbout() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/70 via-[#1A1A1A]/50 to-[#1A1A1A]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
           <div className="max-w-3xl space-y-4">
@@ -211,7 +211,7 @@ export default function PublicAbout() {
       </section>
 
       {/* Company Values & Culture */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="text-center mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Our Values</p>
@@ -251,7 +251,7 @@ export default function PublicAbout() {
       </section>
 
       {/* Certifications & Training */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -306,7 +306,7 @@ export default function PublicAbout() {
       </section>
 
       {/* Technical Specifications Section - Moved from Home */}
-      <section id="specifications" className="border-b border-white/10 bg-[#050505]">
+      <section id="specifications" className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 mb-16">
             <div className="max-w-2xl space-y-4">
@@ -344,7 +344,7 @@ export default function PublicAbout() {
               ))}
             </div>
 
-            <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#1F1F1F] via-[#111] to-black p-8 sm:p-10 shadow-2xl">
+            <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#353535] via-[#232323] to-[#232323] p-8 sm:p-10 shadow-2xl">
               <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold mb-6">
                 Mix Intelligence Snapshot
               </p>

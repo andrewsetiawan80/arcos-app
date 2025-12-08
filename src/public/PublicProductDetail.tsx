@@ -39,7 +39,7 @@ export default function PublicProductDetail() {
   const gallery = [coverImageUrl, ...galleryImages].filter(Boolean) as string[];
 
   return (
-    <div className="bg-[#1A1A1A] text-white">
+    <div className="bg-[#232323] text-white">
       {/* Hero / Title */}
       <section className="border-b border-white/10">
         <div ref={productAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 md:pb-16 ${productAnim.isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
@@ -103,7 +103,7 @@ export default function PublicProductDetail() {
               {!!tags.length && (
                 <div className="mt-4 sm:mt-6 flex flex-wrap gap-2">
                   {tags.map((t) => (
-                    <span key={t} className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs uppercase tracking-wider font-bold border border-white/10 bg-[#2A2A2A]">
+                    <span key={t} className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs uppercase tracking-wider font-bold border border-white/10 bg-[#353535]">
                       {t}
                     </span>
                   ))}
@@ -122,7 +122,7 @@ export default function PublicProductDetail() {
                   <div className="text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2 sm:mb-3">Variants</div>
                   <div className="flex flex-wrap gap-2">
                     {variants.map((v) => (
-                      <span key={v.id} className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border border-white/10 bg-[#2A2A2A]" title={v.color || v.name || "Variant"}>
+                      <span key={v.id} className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border border-white/10 bg-[#353535]" title={v.color || v.name || "Variant"}>
                         <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white/30" />
                         {v.name || "Variant"}
                       </span>
@@ -134,7 +134,7 @@ export default function PublicProductDetail() {
               {/* Specs */}
               <div className="mt-6 sm:mt-8">
                 <div className="text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2 sm:mb-3">Specifications</div>
-                <div className="border border-white/10 bg-[#2A2A2A] p-4 sm:p-6 grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="border border-white/10 bg-[#353535] p-4 sm:p-6 grid grid-cols-2 gap-3 sm:gap-4">
                   <Spec label="Dimensions">
                     {size?.w_mm && size?.h_mm ? (
                       <>
@@ -155,7 +155,7 @@ export default function PublicProductDetail() {
               <div className="mt-6 sm:mt-8 flex flex-wrap gap-2 sm:gap-3">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-[#2A2A2A] text-white text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors border border-white/10 min-h-[44px] touch-manipulation"
+                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-[#353535] text-white text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10 min-h-[44px] touch-manipulation"
                   onClick={() => setSampleOpen(true)}
                 >
                   Request Sample
@@ -165,7 +165,7 @@ export default function PublicProductDetail() {
                 </button>
                 <a 
                   href="/#contact" 
-                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-[#2A2A2A] text-white text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors border border-white/10 min-h-[44px] touch-manipulation"
+                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-[#353535] text-white text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10 min-h-[44px] touch-manipulation"
                 >
                   Request Quote
                   <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,7 +174,7 @@ export default function PublicProductDetail() {
                 </a>
                 <Link 
                   to="/catalog" 
-                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-[#2A2A2A] text-white text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors border border-white/10 min-h-[44px] touch-manipulation"
+                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-[#353535] text-white text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10 min-h-[44px] touch-manipulation"
                 >
                   Back to Catalog
                   <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,13 +293,13 @@ function SampleModal({
       <form onSubmit={submit} className="space-y-4 text-sm">
         <div>
           <label className="block text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2">Product</label>
-          <div className="px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white">{productTitle}</div>
+          <div className="px-4 py-3 bg-[#353535] border border-white/10 text-white">{productTitle}</div>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2">Your name</label>
             <input
-              className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#333333] transition-colors"
+              className="w-full px-4 py-3 bg-[#353535] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#232323] transition-colors"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -308,7 +308,7 @@ function SampleModal({
           <div>
             <label className="block text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2">Company</label>
             <input
-              className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#333333] transition-colors"
+              className="w-full px-4 py-3 bg-[#353535] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#232323] transition-colors"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
             />
@@ -318,7 +318,7 @@ function SampleModal({
           <label className="block text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2">Email</label>
           <input
             type="email"
-            className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#333333] transition-colors"
+            className="w-full px-4 py-3 bg-[#353535] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#232323] transition-colors"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -328,7 +328,7 @@ function SampleModal({
           <label className="block text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-2">Notes</label>
           <textarea
             rows={4}
-            className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#333333] transition-colors"
+            className="w-full px-4 py-3 bg-[#353535] border border-white/10 text-white outline-none focus:border-white/30 focus:bg-[#232323] transition-colors"
             placeholder="Tell us the finish or color you're considering…"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -339,13 +339,13 @@ function SampleModal({
           <button 
             type="button" 
             onClick={onClose} 
-            className="px-6 py-3 bg-[#2A2A2A] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors border border-white/10"
+            className="px-6 py-3 bg-[#353535] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10"
           >
             Cancel
           </button>
           <button 
             type="submit" 
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#2A2A2A] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors border border-white/10"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#353535] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10"
           >
             Send Request
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

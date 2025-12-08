@@ -31,7 +31,7 @@ export default function PublicCatalog() {
   const gridAnim = useFadeIn({ threshold: 0.05 });
 
   return (
-    <div className="bg-[#1A1A1A] text-white">
+    <div className="bg-[#232323] text-white">
       {/* Header block */}
       <section className="border-b border-white/10">
         <div ref={catalogAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 md:pt-32 pb-12 sm:pb-16 ${catalogAnim.isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
@@ -56,8 +56,8 @@ export default function PublicCatalog() {
                 className={[
                   "px-3 sm:px-4 py-2 text-xs uppercase tracking-wider font-bold border border-white/10 transition-colors min-h-[44px] touch-manipulation",
                   !activeTag
-                    ? "bg-[#2A2A2A] text-white border-white/20"
-                    : "bg-[#1A1A1A] text-gray-400 hover:bg-[#2A2A2A] hover:text-white",
+                    ? "bg-[#353535] text-white border-white/20"
+                    : "bg-[#232323] text-gray-400 hover:bg-[#353535] hover:text-white",
                 ].join(" ")}
                 onClick={() => setActiveTag(null)}
               >
@@ -69,8 +69,8 @@ export default function PublicCatalog() {
                   className={[
                     "px-3 sm:px-4 py-2 text-xs uppercase tracking-wider font-bold border border-white/10 transition-colors min-h-[44px] touch-manipulation",
                     activeTag === tag
-                      ? "bg-[#2A2A2A] text-white border-white/20"
-                      : "bg-[#1A1A1A] text-gray-400 hover:bg-[#2A2A2A] hover:text-white",
+                      ? "bg-[#353535] text-white border-white/20"
+                      : "bg-[#232323] text-gray-400 hover:bg-[#353535] hover:text-white",
                   ].join(" ")}
                   onClick={() => setActiveTag(tag)}
                 >

@@ -50,7 +50,7 @@ export default function PublicPage() {
   const html = mdToHtml(page.content || "");
 
   return (
-    <div className="bg-[#1A1A1A] text-white">
+    <div className="bg-[#232323] text-white">
       {/* Cover */}
       {page.coverImageUrl ? (
         <div className="w-full aspect-[21/7] overflow-hidden border-b border-white/10">

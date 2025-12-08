@@ -1,16 +1,17 @@
 /* src/styles/theme.css */
-/* Monochrome (Concrete) Theme */
+/* Arcos Brand Theme - Monochrome Concrete */
 
 :root {
-  --bg: #0d0e10;
-  --panel: #111215;
-  --panel-elev: #15171b;
-  --text: #e6e7ea;
-  --muted: #a6a8ad;
+  /* Use Arcos brand tokens */
+  --bg: var(--arcos-black, #232323);
+  --panel: var(--arcos-gray, #353535);
+  --panel-elev: #3a3a3a;
+  --text: var(--arcos-white, #ffffff);
+  --muted: rgba(255, 255, 255, 0.6);
   --line: rgba(255,255,255,.10);
 
-  --accent: #c9cbd1;
-  --accent-soft: rgba(200,202,208,.12);
+  --accent: rgba(255, 255, 255, 0.8);
+  --accent-soft: rgba(255, 255, 255, 0.08);
 
   --radius: 16px;
   --radius-lg: 20px;
@@ -18,9 +19,9 @@
   --shadow-hard: 0 12px 40px rgba(0,0,0,.55);
 
   --grad-1:
-    radial-gradient(1200px 600px at 30% -10%, rgba(255,255,255,.06), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, rgba(255,255,255,.05), transparent 60%);
-  --grad-2: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+    radial-gradient(1200px 600px at 30% -10%, rgba(255,255,255,.04), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, rgba(255,255,255,.03), transparent 60%);
+  --grad-2: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
   --noise: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'>\
   <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter>\
@@ -29,8 +30,8 @@
 }
 
 html, body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--arcos-black, #232323);
+  color: var(--arcos-white, #ffffff);
 }
 
 .glass {
@@ -48,13 +49,24 @@ html, body {
 
 .btn {
   display:inline-flex; align-items:center; gap:.5rem;
-  padding:.65rem 1rem; border-radius:12px; font-weight:600;
-  border:1px solid var(--line); background: rgba(255,255,255,.06);
-  color: var(--text);
+  padding:.75rem 1.5rem; border-radius:0; font-weight:700;
+  font-family: var(--arcos-font-heading, system-ui);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border:1px solid var(--line); background: var(--arcos-gray, #353535);
+  color: var(--arcos-white, #ffffff);
+  transition: all 0.3s ease;
 }
-.btn:hover { background: rgba(255,255,255,.10); }
+.btn:hover { 
+  background: var(--arcos-black, #232323);
+  transform: translateY(-2px);
+}
 .btn-primary {
-  background: linear-gradient(180deg, #f0f1f3, #d8dbe0);
-  color:#0c0d0f; border-color: rgba(255,255,255,.25); box-shadow: var(--shadow-soft);
+  background: var(--arcos-white, #ffffff);
+  color: var(--arcos-black, #232323);
+  border-color: transparent;
+  box-shadow: var(--shadow-soft);
 }
-.btn-primary:hover { filter: brightness(.96); }
+.btn-primary:hover { 
+  background: #f0f0f0;
+}

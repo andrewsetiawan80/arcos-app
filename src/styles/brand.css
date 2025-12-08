@@ -1,0 +1,327 @@
+/* ============================================= */
+/* ARCOS BRAND IDENTITY DESIGN SYSTEM           */
+/* Based on Arcos Brand Guidelines              */
+/* ============================================= */
+
+/* ===================== */
+/* Brand Color Tokens    */
+/* ===================== */
+:root {
+  /* Primary Brand Colors - ONLY THESE */
+  --arcos-black: #232323;   /* Primary dark - main backgrounds, primary text on light */
+  --arcos-gray: #353535;    /* Secondary dark - subtle contrast, cards, secondary bg */
+  --arcos-white: #ffffff;   /* White - text on dark, light sections */
+  
+  /* Derived tokens for consistency */
+  --arcos-bg-primary: var(--arcos-black);
+  --arcos-bg-secondary: var(--arcos-gray);
+  --arcos-bg-white: var(--arcos-white);
+  --arcos-text-on-dark: var(--arcos-white);
+  --arcos-text-on-light: var(--arcos-black);
+  
+  /* Border & UI tokens - subtle monochrome only */
+  --arcos-border: rgba(255, 255, 255, 0.1);
+  --arcos-border-light: rgba(255, 255, 255, 0.15);
+  --arcos-border-dark: rgba(35, 35, 35, 0.1);
+  
+  /* Supergraphic colors */
+  --arcos-supergraphic-on-black: var(--arcos-gray);  /* #353535 on #232323 */
+  --arcos-supergraphic-on-white: var(--arcos-black); /* #232323 on white, with low opacity */
+}
+
+/* ===================== */
+/* Typography System     */
+/* ===================== */
+
+/* Host Grotesk Font Family - Headlines & Sub-headlines */
+/* Using Google Fonts fallback to similar geometric sans-serif */
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Typography Families */
+  --arcos-font-heading: 'Host Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --arcos-font-body: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Typography Sizes - Desktop */
+  --arcos-size-hero: 4.5rem;      /* 72px - Hero headlines */
+  --arcos-size-h1: 3.5rem;        /* 56px - Page titles */
+  --arcos-size-h2: 2.5rem;        /* 40px - Section titles */
+  --arcos-size-h3: 1.75rem;       /* 28px - Subsection titles */
+  --arcos-size-h4: 1.25rem;       /* 20px - Card titles */
+  --arcos-size-subheading: 1.125rem; /* 18px - Sub-headlines */
+  --arcos-size-body: 1rem;        /* 16px - Body text */
+  --arcos-size-body-lg: 1.125rem; /* 18px - Large body */
+  --arcos-size-small: 0.875rem;   /* 14px - Small text */
+  --arcos-size-label: 0.75rem;    /* 12px - Labels, captions */
+  
+  /* Line Heights */
+  --arcos-leading-tight: 1.1;
+  --arcos-leading-heading: 1.15;
+  --arcos-leading-body: 1.6;
+  --arcos-leading-relaxed: 1.8;
+  
+  /* Letter Spacing */
+  --arcos-tracking-tight: -0.02em;
+  --arcos-tracking-normal: 0;
+  --arcos-tracking-wide: 0.1em;
+  --arcos-tracking-wider: 0.2em;
+  --arcos-tracking-widest: 0.3em;
+}
+
+/* ===================== */
+/* Typography Classes    */
+/* ===================== */
+
+/* Headlines - Host Grotesk Bold */
+.arcos-heading {
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  line-height: var(--arcos-leading-heading);
+  letter-spacing: var(--arcos-tracking-tight);
+  text-transform: uppercase;
+}
+
+.arcos-heading-hero {
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  font-size: var(--arcos-size-hero);
+  line-height: var(--arcos-leading-tight);
+  letter-spacing: var(--arcos-tracking-tight);
+  text-transform: uppercase;
+}
+
+.arcos-heading-h1 {
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  font-size: var(--arcos-size-h1);
+  line-height: var(--arcos-leading-heading);
+  letter-spacing: var(--arcos-tracking-tight);
+  text-transform: uppercase;
+}
+
+.arcos-heading-h2 {
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  font-size: var(--arcos-size-h2);
+  line-height: var(--arcos-leading-heading);
+  letter-spacing: var(--arcos-tracking-tight);
+  text-transform: uppercase;
+}
+
+.arcos-heading-h3 {
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  font-size: var(--arcos-size-h3);
+  line-height: var(--arcos-leading-heading);
+  letter-spacing: var(--arcos-tracking-tight);
+  text-transform: uppercase;
+}
+
+.arcos-heading-h4 {
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  font-size: var(--arcos-size-h4);
+  line-height: var(--arcos-leading-heading);
+  letter-spacing: var(--arcos-tracking-tight);
+  text-transform: uppercase;
+}
+
+/* Sub-headlines - Host Grotesk SemiBold */
+.arcos-subheading {
+  font-family: var(--arcos-font-heading);
+  font-weight: 600;
+  font-size: var(--arcos-size-subheading);
+  line-height: var(--arcos-leading-body);
+  letter-spacing: var(--arcos-tracking-normal);
+}
+
+/* Body Text - Helvetica Neue Regular */
+.arcos-body {
+  font-family: var(--arcos-font-body);
+  font-weight: 400;
+  font-size: var(--arcos-size-body);
+  line-height: var(--arcos-leading-body);
+}
+
+.arcos-body-lg {
+  font-family: var(--arcos-font-body);
+  font-weight: 400;
+  font-size: var(--arcos-size-body-lg);
+  line-height: var(--arcos-leading-relaxed);
+}
+
+/* Labels & Captions */
+.arcos-label {
+  font-family: var(--arcos-font-heading);
+  font-weight: 600;
+  font-size: var(--arcos-size-label);
+  line-height: 1.4;
+  letter-spacing: var(--arcos-tracking-widest);
+  text-transform: uppercase;
+}
+
+/* ===================== */
+/* Spacing System        */
+/* ===================== */
+:root {
+  /* Section padding */
+  --arcos-section-py: clamp(4rem, 8vw, 8rem);
+  --arcos-section-px: clamp(1rem, 4vw, 3rem);
+  
+  /* Content max-widths */
+  --arcos-max-width: 1400px;
+  --arcos-max-width-narrow: 1000px;
+  --arcos-max-width-text: 720px;
+  
+  /* Component spacing */
+  --arcos-space-xs: 0.5rem;
+  --arcos-space-sm: 1rem;
+  --arcos-space-md: 1.5rem;
+  --arcos-space-lg: 2rem;
+  --arcos-space-xl: 3rem;
+  --arcos-space-2xl: 4rem;
+  --arcos-space-3xl: 6rem;
+}
+
+/* ===================== */
+/* Brand Section Layouts */
+/* ===================== */
+
+/* Base section styles */
+.arcos-section {
+  padding: var(--arcos-section-py) var(--arcos-section-px);
+}
+
+/* Content boxes - dark backgrounds with white text */
+.arcos-box {
+  background-color: var(--arcos-bg-primary);
+  color: var(--arcos-text-on-dark);
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.arcos-box-secondary {
+  background-color: var(--arcos-bg-secondary);
+  color: var(--arcos-text-on-dark);
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.arcos-box-light {
+  background-color: var(--arcos-bg-white);
+  color: var(--arcos-text-on-light);
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+/* ===================== */
+/* Brand Buttons         */
+/* ===================== */
+
+.arcos-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-family: var(--arcos-font-heading);
+  font-weight: 700;
+  font-size: var(--arcos-size-small);
+  letter-spacing: var(--arcos-tracking-wider);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.arcos-button-primary {
+  background-color: var(--arcos-white);
+  color: var(--arcos-black);
+}
+
+.arcos-button-primary:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.arcos-button-secondary {
+  background-color: var(--arcos-gray);
+  color: var(--arcos-white);
+  border: 1px solid var(--arcos-border);
+}
+
+.arcos-button-secondary:hover {
+  background-color: var(--arcos-black);
+  border-color: var(--arcos-border-light);
+}
+
+.arcos-button-outline {
+  background-color: transparent;
+  color: var(--arcos-white);
+  border: 2px solid var(--arcos-white);
+}
+
+.arcos-button-outline:hover {
+  background-color: var(--arcos-white);
+  color: var(--arcos-black);
+}
+
+/* ===================== */
+/* Logo Safe Zone        */
+/* ===================== */
+
+.arcos-logo-container {
+  /* Safe zone: roughly the height of the logo as padding on all sides */
+  --logo-safe-zone: 1em;
+  padding: var(--logo-safe-zone);
+  display: inline-flex;
+  align-items: center;
+}
+
+.arcos-logo-container img,
+.arcos-logo-container svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===================== */
+/* Responsive Typography */
+/* ===================== */
+
+@media (max-width: 768px) {
+  :root {
+    --arcos-size-hero: 2.5rem;
+    --arcos-size-h1: 2rem;
+    --arcos-size-h2: 1.75rem;
+    --arcos-size-h3: 1.5rem;
+    --arcos-size-h4: 1.125rem;
+    --arcos-size-subheading: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --arcos-size-hero: 2rem;
+    --arcos-size-h1: 1.75rem;
+    --arcos-size-h2: 1.5rem;
+    --arcos-size-h3: 1.25rem;
+  }
+}
+
+/* ===================== */
+/* Utility Classes       */
+/* ===================== */
+
+/* Background colors */
+.bg-arcos-black { background-color: var(--arcos-black); }
+.bg-arcos-gray { background-color: var(--arcos-gray); }
+.bg-arcos-white { background-color: var(--arcos-white); }
+
+/* Text colors */
+.text-arcos-white { color: var(--arcos-white); }
+.text-arcos-black { color: var(--arcos-black); }
+.text-arcos-muted { color: rgba(255, 255, 255, 0.6); }
+
+/* Border colors */
+.border-arcos { border-color: var(--arcos-border); }
+.border-arcos-light { border-color: var(--arcos-border-light); }

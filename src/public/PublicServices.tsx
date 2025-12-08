@@ -59,7 +59,7 @@ export default function PublicServices() {
 
   if (loading) {
     return (
-      <div className="bg-[#131313] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-gray-400">Loading services...</p>
@@ -70,7 +70,7 @@ export default function PublicServices() {
 
   if (error) {
     return (
-      <div className="bg-[#131313] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">Error loading services</p>
           <p className="text-gray-400 text-sm">{error}</p>
@@ -80,7 +80,7 @@ export default function PublicServices() {
   }
 
   return (
-    <div className="bg-[#131313] text-white min-h-screen">
+    <div className="bg-[#232323] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
         {/* Hero Background */}
@@ -92,7 +92,7 @@ export default function PublicServices() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/70 via-[#131313]/50 to-[#131313]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32">
           <div className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -123,7 +123,7 @@ export default function PublicServices() {
       {categories.map((category) => {
         const categoryServices = services.filter(s => s.category === category);
         return (
-          <section key={category} className="border-b border-white/10 bg-[#131313]">
+          <section key={category} className="border-b border-white/10 bg-[#353535]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
               <div className="mb-12 space-y-4">
                 <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{category}</p>
@@ -141,7 +141,7 @@ export default function PublicServices() {
                 {categoryServices.map((service) => (
                   <div
                     key={service.id}
-                    className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#1F1F1F]/90 backdrop-blur-sm shadow-2xl hover:-translate-y-1.5 hover:border-white/30 transition-all"
+                    className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#353535]/90 backdrop-blur-sm shadow-2xl hover:-translate-y-1.5 hover:border-white/30 transition-all"
                   >
                     {/* Main Image */}
                     <div className="relative h-48 overflow-hidden">
@@ -177,7 +177,7 @@ export default function PublicServices() {
       })}
 
       {/* Microcement Project Showcase Section */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -261,7 +261,7 @@ export default function PublicServices() {
       </section>
 
       {/* Float Concrete Architectural Panels Showcase */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -403,7 +403,7 @@ export default function PublicServices() {
       </section>
 
       {/* Floors & Walls Section - Moved from Home */}
-      <section className="border-b border-white/10 bg-[#0B0B0B]">
+      <section className="border-b border-white/10 bg-[#232323]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="mb-12 space-y-4">
             <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
@@ -510,7 +510,7 @@ export default function PublicServices() {
       </section>
 
       {/* Applications Section - Moved from Home */}
-      <section className="border-b border-white/10 bg-[#131313]">
+      <section className="border-b border-white/10 bg-[#353535]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-8 mb-16">
             <div className="max-w-2xl space-y-4">
