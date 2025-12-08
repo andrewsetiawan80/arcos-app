@@ -154,11 +154,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginTop: 2,
   },
-  // Image styles - contain to preserve aspect ratio
-  imageContain: {
-    objectFit: 'contain',
-    backgroundColor: COLORS.gray,
-  },
   listItem: {
     flexDirection: 'row',
     marginBottom: 3,
@@ -182,8 +177,8 @@ const styles = StyleSheet.create({
 // Cover Page
 const CoverPage = () => (
   <Page size="A4" style={styles.coverPage}>
-    <View style={{ height: '55%', backgroundColor: COLORS.gray }}>
-      <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+    <View style={{ height: '55%' }}>
+      <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </View>
     <View style={{ flex: 1, padding: 30, justifyContent: 'center' }}>
       <View style={{ position: 'absolute', top: 20, left: 30 }}>
@@ -221,7 +216,7 @@ const CoverPage = () => (
   </Page>
 );
 
-// About Page - Mixed layout
+// About Page
 const AboutPage = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
@@ -229,10 +224,7 @@ const AboutPage = () => (
       <Text style={styles.headerText}>02</Text>
     </View>
     
-    {/* Large landscape image */}
-    <View style={{ backgroundColor: COLORS.gray, height: 140, marginBottom: 12 }}>
-      <Image src={landmarkInstallation} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-    </View>
+    <Image src={landmarkInstallation} style={{ width: '100%', height: 140, objectFit: 'cover', marginBottom: 12 }} />
     
     <View style={styles.accent} />
     <Text style={styles.label}>Who We Are</Text>
@@ -255,8 +247,8 @@ const AboutPage = () => (
           <Text style={styles.bodySmall}>Parametric modelling flows into robotic casting and modular mold production.</Text>
         </View>
       </View>
-      <View style={{ width: '45%', backgroundColor: COLORS.gray }}>
-        <Image src={modernInterior} style={{ width: '100%', height: 200, objectFit: 'contain' }} />
+      <View style={{ width: '45%' }}>
+        <Image src={modernInterior} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
       </View>
     </View>
     
@@ -268,7 +260,7 @@ const AboutPage = () => (
   </Page>
 );
 
-// Services Page - Grid with varied sizes
+// Services Page
 const ServicesPage = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
@@ -280,37 +272,27 @@ const ServicesPage = () => (
     <Text style={styles.label}>Ecosystem of Expertise</Text>
     <Text style={styles.subtitle}>Full-spectrum concrete innovation</Text>
     
-    {/* Top row - one large, one small */}
     <View style={[styles.row, { marginTop: 10 }]}>
       <View style={{ width: '60%', paddingRight: 8 }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 120, marginBottom: 6 }}>
-          <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={microcementInterior} style={{ width: '100%', height: 120, objectFit: 'cover', marginBottom: 6 }} />
         <Text style={styles.heading}>Seamless Microcement</Text>
         <Text style={styles.bodySmall}>2-3mm coatings for floors, walls, and furniture. 60+ colors available.</Text>
       </View>
       <View style={{ width: '40%' }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 120, marginBottom: 6 }}>
-          <Image src={concretePanelDetail} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={concretePanelDetail} style={{ width: '100%', height: 120, objectFit: 'cover', marginBottom: 6 }} />
         <Text style={styles.heading}>Architectural Panels</Text>
         <Text style={styles.bodySmall}>UHPC and GFRC panels for facades.</Text>
       </View>
     </View>
     
-    {/* Bottom row - reversed sizes */}
     <View style={[styles.row, { marginTop: 12 }]}>
       <View style={{ width: '40%', paddingRight: 8 }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 100, marginBottom: 6 }}>
-          <Image src={mosaicFacade} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={mosaicFacade} style={{ width: '100%', height: 100, objectFit: 'cover', marginBottom: 6 }} />
         <Text style={styles.heading}>3D Concrete Tiles</Text>
         <Text style={styles.bodySmall}>Dimensional tiles with depth.</Text>
       </View>
       <View style={{ width: '60%' }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 100, marginBottom: 6 }}>
-          <Image src={microcementWalls} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={microcementWalls} style={{ width: '100%', height: 100, objectFit: 'cover', marginBottom: 6 }} />
         <Text style={styles.heading}>Polished Concrete</Text>
         <Text style={styles.bodySmall}>High-performance polished overlays with aesthetic precision and durability.</Text>
       </View>
@@ -324,7 +306,7 @@ const ServicesPage = () => (
   </Page>
 );
 
-// Gallery Page 1 - 3D Tiles with masonry-style layout
+// Gallery Page 1 - 3D Tiles
 const GalleryPage1 = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
@@ -336,45 +318,24 @@ const GalleryPage1 = () => (
     <Text style={styles.label}>3D Tile Collection</Text>
     <Text style={styles.subtitle}>Dimensional surfaces</Text>
     
-    {/* Masonry-style grid */}
+    {/* Masonry layout */}
     <View style={[styles.row, { marginTop: 8 }]}>
-      {/* Left column - tall */}
       <View style={{ width: '32%', paddingRight: 6 }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 130, marginBottom: 6 }}>
-          <Image src={tile01} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 90, marginBottom: 6 }}>
-          <Image src={tile02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 110 }}>
-          <Image src={tile03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={tile01} style={{ width: '100%', height: 130, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={tile02} style={{ width: '100%', height: 90, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={tile03} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      
-      {/* Middle column */}
       <View style={{ width: '36%', paddingRight: 6 }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 100, marginBottom: 6 }}>
-          <Image src={tile04} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 140, marginBottom: 6 }}>
-          <Image src={tile05} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 90 }}>
-          <Image src={tile06} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={tile04} style={{ width: '100%', height: 100, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={tile05} style={{ width: '100%', height: 140, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={tile06} style={{ width: '100%', height: 90, objectFit: 'contain' }} />
       </View>
-      
-      {/* Right column */}
       <View style={{ width: '32%' }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 110, marginBottom: 6 }}>
-          <Image src={tile07} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 120, marginBottom: 6 }}>
-          <Image src={tile08} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={tile07} style={{ width: '100%', height: 110, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={tile08} style={{ width: '100%', height: 120, objectFit: 'contain', marginBottom: 6 }} />
         <View style={[styles.box, { height: 100, justifyContent: 'center' }]}>
           <Text style={styles.heading}>Custom Patterns</Text>
-          <Text style={styles.bodySmall}>Each design can be customized for scale, depth, and finish.</Text>
+          <Text style={styles.bodySmall}>Each design customizable for scale, depth, and finish.</Text>
         </View>
       </View>
     </View>
@@ -387,7 +348,7 @@ const GalleryPage1 = () => (
   </Page>
 );
 
-// Gallery Page 2 - Bespoke & Microcement with dynamic layout
+// Gallery Page 2 - Bespoke
 const GalleryPage2 = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
@@ -399,33 +360,21 @@ const GalleryPage2 = () => (
     <Text style={styles.label}>Bespoke Solutions</Text>
     <Text style={styles.subtitle}>Custom applications</Text>
     
-    {/* Hero image - full width */}
-    <View style={{ backgroundColor: COLORS.gray, height: 130, marginTop: 8, marginBottom: 10 }}>
-      <Image src={bespoke01} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-    </View>
+    {/* Hero image */}
+    <Image src={bespoke01} style={{ width: '100%', height: 130, objectFit: 'contain', marginTop: 8, marginBottom: 10 }} />
     
-    {/* Three column grid */}
+    {/* Grid */}
     <View style={styles.row}>
       <View style={{ width: '32%', paddingRight: 6 }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 95, marginBottom: 6 }}>
-          <Image src={bespoke02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 95 }}>
-          <Image src={microcement02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={bespoke02} style={{ width: '100%', height: 95, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={microcement02} style={{ width: '100%', height: 95, objectFit: 'contain' }} />
       </View>
       <View style={{ width: '36%', paddingRight: 6 }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 196 }}>
-          <Image src={bespoke03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={bespoke03} style={{ width: '100%', height: 196, objectFit: 'contain' }} />
       </View>
       <View style={{ width: '32%' }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 95, marginBottom: 6 }}>
-          <Image src={microcement03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
-        <View style={{ backgroundColor: COLORS.gray, height: 95 }}>
-          <Image src={workshopCloseup} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={microcement03} style={{ width: '100%', height: 95, objectFit: 'contain', marginBottom: 6 }} />
+        <Image src={workshopCloseup} style={{ width: '100%', height: 95, objectFit: 'cover' }} />
       </View>
     </View>
     
@@ -463,7 +412,7 @@ const GalleryPage2 = () => (
   </Page>
 );
 
-// Process Page with images
+// Process Page
 const ProcessPage = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
@@ -480,12 +429,11 @@ const ProcessPage = () => (
           Every engagement follows an integrated workflow, aligning concept, engineering, fabrication, and delivery under one roof.
         </Text>
       </View>
-      <View style={{ width: '55%', backgroundColor: COLORS.gray, height: 150 }}>
-        <Image src={concreteInstallation} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      <View style={{ width: '55%' }}>
+        <Image src={concreteInstallation} style={{ width: '100%', height: 150, objectFit: 'cover' }} />
       </View>
     </View>
     
-    {/* Process steps */}
     <View style={[styles.row, { marginTop: 16 }]}>
       <View style={{ width: '24%', paddingRight: 6 }}>
         <View style={styles.box}>
@@ -517,13 +465,12 @@ const ProcessPage = () => (
       </View>
     </View>
     
-    {/* Bottom images */}
     <View style={[styles.row, { marginTop: 12 }]}>
-      <View style={{ width: '50%', paddingRight: 6, backgroundColor: COLORS.gray, height: 100 }}>
-        <Image src={mixDesign} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      <View style={{ width: '50%', paddingRight: 6 }}>
+        <Image src={mixDesign} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
       </View>
-      <View style={{ width: '50%', backgroundColor: COLORS.gray, height: 100 }}>
-        <Image src={workshopCloseup} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      <View style={{ width: '50%' }}>
+        <Image src={workshopCloseup} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
       </View>
     </View>
     
@@ -571,9 +518,7 @@ const TechnicalPage = () => (
         </View>
       </View>
       <View style={{ width: '50%' }}>
-        <View style={{ backgroundColor: COLORS.gray, height: 180, marginBottom: 10 }}>
-          <Image src={mixDesign} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-        </View>
+        <Image src={mixDesign} style={{ width: '100%', height: 180, objectFit: 'cover', marginBottom: 10 }} />
         <View style={styles.box}>
           <Text style={styles.heading}>Quality Standards</Text>
           <Text style={styles.bodySmall}>Tolerance: +/- 1mm</Text>
@@ -595,8 +540,8 @@ const TechnicalPage = () => (
 // Contact Page
 const ContactPage = () => (
   <Page size="A4" style={styles.coverPage}>
-    <View style={{ height: '50%', backgroundColor: COLORS.gray }}>
-      <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+    <View style={{ height: '50%' }}>
+      <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </View>
     <View style={{ flex: 1, padding: 30, justifyContent: 'center' }}>
       <View style={{ position: 'absolute', top: 20, left: 30 }}>
@@ -630,7 +575,7 @@ const ContactPage = () => (
   </Page>
 );
 
-// Main Document - 8 pages
+// Main Document
 const CompanyProfileDocument = () => (
   <Document title="Arcos Company Profile" author="Arcos" subject="Architectural Concrete Solutions">
     <CoverPage />
