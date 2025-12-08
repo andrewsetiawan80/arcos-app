@@ -3,6 +3,7 @@ import mixDesign from "../assets/images/mix-design.webp";
 import structuralPanels from "../assets/images/structural-panels.webp";
 import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import landmarkInstallation from "../assets/images/landmark-installation.webp";
+import { ArcosSectionTwo } from "../components/brand";
 
 const PHASES = [
   {
@@ -193,58 +194,48 @@ export default function PublicProcess() {
         </div>
       </section>
 
-      {/* Quality Assurance */}
-      <section className="border-b border-white/10 bg-[#232323]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Quality Assurance</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                Rigorous testing at every stage
-              </h2>
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-                Our multi-layered quality assurance process ensures every product meets or exceeds specifications before leaving our facility.
-              </p>
-              <div className="space-y-4">
-                {[
-                  "Batch testing for strength and consistency",
-                  "Dimensional accuracy verification",
-                  "Surface finish quality checks",
-                  "Environmental resistance testing",
-                  "On-site installation verification",
-                ].map((check) => (
-                  <div key={check} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-sm text-gray-300">{check}</span>
+      {/* Quality Assurance - Using Brand Layout */}
+      <ArcosSectionTwo
+        id="quality-assurance"
+        label="Quality Assurance"
+        headline="Rigorous testing at every stage"
+        subheadline="Our multi-layered quality assurance process ensures every product meets or exceeds specifications before leaving our facility."
+        image={structuralPanels}
+        imageAlt="Quality control process"
+        imagePosition="right"
+        variant="primary"
+        body={
+          <div className="space-y-6">
+            <div className="space-y-3">
+              {[
+                "Batch testing for strength and consistency",
+                "Dimensional accuracy verification",
+                "Surface finish quality checks",
+                "Environmental resistance testing",
+                "On-site installation verification",
+              ].map((check) => (
+                <div key={check} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-[32px] border border-white/10 bg-white/[0.05] p-8 space-y-6">
-              <div>
-                <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold mb-4">Quality Metrics</p>
-                <div className="space-y-4">
-                  {[
-                    { label: "Dimensional Tolerance", value: "±1mm" },
-                    { label: "Surface Flatness", value: "≤2mm/3m" },
-                    { label: "Color Consistency", value: "ΔE ≤ 2" },
-                    { label: "Defect Rate", value: "<0.1%" },
-                  ].map((metric) => (
-                    <div key={metric.label} className="flex items-center justify-between border-b border-white/10 pb-3">
-                      <span className="text-sm text-gray-300">{metric.label}</span>
-                      <span className="text-sm font-bold text-white">{metric.value}</span>
-                    </div>
-                  ))}
+                  <span className="text-sm">{check}</span>
                 </div>
+              ))}
+            </div>
+            <div className="pt-4 border-t border-white/10">
+              <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold mb-3">Key Metrics</p>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div><span className="text-white/60">Tolerance:</span> <span className="font-bold">±1mm</span></div>
+                <div><span className="text-white/60">Flatness:</span> <span className="font-bold">≤2mm/3m</span></div>
+                <div><span className="text-white/60">Color ΔE:</span> <span className="font-bold">≤ 2</span></div>
+                <div><span className="text-white/60">Defects:</span> <span className="font-bold">&lt;0.1%</span></div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* Why Choose Us */}
       <section className="border-b border-white/10 bg-[#353535]">

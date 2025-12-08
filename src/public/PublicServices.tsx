@@ -12,6 +12,7 @@ import mosaicInterior from "../assets/images/mosaic-interior.webp";
 import concreteInstallation from "../assets/images/concrete-installation.webp";
 import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import { api } from "../lib/api";
+import { ArcosSectionTwo } from "../components/brand";
 
 interface Service {
   id: number;
@@ -402,112 +403,52 @@ export default function PublicServices() {
         </div>
       </section>
 
-      {/* Floors & Walls Section - Moved from Home */}
-      <section className="border-b border-white/10 bg-[#232323]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              Floors & Walls
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              Seamless surfaces for every space
-            </h2>
-            <p className="text-gray-300 max-w-2xl text-base sm:text-lg">
-              From microcement floors to textured walls, we create seamless, durable surfaces that transform interiors.
-            </p>
-          </div>
+      {/* Floors & Walls Section - Using Brand Layout */}
+      <ArcosSectionTwo
+        id="microcement-floors"
+        label="Floors"
+        headline="Microcement Floors"
+        subheadline="Seamless, durable floor finishes perfect for residential and commercial spaces. Available in 60+ colors with custom textures and patterns."
+        image={microcementInterior2}
+        imageAlt="Microcement floors"
+        imagePosition="left"
+        variant="primary"
+        body={
+          <ul className="space-y-3 text-sm">
+            {["2-3mm thin overlay on existing substrates", "High abrasion resistance for heavy traffic", "Moisture and UV-resistant sealants"].map((item) => (
+              <li key={item} className="flex items-center gap-3">
+                <svg className="w-4 h-4 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        }
+      />
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Floors Section */}
-            <div className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={microcementInterior2}
-                  alt="Microcement floors"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 space-y-4">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  Floors
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  Microcement Floors
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  Seamless, durable floor finishes perfect for residential and commercial spaces. Available in 60+ colors with custom textures and patterns.
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>2-3mm thin overlay on existing substrates</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>High abrasion resistance for heavy traffic</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Moisture and UV-resistant sealants</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Walls Section */}
-            <div className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={microcementWalls}
-                  alt="Microcement walls"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 space-y-4">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  Walls
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  Microcement Walls
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  Transform walls with seamless microcement finishes. Perfect for bathrooms, kitchens, and feature walls with custom textures and colors.
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Seamless application on vertical surfaces</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Water-resistant for wet areas</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Custom textures: smooth, brushed, or textured</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ArcosSectionTwo
+        id="microcement-walls"
+        label="Walls"
+        headline="Microcement Walls"
+        subheadline="Transform walls with seamless microcement finishes. Perfect for bathrooms, kitchens, and feature walls with custom textures and colors."
+        image={microcementWalls}
+        imageAlt="Microcement walls"
+        imagePosition="right"
+        variant="secondary"
+        body={
+          <ul className="space-y-3 text-sm">
+            {["Seamless application on vertical surfaces", "Water-resistant for wet areas", "Custom textures: smooth, brushed, or textured"].map((item) => (
+              <li key={item} className="flex items-center gap-3">
+                <svg className="w-4 h-4 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        }
+      />
 
       {/* Applications Section - Moved from Home */}
       <section className="border-b border-white/10 bg-[#353535]">
