@@ -93,7 +93,7 @@ export default function PublicAbout() {
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
           <div className="max-w-3xl space-y-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
               About Arcos
@@ -106,9 +106,9 @@ export default function PublicAbout() {
               Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to collapse
               the gap between avant-garde design intent and construction reality.
             </p>
-            <div className="pt-4">
+            <div className="pt-4 relative z-20">
               <CompanyProfileDownloadButton 
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-bold uppercase tracking-wider hover:bg-gray-100 transition-all shadow-lg"
+                className="relative z-30 inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-bold uppercase tracking-wider hover:bg-gray-100 transition-all shadow-lg"
               />
             </div>
           </div>
