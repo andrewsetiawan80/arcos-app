@@ -420,57 +420,61 @@ const ProcessPage = () => (
       <Text style={styles.headerText}>06</Text>
     </View>
     
+    {/* Hero section with full-width image */}
+    <Image src={concreteInstallation} style={{ width: '100%', height: 160, objectFit: 'cover', marginBottom: 14 }} />
+    
+    {/* Title and intro */}
     <View style={styles.row}>
-      <View style={{ width: '45%', paddingRight: 10 }}>
+      <View style={{ width: '40%', paddingRight: 12 }}>
         <View style={styles.accent} />
         <Text style={styles.label}>How We Work</Text>
         <Text style={styles.title}>From concept to completion</Text>
+      </View>
+      <View style={{ width: '60%' }}>
         <Text style={styles.body}>
-          Every engagement follows an integrated workflow, aligning concept, engineering, fabrication, and delivery under one roof.
+          Every engagement follows an integrated workflow, aligning concept, engineering, fabrication, and delivery under one roof. Our process ensures quality at every stage.
         </Text>
       </View>
-      <View style={{ width: '55%' }}>
-        <Image src={concreteInstallation} style={{ width: '100%', height: 130, objectFit: 'cover' }} />
-      </View>
     </View>
     
-    <View style={[styles.row, { marginTop: 12 }]}>
-      <View style={{ width: '24%', paddingRight: 5 }}>
+    {/* Process steps - 2x2 grid */}
+    <View style={[styles.row, { marginTop: 14 }]}>
+      <View style={{ width: '50%', paddingRight: 6 }}>
         <View style={styles.box}>
-          <Text style={styles.label}>01</Text>
-          <Text style={styles.heading}>Design</Text>
-          <Text style={styles.bodySmall}>Workshops to decode vision.</Text>
+          <Text style={styles.label}>01 — Design</Text>
+          <Text style={styles.bodySmall}>Collaborative workshops decode vision and establish criteria for success.</Text>
         </View>
-      </View>
-      <View style={{ width: '26%', paddingRight: 5 }}>
-        <View style={styles.box}>
-          <Text style={styles.label}>02</Text>
-          <Text style={styles.heading}>Engineering</Text>
-          <Text style={styles.bodySmall}>Parametric modelling.</Text>
-        </View>
-      </View>
-      <View style={{ width: '26%', paddingRight: 5 }}>
-        <View style={styles.box}>
-          <Text style={styles.label}>03</Text>
-          <Text style={styles.heading}>Fabrication</Text>
-          <Text style={styles.bodySmall}>CNC production.</Text>
-        </View>
-      </View>
-      <View style={{ width: '24%' }}>
-        <View style={styles.box}>
-          <Text style={styles.label}>04</Text>
-          <Text style={styles.heading}>Install</Text>
-          <Text style={styles.bodySmall}>White-glove delivery.</Text>
-        </View>
-      </View>
-    </View>
-    
-    <View style={[styles.row, { marginTop: 10, marginBottom: 40 }]}>
-      <View style={{ width: '50%', paddingRight: 5 }}>
-        <Image src={mixDesign} style={{ width: '100%', height: 85, objectFit: 'cover' }} />
       </View>
       <View style={{ width: '50%' }}>
-        <Image src={workshopCloseup} style={{ width: '100%', height: 85, objectFit: 'cover' }} />
+        <View style={styles.box}>
+          <Text style={styles.label}>02 — Engineering</Text>
+          <Text style={styles.bodySmall}>Parametric modelling and structural simulations refine every detail.</Text>
+        </View>
+      </View>
+    </View>
+    
+    <View style={[styles.row, { marginTop: 6 }]}>
+      <View style={{ width: '50%', paddingRight: 6 }}>
+        <View style={styles.box}>
+          <Text style={styles.label}>03 — Fabrication</Text>
+          <Text style={styles.bodySmall}>Robotics and CNC production ensure precision manufacturing.</Text>
+        </View>
+      </View>
+      <View style={{ width: '50%' }}>
+        <View style={styles.box}>
+          <Text style={styles.label}>04 — Install</Text>
+          <Text style={styles.bodySmall}>White-glove delivery and expert on-site installation.</Text>
+        </View>
+      </View>
+    </View>
+    
+    {/* Bottom images row */}
+    <View style={[styles.row, { marginTop: 14 }]}>
+      <View style={{ width: '50%', paddingRight: 6 }}>
+        <Image src={mixDesign} style={{ width: '100%', height: 120, objectFit: 'cover' }} />
+      </View>
+      <View style={{ width: '50%' }}>
+        <Image src={workshopCloseup} style={{ width: '100%', height: 120, objectFit: 'cover' }} />
       </View>
     </View>
     
