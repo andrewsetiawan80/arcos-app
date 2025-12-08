@@ -703,27 +703,46 @@ const CompanyProfileDocument = () => (
 export function CompanyProfileDownloadButton({ className = '' }: { className?: string }) {
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleDownload = async () => {
-    if (isGenerating) return;
+  const handleDownload = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('=== PDF BUTTON CLICKED ===');
+    
+    if (isGenerating) {
+      console.log('Already generating, returning');
+      return;
+    }
     
     setIsGenerating(true);
+    console.log('Starting PDF generation...');
     
     try {
+      console.log('Creating PDF blob...');
       const blob = await pdf(<CompanyProfileDocument />).toBlob();
+      console.log('PDF blob created, size:', blob.size);
+      
       const url = URL.createObjectURL(blob);
+      console.log('Blob URL created:', url);
+      
       const link = document.createElement('a');
       link.href = url;
       link.download = 'Arcos-Company-Profile-2025.pdf';
       link.style.display = 'none';
       document.body.appendChild(link);
+      
+      console.log('Triggering download...');
       link.click();
       
       setTimeout(() => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
+        console.log('Cleanup complete');
       }, 100);
+      
+      console.log('=== PDF DOWNLOAD COMPLETE ===');
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error('=== PDF ERROR ===', error);
       alert('Error generating PDF. Please try again.');
     } finally {
       setIsGenerating(false);
@@ -733,8 +752,9 @@ export function CompanyProfileDownloadButton({ className = '' }: { className?: s
   return (
     <button
       type="button"
-      onClick={handleDownload}
+      onClick={(e) => handleDownload(e)}
       disabled={isGenerating}
+      style={{ pointerEvents: 'auto' }}
       className={`cursor-pointer disabled:opacity-50 disabled:cursor-wait ${className}`}
     >
       <span className="inline-flex items-center gap-2">
