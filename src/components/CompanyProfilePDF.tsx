@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Document,
   Page,
   Text,
   View,
   StyleSheet,
-  Image,
-  Font,
-  PDFDownloadLink,
+  pdf,
 } from '@react-pdf/renderer';
 
 /**
@@ -15,24 +13,9 @@ import {
  * 
  * Following Arcos Brand Guidelines:
  * - Colors: #232323 (black), #353535 (gray), #ffffff (white)
- * - Typography: Host Grotesk for headings, Helvetica for body
+ * - Typography: Helvetica (built-in, similar to brand fonts)
  * - Layout: Clean, minimalist, brutalist aesthetic
  */
-
-// Register Host Grotesk font
-Font.register({
-  family: 'Host Grotesk',
-  fonts: [
-    {
-      src: 'https://fonts.gstatic.com/s/hostgrotesk/v4/46kulZYKqqWabN_eL8LgxS4Ew6xtKv5HZByHzuTi.woff2',
-      fontWeight: 700,
-    },
-    {
-      src: 'https://fonts.gstatic.com/s/hostgrotesk/v4/46kulZYKqqWabN_eL8LgxS4Ew6xtKv5HZByHzuTi.woff2',
-      fontWeight: 600,
-    },
-  ],
-});
 
 // Brand colors
 const COLORS = {
@@ -75,9 +58,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   logoText: {
-    fontFamily: 'Host Grotesk',
+    fontFamily: 'Helvetica-Bold',
     fontSize: 36,
-    fontWeight: 700,
     letterSpacing: 1,
     color: COLORS.white,
   },
@@ -89,9 +71,8 @@ const styles = StyleSheet.create({
     padding: 48,
   },
   coverTitle: {
-    fontFamily: 'Host Grotesk',
-    fontSize: 48,
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 42,
     textTransform: 'uppercase',
     lineHeight: 1.1,
     marginBottom: 24,
@@ -114,9 +95,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   coverStatValue: {
-    fontFamily: 'Host Grotesk',
+    fontFamily: 'Helvetica-Bold',
     fontSize: 28,
-    fontWeight: 700,
     color: COLORS.white,
   },
   coverStatLabel: {
@@ -157,27 +137,24 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   heading1: {
-    fontFamily: 'Host Grotesk',
-    fontSize: 32,
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 28,
     textTransform: 'uppercase',
     lineHeight: 1.2,
     marginBottom: 16,
     color: COLORS.white,
   },
   heading2: {
-    fontFamily: 'Host Grotesk',
-    fontSize: 20,
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 18,
     textTransform: 'uppercase',
     lineHeight: 1.3,
     marginBottom: 12,
     color: COLORS.white,
   },
   heading3: {
-    fontFamily: 'Host Grotesk',
-    fontSize: 14,
-    fontWeight: 600,
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 12,
     textTransform: 'uppercase',
     marginBottom: 8,
     color: COLORS.white,
@@ -263,9 +240,8 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   metricValue: {
-    fontFamily: 'Host Grotesk',
+    fontFamily: 'Helvetica-Bold',
     fontSize: 24,
-    fontWeight: 700,
     color: COLORS.white,
   },
   metricLabel: {
@@ -292,8 +268,7 @@ const styles = StyleSheet.create({
   },
   footerLogo: {
     fontSize: 12,
-    fontFamily: 'Host Grotesk',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
     color: COLORS.white,
   },
   footerText: {
@@ -511,8 +486,8 @@ const CompanyProfileDocument = () => (
         material engineering, digital fabrication, and delivery into one continuous rhythm.
       </Text>
       
-      <View style={[styles.grid3, { marginTop: 24 }]}>
-        <View style={[styles.gridItem3, styles.box]}>
+      <View style={[styles.grid2, { marginTop: 24 }]}>
+        <View style={[styles.gridItem2, styles.box]}>
           <Text style={styles.sectionLabel}>01</Text>
           <Text style={styles.heading3}>Design & Planning</Text>
           <Text style={styles.bodyTextSmall}>
@@ -521,7 +496,7 @@ const CompanyProfileDocument = () => (
           </Text>
         </View>
         
-        <View style={[styles.gridItem3, styles.box]}>
+        <View style={[styles.gridItem2, styles.box]}>
           <Text style={styles.sectionLabel}>02</Text>
           <Text style={styles.heading3}>Material Engineering</Text>
           <Text style={styles.bodyTextSmall}>
@@ -530,7 +505,7 @@ const CompanyProfileDocument = () => (
           </Text>
         </View>
         
-        <View style={[styles.gridItem3, styles.box]}>
+        <View style={[styles.gridItem2, styles.box]}>
           <Text style={styles.sectionLabel}>03</Text>
           <Text style={styles.heading3}>Fabrication</Text>
           <Text style={styles.bodyTextSmall}>
@@ -538,16 +513,15 @@ const CompanyProfileDocument = () => (
             in parallel to compress schedules.
           </Text>
         </View>
-      </View>
-      
-      <View style={[styles.box, { marginTop: 16 }]}>
-        <Text style={styles.sectionLabel}>04</Text>
-        <Text style={styles.heading3}>Installation & Delivery</Text>
-        <Text style={styles.bodyTextSmall}>
-          Global logistics, white-glove installation, and post-install monitoring 
-          ensure the design performs for decades. Our certified installers handle 
-          every project with precision and care.
-        </Text>
+        
+        <View style={[styles.gridItem2, styles.box]}>
+          <Text style={styles.sectionLabel}>04</Text>
+          <Text style={styles.heading3}>Installation</Text>
+          <Text style={styles.bodyTextSmall}>
+            Global logistics, white-glove installation, and post-install 
+            monitoring ensure decades of performance.
+          </Text>
+        </View>
       </View>
       
       <PageFooter pageNum={4} />
@@ -584,7 +558,7 @@ const CompanyProfileDocument = () => (
         </View>
         <View style={styles.column}>
           <View style={styles.metric}>
-            <Text style={styles.metricValue}>−30°C to +80°C</Text>
+            <Text style={styles.metricValue}>-30 to +80°C</Text>
             <Text style={styles.metricLabel}>Thermal Tolerance</Text>
           </View>
           <View style={styles.metric}>
@@ -607,7 +581,7 @@ const CompanyProfileDocument = () => (
           </View>
           <View style={styles.gridItem2}>
             <Text style={styles.bodyTextSmall}>• Color Consistency: ΔE ≤ 2</Text>
-            <Text style={styles.bodyTextSmall}>• Defect Rate: &lt;0.1%</Text>
+            <Text style={styles.bodyTextSmall}>• Defect Rate: less than 0.1%</Text>
           </View>
         </View>
       </View>
@@ -652,35 +626,55 @@ const CompanyProfileDocument = () => (
   </Document>
 );
 
-// Download button component
+// Download button component - using manual PDF generation
 export function CompanyProfileDownloadButton({ className = '' }: { className?: string }) {
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleDownload = async () => {
+    setIsGenerating(true);
+    try {
+      const blob = await pdf(<CompanyProfileDocument />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Arcos-Company-Profile-2025.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
-    <PDFDownloadLink
-      document={<CompanyProfileDocument />}
-      fileName="Arcos-Company-Profile-2025.pdf"
-      className={className}
+    <button
+      onClick={handleDownload}
+      disabled={isGenerating}
+      className={`cursor-pointer disabled:opacity-50 disabled:cursor-wait ${className}`}
     >
-      {({ loading }) => (
-        <span className="inline-flex items-center gap-2">
-          {loading ? (
-            <>
-              <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              Generating PDF...
-            </>
-          ) : (
-            <>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download Company Profile
-            </>
-          )}
-        </span>
-      )}
-    </PDFDownloadLink>
+      <span className="inline-flex items-center gap-2">
+        {isGenerating ? (
+          <>
+            <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+            Generating PDF...
+          </>
+        ) : (
+          <>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download Company Profile
+          </>
+        )}
+      </span>
+    </button>
   );
 }
 
