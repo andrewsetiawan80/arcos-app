@@ -430,30 +430,30 @@ const ProcessPage = () => (
         </Text>
       </View>
       <View style={{ width: '55%' }}>
-        <Image src={concreteInstallation} style={{ width: '100%', height: 150, objectFit: 'cover' }} />
+        <Image src={concreteInstallation} style={{ width: '100%', height: 130, objectFit: 'cover' }} />
       </View>
     </View>
     
-    <View style={[styles.row, { marginTop: 16 }]}>
-      <View style={{ width: '24%', paddingRight: 6 }}>
+    <View style={[styles.row, { marginTop: 12 }]}>
+      <View style={{ width: '24%', paddingRight: 5 }}>
         <View style={styles.box}>
           <Text style={styles.label}>01</Text>
           <Text style={styles.heading}>Design</Text>
-          <Text style={styles.bodySmall}>Workshops to decode vision and criteria.</Text>
+          <Text style={styles.bodySmall}>Workshops to decode vision.</Text>
         </View>
       </View>
-      <View style={{ width: '26%', paddingRight: 6 }}>
+      <View style={{ width: '26%', paddingRight: 5 }}>
         <View style={styles.box}>
           <Text style={styles.label}>02</Text>
           <Text style={styles.heading}>Engineering</Text>
-          <Text style={styles.bodySmall}>Parametric modelling and simulations.</Text>
+          <Text style={styles.bodySmall}>Parametric modelling.</Text>
         </View>
       </View>
-      <View style={{ width: '26%', paddingRight: 6 }}>
+      <View style={{ width: '26%', paddingRight: 5 }}>
         <View style={styles.box}>
           <Text style={styles.label}>03</Text>
           <Text style={styles.heading}>Fabrication</Text>
-          <Text style={styles.bodySmall}>Robotics and CNC production.</Text>
+          <Text style={styles.bodySmall}>CNC production.</Text>
         </View>
       </View>
       <View style={{ width: '24%' }}>
@@ -465,12 +465,12 @@ const ProcessPage = () => (
       </View>
     </View>
     
-    <View style={[styles.row, { marginTop: 12 }]}>
-      <View style={{ width: '50%', paddingRight: 6 }}>
-        <Image src={mixDesign} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
+    <View style={[styles.row, { marginTop: 10, marginBottom: 40 }]}>
+      <View style={{ width: '50%', paddingRight: 5 }}>
+        <Image src={mixDesign} style={{ width: '100%', height: 85, objectFit: 'cover' }} />
       </View>
       <View style={{ width: '50%' }}>
-        <Image src={workshopCloseup} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
+        <Image src={workshopCloseup} style={{ width: '100%', height: 85, objectFit: 'cover' }} />
       </View>
     </View>
     
