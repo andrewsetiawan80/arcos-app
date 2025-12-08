@@ -3,6 +3,19 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    // Polyfill for Buffer (needed by @react-pdf/renderer)
+    global: 'globalThis',
+  },
+  resolve: {
+    alias: {
+      // Buffer polyfill for browser
+      buffer: 'buffer',
+    },
+  },
+  optimizeDeps: {
+    include: ['buffer'],
+  },
   server: {
     host: '0.0.0.0', // Allow access from network
     port: 5173,
