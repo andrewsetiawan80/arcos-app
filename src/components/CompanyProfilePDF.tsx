@@ -28,11 +28,15 @@ import tile03 from '../assets/images/inspiration/3d-tile-68.png';
 import tile04 from '../assets/images/inspiration/3d-tile-79.png';
 import tile05 from '../assets/images/inspiration/3d-tile-85.png';
 import tile06 from '../assets/images/inspiration/3d-tile-91.png';
+import tile07 from '../assets/images/inspiration/3d-tile-97.png';
+import tile08 from '../assets/images/inspiration/3d-tile-103.png';
 import bespoke01 from '../assets/images/inspiration/bespoke-01.png';
 import bespoke02 from '../assets/images/inspiration/bespoke-02.png';
+import bespoke03 from '../assets/images/inspiration/bespoke-03.png';
 import microcement02 from '../assets/images/inspiration/microcement-02.png';
+import microcement03 from '../assets/images/inspiration/microcement-03.png';
 
-// Brand colors only
+// Brand colors
 const COLORS = {
   black: '#232323',
   gray: '#353535',
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.black,
     color: COLORS.white,
     fontFamily: 'Helvetica',
-    padding: 40,
+    padding: 35,
   },
   coverPage: {
     backgroundColor: COLORS.black,
@@ -56,121 +60,91 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: COLORS.gray,
-    paddingBottom: 10,
-    marginBottom: 20,
+    paddingBottom: 8,
+    marginBottom: 16,
   },
   headerText: {
-    fontSize: 8,
+    fontSize: 7,
     color: COLORS.muted,
     textTransform: 'uppercase',
     letterSpacing: 2,
   },
   footer: {
     position: 'absolute',
-    bottom: 30,
-    left: 40,
-    right: 40,
+    bottom: 25,
+    left: 35,
+    right: 35,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderTopWidth: 1,
     borderTopColor: COLORS.gray,
-    paddingTop: 10,
+    paddingTop: 8,
   },
   footerText: {
-    fontSize: 8,
+    fontSize: 7,
     color: COLORS.muted,
   },
   label: {
-    fontSize: 8,
+    fontSize: 7,
     color: COLORS.muted,
     textTransform: 'uppercase',
     letterSpacing: 2,
-    marginBottom: 8,
+    marginBottom: 6,
   },
   title: {
-    fontSize: 26,
+    fontSize: 22,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.white,
     textTransform: 'uppercase',
-    marginBottom: 14,
+    marginBottom: 12,
     lineHeight: 1.2,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.white,
     textTransform: 'uppercase',
-    marginBottom: 10,
+    marginBottom: 8,
     lineHeight: 1.3,
   },
   heading: {
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.white,
     textTransform: 'uppercase',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   body: {
-    fontSize: 9,
-    color: COLORS.muted,
-    lineHeight: 1.5,
-    marginBottom: 8,
-  },
-  bodySmall: {
     fontSize: 8,
     color: COLORS.muted,
+    lineHeight: 1.5,
+    marginBottom: 6,
+  },
+  bodySmall: {
+    fontSize: 7,
+    color: COLORS.muted,
     lineHeight: 1.4,
-    marginBottom: 4,
   },
   row: {
     flexDirection: 'row',
   },
-  col50: {
-    width: '48%',
-  },
-  col33: {
-    width: '31%',
-  },
-  spacer: {
-    width: '4%',
-  },
-  spacer3: {
-    width: '3.5%',
-  },
   box: {
     backgroundColor: COLORS.gray,
-    padding: 14,
-    marginBottom: 10,
-  },
-  image: {
-    width: '100%',
-    height: 100,
-    objectFit: 'cover',
-    marginBottom: 12,
-  },
-  imageSmall: {
-    width: '100%',
-    height: 70,
-    objectFit: 'cover',
-    marginBottom: 6,
-  },
-  imageTile: {
-    width: '100%',
-    height: 85,
-    objectFit: 'cover',
+    padding: 12,
+    marginBottom: 8,
   },
   accent: {
-    width: 30,
-    height: 3,
+    width: 25,
+    height: 2,
     backgroundColor: COLORS.white,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   stat: {
     alignItems: 'center',
     width: '25%',
   },
   statValue: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.white,
   },
@@ -178,72 +152,55 @@ const styles = StyleSheet.create({
     fontSize: 6,
     color: COLORS.muted,
     textTransform: 'uppercase',
-    marginTop: 3,
+    marginTop: 2,
   },
-  metric: {
-    marginBottom: 12,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.gray,
-  },
-  metricValue: {
-    fontSize: 16,
-    fontFamily: 'Helvetica-Bold',
-    color: COLORS.white,
-    marginBottom: 2,
-  },
-  metricLabel: {
-    fontSize: 7,
-    color: COLORS.muted,
-    textTransform: 'uppercase',
+  // Image styles - contain to preserve aspect ratio
+  imageContain: {
+    objectFit: 'contain',
+    backgroundColor: COLORS.gray,
   },
   listItem: {
     flexDirection: 'row',
-    marginBottom: 4,
+    marginBottom: 3,
   },
   bullet: {
     width: 3,
     height: 3,
     backgroundColor: COLORS.muted,
     borderRadius: 1,
-    marginRight: 6,
+    marginRight: 5,
     marginTop: 3,
   },
   listText: {
     flex: 1,
-    fontSize: 8,
+    fontSize: 7,
     color: COLORS.muted,
     lineHeight: 1.3,
-  },
-  galleryItem: {
-    width: '31%',
-    marginBottom: 8,
   },
 });
 
 // Cover Page
 const CoverPage = () => (
   <Page size="A4" style={styles.coverPage}>
-    <View style={{ height: '45%', position: 'relative' }}>
-      <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(35,35,35,0.5)' }} />
-      <View style={{ position: 'absolute', top: 30, left: 30 }}>
-        <View style={{ width: 30, height: 3, backgroundColor: COLORS.white, marginBottom: 6 }} />
-        <Text style={{ fontSize: 22, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>arcos</Text>
-      </View>
+    <View style={{ height: '55%', backgroundColor: COLORS.gray }}>
+      <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
     </View>
     <View style={{ flex: 1, padding: 30, justifyContent: 'center' }}>
-      <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 10 }}>
+      <View style={{ position: 'absolute', top: 20, left: 30 }}>
+        <View style={{ width: 25, height: 2, backgroundColor: COLORS.white, marginBottom: 4 }} />
+        <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>arcos</Text>
+      </View>
+      <Text style={{ fontSize: 6, color: COLORS.muted, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8 }}>
         Company Profile 2025
       </Text>
-      <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: COLORS.white, textTransform: 'uppercase', lineHeight: 1.15, marginBottom: 14 }}>
+      <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, textTransform: 'uppercase', lineHeight: 1.15, marginBottom: 12 }}>
         ENGINEERED{'\n'}CONCRETE{'\n'}ARTISTRY
       </Text>
-      <Text style={{ fontSize: 10, color: COLORS.muted, lineHeight: 1.5, maxWidth: 320 }}>
+      <Text style={{ fontSize: 9, color: COLORS.muted, lineHeight: 1.5, maxWidth: 300 }}>
         From seamless microcement finishes to parametric facade systems — Arcos delivers Southeast Asia's most advanced architectural concrete solutions.
       </Text>
     </View>
-    <View style={{ backgroundColor: COLORS.gray, padding: 18, flexDirection: 'row' }}>
+    <View style={{ backgroundColor: COLORS.gray, padding: 15, flexDirection: 'row' }}>
       <View style={styles.stat}>
         <Text style={styles.statValue}>2025</Text>
         <Text style={styles.statLabel}>Founded</Text>
@@ -264,36 +221,31 @@ const CoverPage = () => (
   </Page>
 );
 
-// About Page
+// About Page - Mixed layout
 const AboutPage = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
       <Text style={styles.headerText}>About Arcos</Text>
       <Text style={styles.headerText}>02</Text>
     </View>
-    <View style={styles.row}>
-      <View style={styles.col50}>
-        <Image src={landmarkInstallation} style={styles.image} />
-      </View>
-      <View style={styles.spacer} />
-      <View style={styles.col50}>
-        <Image src={modernInterior} style={styles.image} />
-      </View>
+    
+    {/* Large landscape image */}
+    <View style={{ backgroundColor: COLORS.gray, height: 140, marginBottom: 12 }}>
+      <Image src={landmarkInstallation} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
     </View>
+    
     <View style={styles.accent} />
     <Text style={styles.label}>Who We Are</Text>
     <Text style={styles.title}>Collapsing the gap between design and reality</Text>
+    
     <View style={styles.row}>
-      <View style={styles.col50}>
+      <View style={{ width: '55%', paddingRight: 12 }}>
         <Text style={styles.body}>
           Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to collapse the gap between avant-garde design intent and construction reality.
         </Text>
         <Text style={styles.body}>
-          We specialise in seamless microcement finishes, polished concrete overlays, terrazzo systems, architectural panels, and 3D tiles.
+          We specialise in seamless microcement finishes, polished concrete overlays, terrazzo systems, architectural panels, and 3D tiles — all engineered and delivered through one accountable partner.
         </Text>
-      </View>
-      <View style={styles.spacer} />
-      <View style={styles.col50}>
         <View style={styles.box}>
           <Text style={styles.heading}>Material Lab</Text>
           <Text style={styles.bodySmall}>UHPC, GFRC, and microtopping formulations tuned for climate and performance.</Text>
@@ -303,7 +255,11 @@ const AboutPage = () => (
           <Text style={styles.bodySmall}>Parametric modelling flows into robotic casting and modular mold production.</Text>
         </View>
       </View>
+      <View style={{ width: '45%', backgroundColor: COLORS.gray }}>
+        <Image src={modernInterior} style={{ width: '100%', height: 200, objectFit: 'contain' }} />
+      </View>
     </View>
+    
     <View style={styles.footer}>
       <Text style={styles.footerText}>arcos</Text>
       <Text style={styles.footerText}>Architectural Concrete Solutions</Text>
@@ -312,50 +268,54 @@ const AboutPage = () => (
   </Page>
 );
 
-// Services Page with Images
+// Services Page - Grid with varied sizes
 const ServicesPage = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
       <Text style={styles.headerText}>Our Services</Text>
       <Text style={styles.headerText}>03</Text>
     </View>
+    
     <View style={styles.accent} />
     <Text style={styles.label}>Ecosystem of Expertise</Text>
     <Text style={styles.subtitle}>Full-spectrum concrete innovation</Text>
+    
+    {/* Top row - one large, one small */}
     <View style={[styles.row, { marginTop: 10 }]}>
-      <View style={styles.col50}>
-        <Image src={microcementInterior} style={styles.imageSmall} />
-        <View style={styles.box}>
-          <Text style={styles.heading}>Seamless Microcement</Text>
-          <Text style={styles.bodySmall}>2-3mm coatings for floors, walls, and furniture. 60+ colors available.</Text>
+      <View style={{ width: '60%', paddingRight: 8 }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 120, marginBottom: 6 }}>
+          <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </View>
+        <Text style={styles.heading}>Seamless Microcement</Text>
+        <Text style={styles.bodySmall}>2-3mm coatings for floors, walls, and furniture. 60+ colors available.</Text>
       </View>
-      <View style={styles.spacer} />
-      <View style={styles.col50}>
-        <Image src={concretePanelDetail} style={styles.imageSmall} />
-        <View style={styles.box}>
-          <Text style={styles.heading}>Architectural Panels</Text>
-          <Text style={styles.bodySmall}>UHPC and GFRC panels for facades and interior feature walls.</Text>
+      <View style={{ width: '40%' }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 120, marginBottom: 6 }}>
+          <Image src={concretePanelDetail} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </View>
-      </View>
-    </View>
-    <View style={styles.row}>
-      <View style={styles.col50}>
-        <Image src={mosaicFacade} style={styles.imageSmall} />
-        <View style={styles.box}>
-          <Text style={styles.heading}>3D Concrete Tiles</Text>
-          <Text style={styles.bodySmall}>Dimensional tiles adding depth and texture to any surface.</Text>
-        </View>
-      </View>
-      <View style={styles.spacer} />
-      <View style={styles.col50}>
-        <Image src={microcementWalls} style={styles.imageSmall} />
-        <View style={styles.box}>
-          <Text style={styles.heading}>Polished Concrete</Text>
-          <Text style={styles.bodySmall}>High-performance polished overlays with aesthetic precision.</Text>
-        </View>
+        <Text style={styles.heading}>Architectural Panels</Text>
+        <Text style={styles.bodySmall}>UHPC and GFRC panels for facades.</Text>
       </View>
     </View>
+    
+    {/* Bottom row - reversed sizes */}
+    <View style={[styles.row, { marginTop: 12 }]}>
+      <View style={{ width: '40%', paddingRight: 8 }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 100, marginBottom: 6 }}>
+          <Image src={mosaicFacade} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <Text style={styles.heading}>3D Concrete Tiles</Text>
+        <Text style={styles.bodySmall}>Dimensional tiles with depth.</Text>
+      </View>
+      <View style={{ width: '60%' }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 100, marginBottom: 6 }}>
+          <Image src={microcementWalls} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <Text style={styles.heading}>Polished Concrete</Text>
+        <Text style={styles.bodySmall}>High-performance polished overlays with aesthetic precision and durability.</Text>
+      </View>
+    </View>
+    
     <View style={styles.footer}>
       <Text style={styles.footerText}>arcos</Text>
       <Text style={styles.footerText}>Architectural Concrete Solutions</Text>
@@ -364,71 +324,61 @@ const ServicesPage = () => (
   </Page>
 );
 
-// Gallery Page 1 - 3D Tiles
+// Gallery Page 1 - 3D Tiles with masonry-style layout
 const GalleryPage1 = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
       <Text style={styles.headerText}>Design Inspiration</Text>
       <Text style={styles.headerText}>04</Text>
     </View>
+    
     <View style={styles.accent} />
     <Text style={styles.label}>3D Tile Collection</Text>
     <Text style={styles.subtitle}>Dimensional surfaces</Text>
-    <View style={[styles.row, { marginTop: 10 }]}>
-      <View style={styles.col33}>
-        <Image src={tile01} style={styles.imageTile} />
-      </View>
-      <View style={styles.spacer3} />
-      <View style={styles.col33}>
-        <Image src={tile02} style={styles.imageTile} />
-      </View>
-      <View style={styles.spacer3} />
-      <View style={styles.col33}>
-        <Image src={tile03} style={styles.imageTile} />
-      </View>
-    </View>
+    
+    {/* Masonry-style grid */}
     <View style={[styles.row, { marginTop: 8 }]}>
-      <View style={styles.col33}>
-        <Image src={tile04} style={styles.imageTile} />
-      </View>
-      <View style={styles.spacer3} />
-      <View style={styles.col33}>
-        <Image src={tile05} style={styles.imageTile} />
-      </View>
-      <View style={styles.spacer3} />
-      <View style={styles.col33}>
-        <Image src={tile06} style={styles.imageTile} />
-      </View>
-    </View>
-    <View style={[styles.box, { marginTop: 12 }]}>
-      <Text style={styles.heading}>Parametric Design Capabilities</Text>
-      <Text style={styles.body}>
-        Our 3D tiles are produced using advanced CNC milling and casting techniques. Each design can be customized for scale, depth, and finish to suit your project requirements.
-      </Text>
-      <View style={styles.row}>
-        <View style={styles.col50}>
-          <View style={styles.listItem}>
-            <View style={styles.bullet} />
-            <Text style={styles.listText}>Custom pattern development</Text>
-          </View>
-          <View style={styles.listItem}>
-            <View style={styles.bullet} />
-            <Text style={styles.listText}>Variable relief depths</Text>
-          </View>
+      {/* Left column - tall */}
+      <View style={{ width: '32%', paddingRight: 6 }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 130, marginBottom: 6 }}>
+          <Image src={tile01} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </View>
-        <View style={styles.spacer} />
-        <View style={styles.col50}>
-          <View style={styles.listItem}>
-            <View style={styles.bullet} />
-            <Text style={styles.listText}>60+ color options</Text>
-          </View>
-          <View style={styles.listItem}>
-            <View style={styles.bullet} />
-            <Text style={styles.listText}>Interior and exterior grades</Text>
-          </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 90, marginBottom: 6 }}>
+          <Image src={tile02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 110 }}>
+          <Image src={tile03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </View>
       </View>
+      
+      {/* Middle column */}
+      <View style={{ width: '36%', paddingRight: 6 }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 100, marginBottom: 6 }}>
+          <Image src={tile04} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 140, marginBottom: 6 }}>
+          <Image src={tile05} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 90 }}>
+          <Image src={tile06} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+      </View>
+      
+      {/* Right column */}
+      <View style={{ width: '32%' }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 110, marginBottom: 6 }}>
+          <Image src={tile07} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 120, marginBottom: 6 }}>
+          <Image src={tile08} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={[styles.box, { height: 100, justifyContent: 'center' }]}>
+          <Text style={styles.heading}>Custom Patterns</Text>
+          <Text style={styles.bodySmall}>Each design can be customized for scale, depth, and finish.</Text>
+        </View>
+      </View>
     </View>
+    
     <View style={styles.footer}>
       <Text style={styles.footerText}>arcos</Text>
       <Text style={styles.footerText}>Architectural Concrete Solutions</Text>
@@ -437,59 +387,65 @@ const GalleryPage1 = () => (
   </Page>
 );
 
-// Gallery Page 2 - Bespoke & Microcement
+// Gallery Page 2 - Bespoke & Microcement with dynamic layout
 const GalleryPage2 = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
       <Text style={styles.headerText}>Design Inspiration</Text>
       <Text style={styles.headerText}>05</Text>
     </View>
+    
     <View style={styles.accent} />
     <Text style={styles.label}>Bespoke Solutions</Text>
     <Text style={styles.subtitle}>Custom applications</Text>
-    <View style={[styles.row, { marginTop: 10 }]}>
-      <View style={styles.col33}>
-        <Image src={bespoke01} style={styles.imageTile} />
+    
+    {/* Hero image - full width */}
+    <View style={{ backgroundColor: COLORS.gray, height: 130, marginTop: 8, marginBottom: 10 }}>
+      <Image src={bespoke01} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+    </View>
+    
+    {/* Three column grid */}
+    <View style={styles.row}>
+      <View style={{ width: '32%', paddingRight: 6 }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 95, marginBottom: 6 }}>
+          <Image src={bespoke02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 95 }}>
+          <Image src={microcement02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
       </View>
-      <View style={styles.spacer3} />
-      <View style={styles.col33}>
-        <Image src={bespoke02} style={styles.imageTile} />
+      <View style={{ width: '36%', paddingRight: 6 }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 196 }}>
+          <Image src={bespoke03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
       </View>
-      <View style={styles.spacer3} />
-      <View style={styles.col33}>
-        <Image src={microcement02} style={styles.imageTile} />
+      <View style={{ width: '32%' }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 95, marginBottom: 6 }}>
+          <Image src={microcement03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
+        <View style={{ backgroundColor: COLORS.gray, height: 95 }}>
+          <Image src={workshopCloseup} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </View>
       </View>
     </View>
-    <View style={[styles.row, { marginTop: 8 }]}>
-      <View style={styles.col50}>
-        <Image src={concreteInstallation} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
-      </View>
-      <View style={styles.spacer} />
-      <View style={styles.col50}>
-        <Image src={workshopCloseup} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
-      </View>
-    </View>
-    <View style={[styles.box, { marginTop: 12 }]}>
+    
+    <View style={[styles.box, { marginTop: 10 }]}>
       <Text style={styles.heading}>From Concept to Reality</Text>
-      <Text style={styles.body}>
-        Every bespoke project begins with a collaborative design workshop. Our team works alongside architects and designers to translate creative vision into manufacturable concrete solutions.
-      </Text>
-      <View style={styles.row}>
-        <View style={styles.col50}>
+      <View style={[styles.row, { marginTop: 4 }]}>
+        <View style={{ width: '50%' }}>
           <View style={styles.listItem}>
             <View style={styles.bullet} />
-            <Text style={styles.listText}>Furniture and fixtures</Text>
+            <Text style={styles.listText}>Custom furniture and fixtures</Text>
           </View>
           <View style={styles.listItem}>
             <View style={styles.bullet} />
             <Text style={styles.listText}>Sculptural elements</Text>
           </View>
         </View>
-        <View style={styles.spacer} />
-        <View style={styles.col50}>
+        <View style={{ width: '50%' }}>
           <View style={styles.listItem}>
             <View style={styles.bullet} />
-            <Text style={styles.listText}>Facade systems</Text>
+            <Text style={styles.listText}>Facade cladding systems</Text>
           </View>
           <View style={styles.listItem}>
             <View style={styles.bullet} />
@@ -498,10 +454,83 @@ const GalleryPage2 = () => (
         </View>
       </View>
     </View>
+    
     <View style={styles.footer}>
       <Text style={styles.footerText}>arcos</Text>
       <Text style={styles.footerText}>Architectural Concrete Solutions</Text>
       <Text style={styles.footerText}>05</Text>
+    </View>
+  </Page>
+);
+
+// Process Page with images
+const ProcessPage = () => (
+  <Page size="A4" style={styles.page}>
+    <View style={styles.header}>
+      <Text style={styles.headerText}>Our Process</Text>
+      <Text style={styles.headerText}>06</Text>
+    </View>
+    
+    <View style={styles.row}>
+      <View style={{ width: '45%', paddingRight: 10 }}>
+        <View style={styles.accent} />
+        <Text style={styles.label}>How We Work</Text>
+        <Text style={styles.title}>From concept to completion</Text>
+        <Text style={styles.body}>
+          Every engagement follows an integrated workflow, aligning concept, engineering, fabrication, and delivery under one roof.
+        </Text>
+      </View>
+      <View style={{ width: '55%', backgroundColor: COLORS.gray, height: 150 }}>
+        <Image src={concreteInstallation} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      </View>
+    </View>
+    
+    {/* Process steps */}
+    <View style={[styles.row, { marginTop: 16 }]}>
+      <View style={{ width: '24%', paddingRight: 6 }}>
+        <View style={styles.box}>
+          <Text style={styles.label}>01</Text>
+          <Text style={styles.heading}>Design</Text>
+          <Text style={styles.bodySmall}>Workshops to decode vision and criteria.</Text>
+        </View>
+      </View>
+      <View style={{ width: '26%', paddingRight: 6 }}>
+        <View style={styles.box}>
+          <Text style={styles.label}>02</Text>
+          <Text style={styles.heading}>Engineering</Text>
+          <Text style={styles.bodySmall}>Parametric modelling and simulations.</Text>
+        </View>
+      </View>
+      <View style={{ width: '26%', paddingRight: 6 }}>
+        <View style={styles.box}>
+          <Text style={styles.label}>03</Text>
+          <Text style={styles.heading}>Fabrication</Text>
+          <Text style={styles.bodySmall}>Robotics and CNC production.</Text>
+        </View>
+      </View>
+      <View style={{ width: '24%' }}>
+        <View style={styles.box}>
+          <Text style={styles.label}>04</Text>
+          <Text style={styles.heading}>Install</Text>
+          <Text style={styles.bodySmall}>White-glove delivery.</Text>
+        </View>
+      </View>
+    </View>
+    
+    {/* Bottom images */}
+    <View style={[styles.row, { marginTop: 12 }]}>
+      <View style={{ width: '50%', paddingRight: 6, backgroundColor: COLORS.gray, height: 100 }}>
+        <Image src={mixDesign} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      </View>
+      <View style={{ width: '50%', backgroundColor: COLORS.gray, height: 100 }}>
+        <Image src={workshopCloseup} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      </View>
+    </View>
+    
+    <View style={styles.footer}>
+      <Text style={styles.footerText}>arcos</Text>
+      <Text style={styles.footerText}>Architectural Concrete Solutions</Text>
+      <Text style={styles.footerText}>06</Text>
     </View>
   </Page>
 );
@@ -511,61 +540,54 @@ const TechnicalPage = () => (
   <Page size="A4" style={styles.page}>
     <View style={styles.header}>
       <Text style={styles.headerText}>Technical Specs</Text>
-      <Text style={styles.headerText}>06</Text>
+      <Text style={styles.headerText}>07</Text>
     </View>
-    <Image src={mixDesign} style={styles.image} />
-    <View style={styles.accent} />
-    <Text style={styles.label}>Material Performance</Text>
-    <Text style={styles.subtitle}>Built to endure</Text>
-    <View style={[styles.row, { marginTop: 10 }]}>
-      <View style={styles.col50}>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>120+ MPa</Text>
-          <Text style={styles.metricLabel}>Compressive Strength</Text>
+    
+    <View style={styles.row}>
+      <View style={{ width: '50%', paddingRight: 10 }}>
+        <View style={styles.accent} />
+        <Text style={styles.label}>Material Performance</Text>
+        <Text style={styles.title}>Built to endure</Text>
+        
+        <View style={{ marginTop: 8, paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: COLORS.gray, marginBottom: 8 }}>
+          <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>120+ MPa</Text>
+          <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase' }}>Compressive Strength</Text>
         </View>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>25+ MPa</Text>
-          <Text style={styles.metricLabel}>Flexural Strength</Text>
+        <View style={{ paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: COLORS.gray, marginBottom: 8 }}>
+          <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>25+ MPa</Text>
+          <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase' }}>Flexural Strength</Text>
         </View>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>3% max</Text>
-          <Text style={styles.metricLabel}>Water Absorption</Text>
+        <View style={{ paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: COLORS.gray, marginBottom: 8 }}>
+          <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>3% max</Text>
+          <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase' }}>Water Absorption</Text>
+        </View>
+        <View style={{ paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: COLORS.gray, marginBottom: 8 }}>
+          <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>-30 to +80C</Text>
+          <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase' }}>Thermal Tolerance</Text>
+        </View>
+        <View style={{ paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: COLORS.gray, marginBottom: 8 }}>
+          <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>Class A1</Text>
+          <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase' }}>Fire Rating</Text>
         </View>
       </View>
-      <View style={styles.spacer} />
-      <View style={styles.col50}>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>-30 to +80C</Text>
-          <Text style={styles.metricLabel}>Thermal Tolerance</Text>
+      <View style={{ width: '50%' }}>
+        <View style={{ backgroundColor: COLORS.gray, height: 180, marginBottom: 10 }}>
+          <Image src={mixDesign} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </View>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>50+ options</Text>
-          <Text style={styles.metricLabel}>Surface Finishes</Text>
-        </View>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>Class A1</Text>
-          <Text style={styles.metricLabel}>Fire Rating</Text>
-        </View>
-      </View>
-    </View>
-    <View style={styles.box}>
-      <Text style={styles.heading}>Quality Standards</Text>
-      <View style={[styles.row, { marginTop: 6 }]}>
-        <View style={styles.col50}>
+        <View style={styles.box}>
+          <Text style={styles.heading}>Quality Standards</Text>
           <Text style={styles.bodySmall}>Tolerance: +/- 1mm</Text>
           <Text style={styles.bodySmall}>Flatness: 2mm/3m max</Text>
-        </View>
-        <View style={styles.spacer} />
-        <View style={styles.col50}>
           <Text style={styles.bodySmall}>Color Delta E: 2 max</Text>
           <Text style={styles.bodySmall}>Surface defects: 0.1% max</Text>
         </View>
       </View>
     </View>
+    
     <View style={styles.footer}>
       <Text style={styles.footerText}>arcos</Text>
       <Text style={styles.footerText}>Architectural Concrete Solutions</Text>
-      <Text style={styles.footerText}>06</Text>
+      <Text style={styles.footerText}>07</Text>
     </View>
   </Page>
 );
@@ -573,43 +595,42 @@ const TechnicalPage = () => (
 // Contact Page
 const ContactPage = () => (
   <Page size="A4" style={styles.coverPage}>
-    <View style={{ height: '45%', position: 'relative' }}>
-      <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(35,35,35,0.5)' }} />
-      <View style={{ position: 'absolute', top: 30, left: 30 }}>
-        <View style={{ width: 30, height: 3, backgroundColor: COLORS.white, marginBottom: 6 }} />
-        <Text style={{ fontSize: 22, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>arcos</Text>
-      </View>
+    <View style={{ height: '50%', backgroundColor: COLORS.gray }}>
+      <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
     </View>
     <View style={{ flex: 1, padding: 30, justifyContent: 'center' }}>
-      <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 10 }}>
+      <View style={{ position: 'absolute', top: 20, left: 30 }}>
+        <View style={{ width: 25, height: 2, backgroundColor: COLORS.white, marginBottom: 4 }} />
+        <Text style={{ fontSize: 18, fontFamily: 'Helvetica-Bold', color: COLORS.white }}>arcos</Text>
+      </View>
+      <Text style={{ fontSize: 6, color: COLORS.muted, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8 }}>
         Get In Touch
       </Text>
-      <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: COLORS.white, textTransform: 'uppercase', lineHeight: 1.15, marginBottom: 14 }}>
+      <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, textTransform: 'uppercase', lineHeight: 1.15, marginBottom: 12 }}>
         READY TO{'\n'}START YOUR{'\n'}PROJECT?
       </Text>
-      <Text style={{ fontSize: 10, color: COLORS.muted, lineHeight: 1.5, maxWidth: 320 }}>
+      <Text style={{ fontSize: 9, color: COLORS.muted, lineHeight: 1.5, maxWidth: 300 }}>
         Whether you're an architect seeking material guidance or a developer ready to break ground, our team is here to turn your vision into reality.
       </Text>
     </View>
-    <View style={{ backgroundColor: COLORS.black, padding: 18, flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 15, flexDirection: 'row', justifyContent: 'space-between' }}>
       <View>
-        <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase', marginBottom: 3 }}>Email</Text>
-        <Text style={{ fontSize: 10, color: COLORS.white }}>hello@arcosworks.com</Text>
+        <Text style={{ fontSize: 6, color: COLORS.muted, textTransform: 'uppercase', marginBottom: 2 }}>Email</Text>
+        <Text style={{ fontSize: 9, color: COLORS.white }}>hello@arcosworks.com</Text>
       </View>
       <View>
-        <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase', marginBottom: 3 }}>Website</Text>
-        <Text style={{ fontSize: 10, color: COLORS.white }}>arcosworks.com</Text>
+        <Text style={{ fontSize: 6, color: COLORS.muted, textTransform: 'uppercase', marginBottom: 2 }}>Website</Text>
+        <Text style={{ fontSize: 9, color: COLORS.white }}>arcosworks.com</Text>
       </View>
       <View>
-        <Text style={{ fontSize: 7, color: COLORS.muted, textTransform: 'uppercase', marginBottom: 3 }}>Location</Text>
-        <Text style={{ fontSize: 10, color: COLORS.white }}>Southeast Asia</Text>
+        <Text style={{ fontSize: 6, color: COLORS.muted, textTransform: 'uppercase', marginBottom: 2 }}>Location</Text>
+        <Text style={{ fontSize: 9, color: COLORS.white }}>Southeast Asia</Text>
       </View>
     </View>
   </Page>
 );
 
-// Main Document - 7 pages
+// Main Document - 8 pages
 const CompanyProfileDocument = () => (
   <Document title="Arcos Company Profile" author="Arcos" subject="Architectural Concrete Solutions">
     <CoverPage />
@@ -617,6 +638,7 @@ const CompanyProfileDocument = () => (
     <ServicesPage />
     <GalleryPage1 />
     <GalleryPage2 />
+    <ProcessPage />
     <TechnicalPage />
     <ContactPage />
   </Document>
