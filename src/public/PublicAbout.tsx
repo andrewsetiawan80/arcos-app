@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
 import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import { api } from "../lib/api";
+import CompanyProfileDownloadButton from "../components/CompanyProfilePDF";
 
 interface Milestone {
   id: number;
@@ -105,6 +106,11 @@ export default function PublicAbout() {
               Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to collapse
               the gap between avant-garde design intent and construction reality.
             </p>
+            <div className="pt-4">
+              <CompanyProfileDownloadButton 
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-bold uppercase tracking-wider hover:bg-gray-100 transition-all shadow-lg"
+              />
+            </div>
           </div>
         </div>
       </section>

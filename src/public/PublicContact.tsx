@@ -1,5 +1,6 @@
 import React from "react";
 import heroFacade from "../assets/images/hero-facade.webp";
+import CompanyProfileDownloadButton from "../components/CompanyProfilePDF";
 
 const CONTACT_CARDS = [
   {
@@ -75,7 +76,7 @@ export default function PublicContact() {
           ))}
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 space-y-4">
             <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-white/80">Project Submission</h2>
             <p className="text-sm text-gray-300 leading-relaxed">
@@ -89,8 +90,17 @@ export default function PublicContact() {
           <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 space-y-4">
             <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-white/80">Studio Visit</h2>
             <p className="text-sm text-gray-300 leading-relaxed">
-                     Our materials library is available by appointment. Explore microcement palettes, terrazzo chip samples, polished concrete mockups, 3D tile samples, and architectural panel test pieces directly with the fabrication team.
+              Our materials library is available by appointment. Explore microcement palettes, terrazzo chip samples, polished concrete mockups, 3D tile samples, and architectural panel test pieces directly with the fabrication team.
             </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-[#353535] p-6 space-y-4">
+            <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-white/80">Company Profile</h2>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Download our company profile for a comprehensive overview of our capabilities, services, and technical specifications.
+            </p>
+            <CompanyProfileDownloadButton 
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-100 transition-all w-full justify-center"
+            />
           </div>
         </div>
 
