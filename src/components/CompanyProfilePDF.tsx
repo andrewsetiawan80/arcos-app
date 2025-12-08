@@ -471,10 +471,10 @@ const ProcessPage = () => (
     {/* Bottom images row */}
     <View style={[styles.row, { marginTop: 14 }]}>
       <View style={{ width: '50%', paddingRight: 6 }}>
-        <Image src={mixDesign} style={{ width: '100%', height: 120, objectFit: 'cover' }} />
+        <Image src={mixDesign} style={{ width: '100%', height: 120, objectFit: 'contain' }} />
       </View>
       <View style={{ width: '50%' }}>
-        <Image src={workshopCloseup} style={{ width: '100%', height: 120, objectFit: 'cover' }} />
+        <Image src={workshopCloseup} style={{ width: '100%', height: 120, objectFit: 'contain' }} />
       </View>
     </View>
     
