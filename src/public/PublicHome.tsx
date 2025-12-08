@@ -4,6 +4,7 @@ import { load } from "../store";
 import { useFadeIn } from "../utils/useAnimation";
 import { useLanguage } from "../i18n/LanguageContext";
 import { api } from "../lib/api";
+import { ArcosSectionOne, ArcosSectionTwo, ArcosSectionThree } from "../components/brand";
 
 import heroFacade from "../assets/images/hero-facade.webp";
 import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
@@ -591,110 +592,62 @@ export default function PublicHome() {
         </div>
       </section>
 
-      {/* ===== FEATURED SERVICES DETAIL ===== */}
-      <section className="border-b border-white/10 bg-[#232323]">
-        <div ref={servicesDetailAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 ${servicesDetailAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
-          <div className="mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{t("home.featuredSolutions")}</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              {t("home.signatureSystems")}
-            </h2>
-            <p className="text-gray-300 max-w-2xl text-base sm:text-lg">
-              {t("home.signatureSystemsDesc")}
-            </p>
-          </div>
+      {/* ===== FEATURED SERVICES DETAIL - Using Brand Layout ===== */}
+      <ArcosSectionTwo
+        id="seamless-microcement"
+        label={t("home.appliedFinishes")}
+        headline={t("home.seamlessMicrocement")}
+        subheadline={t("home.seamlessMicrocementDesc")}
+        image={microcementInterior1}
+        imageAlt="Seamless microcement interior"
+        imagePosition="left"
+        variant="primary"
+        body={
+          <ul className="space-y-3 text-sm">
+            {[t("home.appliedThickness"), t("home.curatedPalettes"), t("home.moistureResistant")].map((item) => (
+              <li key={item} className="flex items-center gap-3">
+                <svg className="w-4 h-4 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        }
+        cta={
+          <Link to="/services#microcement" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/80 hover:text-white transition-colors">
+            Learn More <span>→</span>
+          </Link>
+        }
+      />
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Seamless Microcement Feature */}
-            <div className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={microcementInterior1}
-                  alt="Seamless microcement"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 space-y-4">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  {t("home.appliedFinishes")}
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  {t("home.seamlessMicrocement")}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t("home.seamlessMicrocementDesc")}
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{t("home.appliedThickness")}</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{t("home.curatedPalettes")}</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{t("home.moistureResistant")}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Architectural Panels Feature */}
-            <div className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={structuralPanels}
-                  alt="Architectural panels"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 space-y-4">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  {t("home.precastPanels")}
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  {t("home.architecturalPanelsTiles")}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t("home.architecturalPanelsTilesDesc")}
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{t("home.precastManufacturing")}</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{t("home.texturedTiles")}</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{t("home.customFabrication")}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ArcosSectionTwo
+        id="architectural-panels"
+        label={t("home.precastPanels")}
+        headline={t("home.architecturalPanelsTiles")}
+        subheadline={t("home.architecturalPanelsTilesDesc")}
+        image={structuralPanels}
+        imageAlt="Architectural concrete panels"
+        imagePosition="right"
+        variant="secondary"
+        body={
+          <ul className="space-y-3 text-sm">
+            {[t("home.precastManufacturing"), t("home.texturedTiles"), t("home.customFabrication")].map((item) => (
+              <li key={item} className="flex items-center gap-3">
+                <svg className="w-4 h-4 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        }
+        cta={
+          <Link to="/services#panels" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/80 hover:text-white transition-colors">
+            Learn More <span>→</span>
+          </Link>
+        }
+      />
 
       {/* ===== PROCESS OVERVIEW ===== */}
       <section id="process" className="border-b border-white/10 bg-[#353535]">
@@ -934,53 +887,37 @@ export default function PublicHome() {
         </div>
       </section>
 
-      {/* ===== CONTACT CTA ===== */}
-      <section id="contact" className="border-b border-white/10 relative overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 opacity-20">
-          <img
-            src={heroFacade}
-            alt="Architectural concrete detail"
-            className="w-full h-full object-cover parallax-bg"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-[#232323]" />
-        </div>
-
-        <div ref={contactAnim.ref} className={`relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 md:py-28 ${contactAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
-          <div className="text-center max-w-3xl mx-auto space-y-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">
+      {/* ===== CONTACT CTA - Using Brand Layout ===== */}
+      <ArcosSectionOne
+        id="contact"
+        label={t("home.contactUs")}
+        headline={t("home.readyToStart")}
+        subheadline={t("home.contactDescription")}
+        variant="primary"
+        className="border-b border-white/10"
+        cta={
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-white text-black text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-gray-100 transition-all min-h-[52px] touch-manipulation hover-lift shadow-lg shadow-black/20"
+            >
               {t("home.contactUs")}
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
-              {t("home.readyToStart")}
-            </h2>
-            <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-              {t("home.contactDescription")}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-4">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-white text-black text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-gray-100 transition-all min-h-[52px] touch-manipulation hover-lift shadow-lg shadow-black/20 rounded-xl"
-              >
-                {t("home.contactUs")}
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <a
-                href="mailto:hello@arcos.com"
-                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#353535] border-2 border-white/20 text-white text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-[#232323] hover:border-white/30 transition-all min-h-[52px] touch-manipulation hover-lift rounded-xl"
-              >
-                {t("home.requestSample")}
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            </div>
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <a
+              href="mailto:hello@arcos.com"
+              className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#353535] border-2 border-white/20 text-white text-sm sm:text-base font-bold uppercase tracking-wider hover:bg-[#232323] hover:border-white/30 transition-all min-h-[52px] touch-manipulation hover-lift"
+            >
+              {t("home.requestSample")}
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
-        </div>
-      </section>
+        }
+      />
     </div>
   );
 }
