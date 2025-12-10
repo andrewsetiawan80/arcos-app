@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useFadeIn } from "../utils/useAnimation";
 import { api } from "../lib/api";
 import { useLanguage } from "../i18n/LanguageContext";
+import { usePublicTheme } from "./PublicThemeContext";
 
 // Import images
 import heroFacade from "../assets/images/hero-facade.webp";
@@ -13,19 +14,10 @@ import microcementInterior2 from "../assets/images/modern-concrete-interior-desi
 import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
 import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
 
-// Brand Colors from guidelines
-const COLORS = {
-  charcoal: "#1B1B1B",
-  concreteLight: "#D6D6D6",
-  concreteMid: "#AFAFAF",
-  concreteDark: "#6F6F6F",
-  white: "#FFFFFF",
-  sand: "#E3DFD9",
-};
-
-// Featured Projects Carousel (reused from original)
+// Featured Projects Carousel
 function FeaturedProjectsCarousel() {
   const { language } = useLanguage();
+  const { isDark } = usePublicTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [featuredProjects, setFeaturedProjects] = useState<Array<{
@@ -79,17 +71,21 @@ function FeaturedProjectsCarousel() {
             key={`${currentIndex}-${i}`}
             className="group relative overflow-hidden animate-fade-in"
           >
-            <div className="aspect-[4/3] overflow-hidden bg-neutral-200">
+            <div className={`aspect-[4/3] overflow-hidden ${isDark ? "bg-white/5" : "bg-neutral-200"}`}>
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                className={`w-full h-full object-cover transition-all duration-700 ${
+                  isDark ? "opacity-80 group-hover:opacity-100" : "grayscale group-hover:grayscale-0"
+                }`}
                 loading="lazy"
               />
             </div>
             <div className="pt-6 space-y-2">
-              <h3 className="text-lg font-medium text-[#1B1B1B]">{project.title}</h3>
-              <p className="text-sm text-[#6F6F6F] tracking-wide">
+              <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                {project.title}
+              </h3>
+              <p className={`text-sm tracking-wide ${isDark ? "text-white/50" : "text-[#6F6F6F]"}`}>
                 A study in texture, proportion, and modern spatial expression.
               </p>
             </div>
@@ -105,8 +101,8 @@ function FeaturedProjectsCarousel() {
             onClick={() => goToSlide(index)}
             className={`h-2 rounded-full transition-all ${
               index === currentIndex
-                ? "w-8 bg-[#1B1B1B]"
-                : "w-2 bg-[#AFAFAF] hover:bg-[#6F6F6F]"
+                ? `w-8 ${isDark ? "bg-white" : "bg-[#1B1B1B]"}`
+                : `w-2 ${isDark ? "bg-white/30 hover:bg-white/50" : "bg-[#AFAFAF] hover:bg-[#6F6F6F]"}`
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -117,6 +113,8 @@ function FeaturedProjectsCarousel() {
 }
 
 export default function PublicHome() {
+  const { isDark } = usePublicTheme();
+  
   // Animation refs
   const heroRef = useRef<HTMLDivElement>(null);
   const brandIntroAnim = useFadeIn({ delay: 200 });
@@ -129,7 +127,7 @@ export default function PublicHome() {
   const ctaAnim = useFadeIn({ delay: 600 });
 
   return (
-    <div className="bg-white text-[#1B1B1B]">
+    <div className={`transition-colors duration-300 ${isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"}`}>
       {/* ===== SECTION 1: HERO ===== */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         {/* Background */}
@@ -139,9 +137,18 @@ export default function PublicHome() {
             alt="Architectural concrete texture"
             className="w-full h-full object-cover"
           />
-          {/* Soft overlay - no harsh contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-white/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-white/30" />
+          {/* Overlay - different for light/dark */}
+          {isDark ? (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1B1B1B] via-[#1B1B1B]/80 to-[#1B1B1B]/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1B1B1B] via-transparent to-[#1B1B1B]/50" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-white/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-white/30" />
+            </>
+          )}
         </div>
 
         <div 
@@ -150,12 +157,16 @@ export default function PublicHome() {
         >
           <div className="max-w-3xl space-y-10">
             {/* Headline */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight leading-[1.05] text-[#1B1B1B]">
+            <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight leading-[1.05] ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               Surfaces,<br />reimagined.
             </h1>
             
             {/* Subheadline */}
-            <p className="text-xl sm:text-2xl font-light text-[#6F6F6F] leading-relaxed max-w-xl">
+            <p className={`text-xl sm:text-2xl font-light leading-relaxed max-w-xl ${
+              isDark ? "text-white/60" : "text-[#6F6F6F]"
+            }`}>
               Architectural concrete crafted with precision, emotion, and timeless design.
             </p>
             
@@ -163,7 +174,11 @@ export default function PublicHome() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 to="/catalog"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-[#1B1B1B] text-white text-sm font-medium tracking-wider hover:bg-[#353535] transition-all duration-300"
+                className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                  isDark 
+                    ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
+                    : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                }`}
               >
                 Explore Surfaces
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -172,7 +187,11 @@ export default function PublicHome() {
               </Link>
               <Link
                 to="/projects"
-                className="group inline-flex items-center gap-3 px-8 py-4 border border-[#1B1B1B] text-[#1B1B1B] text-sm font-medium tracking-wider hover:bg-[#1B1B1B] hover:text-white transition-all duration-300"
+                className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                  isDark 
+                    ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
+                    : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                }`}
               >
                 View Projects
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,33 +203,45 @@ export default function PublicHome() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-[#AFAFAF]">
+        <div className={`absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 ${
+          isDark ? "text-white/40" : "text-[#AFAFAF]"
+        }`}>
           <span className="text-xs tracking-[0.3em] uppercase">Scroll</span>
-          <div className="w-px h-12 bg-gradient-to-b from-[#AFAFAF] to-transparent" />
+          <div className={`w-px h-12 bg-gradient-to-b ${isDark ? "from-white/40" : "from-[#AFAFAF]"} to-transparent`} />
         </div>
       </section>
 
       {/* ===== SECTION 2: BRAND INTRO ===== */}
-      <section className="py-32 sm:py-40 lg:py-48 bg-white">
+      <section className={`py-32 sm:py-40 lg:py-48 transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B]" : "bg-white"
+      }`}>
         <div 
           ref={brandIntroAnim.ref} 
           className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${brandIntroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <div className="space-y-12 text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight text-[#1B1B1B]">
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               Concrete, as a language of design.
             </h2>
             
             <div className="max-w-3xl mx-auto space-y-8">
-              <p className="text-lg sm:text-xl font-light text-[#6F6F6F] leading-relaxed">
+              <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+                isDark ? "text-white/60" : "text-[#6F6F6F]"
+              }`}>
                 ARCOS transforms UHPC, GFRC, and microcement into expressive surfaces that shape modern architecture.
               </p>
-              <p className="text-lg sm:text-xl font-light text-[#6F6F6F] leading-relaxed">
+              <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+                isDark ? "text-white/60" : "text-[#6F6F6F]"
+              }`}>
                 We believe concrete is more than a material — it is a medium of art, emotion, and spatial storytelling. Every form, texture, and contour reflects precision, craftsmanship, and timeless intention.
               </p>
             </div>
 
-            <p className="text-sm tracking-[0.2em] uppercase text-[#AFAFAF] pt-8">
+            <p className={`text-sm tracking-[0.2em] uppercase pt-8 ${
+              isDark ? "text-white/30" : "text-[#AFAFAF]"
+            }`}>
               Where structural strength meets human expression.
             </p>
           </div>
@@ -218,59 +249,67 @@ export default function PublicHome() {
       </section>
 
       {/* ===== SECTION 3: MATERIAL INNOVATION ===== */}
-      <section className="py-32 sm:py-40 bg-[#F8F8F8]">
+      <section className={`py-32 sm:py-40 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
+      }`}>
         <div 
           ref={materialsAnim.ref} 
           className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${materialsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <div className="text-center mb-20">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-[#1B1B1B]">
+            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               Material innovation, engineered for design.
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
-            {/* UHPC */}
-            <div className="space-y-6">
-              <div className="w-12 h-px bg-[#1B1B1B]" />
-              <h3 className="text-xl font-medium tracking-tight text-[#1B1B1B]">UHPC</h3>
-              <p className="text-[#6F6F6F] leading-relaxed font-light">
-                Ultra High Performance Concrete with refined texture, thin profiles, and exceptional durability. Ideal for sculptural elements and precise architectural details.
-              </p>
-            </div>
-
-            {/* GFRC */}
-            <div className="space-y-6">
-              <div className="w-12 h-px bg-[#1B1B1B]" />
-              <h3 className="text-xl font-medium tracking-tight text-[#1B1B1B]">GFRC</h3>
-              <p className="text-[#6F6F6F] leading-relaxed font-light">
-                Lightweight, flexible, and strong. Engineered for detailed forms, façade panels, and refined surface geometry.
-              </p>
-            </div>
-
-            {/* Microcement */}
-            <div className="space-y-6">
-              <div className="w-12 h-px bg-[#1B1B1B]" />
-              <h3 className="text-xl font-medium tracking-tight text-[#1B1B1B]">Microcement</h3>
-              <p className="text-[#6F6F6F] leading-relaxed font-light">
-                A seamless finishing system for modern interiors. Smooth, continuous, and tactile across walls, floors, and furniture.
-              </p>
-            </div>
+            {[
+              {
+                title: "UHPC",
+                description: "Ultra High Performance Concrete with refined texture, thin profiles, and exceptional durability. Ideal for sculptural elements and precise architectural details."
+              },
+              {
+                title: "GFRC",
+                description: "Lightweight, flexible, and strong. Engineered for detailed forms, façade panels, and refined surface geometry."
+              },
+              {
+                title: "Microcement",
+                description: "A seamless finishing system for modern interiors. Smooth, continuous, and tactile across walls, floors, and furniture."
+              }
+            ].map((material) => (
+              <div key={material.title} className="space-y-6">
+                <div className={`w-12 h-px ${isDark ? "bg-white" : "bg-[#1B1B1B]"}`} />
+                <h3 className={`text-xl font-medium tracking-tight ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  {material.title}
+                </h3>
+                <p className={`leading-relaxed font-light ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
+                  {material.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ===== SECTION 4: SIGNATURE COLLECTIONS ===== */}
-      <section className="py-32 sm:py-40 bg-white">
+      <section className={`py-32 sm:py-40 transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B]" : "bg-white"
+      }`}>
         <div 
           ref={collectionsAnim.ref} 
           className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${collectionsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <div className="text-center mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-[#1B1B1B] mb-6">
+            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight mb-6 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               Signature surface collections.
             </h2>
-            <p className="text-lg text-[#6F6F6F] font-light max-w-2xl mx-auto">
+            <p className={`text-lg font-light max-w-2xl mx-auto ${
+              isDark ? "text-white/60" : "text-[#6F6F6F]"
+            }`}>
               Each series is crafted with its own character — defined by geometry, texture, and architectural intent.
             </p>
           </div>
@@ -278,18 +317,24 @@ export default function PublicHome() {
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* Solis Series */}
             <div className="group">
-              <div className="aspect-[4/3] overflow-hidden bg-[#E3DFD9] mb-8">
+              <div className={`aspect-[4/3] overflow-hidden mb-8 ${isDark ? "bg-white/5" : "bg-[#E3DFD9]"}`}>
                 <img
                   src={structuralPanels}
                   alt="UHPC Solis Series"
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                  className={`w-full h-full object-cover transition-all duration-700 ${
+                    isDark ? "opacity-80 group-hover:opacity-100" : "grayscale group-hover:grayscale-0"
+                  }`}
                   loading="lazy"
                 />
               </div>
               <div className="space-y-4">
-                <p className="text-xs tracking-[0.2em] uppercase text-[#AFAFAF]">UHPC</p>
-                <h3 className="text-2xl font-light text-[#1B1B1B]">Solis Series</h3>
-                <p className="text-[#6F6F6F] font-light leading-relaxed">
+                <p className={`text-xs tracking-[0.2em] uppercase ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
+                  UHPC
+                </p>
+                <h3 className={`text-2xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  Solis Series
+                </h3>
+                <p className={`font-light leading-relaxed ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
                   Defined by permanence, clarity, and structural expression. Designed for bold architectural gestures.
                 </p>
               </div>
@@ -297,18 +342,24 @@ export default function PublicHome() {
 
             {/* Aeris Series */}
             <div className="group">
-              <div className="aspect-[4/3] overflow-hidden bg-[#E3DFD9] mb-8">
+              <div className={`aspect-[4/3] overflow-hidden mb-8 ${isDark ? "bg-white/5" : "bg-[#E3DFD9]"}`}>
                 <img
                   src={concretePanelDetail}
                   alt="GFRC Aeris Series"
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                  className={`w-full h-full object-cover transition-all duration-700 ${
+                    isDark ? "opacity-80 group-hover:opacity-100" : "grayscale group-hover:grayscale-0"
+                  }`}
                   loading="lazy"
                 />
               </div>
               <div className="space-y-4">
-                <p className="text-xs tracking-[0.2em] uppercase text-[#AFAFAF]">GFRC</p>
-                <h3 className="text-2xl font-light text-[#1B1B1B]">Aeris Series</h3>
-                <p className="text-[#6F6F6F] font-light leading-relaxed">
+                <p className={`text-xs tracking-[0.2em] uppercase ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
+                  GFRC
+                </p>
+                <h3 className={`text-2xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  Aeris Series
+                </h3>
+                <p className={`font-light leading-relaxed ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
                   Lightweight, expressive, and versatile. Created for sculptural forms and refined surface geometry.
                 </p>
               </div>
@@ -318,7 +369,9 @@ export default function PublicHome() {
       </section>
 
       {/* ===== SECTION 5: APPLICATIONS ===== */}
-      <section className="py-32 sm:py-40 bg-[#1B1B1B] text-white">
+      <section className={`py-32 sm:py-40 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#1B1B1B]"
+      } text-white`}>
         <div 
           ref={applicationsAnim.ref} 
           className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${applicationsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
@@ -340,7 +393,7 @@ export default function PublicHome() {
               { label: "Interior Surface Systems", image: microcementInterior2 },
             ].map((item) => (
               <div key={item.label} className="group">
-                <div className="aspect-square overflow-hidden bg-[#353535] mb-6">
+                <div className="aspect-square overflow-hidden bg-white/5 mb-6">
                   <img
                     src={item.image}
                     alt={item.label}
@@ -360,16 +413,22 @@ export default function PublicHome() {
       </section>
 
       {/* ===== SECTION 6: PROJECTS HIGHLIGHT ===== */}
-      <section className="py-32 sm:py-40 bg-white">
+      <section className={`py-32 sm:py-40 transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B]" : "bg-white"
+      }`}>
         <div 
           ref={projectsAnim.ref} 
           className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${projectsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <div className="text-center mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-[#1B1B1B] mb-6">
+            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight mb-6 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               Designed to endure, crafted to inspire.
             </h2>
-            <p className="text-lg text-[#6F6F6F] font-light max-w-2xl mx-auto">
+            <p className={`text-lg font-light max-w-2xl mx-auto ${
+              isDark ? "text-white/60" : "text-[#6F6F6F]"
+            }`}>
               A selection of spaces shaped with ARCOS surfaces.
             </p>
           </div>
@@ -379,7 +438,11 @@ export default function PublicHome() {
           <div className="text-center mt-16">
             <Link
               to="/projects"
-              className="inline-flex items-center gap-3 px-8 py-4 border border-[#1B1B1B] text-[#1B1B1B] text-sm font-medium tracking-wider hover:bg-[#1B1B1B] hover:text-white transition-all duration-300"
+              className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
             >
               View All Projects
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -391,13 +454,17 @@ export default function PublicHome() {
       </section>
 
       {/* ===== SECTION 7: HOW WE WORK ===== */}
-      <section className="py-32 sm:py-40 bg-[#F8F8F8]">
+      <section className={`py-32 sm:py-40 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
+      }`}>
         <div 
           ref={processAnim.ref} 
           className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${processAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <div className="text-center mb-20">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-[#1B1B1B]">
+            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               A seamless process, from concept to creation.
             </h2>
           </div>
@@ -426,9 +493,15 @@ export default function PublicHome() {
               },
             ].map((phase) => (
               <div key={phase.step} className="space-y-6">
-                <span className="text-xs tracking-[0.2em] text-[#AFAFAF]">{phase.step}</span>
-                <h3 className="text-xl font-medium text-[#1B1B1B]">{phase.title}</h3>
-                <p className="text-[#6F6F6F] font-light leading-relaxed">{phase.description}</p>
+                <span className={`text-xs tracking-[0.2em] ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
+                  {phase.step}
+                </span>
+                <h3 className={`text-xl font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  {phase.title}
+                </h3>
+                <p className={`font-light leading-relaxed ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
+                  {phase.description}
+                </p>
               </div>
             ))}
           </div>
@@ -436,19 +509,27 @@ export default function PublicHome() {
       </section>
 
       {/* ===== SECTION 8: BRAND STATEMENT ===== */}
-      <section className="py-32 sm:py-40 lg:py-48 bg-white">
+      <section className={`py-32 sm:py-40 lg:py-48 transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B]" : "bg-white"
+      }`}>
         <div 
           ref={statementAnim.ref} 
           className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${statementAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <blockquote className="space-y-6">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-light text-[#1B1B1B] leading-relaxed">
+            <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               We shape experiences.
             </p>
-            <p className="text-2xl sm:text-3xl md:text-4xl font-light text-[#1B1B1B] leading-relaxed">
+            <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}>
               We blend artistry with architectural integrity.
             </p>
-            <p className="text-2xl sm:text-3xl md:text-4xl font-light text-[#6F6F6F] leading-relaxed">
+            <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
+              isDark ? "text-white/50" : "text-[#6F6F6F]"
+            }`}>
               Because beauty should stand the test of time.
             </p>
           </blockquote>
@@ -462,26 +543,38 @@ export default function PublicHome() {
           <img
             src={concreteTexture2}
             alt="Concrete texture background"
-            className="w-full h-full object-cover opacity-20"
+            className={`w-full h-full object-cover ${isDark ? "opacity-10" : "opacity-20"}`}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#E3DFD9] to-[#D6D6D6]" />
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#232323] to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-[#E3DFD9] to-[#D6D6D6]"
+          }`} />
         </div>
 
         <div 
           ref={ctaAnim.ref} 
           className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-[#1B1B1B] mb-8">
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
             Let's shape your next space.
           </h2>
-          <p className="text-lg text-[#6F6F6F] font-light mb-12 max-w-xl mx-auto">
+          <p className={`text-lg font-light mb-12 max-w-xl mx-auto ${
+            isDark ? "text-white/60" : "text-[#6F6F6F]"
+          }`}>
             For consultations, samples, or project collaborations, our team is ready.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/contact"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#1B1B1B] text-white text-sm font-medium tracking-wider hover:bg-[#353535] transition-all duration-300"
+              className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
+                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+              }`}
             >
               Contact Us
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -490,7 +583,11 @@ export default function PublicHome() {
             </Link>
             <a
               href="mailto:hello@arcos.id?subject=Sample%20Request"
-              className="group inline-flex items-center gap-3 px-8 py-4 border border-[#1B1B1B] text-[#1B1B1B] text-sm font-medium tracking-wider hover:bg-[#1B1B1B] hover:text-white transition-all duration-300"
+              className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
             >
               Request Samples
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
