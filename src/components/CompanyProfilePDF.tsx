@@ -141,29 +141,29 @@ const styles = StyleSheet.create({
 const CoverPage = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top: Full-width Image with headline overlay */}
-    <View style={{ height: 480, position: 'relative' }}>
+    <View style={{ height: 450, position: 'relative' }}>
       <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      <View style={{ position: 'absolute', top: 40, left: 40 }}>
-        <Text style={[styles.headline, { color: COLORS.white, fontSize: 32 }]}>Engineered</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 14 }]}>Concrete Artistry</Text>
+      <View style={{ position: 'absolute', top: 30, left: 30 }}>
+        <Text style={[styles.headline, { color: COLORS.white, fontSize: 30 }]}>Engineered</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 13 }]}>Concrete Artistry</Text>
       </View>
     </View>
     
     {/* Bottom: 2 Boxes - Content + Logo/Supergraphic */}
-    <View style={{ flexDirection: 'row', height: 362 }}>
+    <View style={{ flexDirection: 'row', height: 392 }}>
       {/* Left Box: Content */}
-      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 40 }}>
+      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 35 }}>
         <Logo color={COLORS.white} size="medium" />
-        <View style={{ marginTop: 20 }}>
-          <Text style={[styles.body, { color: COLORS.muted }]}>
+        <View style={{ marginTop: 15 }}>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 9 }]}>
             From seamless microcement finishes to parametric facade systems — Arcos delivers Southeast Asia's most advanced architectural concrete solutions.
           </Text>
         </View>
       </View>
       
       {/* Right Box: Supergraphic */}
-      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 40, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-        <Supergraphic size={140} color={COLORS.white} rows={3} cols={3} />
+      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 35, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+        <Supergraphic size={120} color={COLORS.white} rows={3} cols={3} />
       </View>
     </View>
   </Page>
@@ -176,18 +176,18 @@ const CoverPage = () => (
 const ServicesPage = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top header bar */}
-    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Tagline color={COLORS.muted} />
         <View style={{ marginLeft: 15 }}>
-          <Supergraphic size={50} color={COLORS.white} rows={2} cols={3} />
+          <Supergraphic size={45} color={COLORS.white} rows={2} cols={3} />
         </View>
       </View>
     </View>
     
     {/* Main: Image left + 2 boxes right (stacked) */}
-    <View style={{ flexDirection: 'row', height: 680 }}>
+    <View style={{ flexDirection: 'row', height: 420 }}>
       {/* Left: Image */}
       <View style={{ width: '65%' }}>
         <Image src={microcementInterior} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -196,44 +196,44 @@ const ServicesPage = () => (
       {/* Right: 2 Boxes stacked */}
       <View style={{ width: '35%' }}>
         {/* Top Box: Content */}
-        <View style={{ height: '50%', backgroundColor: COLORS.gray, padding: 30, justifyContent: 'center' }}>
-          <Text style={[styles.headline, { color: COLORS.white, fontSize: 24 }]}>Our Services</Text>
-          <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Full-spectrum concrete innovation</Text>
-          <Text style={[styles.body, { color: COLORS.muted, fontSize: 9 }]}>
-            From seamless microcement to UHPC facade panels, we engineer solutions that collapse the gap between avant-garde design and construction reality.
+        <View style={{ height: '50%', backgroundColor: COLORS.gray, padding: 25, justifyContent: 'center' }}>
+          <Text style={[styles.headline, { color: COLORS.white, fontSize: 22 }]}>Our Services</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 11 }]}>Full-spectrum concrete innovation</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>
+            From seamless microcement to UHPC facade panels, we engineer solutions.
           </Text>
         </View>
         
         {/* Bottom Box: Supergraphic */}
-        <View style={{ height: '50%', backgroundColor: COLORS.black, padding: 30, justifyContent: 'center', alignItems: 'center' }}>
-          <Supergraphic size={100} color={COLORS.gray} rows={4} cols={3} />
+        <View style={{ height: '50%', backgroundColor: COLORS.black, padding: 25, justifyContent: 'center', alignItems: 'center' }}>
+          <Supergraphic size={80} color={COLORS.gray} rows={3} cols={3} />
         </View>
       </View>
     </View>
     
     {/* Bottom: Service items in 2x2 grid */}
-    <View style={{ flexDirection: 'row', flex: 1 }}>
-      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 25 }}>
-        <Text style={[styles.label, { color: COLORS.muted }]}>01</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 13 }]}>Microcement</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Seamless 2-3mm coatings for floors, walls, and furniture. 60+ colors.</Text>
+    <View style={{ flexDirection: 'row', height: 120 }}>
+      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 20 }}>
+        <Text style={[styles.label, { color: COLORS.muted, fontSize: 6 }]}>01</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Microcement</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>Seamless 2-3mm coatings. 60+ colors.</Text>
       </View>
-      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 25 }}>
-        <Text style={[styles.label, { color: COLORS.muted }]}>02</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 13 }]}>Architectural Panels</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>UHPC and GFRC panels for lightweight facade cladding.</Text>
+      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 20 }}>
+        <Text style={[styles.label, { color: COLORS.muted, fontSize: 6 }]}>02</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Architectural Panels</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>UHPC and GFRC panels.</Text>
       </View>
     </View>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 25 }}>
-        <Text style={[styles.label, { color: COLORS.muted }]}>03</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 13 }]}>3D Concrete Tiles</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Dimensional tiles with intricate patterns.</Text>
+    <View style={{ flexDirection: 'row', height: 120 }}>
+      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 20 }}>
+        <Text style={[styles.label, { color: COLORS.muted, fontSize: 6 }]}>03</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>3D Concrete Tiles</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>Dimensional tiles with patterns.</Text>
       </View>
-      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 25 }}>
-        <Text style={[styles.label, { color: COLORS.muted }]}>04</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 13 }]}>Polished Concrete</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>High-performance polished overlays with precision.</Text>
+      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 20 }}>
+        <Text style={[styles.label, { color: COLORS.muted, fontSize: 6 }]}>04</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Polished Concrete</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>High-performance overlays.</Text>
       </View>
     </View>
   </Page>
@@ -246,62 +246,62 @@ const ServicesPage = () => (
 const GalleryPage1 = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top header bar */}
-    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
       <Tagline color={COLORS.muted} />
     </View>
     
     {/* Main: Image left + Content box right */}
-    <View style={{ flexDirection: 'row', height: 400 }}>
+    <View style={{ flexDirection: 'row', height: 280 }}>
       {/* Left: Image */}
       <View style={{ width: '60%' }}>
         <Image src={tile05} style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: COLORS.gray }} />
       </View>
       
       {/* Right: Content box */}
-      <View style={{ width: '40%', backgroundColor: COLORS.gray, padding: 30, justifyContent: 'center' }}>
-        <Text style={[styles.headline, { color: COLORS.white, fontSize: 24 }]}>3D Tile Collection</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Dimensional Surfaces</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 9 }]}>
-          Each design customizable for scale, depth, and finish. Explore our collection of geometric patterns.
+      <View style={{ width: '40%', backgroundColor: COLORS.gray, padding: 25, justifyContent: 'center' }}>
+        <Text style={[styles.headline, { color: COLORS.white, fontSize: 22 }]}>3D Tile Collection</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 11 }]}>Dimensional Surfaces</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>
+          Each design customizable for scale, depth, and finish.
         </Text>
       </View>
     </View>
     
     {/* Bottom: Tile grid - 2x4 */}
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 15 }}>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile01} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 12, height: 240 }}>
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile01} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile02} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile02} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile03} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile03} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile04} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile04} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile06} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile06} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile07} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile07} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6 }}>
-        <Image src={tile08} style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+      <View style={{ width: '25%', padding: 5 }}>
+        <Image src={tile08} style={{ width: '100%', height: 110, objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '25%', padding: 6, justifyContent: 'center' }}>
-        <View style={{ backgroundColor: COLORS.gray, padding: 15, height: 100, justifyContent: 'center' }}>
+      <View style={{ width: '25%', padding: 5, justifyContent: 'center' }}>
+        <View style={{ backgroundColor: COLORS.gray, padding: 12, height: 110, justifyContent: 'center' }}>
           <Text style={[styles.label, { color: COLORS.muted, fontSize: 6 }]}>Custom</Text>
-          <Text style={[styles.body, { color: COLORS.white, fontSize: 8, marginBottom: 0 }]}>View full catalog</Text>
+          <Text style={[styles.body, { color: COLORS.white, fontSize: 7, marginBottom: 0 }]}>View full catalog</Text>
         </View>
       </View>
     </View>
     
     {/* Footer with supergraphic */}
-    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'flex-end' }}>
-      <Supergraphic size={80} color={COLORS.gray} rows={2} cols={4} />
+    <View style={{ backgroundColor: COLORS.black, padding: 15, flexDirection: 'row', justifyContent: 'flex-end' }}>
+      <Supergraphic size={70} color={COLORS.gray} rows={2} cols={4} />
     </View>
   </Page>
 );
@@ -313,26 +313,26 @@ const GalleryPage1 = () => (
 const GalleryPage2 = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top header bar */}
-    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
       <Tagline color={COLORS.muted} />
     </View>
     
     {/* Main: Content box left + Image right */}
-    <View style={{ flexDirection: 'row', height: 380 }}>
+    <View style={{ flexDirection: 'row', height: 320 }}>
       {/* Left: Content box */}
-      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 35, justifyContent: 'center' }}>
-        <Text style={[styles.headline, { color: COLORS.white, fontSize: 26 }]}>Bespoke</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 13 }]}>Custom Fabrication</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 9, marginTop: 15 }]}>
-          From sculptural elements to integrated furniture, we bring complex geometry to life through precision casting and fabrication.
+      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 30, justifyContent: 'center' }}>
+        <Text style={[styles.headline, { color: COLORS.white, fontSize: 24 }]}>Bespoke</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Custom Fabrication</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8, marginTop: 12 }]}>
+          From sculptural elements to integrated furniture, we bring complex geometry to life.
         </Text>
-        <View style={{ marginTop: 20 }}>
-          <Text style={[styles.label, { color: COLORS.muted }]}>Capabilities</Text>
-          <Text style={[styles.body, { color: COLORS.white, fontSize: 8 }]}>• Custom furniture and fixtures</Text>
-          <Text style={[styles.body, { color: COLORS.white, fontSize: 8 }]}>• Sculptural elements</Text>
-          <Text style={[styles.body, { color: COLORS.white, fontSize: 8 }]}>• Facade cladding systems</Text>
-          <Text style={[styles.body, { color: COLORS.white, fontSize: 8, marginBottom: 0 }]}>• Landscape features</Text>
+        <View style={{ marginTop: 15 }}>
+          <Text style={[styles.label, { color: COLORS.muted, fontSize: 6 }]}>Capabilities</Text>
+          <Text style={[styles.body, { color: COLORS.white, fontSize: 7 }]}>• Custom furniture and fixtures</Text>
+          <Text style={[styles.body, { color: COLORS.white, fontSize: 7 }]}>• Sculptural elements</Text>
+          <Text style={[styles.body, { color: COLORS.white, fontSize: 7 }]}>• Facade cladding systems</Text>
+          <Text style={[styles.body, { color: COLORS.white, fontSize: 7, marginBottom: 0 }]}>• Landscape features</Text>
         </View>
       </View>
       
@@ -343,22 +343,22 @@ const GalleryPage2 = () => (
     </View>
     
     {/* Bottom: Image grid */}
-    <View style={{ flexDirection: 'row', height: 200, padding: 15 }}>
-      <View style={{ width: '33.33%', padding: 8 }}>
+    <View style={{ flexDirection: 'row', height: 180, padding: 12 }}>
+      <View style={{ width: '33.33%', padding: 6 }}>
         <Image src={bespoke02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '33.33%', padding: 8 }}>
+      <View style={{ width: '33.33%', padding: 6 }}>
         <Image src={bespoke03} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
       </View>
-      <View style={{ width: '33.33%', padding: 8 }}>
+      <View style={{ width: '33.33%', padding: 6 }}>
         <Image src={microcement02} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
       </View>
     </View>
     
     {/* Footer with supergraphic */}
-    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
-      <Supergraphic size={90} color={COLORS.gray} rows={2} cols={4} />
+      <Supergraphic size={80} color={COLORS.gray} rows={2} cols={4} />
     </View>
   </Page>
 );
@@ -370,62 +370,62 @@ const GalleryPage2 = () => (
 const ProcessPage = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top header bar */}
-    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
       <Tagline color={COLORS.muted} />
     </View>
     
     {/* Main: Image with overlay */}
-    <View style={{ height: 350, position: 'relative' }}>
+    <View style={{ height: 280, position: 'relative' }}>
       <Image src={concreteInstallation} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(35,35,35,0.95)', padding: 30 }}>
-        <Text style={[styles.headline, { color: COLORS.white, fontSize: 28 }]}>Our Process</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 13 }]}>From concept to completion</Text>
-        <Text style={[styles.body, { color: COLORS.muted, fontSize: 9 }]}>
-          Every engagement follows an integrated workflow, aligning concept, engineering, fabrication, and delivery under one roof.
+      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(35,35,35,0.95)', padding: 25 }}>
+        <Text style={[styles.headline, { color: COLORS.white, fontSize: 26 }]}>Our Process</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>From concept to completion</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>
+          Every engagement follows an integrated workflow, aligning concept, engineering, fabrication, and delivery.
         </Text>
       </View>
     </View>
     
     {/* Bottom: Content box with process steps */}
-    <View style={{ backgroundColor: COLORS.gray, padding: 30, flex: 1 }}>
-      <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-        <View style={{ width: '25%', paddingRight: 10 }}>
-          <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 5 }}>01</Text>
-          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Design</Text>
-          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Workshops to decode vision.</Text>
+    <View style={{ backgroundColor: COLORS.gray, padding: 25, height: 380 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+        <View style={{ width: '25%', paddingRight: 8 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>01</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 10 }]}>Design</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>Workshops to decode vision.</Text>
         </View>
-        <View style={{ width: '25%', paddingRight: 10 }}>
-          <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 5 }}>02</Text>
-          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Engineer</Text>
-          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Parametric modelling.</Text>
+        <View style={{ width: '25%', paddingRight: 8 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>02</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 10 }]}>Engineer</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>Parametric modelling.</Text>
         </View>
-        <View style={{ width: '25%', paddingRight: 10 }}>
-          <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 5 }}>03</Text>
-          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Fabricate</Text>
-          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>CNC production.</Text>
+        <View style={{ width: '25%', paddingRight: 8 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>03</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 10 }]}>Fabricate</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>CNC production.</Text>
         </View>
         <View style={{ width: '25%' }}>
-          <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 5 }}>04</Text>
-          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 11 }]}>Install</Text>
-          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>White-glove delivery.</Text>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>04</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 10 }]}>Install</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 7 }]}>White-glove delivery.</Text>
         </View>
       </View>
       
       {/* Bottom images */}
-      <View style={{ flexDirection: 'row', marginTop: 20 }}>
-        <View style={{ width: '50%', paddingRight: 8 }}>
-          <Image src={mixDesign} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
+      <View style={{ flexDirection: 'row', marginTop: 15 }}>
+        <View style={{ width: '50%', paddingRight: 6 }}>
+          <Image src={mixDesign} style={{ width: '100%', height: 90, objectFit: 'contain' }} />
         </View>
-        <View style={{ width: '50%', paddingLeft: 8 }}>
-          <Image src={workshopCloseup} style={{ width: '100%', height: 100, objectFit: 'cover' }} />
+        <View style={{ width: '50%', paddingLeft: 6 }}>
+          <Image src={workshopCloseup} style={{ width: '100%', height: 90, objectFit: 'contain' }} />
         </View>
       </View>
     </View>
     
     {/* Footer with supergraphic */}
-    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'flex-end' }}>
-      <Supergraphic size={80} color={COLORS.gray} rows={2} cols={4} />
+    <View style={{ backgroundColor: COLORS.black, padding: 15, flexDirection: 'row', justifyContent: 'flex-end' }}>
+      <Supergraphic size={70} color={COLORS.gray} rows={2} cols={4} />
     </View>
   </Page>
 );
@@ -437,46 +437,46 @@ const ProcessPage = () => (
 const TechnicalPage = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top header bar */}
-    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
       <Tagline color={COLORS.muted} />
     </View>
     
     {/* Main: Single content box */}
-    <View style={{ backgroundColor: COLORS.gray, padding: 40, flex: 1 }}>
-      <Text style={[styles.headline, { color: COLORS.white, fontSize: 28 }]}>Technical Data</Text>
-      <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 13 }]}>Material Performance Metrics</Text>
+    <View style={{ backgroundColor: COLORS.gray, padding: 35, height: 650 }}>
+      <Text style={[styles.headline, { color: COLORS.white, fontSize: 26 }]}>Technical Data</Text>
+      <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Material Performance Metrics</Text>
       
-      <View style={{ marginTop: 25 }}>
-        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 12, marginBottom: 12 }}>
-          <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>120+ MPa</Text>
+      <View style={{ marginTop: 20 }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 10, marginBottom: 10 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 3 }}>120+ MPa</Text>
           <Text style={[styles.label, { color: COLORS.muted }]}>Compressive Strength</Text>
         </View>
-        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 12, marginBottom: 12 }}>
-          <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>25+ MPa</Text>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 10, marginBottom: 10 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 3 }}>25+ MPa</Text>
           <Text style={[styles.label, { color: COLORS.muted }]}>Flexural Strength</Text>
         </View>
-        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 12, marginBottom: 12 }}>
-          <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>Class A1</Text>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 10, marginBottom: 10 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 3 }}>Class A1</Text>
           <Text style={[styles.label, { color: COLORS.muted }]}>Fire Rating</Text>
         </View>
-        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 12, marginBottom: 12 }}>
-          <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>3% max</Text>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: COLORS.black, paddingBottom: 10, marginBottom: 10 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 3 }}>3% max</Text>
           <Text style={[styles.label, { color: COLORS.muted }]}>Water Absorption</Text>
         </View>
-        <View style={{ paddingBottom: 12 }}>
-          <Text style={{ fontSize: 26, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 4 }}>±1mm</Text>
+        <View style={{ paddingBottom: 10 }}>
+          <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: COLORS.white, marginBottom: 3 }}>±1mm</Text>
           <Text style={[styles.label, { color: COLORS.muted }]}>Tolerance</Text>
         </View>
       </View>
     </View>
     
     {/* Footer with logo and supergraphic */}
-    <View style={{ backgroundColor: COLORS.black, padding: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Text style={[styles.body, { color: COLORS.muted, maxWidth: 250, fontSize: 8 }]}>
+    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Text style={[styles.body, { color: COLORS.muted, maxWidth: 250, fontSize: 7 }]}>
         All materials tested to international standards. Custom formulations available.
       </Text>
-      <Supergraphic size={90} color={COLORS.gray} rows={2} cols={4} />
+      <Supergraphic size={80} color={COLORS.gray} rows={2} cols={4} />
     </View>
   </Page>
 );
@@ -488,37 +488,37 @@ const TechnicalPage = () => (
 const ContactPage = () => (
   <Page size="A4" style={styles.pageDark}>
     {/* Top image */}
-    <View style={{ height: 380 }}>
+    <View style={{ height: 340 }}>
       <Image src={modernInterior} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </View>
     
     {/* Main: Single content box */}
-    <View style={{ backgroundColor: COLORS.gray, padding: 40, flex: 1 }}>
-      <Text style={[styles.headline, { color: COLORS.white, fontSize: 28 }]}>Ready to Start?</Text>
-      <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 13 }]}>Let's build something extraordinary</Text>
-      <Text style={[styles.body, { color: COLORS.muted, fontSize: 9, marginTop: 15 }]}>
+    <View style={{ backgroundColor: COLORS.gray, padding: 35, height: 380 }}>
+      <Text style={[styles.headline, { color: COLORS.white, fontSize: 26 }]}>Ready to Start?</Text>
+      <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Let's build something extraordinary</Text>
+      <Text style={[styles.body, { color: COLORS.muted, fontSize: 8, marginTop: 12 }]}>
         Whether you're an architect seeking material guidance or a developer ready to break ground, our team is here to turn your vision into reality.
       </Text>
       
-      <View style={{ marginTop: 30 }}>
+      <View style={{ marginTop: 25 }}>
         <Text style={[styles.label, { color: COLORS.muted }]}>Email</Text>
-        <Text style={{ fontSize: 14, color: COLORS.white, marginBottom: 18 }}>hello@arcosworks.com</Text>
+        <Text style={{ fontSize: 13, color: COLORS.white, marginBottom: 15 }}>hello@arcosworks.com</Text>
         
         <Text style={[styles.label, { color: COLORS.muted }]}>Website</Text>
-        <Text style={{ fontSize: 14, color: COLORS.white, marginBottom: 18 }}>arcosworks.com</Text>
+        <Text style={{ fontSize: 13, color: COLORS.white, marginBottom: 15 }}>arcosworks.com</Text>
         
         <Text style={[styles.label, { color: COLORS.muted }]}>Location</Text>
-        <Text style={{ fontSize: 14, color: COLORS.white }}>Southeast Asia</Text>
+        <Text style={{ fontSize: 13, color: COLORS.white }}>Southeast Asia</Text>
       </View>
     </View>
     
     {/* Footer with logo and supergraphic */}
-    <View style={{ backgroundColor: COLORS.black, padding: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View>
         <Logo color={COLORS.white} size="medium" />
-        <Text style={{ fontSize: 8, color: COLORS.muted, marginTop: 6 }}>surfaces, reimagined</Text>
+        <Text style={{ fontSize: 8, color: COLORS.muted, marginTop: 5 }}>surfaces, reimagined</Text>
       </View>
-      <Supergraphic size={90} color={COLORS.gray} rows={2} cols={4} />
+      <Supergraphic size={80} color={COLORS.gray} rows={2} cols={4} />
     </View>
   </Page>
 );
