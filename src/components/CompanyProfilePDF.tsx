@@ -46,16 +46,53 @@ const COLORS = {
   muted: '#999999',
 };
 
-// Supergraphic component - quarter circle pattern matching brand guidelines
+// Supergraphic component - curved L-shape pattern (quarter annulus segment) matching brand guidelines
+// The pattern uses a thick curved L-shape with inner concave and outer convex arcs
+// Arranged in checkerboard pattern with alternating orientations
 const Supergraphic = ({ size = 80, color = COLORS.white, rows = 3, cols = 3 }: { size?: number; color?: string; rows?: number; cols?: number }) => {
   const cellSize = size / cols;
+  
+  // Create the curved L-shape path (quarter annulus segment)
+  // This creates a thick rounded corner: outer convex arc and inner concave arc
+  // The shape is like a quarter of an annulus (ring segment)
+  const createCurvedLPath = (orientation: 'br' | 'tl' | 'tr' | 'bl') => {
+    // Bottom-right orientation: curves from bottom-left to top-right
+    // Outer arc (convex) and inner arc (concave) create the thick L-shape
+    if (orientation === 'br') {
+      // Outer shape: large quarter circle from (0,100) to (100,0)
+      // Inner cutout: smaller quarter circle creating the annulus
+      return "M 0 100 L 0 25 A 25 25 0 0 1 25 0 L 100 0 L 100 100 Z M 10 100 L 10 35 A 15 15 0 0 0 35 10 L 100 10 L 100 100 Z";
+    }
+    // Top-left orientation: curves from top-right to bottom-left
+    else if (orientation === 'tl') {
+      return "M 100 0 L 100 75 A 25 25 0 0 1 75 100 L 0 100 L 0 0 Z M 100 10 L 100 65 A 15 15 0 0 0 65 90 L 0 90 L 0 0 Z";
+    }
+    // Top-right orientation
+    else if (orientation === 'tr') {
+      return "M 0 0 L 75 0 A 25 25 0 0 1 100 25 L 100 100 L 0 100 Z M 0 10 L 65 10 A 15 15 0 0 0 90 35 L 90 100 L 0 100 Z";
+    }
+    // Bottom-left orientation
+    else {
+      return "M 100 100 L 25 100 A 25 25 0 0 1 0 75 L 0 0 L 100 0 Z M 100 90 L 35 90 A 15 15 0 0 0 10 65 L 10 0 L 100 0 Z";
+    }
+  };
+  
   return (
     <View style={{ width: size, height: (size / cols) * rows, flexDirection: 'row', flexWrap: 'wrap' }}>
-      {Array.from({ length: rows * cols }).map((_, i) => (
-        <Svg key={i} width={cellSize} height={cellSize} viewBox="0 0 100 100">
-          <Path d="M 0 100 A 100 100 0 0 1 100 0 L 100 100 Z" fill={color} />
-        </Svg>
-      ))}
+      {Array.from({ length: rows * cols }).map((_, i) => {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        // Checkerboard pattern: alternate orientation based on position
+        const isEven = (row + col) % 2 === 0;
+        // Alternate between bottom-right and top-left for interlocking checkerboard effect
+        const orientation = isEven ? 'br' : 'tl';
+        
+        return (
+          <Svg key={i} width={cellSize} height={cellSize} viewBox="0 0 100 100">
+            <Path d={createCurvedLPath(orientation)} fill={color} />
+          </Svg>
+        );
+      })}
     </View>
   );
 };
