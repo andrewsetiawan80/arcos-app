@@ -1,408 +1,499 @@
-import { useState, useEffect } from "react";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
-import workshopCloseup from "../assets/images/workshop-closeup.webp";
-import { api } from "../lib/api";
+import { Link } from "react-router-dom";
+import { useFadeIn } from "../utils/useAnimation";
+import { usePublicTheme } from "./PublicThemeContext";
 import CompanyProfileDownloadButton from "../components/CompanyProfilePDF";
 
-interface Milestone {
-  id: number;
-  year: string;
-  headline: string;
-  headlineId?: string;
-  detail: string;
-  detailId?: string;
-  displayOrder: number;
-}
-
-interface Highlight {
-  id: number;
-  title: string;
-  titleId?: string;
-  detail: string;
-  detailId?: string;
-  displayOrder: number;
-}
+// Import images
+import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
+import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
 
 export default function PublicAbout() {
-  const [milestones, setMilestones] = useState<Milestone[]>([]);
-  const [highlights, setHighlights] = useState<Highlight[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { isDark } = usePublicTheme();
+  
+  // Animation refs
+  const heroAnim = useFadeIn({ delay: 100 });
+  const aboutAnim = useFadeIn({ delay: 150 });
+  const coreAnim = useFadeIn({ delay: 200 });
+  const purposeAnim = useFadeIn({ delay: 250 });
+  const valuesAnim = useFadeIn({ delay: 300 });
+  const personalityAnim = useFadeIn({ delay: 350 });
+  const competenciesAnim = useFadeIn({ delay: 400 });
+  const storyAnim = useFadeIn({ delay: 450 });
+  const manifestoAnim = useFadeIn({ delay: 500 });
+  const ctaAnim = useFadeIn({ delay: 550 });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const [milestonesRes, highlightsRes] = await Promise.all([
-          api.getMilestones(),
-          api.getHighlights(),
-        ]);
-        if (milestonesRes.error) {
-          throw new Error(milestonesRes.error);
-        }
-        if (highlightsRes.error) {
-          throw new Error(highlightsRes.error);
-        }
-        setMilestones((milestonesRes.data as Milestone[]) || []);
-        setHighlights((highlightsRes.data as Highlight[]) || []);
-      } catch (err) {
-        console.error("Failed to fetch about data:", err);
-        setError(err instanceof Error ? err.message : "Failed to load about data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-400 mb-4">Error loading content</p>
-          <p className="text-gray-400 text-sm">{error}</p>
-        </div>
-      </div>
-    );
-  }
   return (
-    <div className="bg-[#232323] text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
-        {/* Hero Background */}
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+    }`}>
+      
+      {/* ===== PAGE HEADER SECTION ===== */}
+      <section className="relative py-32 sm:py-40 lg:py-48 overflow-hidden">
+        {/* Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0">
-            <img
-              src={mosaicFacadeDetail}
-              alt="About Arcos"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
+          <img
+            src={concreteTexture2}
+            alt="Concrete texture"
+            className={`w-full h-full object-cover ${isDark ? "opacity-15" : "opacity-10"}`}
+          />
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/90 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-white via-white/90 to-white"
+          }`} />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
-          <div className="max-w-3xl space-y-4">
-            <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              About Arcos
-              <span className="h-px w-16 bg-white/20" />
+
+        <div 
+          ref={heroAnim.ref}
+          className={`relative z-10 max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          {/* Main Title */}
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Concrete, reimagined as a medium of expression.
+          </h1>
+          
+          {/* Subheadline */}
+          <p className={`text-lg sm:text-xl font-light leading-relaxed max-w-3xl mx-auto mb-10 ${
+            isDark ? "text-white/70" : "text-[#6F6F6F]"
+          }`}>
+            ARCOS transforms architectural concrete into surfaces that tell stories — crafted with precision, emotion, and timeless design.
+          </p>
+
+          {/* Company Profile Download */}
+          <CompanyProfileDownloadButton 
+            className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium tracking-wider transition-all ${
+              isDark 
+                ? "bg-white/10 border border-white/20 text-white hover:bg-white/20" 
+                : "bg-[#1B1B1B]/5 border border-[#1B1B1B]/10 text-[#1B1B1B] hover:bg-[#1B1B1B]/10"
+            }`}
+          />
+        </div>
+      </section>
+
+      {/* ===== SECTION 1: ABOUT THE BRAND ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+      }`}>
+        <div 
+          ref={aboutAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            aboutAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-12 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            About ARCOS
+          </h2>
+
+          <div className="space-y-8">
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/80" : "text-[#4A4A4A]"
+            }`}>
+              ARCOS was born from a simple curiosity: What if concrete could tell stories?
             </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1]">
-              Engineered concrete artistry for visionaries.
-            </h1>
-            <p className="text-gray-200 text-base sm:text-lg leading-relaxed">
-              Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to collapse
-              the gap between avant-garde design intent and construction reality.
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}>
+              We saw an opportunity to transform one of the world's most rigid materials into something expressive, modern, and deeply architectural. Our work explores the boundaries of UHPC, GFRC, and microcement — reshaping concrete into surfaces that speak through texture, light, and proportion.
             </p>
-            <div className="pt-4 relative z-20">
-              <CompanyProfileDownloadButton 
-                className="relative z-30 inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-bold uppercase tracking-wider hover:bg-gray-100 transition-all shadow-lg"
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}>
+              We believe concrete is more than a building material. In the hands of ARCOS, it becomes a living design language — one that reflects strength, serenity, and the quiet sophistication of modern architecture.
+            </p>
+          </div>
+
+          <p className={`mt-16 text-base font-medium tracking-wide ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Every surface is crafted with intention, engineered to endure, and shaped to inspire.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 2: CORE IDEA ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+      }`}>
+        <div 
+          ref={coreAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            coreAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-12 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            Our core idea
+          </h2>
+
+          <div className="space-y-8">
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/80" : "text-[#4A4A4A]"
+            }`}>
+              Concrete holds stories of space, time, and human interaction. ARCOS exists to reveal those stories. We merge artisan craftsmanship with material innovation, allowing concrete to become a sculptural and emotional part of the environment.
+            </p>
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}>
+              From minimalist interiors to bold architectural planes, our surfaces embody the values of modern design: simplicity, integrity, and timelessness.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 3: BRAND PURPOSE ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+      }`}>
+        <div 
+          ref={purposeAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            purposeAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-12 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            Purpose
+          </h2>
+
+          {/* Large Statement */}
+          <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed mb-12 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            To redefine the perception of concrete — from a cold, utilitarian substance into a warm, expressive medium of art and architecture.
+          </p>
+
+          {/* Supporting Text */}
+          <div className={`space-y-4 ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
+            <p className="text-base font-light leading-relaxed">
+              We champion authenticity, sustainable processes, and material honesty.
+            </p>
+            <p className="text-base font-light leading-relaxed">
+              ARCOS creates surfaces designed for permanence rather than trends, reflecting the belief that beauty should stand the test of time.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 4: BRAND VALUES ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+      }`}>
+        <div 
+          ref={valuesAnim.ref}
+          className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            valuesAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-16 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            What we stand for
+          </h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+            {[
+              {
+                title: "Expertise",
+                description: "Advanced mastery of UHPC, GFRC, and microcement — engineered for strength, precision, and modern performance."
+              },
+              {
+                title: "Authenticity",
+                description: "Material honesty at every stage. We celebrate raw texture, real character, and transparent craftsmanship."
+              },
+              {
+                title: "Innovation",
+                description: "Relentlessly pushing boundaries to explore new techniques, forms, and surface possibilities."
+              },
+              {
+                title: "Artistry",
+                description: "Design as storytelling. Each surface carries emotion, narrative, and human touch."
+              }
+            ].map((value) => (
+              <div key={value.title} className="space-y-4">
+                <div className={`w-12 h-px ${isDark ? "bg-white/30" : "bg-[#1B1B1B]/20"}`} />
+                <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  {value.title}
+                </h3>
+                <p className={`text-sm font-light leading-relaxed ${
+                  isDark ? "text-white/60" : "text-[#6F6F6F]"
+                }`}>
+                  {value.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p className={`text-sm tracking-wide ${isDark ? "text-white/30" : "text-[#AFAFAF]"}`}>
+            Sustainability • Collaboration • Timelessness
+          </p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 5: BRAND PERSONALITY ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+      }`}>
+        <div 
+          ref={personalityAnim.ref}
+          className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            personalityAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-16 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            Personality
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
+            {[
+              {
+                pillar: "Visionary Artist",
+                description: "Finds beauty in raw material. Shapes concrete with emotion and expressive intention."
+              },
+              {
+                pillar: "Modern Architect",
+                description: "Balances structure, proportion, and logic. Simplicity with purpose."
+              },
+              {
+                pillar: "Industrial Minimalist",
+                description: "Quiet strength. Clean, restrained forms. Material-first thinking."
+              }
+            ].map((item) => (
+              <div key={item.pillar} className="space-y-4">
+                <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  {item.pillar}
+                </h3>
+                <p className={`text-base font-light leading-relaxed ${
+                  isDark ? "text-white/60" : "text-[#6F6F6F]"
+                }`}>
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 6: OUR COMPETENCIES ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+      }`}>
+        <div 
+          ref={competenciesAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            competenciesAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-12 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            What we do exceptionally well
+          </h2>
+
+          <ul className="space-y-4 mb-16">
+            {[
+              "Expertise in UHPC & GFRC for thin, durable, and expressive architectural surfaces",
+              "Microcement finishing for seamless, modern interior applications",
+              "Advanced mold fabrication and texture development",
+              "High-precision casting with artisan finishing",
+              "Custom surface design for architectural and interior projects",
+              "Integration of artistic concept with technical feasibility",
+              "Surface engineering for façades, feature walls, and sculptural pieces",
+              "Use of natural pigments, durable sealers, and long-lasting coatings",
+              "Project collaboration with architects, designers, and developers"
+            ].map((competency) => (
+              <li 
+                key={competency}
+                className={`flex items-start gap-4 text-base font-light ${
+                  isDark ? "text-white/70" : "text-[#6F6F6F]"
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${
+                  isDark ? "bg-white/40" : "bg-[#AFAFAF]"
+                }`} />
+                {competency}
+              </li>
+            ))}
+          </ul>
+
+          <p className={`text-base font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+            We merge design sensibility with engineering precision.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 7: OUR STORY ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+      }`}>
+        <div 
+          ref={storyAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            storyAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-sm tracking-[0.2em] uppercase mb-12 ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            Our story
+          </h2>
+
+          <div className="space-y-8">
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/80" : "text-[#4A4A4A]"
+            }`}>
+              Concrete is often seen as rigid, heavy, and purely structural. ARCOS challenges that assumption. We explore concrete through the lens of design, allowing it to become light, refined, and quietly expressive. Every creation begins with curiosity and ends with a surface that reflects emotion, proportion, and intention.
+            </p>
+            <p className={`text-lg sm:text-xl font-light leading-relaxed ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}>
+              Our work spans villas, hotels, residences, creative studios, and public spaces — shaping environments that feel grounded yet elevated.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== VISUAL IMAGERY ===== */}
+      <section className={`py-16 sm:py-24 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+            <div className={`aspect-[4/3] overflow-hidden ${isDark ? "bg-white/5" : "bg-[#E0E0E0]"}`}>
+              <img
+                src={workshopCloseup}
+                alt="Craftsmanship detail"
+                className={`w-full h-full object-cover transition-all duration-700 ${
+                  isDark ? "opacity-70 hover:opacity-100" : "grayscale hover:grayscale-0"
+                }`}
+                loading="lazy"
+              />
+            </div>
+            <div className={`aspect-[4/3] overflow-hidden ${isDark ? "bg-white/5" : "bg-[#E0E0E0]"}`}>
+              <img
+                src={mosaicFacadeDetail}
+                alt="Surface texture"
+                className={`w-full h-full object-cover transition-all duration-700 ${
+                  isDark ? "opacity-70 hover:opacity-100" : "grayscale hover:grayscale-0"
+                }`}
+                loading="lazy"
               />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 grid gap-12 lg:gap-16 xl:gap-20 lg:grid-cols-[1.2fr_1fr] items-center">
-        <div className="space-y-10">
-          <div className="space-y-4">
-            <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              About Arcos
-              <span className="h-px w-16 bg-white/20" />
-            </p>
-            <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-              We specialise in seamless microcement finishes, polished concrete overlays, terrazzo systems, architectural panels, and 3D tiles—all engineered, fabricated, and delivered through one accountable partner.
-            </p>
-            <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-              From laboratory mix development to on-site installation, our team balances strength, durability, and aesthetic precision.
-              Designers come to us when they need the craftsmanship and scientific rigour to make ambitious spaces possible.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-6">
+      {/* ===== SECTION 8: BRAND MANIFESTO ===== */}
+      <section className={`py-32 sm:py-40 lg:py-48 transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B]" : "bg-white"
+      }`}>
+        <div 
+          ref={manifestoAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            manifestoAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <div className="space-y-4 mb-12">
             {[
-              {
-                label: "Material Lab",
-                description: "UHPC, GFRC, and microtopping formulations tuned for climate, performance, and finish.",
-              },
-              {
-                label: "Fabrication & Delivery",
-                description: "Parametric modelling flows into robotic casting, modular molds, logistics, and install supervision.",
-              },
-            ].map((feature) => (
-              <div key={feature.label} className="rounded-2xl border border-white/15 bg-white/[0.06] p-6 shadow-lg">
-                <p className="text-sm uppercase tracking-[0.25em] text-white/60 font-semibold">{feature.label}</p>
-                <p className="mt-3 text-sm sm:text-base text-gray-300 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            {milestones.map((milestone) => (
-              <div key={milestone.id} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-lg">
-                <div className="text-xs uppercase tracking-[0.3em] text-white/50 font-semibold">{milestone.year}</div>
-                <p className="mt-2 text-sm font-semibold text-white">{milestone.headline}</p>
-                <p className="mt-2 text-sm text-gray-300 leading-relaxed">{milestone.detail}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {highlights.map((item) => (
-              <div key={item.id} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                <p className="text-xs uppercase tracking-[0.28em] text-white/50 font-semibold">{item.title}</p>
-                <p className="mt-2 text-sm sm:text-base text-white font-semibold">{item.detail}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-[0_40px_120px_-60px_rgba(0,0,0,0.8)]">
-            <img
-              src={mosaicFacadeDetail}
-              alt="Arcos fabrication team preparing UHPC panels"
-              className="w-full h-[480px] object-cover"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-transparent to-transparent" />
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-5">
-            <div className="rounded-[28px] border border-white/10 bg-white/[0.08] backdrop-blur-lg shadow-2xl px-6 py-6">
-              <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold mb-4">What We Make</p>
-              <ul className="space-y-3 text-sm text-gray-200">
-                {["Seamless microcement coatings", "Polished concrete overlays", "Terrazzo systems", "3D concrete tiles", "Architectural wall panels"].map((cap) => (
-                  <li key={cap} className="flex items-center gap-3">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                    {cap}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-[28px] border border-white/10 bg-white/[0.08] backdrop-blur-lg shadow-2xl px-6 py-6">
-              <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold mb-4">How We Work</p>
-              <ul className="space-y-3 text-sm text-gray-200">
-                {["Six specialised workshop zones", "3 dedicated curing lines", "24/7 quality control & reporting"].map((item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="rounded-[32px] overflow-hidden border border-white/10 shadow-[0_30px_90px_-50px_rgba(0,0,0,0.7)]">
-            <img
-              src={workshopCloseup}
-              alt="Arcos laboratory engineers testing concrete mixes"
-              className="w-full h-64 object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Company Values & Culture */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="text-center mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Our Values</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              What drives us
-            </h2>
-            <p className="text-gray-300 max-w-2xl mx-auto text-base sm:text-lg">
-              Our commitment to excellence, innovation, and sustainability guides every project we undertake.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: "Precision",
-                description: "Every mix, every panel, every installation meets exacting standards. We measure twice, fabricate once.",
-              },
-              {
-                title: "Innovation",
-                description: "We push boundaries in material science and fabrication techniques to deliver solutions others can't.",
-              },
-              {
-                title: "Sustainability",
-                description: "Our formulations reduce environmental impact while maintaining uncompromising performance.",
-              },
-              {
-                title: "Partnership",
-                description: "We work alongside architects and designers as true collaborators, not just suppliers.",
-              },
-            ].map((value) => (
-              <div key={value.title} className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 space-y-3">
-                <h3 className="text-xl font-bold text-white uppercase">{value.title}</h3>
-                <p className="text-sm text-gray-300 leading-relaxed">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Certifications & Training */}
-      <section className="border-b border-white/10 bg-[#232323]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Certifications & Training</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                Certified excellence
-              </h2>
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-                Our team undergoes rigorous training and certification programs to ensure every installation meets international standards.
+              "We shape experiences.",
+              "We blend artistry with architectural integrity.",
+              "We honor material honesty.",
+              "We design with intention.",
+              "We craft for permanence."
+            ].map((line, index) => (
+              <p 
+                key={index}
+                className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
+                  isDark ? "text-white" : "text-[#1B1B1B]"
+                }`}
+              >
+                {line}
               </p>
-              <div className="space-y-4">
-                {[
-                  "Certified Applicators",
-                  "JCtec Training Lineage",
-                  "ISO 9001 Quality Management",
-                  "Sustainable Material Certifications",
-                  "Regional Building Code Compliance",
-                ].map((cert) => (
-                  <div key={cert} className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-300">{cert}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-[32px] border border-white/10 bg-white/[0.05] p-8 space-y-6">
-              <div>
-                <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold mb-4">Training Programs</p>
-                <p className="text-sm text-gray-300 leading-relaxed mb-4">
-                  We offer comprehensive training programs for applicators, ensuring consistent quality across all installations.
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                    On-site applicator certification
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                    Technical workshops and seminars
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                    Continuous education programs
-                  </li>
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
+
+          <p className={`text-lg font-medium tracking-wide ${
+            isDark ? "text-white/50" : "text-[#AFAFAF]"
+          }`}>
+            This is ARCOS.
+          </p>
         </div>
       </section>
 
-      {/* Technical Specifications Section - Moved from Home */}
-      <section id="specifications" className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 mb-16">
-            <div className="max-w-2xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Material Performance Index</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                Numbers that unlock architectural freedom.
-              </h2>
-            </div>
-            <div className="max-w-xl text-sm text-gray-300">
-              Precision data informs every specification. Our lab continuously profiles mix behaviour to guarantee repeatable results on site.
-            </div>
-          </div>
+      {/* ===== SECTION 9: CTA BLOCK ===== */}
+      <section className="relative py-32 sm:py-40 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <img
+            src={concreteTexture2}
+            alt="Concrete texture"
+            className={`w-full h-full object-cover ${isDark ? "opacity-10" : "opacity-15"}`}
+          />
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-[#F8F8F8] via-[#F8F8F8]/95 to-white"
+          }`} />
+        </div>
 
-          <div className="grid lg:grid-cols-[1.3fr_0.7fr] gap-8 lg:gap-12">
-            <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
-              {[
-                { title: "Compressive Strength", value: "150–180 MPa", detail: "Ultra-high performance, load-bearing ready." },
-                { title: "Flexural Strength", value: "25–35 MPa", detail: "Resists cracking on cantilevers and long spans." },
-                { title: "Density", value: "2,200–2,450 kg/m³", detail: "Optimized for mass vs. performance balance." },
-                { title: "Water Absorption", value: "< 3%", detail: "Moisture resistant even in tropical climates." },
-                { title: "Thermal Tolerance", value: "≤ 500°C", detail: "Stable under heat, fire, and thermal cycling." },
-                { title: "Surface Profiles", value: "50+ finishes", detail: "Microtextures, pigments, and metallic inlays." },
-              ].map((metric, index) => (
-                <div key={metric.title} className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-sm shadow-lg">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs uppercase tracking-[0.28em] text-white/50 font-semibold">{metric.title}</p>
-                    <span className="text-white/15 text-lg font-bold">/{String(index + 1).padStart(2, "0")}</span>
-                  </div>
-                  <div className="mt-5">
-                    <div className="text-3xl sm:text-4xl font-black text-white">{metric.value}</div>
-                    <p className="mt-3 text-sm text-gray-300 leading-relaxed">{metric.detail}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div 
+          ref={ctaAnim.ref}
+          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Let's create meaningful spaces.
+          </h2>
+          
+          <p className={`text-lg font-light mb-12 max-w-xl mx-auto ${
+            isDark ? "text-white/60" : "text-[#6F6F6F]"
+          }`}>
+            For collaborations, consultations, or project discussions, our team is ready.
+          </p>
 
-            <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#353535] via-[#232323] to-[#232323] p-8 sm:p-10 shadow-2xl">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold mb-6">
-                Mix Intelligence Snapshot
-              </p>
-              <div className="space-y-6 text-sm text-gray-200">
-                <div className="flex items-center justify-between">
-                  <span className="text-white/70">Shrinkage Control</span>
-                  <span className="text-white font-semibold">≤ 0.035%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-white/70">Elastic Modulus</span>
-                  <span className="text-white font-semibold">45 GPa</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-white/70">Fire Rating</span>
-                  <span className="text-white font-semibold">2 hours</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-white/70">Sustainability Index</span>
-                  <span className="text-white font-semibold">-18% CO₂</span>
-                </div>
-              </div>
-              <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.04] p-6 space-y-5">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold">Signature Systems</p>
-                  <p className="mt-2 text-sm text-gray-200">
-                    Arcos UHPC-X, GFRC-Aero, and Microveil surfaces engineered for bespoke interiors and exterior envelopes.
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold">Quality Safeguards</p>
-                  <ul className="mt-3 space-y-2 text-sm text-gray-300">
-                    <li className="flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                      Continuous strength monitoring
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                      Batch traceability + digital logs
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                      On-site calibration & testing
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/contact"
+              className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
+                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+              }`}
+            >
+              Contact Us
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <a
+              href="mailto:hello@arcos.id?subject=Sample%20Request"
+              className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
+            >
+              Request Samples
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>
     </div>
   );
 }
-
-
