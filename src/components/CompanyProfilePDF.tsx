@@ -112,74 +112,47 @@ const styles = StyleSheet.create({
 });
 
 // ============================================
-// PAGE 1: COVER - 3 Element (Image + 2 Boxes)
-// Following exact brand guideline layout
+// PAGE 1: COVER + ABOUT - Combined into one page
+// 3 Element layout following brand guidelines
 // ============================================
 const CoverPage = () => (
   <Page size="A4" style={styles.pageDark}>
-    {/* Top: Image with headline overlay */}
-    <View style={{ height: 480, position: 'relative' }}>
-      <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      <View style={{ position: 'absolute', top: 40, left: 40 }}>
-        <Text style={[styles.headline, { color: COLORS.white }]}>Engineered</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white }]}>Concrete Artistry</Text>
-      </View>
-    </View>
-    
-    {/* Bottom: Split into 2 boxes - Logo/Content + Supergraphic */}
-    <View style={{ flexDirection: 'row', height: 362 }}>
-      {/* Left: Logo + Body text */}
-      <View style={{ width: '50%', backgroundColor: COLORS.black, padding: 40, justifyContent: 'space-between' }}>
-        <Logo color={COLORS.white} size="medium" />
-        <View>
-          <Text style={[styles.body, { color: COLORS.muted }]}>
-            From seamless microcement finishes to parametric facade systems — Arcos delivers Southeast Asia's most advanced architectural concrete solutions.
-          </Text>
-        </View>
-      </View>
-      
-      {/* Right: Supergraphic pattern */}
-      <View style={{ width: '50%', backgroundColor: COLORS.gray, padding: 40, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-        <Supergraphic size={140} color={COLORS.white} rows={3} cols={3} />
-      </View>
-    </View>
-  </Page>
-);
-
-// ============================================
-// PAGE 2: ABOUT - 2 Element (Image + 1 Box)
-// Following exact brand guideline layout
-// ============================================
-const AboutPage = () => (
-  <Page size="A4" style={styles.pageDark}>
     {/* Top header bar with logo */}
-    <View style={{ backgroundColor: COLORS.black, padding: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <Logo color={COLORS.white} size="small" />
       <Tagline color={COLORS.muted} />
     </View>
     
-    {/* Main image section */}
-    <View style={{ height: 360, position: 'relative' }}>
-      <Image src={landmarkInstallation} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(35,35,35,0.95)', padding: 30 }}>
-        <Text style={[styles.headline, { color: COLORS.white, fontSize: 28 }]}>Who We Are</Text>
-        <Text style={[styles.subHeadline, { color: COLORS.white }]}>Collapsing the gap between design and reality</Text>
-        <Text style={[styles.body, { color: COLORS.muted }]}>
-          Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to transform architectural concrete. We specialise in seamless microcement finishes, polished concrete overlays, terrazzo systems, architectural panels, and 3D tiles.
-        </Text>
+    {/* Main hero image with headline overlay */}
+    <View style={{ height: 320, position: 'relative' }}>
+      <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <View style={{ position: 'absolute', top: 30, left: 30 }}>
+        <Text style={[styles.headline, { color: COLORS.white, fontSize: 32 }]}>Engineered</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 14 }]}>Concrete Artistry</Text>
       </View>
     </View>
     
-    {/* Bottom: Content box with supergraphic */}
+    {/* Bottom: Split into 2 boxes - Content + Supergraphic */}
     <View style={{ flexDirection: 'row', flex: 1 }}>
-      <View style={{ width: '70%', backgroundColor: COLORS.gray, padding: 30 }}>
-        <Text style={[styles.label, { color: COLORS.muted }]}>Capabilities</Text>
-        <Text style={[styles.body, { color: COLORS.white }]}>• Material Lab: UHPC, GFRC, and microtopping formulations</Text>
-        <Text style={[styles.body, { color: COLORS.white }]}>• Digital Fabrication: Parametric modelling and robotic casting</Text>
-        <Text style={[styles.body, { color: COLORS.white, marginBottom: 0 }]}>• Integrated workflow from concept to installation</Text>
+      {/* Left: About content */}
+      <View style={{ width: '60%', backgroundColor: COLORS.gray, padding: 30 }}>
+        <Text style={[styles.headline, { color: COLORS.white, fontSize: 24, marginBottom: 6 }]}>Who We Are</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12, marginBottom: 10 }]}>Collapsing the gap between design and reality</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 9, marginBottom: 15 }]}>
+          Arcos formed in 2025 when a collective of materials scientists, architects, and fabrication engineers set out to transform architectural concrete. We specialise in seamless microcement finishes, polished concrete overlays, terrazzo systems, architectural panels, and 3D tiles.
+        </Text>
+        <Text style={[styles.label, { color: COLORS.muted, marginBottom: 8 }]}>Capabilities</Text>
+        <Text style={[styles.body, { color: COLORS.white, fontSize: 8, marginBottom: 4 }]}>• Material Lab: UHPC, GFRC, and microtopping formulations</Text>
+        <Text style={[styles.body, { color: COLORS.white, fontSize: 8, marginBottom: 4 }]}>• Digital Fabrication: Parametric modelling and robotic casting</Text>
+        <Text style={[styles.body, { color: COLORS.white, fontSize: 8, marginBottom: 0 }]}>• Integrated workflow from concept to installation</Text>
       </View>
-      <View style={{ width: '30%', backgroundColor: COLORS.black, padding: 30, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-        <Supergraphic size={100} color={COLORS.gray} rows={4} cols={3} />
+      
+      {/* Right: Logo + Supergraphic */}
+      <View style={{ width: '40%', backgroundColor: COLORS.black, padding: 30, justifyContent: 'space-between' }}>
+        <Logo color={COLORS.white} size="medium" />
+        <View style={{ alignItems: 'flex-end' }}>
+          <Supergraphic size={120} color={COLORS.gray} rows={3} cols={3} />
+        </View>
       </View>
     </View>
   </Page>
@@ -521,7 +494,6 @@ const ContactPage = () => (
 const CompanyProfileDocument = () => (
   <Document title="Arcos Company Profile" author="Arcos" subject="Architectural Concrete Solutions">
     <CoverPage />
-    <AboutPage />
     <ServicesPage />
     <GalleryPage1 />
     <GalleryPage2 />
