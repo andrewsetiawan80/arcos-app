@@ -1,291 +1,282 @@
-import React from "react";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { useFadeIn } from "../utils/useAnimation";
+import { usePublicTheme } from "./PublicThemeContext";
+
+// Import images
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import mixDesign from "../assets/images/mix-design.webp";
 import structuralPanels from "../assets/images/structural-panels.webp";
-import workshopCloseup from "../assets/images/workshop-closeup.webp";
-import landmarkInstallation from "../assets/images/landmark-installation.webp";
-import { ArcosSectionTwo } from "../components/brand";
+import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
 
-const PHASES = [
+// Process steps data
+const PROCESS_STEPS = [
   {
     step: "01",
-    title: "Design & Planning",
-    description: "We work with you to understand your vision and requirements. Strategic workshops to decode vision, environmental context, timelines, and performance criteria.",
-    image: mixDesign,
-    details: ["Vision scoping", "Material benchmarking", "Timeline architecture"],
+    title: "Discover",
+    paragraph: "Every journey begins with inspiration. Clients explore our textures, tones, and materials through samples, digital previews, or studio visits. We introduce the possibilities of UHPC, GFRC, and microcement, helping define direction and design intent.",
+    points: [
+      "Texture & color exploration",
+      "Sample viewing",
+      "Material guidance",
+    ],
   },
   {
     step: "02",
-    title: "Material Engineering",
-    description: "Custom mixes tailored to your project's needs. Computational design, parametric modelling, and structural simulations feed directly into fabrication logic.",
-    image: structuralPanels,
-    details: ["BIM + parametric sync", "Tolerance choreography", "Assembly sequencing"],
+    title: "Design & Consultation",
+    paragraph: "We work closely with architects, designers, and project teams to refine technical requirements and aesthetic goals. The design stage aligns structure, emotion, and material logic for a coherent architectural vision.",
+    points: [
+      "Technical review",
+      "Material selection & thickness planning",
+      "Aesthetic concept alignment",
+      "Feasibility & engineering discussion",
+    ],
   },
   {
     step: "03",
-    title: "Fabrication",
-    description: "Precision manufacturing in our workshop. Robotics, CNC milling, and tailored mix production operate in parallel streams to compress schedules.",
-    image: workshopCloseup,
-    details: ["Robotic milling", "Precision casting", "Smart curing cycles"],
+    title: "Engineering & Craft",
+    paragraph: "Our artisans and engineers shape each piece with precision. Whether UHPC or GFRC, the process balances structural integrity with artistic detail. Molds, forms, and textures are produced with care to ensure consistent quality and expression.",
+    points: [
+      "Mold creation",
+      "Surface texture development",
+      "UHPC/GFRC casting",
+      "Quality control & refinement",
+    ],
   },
   {
     step: "04",
-    title: "Installation",
-    description: "Expert on-site installation and support. Global logistics, white-glove installation, and post-install monitoring ensure the design performs for decades.",
-    image: landmarkInstallation,
-    details: ["Installation command unit", "Performance commissioning", "Lifecycle support"],
+    title: "Installation Support",
+    paragraph: "We guide installers and site teams with technical clarity. From mounting methods to joint details and protection guidelines, ARCOS ensures that every surface integrates seamlessly into the architectural environment.",
+    points: [
+      "Installation documentation",
+      "Coordination with contractor teams",
+      "On-site support if required",
+      "Surface protection recommendations",
+    ],
+  },
+  {
+    step: "05",
+    title: "Completion & Care",
+    paragraph: "Once installation is complete, each surface is sealed and reviewed to ensure lasting performance. We provide maintenance guidance tailored to the material, ensuring the concrete's beauty endures for years.",
+    points: [
+      "Final inspection",
+      "Sealing & finishing",
+      "Maintenance guidelines",
+      "Long-term support",
+    ],
   },
 ];
 
 export default function PublicProcess() {
+  const { isDark } = usePublicTheme();
+  
+  // Animation refs
+  const heroAnim = useFadeIn({ delay: 100 });
+  const stepsAnim = useFadeIn({ delay: 200 });
+  const ctaAnim = useFadeIn({ delay: 300 });
+
   return (
-    <div className="bg-[#232323] text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
-        {/* Hero Background */}
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+    }`}>
+      
+      {/* ===== HERO / INTRO SECTION ===== */}
+      <section className={`py-24 sm:py-32 lg:py-40 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10" : "border-[#E0E0E0]"
+      }`}>
+        <div 
+          ref={heroAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          {/* Page Header */}
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Crafting concrete as a language of design.
+          </h1>
+          
+          {/* Intro Paragraph */}
+          <p className={`text-lg sm:text-xl font-light leading-relaxed mb-8 max-w-3xl mx-auto ${
+            isDark ? "text-white/70" : "text-[#6F6F6F]"
+          }`}>
+            Our process blends engineering precision with human craftsmanship. Each stage is designed to shape concrete into expressive surfaces that elevate modern architecture. From concept to installation, ARCOS ensures clarity, quality, and collaboration at every step.
+          </p>
+          
+          {/* Secondary Text */}
+          <p className={`text-sm tracking-wide ${
+            isDark ? "text-white/40" : "text-[#AFAFAF]"
+          }`}>
+            A seamless journey built on expertise, transparency, and architectural intention.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== PROCESS STEPS SECTION ===== */}
+      <section className={`py-24 sm:py-32 lg:py-40 ${
+        isDark ? "bg-[#1B1B1B]" : "bg-white"
+      }`}>
+        <div 
+          ref={stepsAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            stepsAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <div className="space-y-0">
+            {PROCESS_STEPS.map((step, index) => (
+              <div 
+                key={step.step}
+                className={`py-16 sm:py-20 lg:py-24 border-b transition-colors duration-300 ${
+                  isDark ? "border-white/10" : "border-[#E0E0E0]"
+                } ${index === 0 ? "pt-0" : ""} ${index === PROCESS_STEPS.length - 1 ? "border-b-0 pb-0" : ""}`}
+              >
+                <div className="grid lg:grid-cols-[120px_1fr] gap-8 lg:gap-16">
+                  {/* Step Number */}
+                  <div className={`text-6xl sm:text-7xl lg:text-8xl font-extralight tracking-tight ${
+                    isDark ? "text-white/20" : "text-[#E0E0E0]"
+                  }`}>
+                    {step.step}
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="space-y-8">
+                    {/* Title */}
+                    <h2 className={`text-2xl sm:text-3xl font-light tracking-tight ${
+                      isDark ? "text-white" : "text-[#1B1B1B]"
+                    }`}>
+                      {step.step} — {step.title}
+                    </h2>
+                    
+                    {/* Paragraph */}
+                    <p className={`text-base sm:text-lg font-light leading-relaxed max-w-2xl ${
+                      isDark ? "text-white/70" : "text-[#6F6F6F]"
+                    }`}>
+                      {step.paragraph}
+                    </p>
+                    
+                    {/* Key Points */}
+                    <ul className="space-y-3 pt-4">
+                      {step.points.map((point) => (
+                        <li 
+                          key={point} 
+                          className={`flex items-center gap-4 text-sm ${
+                            isDark ? "text-white/50" : "text-[#AFAFAF]"
+                          }`}
+                        >
+                          <span className={`w-1 h-1 rounded-full ${
+                            isDark ? "bg-white/30" : "bg-[#AFAFAF]"
+                          }`} />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== VISUAL IMAGERY SECTION ===== */}
+      <section className={`py-24 sm:py-32 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+            {[
+              { image: workshopCloseup, alt: "Craftsmanship detail" },
+              { image: mixDesign, alt: "Material textures" },
+              { image: structuralPanels, alt: "Surface geometry" },
+            ].map((item, index) => (
+              <div 
+                key={index} 
+                className={`aspect-[4/5] overflow-hidden ${
+                  isDark ? "bg-white/5" : "bg-[#E0E0E0]"
+                }`}
+              >
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  className={`w-full h-full object-cover transition-all duration-700 ${
+                    isDark ? "opacity-70 hover:opacity-100" : "grayscale hover:grayscale-0"
+                  }`}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CLOSING CTA SECTION ===== */}
+      <section className="relative py-32 sm:py-40 lg:py-48 overflow-hidden">
+        {/* Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0">
-            <img
-              src={workshopCloseup}
-              alt="Arcos fabrication process"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
+          <img
+            src={concreteTexture2}
+            alt="Concrete texture"
+            className={`w-full h-full object-cover ${isDark ? "opacity-10" : "opacity-15"}`}
+          />
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/95 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-white via-white/95 to-white"
+          }`} />
         </div>
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
-          <div className="text-center mb-16 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">How We Work</p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
-              From concept to completion
-            </h1>
-            <p className="text-gray-300 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
-              Every engagement follows an integrated workflow, aligning concept, material engineering, digital fabrication, and delivery into one continuous rhythm.
-            </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Process Steps */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PHASES.map((phase) => (
-              <div key={phase.step} className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.05] shadow-xl hover:-translate-y-1.5 hover:border-white/30 transition-all">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={phase.image}
-                    alt={phase.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6 space-y-4">
-                  <div className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold">
-                    {phase.step}
-                  </div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-white uppercase leading-tight">
-                    {phase.title}
-                  </h2>
-                  <p className="text-sm text-gray-300 leading-relaxed">
-                    {phase.description}
-                  </p>
-                  <ul className="space-y-2 pt-4 border-t border-white/10">
-                    {phase.details.map((detail) => (
-                      <li key={detail} className="flex items-center gap-2 text-xs text-gray-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <div 
+          ref={ctaAnim.ref}
+          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          {/* Headline */}
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Let's shape your next space.
+          </h2>
+          
+          {/* Subtext */}
+          <p className={`text-lg font-light mb-12 max-w-xl mx-auto ${
+            isDark ? "text-white/60" : "text-[#6F6F6F]"
+          }`}>
+            Reach out to our team for consultations, samples, or technical guidance.
+          </p>
 
-      {/* Detailed Workflow */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="text-center mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Detailed Workflow</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              Every step, every detail
-            </h2>
-            <p className="text-gray-300 max-w-2xl mx-auto text-base sm:text-lg">
-              Our comprehensive process ensures quality at every stage, from initial consultation to final handover.
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            {[
-              {
-                phase: "Phase 1: Discovery & Design",
-                timeline: "Weeks 1-3",
-                activities: [
-                  "Initial consultation and site visit",
-                  "Design intent workshops",
-                  "Material selection and benchmarking",
-                  "Technical feasibility studies",
-                  "3D modeling and visualization",
-                  "Budget and timeline planning",
-                ],
-              },
-              {
-                phase: "Phase 2: Engineering & Prototyping",
-                timeline: "Weeks 4-8",
-                activities: [
-                  "Custom mix development",
-                  "Laboratory testing and validation",
-                  "Mockup fabrication",
-                  "Client approval process",
-                  "Production planning",
-                  "Quality control protocols",
-                ],
-              },
-              {
-                phase: "Phase 3: Fabrication",
-                timeline: "Weeks 9-16",
-                activities: [
-                  "Precision mold creation",
-                  "Batch production",
-                  "Curing and finishing",
-                  "Quality inspections",
-                  "Packaging and logistics",
-                  "Progress reporting",
-                ],
-              },
-              {
-                phase: "Phase 4: Installation & Handover",
-                timeline: "Weeks 17-20",
-                activities: [
-                  "Site preparation",
-                  "Professional installation",
-                  "Final quality checks",
-                  "Client walkthrough",
-                  "Documentation delivery",
-                  "Warranty and support",
-                ],
-              },
-            ].map((phase, index) => (
-              <div key={index} className="rounded-[32px] border border-white/10 bg-white/[0.05] p-8 space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-xs uppercase tracking-[0.28em] text-white/60 font-semibold mb-2">
-                      {phase.timeline}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white uppercase">{phase.phase}</h3>
-                  </div>
-                  <div className="text-4xl font-black text-white/20">/{String(index + 1).padStart(2, "0")}</div>
-                </div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {phase.activities.map((activity, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-white/60 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-sm text-gray-300">{activity}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Quality Assurance - Using Brand Layout */}
-      <ArcosSectionTwo
-        id="quality-assurance"
-        label="Quality Assurance"
-        headline="Rigorous testing at every stage"
-        subheadline="Our multi-layered quality assurance process ensures every product meets or exceeds specifications before leaving our facility."
-        image={structuralPanels}
-        imageAlt="Quality control process"
-        imagePosition="right"
-        variant="primary"
-        body={
-          <div className="space-y-6">
-            <div className="space-y-3">
-              {[
-                "Batch testing for strength and consistency",
-                "Dimensional accuracy verification",
-                "Surface finish quality checks",
-                "Environmental resistance testing",
-                "On-site installation verification",
-              ].map((check) => (
-                <div key={check} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-sm">{check}</span>
-                </div>
-              ))}
-            </div>
-            <div className="pt-4 border-t border-white/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold mb-3">Key Metrics</p>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div><span className="text-white/60">Tolerance:</span> <span className="font-bold">±1mm</span></div>
-                <div><span className="text-white/60">Flatness:</span> <span className="font-bold">≤2mm/3m</span></div>
-                <div><span className="text-white/60">Color ΔE:</span> <span className="font-bold">≤ 2</span></div>
-                <div><span className="text-white/60">Defects:</span> <span className="font-bold">&lt;0.1%</span></div>
-              </div>
-            </div>
-          </div>
-        }
-      />
-
-      {/* Why Choose Us */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="text-center mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Why Arcos</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              Integrated expertise, seamless delivery
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "One Partner",
-                description: "From concept to installation, one accountable team handles every aspect of your project.",
-              },
-              {
-                title: "Material Science",
-                description: "Proprietary mixes engineered for your specific climate, performance, and aesthetic requirements.",
-              },
-              {
-                title: "Certified Installers",
-                description: "Trained applicators ensure every installation meets our exacting quality standards.",
-              },
-              {
-                title: "Digital Integration",
-                description: "BIM-ready workflows and parametric design tools streamline collaboration and reduce errors.",
-              },
-              {
-                title: "Global Reach",
-                description: "Projects across Southeast Asia with local expertise and international quality standards.",
-              },
-              {
-                title: "Sustainability Focus",
-                description: "Eco-friendly formulations and processes that reduce environmental impact without compromising performance.",
-              },
-            ].map((feature) => (
-              <div key={feature.title} className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 space-y-3">
-                <h3 className="text-lg font-bold text-white uppercase">{feature.title}</h3>
-                <p className="text-sm text-gray-300 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/contact"
+              className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
+                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+              }`}
+            >
+              Contact Us
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <a
+              href="mailto:hello@arcos.id?subject=Sample%20Request"
+              className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
+            >
+              Request Samples
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>
     </div>
   );
 }
-
-
-
-
