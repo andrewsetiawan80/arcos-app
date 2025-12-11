@@ -1,354 +1,346 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { load } from "../store";
-import type { Product, Category } from "../types";
+import { useFadeIn } from "../utils/useAnimation";
+import { usePublicTheme } from "./PublicThemeContext";
+import { useLanguage } from "../i18n/LanguageContext";
+import { api } from "../lib/api";
+
+// Import images
 import landmarkInstallation from "../assets/images/landmark-installation.webp";
-import mosaicInterior from "../assets/images/mosaic-interior.webp";
 import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
 import structuralPanels from "../assets/images/structural-panels.webp";
-import concreteInstallation from "../assets/images/concrete-installation.webp";
-import concreteFinish from "../assets/images/concrete-finish.webp";
 import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
-import concretePanelDetail from "../assets/images/concrete-panel-detail.webp";
-import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
+import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
 
-type FeaturedProject = {
-  id: string;
-  title: string;
-  category: string;
-  image: string;
-  description: string;
-  slug?: string;
-};
-
-const FEATURED_PROJECTS: FeaturedProject[] = [
+// Sample projects for display
+const SAMPLE_PROJECTS = [
   {
-    id: "residential-microcement",
-    title: "Residential Microcement",
-    category: "Residential",
-    image: microcementInterior1,
-    description: "Seamless microcement floors and walls in a modern Jakarta residence.",
-  },
-  {
-    id: "commercial-facade",
-    title: "Commercial Facade System",
-    category: "Commercial",
-    image: landmarkInstallation,
-    description: "UHPC facade panels for a landmark commercial building.",
-  },
-  {
-    id: "hospitality-spa",
-    title: "Hospitality Spa",
-    category: "Hospitality",
-    image: concreteFinish || mosaicFacadeDetail,
-    description: "Microcement finishes for a luxury spa and wellness center.",
-  },
-  {
-    id: "terrazzo-flooring",
-    title: "Terrazzo Flooring",
-    category: "Commercial",
-    image: concreteTexture2,
-    description: "Custom terrazzo flooring system for retail spaces.",
-  },
-  {
-    id: "structural-panels",
-    title: "Structural GFRC Panels",
-    category: "Architectural",
-    image: structuralPanels,
-    description: "Lightweight GFRC panels for complex architectural forms.",
-  },
-  {
-    id: "outdoor-terrace",
-    title: "Outdoor Terrace",
-    category: "Outdoor",
+    id: "villa-tamarind",
+    title: "Villa Tamarind",
+    location: "Canggu, Bali",
+    material: "GFRC Aeris Series • Feature Wall & Interior Panels",
     image: mosaicFacadeDetail,
-    description: "Weather-resistant microcement for outdoor terraces and patios.",
+  },
+  {
+    id: "studio-k",
+    title: "Studio K",
+    location: "Surabaya",
+    material: "Microcement • Seamless Interior Surfaces",
+    image: microcementInterior1,
+  },
+  {
+    id: "private-residence-jakarta",
+    title: "Private Residence",
+    location: "Jakarta",
+    material: "UHPC Solis Series • Living Room Feature Wall",
+    image: structuralPanels,
+  },
+  {
+    id: "hotel-ayana",
+    title: "Hotel Ayana",
+    location: "Bali",
+    material: "GFRC • Lobby & Corridor Panels",
+    image: landmarkInstallation,
+  },
+  {
+    id: "creative-studio",
+    title: "Creative Studio",
+    location: "Bandung",
+    material: "Microcement • Floor & Wall Systems",
+    image: microcementInterior2,
+  },
+  {
+    id: "retail-space",
+    title: "Retail Space",
+    location: "Jakarta",
+    material: "UHPC • Sculptural Display Elements",
+    image: workshopCloseup,
   },
 ];
 
 export default function PublicProjects() {
-  const state = load();
-  const products: Product[] = state.products || [];
-  const categories: Category[] = state.categories || [];
+  const { isDark } = usePublicTheme();
+  const { language } = useLanguage();
+  const [projects, setProjects] = useState(SAMPLE_PROJECTS);
 
-  const published = products.filter((p) => !!p.public && !!p.slug);
+  // Animation refs
+  const heroAnim = useFadeIn({ delay: 100 });
+  const introAnim = useFadeIn({ delay: 150 });
+  const gridAnim = useFadeIn({ delay: 200 });
+  const calloutAnim = useFadeIn({ delay: 250 });
+  const ctaAnim = useFadeIn({ delay: 300 });
 
-  const display = published.length > 0 ? published : FEATURED_PROJECTS;
-
-  const categoryName = (slug?: string) => categories.find((c) => c.slug === slug)?.name;
+  // Fetch featured projects from API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await api.getFeaturedProjects();
+        if (res.data && res.data.length > 0) {
+          const apiProjects = res.data.map((project: any) => ({
+            id: project.id,
+            title: language === "id" ? project.titleId : project.title,
+            location: project.location || "",
+            material: language === "id" ? project.categoryId : project.category,
+            image: project.imageUrl,
+          }));
+          setProjects(apiProjects.length > 0 ? apiProjects : SAMPLE_PROJECTS);
+        }
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+      }
+    };
+    fetchProjects();
+  }, [language]);
 
   return (
-    <div className="bg-[#353535] text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
-        {/* Hero Background */}
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+    }`}>
+      
+      {/* ===== PAGE HEADER ===== */}
+      <section className="relative py-32 sm:py-40 lg:py-48 overflow-hidden">
+        {/* Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0">
-            <img
-              src={landmarkInstallation}
-              alt="Arcos projects portfolio"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#353535]/70 via-[#353535]/50 to-[#353535]/70" />
+          <img
+            src={landmarkInstallation}
+            alt="Architectural concrete wall"
+            className={`w-full h-full object-cover ${isDark ? "opacity-20" : "opacity-15"}`}
+          />
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/90 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-white via-white/90 to-white"
+          }`} />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-            <div className="space-y-4 max-w-3xl">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Project Portfolio</p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
-                Built references for seamless finishes, terrazzo systems, and architectural façades.
-              </h1>
-              <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                     Explore completed spaces featuring our seamless microcement interiors, terrazzo systems, polished concrete overlays, architectural panels, and 3D tiles—all engineered and fabricated in our workshop.
-              </p>
-            </div>
-            <div className="text-sm text-gray-400 max-w-md">
-              Looking for something specific?{" "}
-              <Link to="/catalog" className="underline hover:text-white transition-colors">
-                Browse the catalog
-              </Link>{" "}
-              or{" "}
-              <Link to="/contact" className="underline hover:text-white transition-colors">
-                contact us
-              </Link>{" "}
-              for a tailored case study.
-            </div>
+
+        <div 
+          ref={heroAnim.ref}
+          className={`relative z-10 max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          {/* Main Title */}
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Spaces shaped through concrete.
+          </h1>
+          
+          {/* Subheadline */}
+          <p className={`text-lg sm:text-xl font-light leading-relaxed max-w-3xl mx-auto ${
+            isDark ? "text-white/70" : "text-[#6F6F6F]"
+          }`}>
+            A curated selection of projects where ARCOS surfaces define atmosphere, identity, and spatial emotion.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== INTRODUCTION BLOCK ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+      }`}>
+        <div 
+          ref={introAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            introAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-10 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Designed to endure. Crafted to inspire.
+          </h2>
+
+          <div className="space-y-6">
+            <p className={`text-lg font-light leading-relaxed ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}>
+              Our work lives in villas, hotels, residences, commercial interiors, and creative environments across Indonesia. Every project is a collaboration — merging architectural vision with the expressive character of UHPC, GFRC, and microcement surfaces.
+            </p>
+            <p className={`text-lg font-light leading-relaxed ${
+              isDark ? "text-white/60" : "text-[#AFAFAF]"
+            }`}>
+              We design for permanence, quiet sophistication, and modern spatial clarity.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Projects Grid */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {display.map((project, index) => {
-              const isProduct = "coverImageUrl" in project;
-              const projectImage = isProduct ? (project as Product).coverImageUrl : (project as FeaturedProject).image;
-              const projectCategory = isProduct
-                ? (project as Product).categorySlug
-                  ? categoryName((project as Product).categorySlug)
-                  : undefined
-                : (project as FeaturedProject).category;
-              const projectSlug = isProduct ? (project as Product).slug : (project as FeaturedProject).slug || project.id;
-
-              return (
-                <Link
-                  key={project.id}
-                  to={projectSlug ? `/product/${projectSlug}` : "#"}
-                  className={[
-                    "relative group border border-white/10 bg-black hover:border-white/30 transition-all overflow-hidden rounded-3xl hover:-translate-y-1.5",
-                    projectImage ? "" : "pointer-events-none",
-                    index === 0 ? "sm:col-span-2 lg:col-span-1" : "",
-                  ].join(" ")}
-                >
-                  <div className={["w-full bg-black hover-zoom", index === 0 ? "aspect-[21/9]" : "aspect-[4/3]"].join(" ")}>
-                    {projectImage ? (
-                      <img
-                        src={projectImage}
-                        alt={project.title}
-                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-white/[0.05] to-white/[0.02]" />
-                    )}
-                  </div>
-                  <div className="absolute inset-0 flex items-end p-5 sm:p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
-                    <div className="w-full">
-                      <h2 className="text-lg sm:text-xl font-bold uppercase mb-1 break-words">{project.title}</h2>
-                      {projectCategory && (
-                        <span className="text-xs uppercase tracking-[0.2em] text-gray-400">{projectCategory}</span>
-                      )}
-                      {!isProduct && (project as FeaturedProject).description && (
-                        <p className="mt-2 text-sm text-gray-300 leading-relaxed line-clamp-2">{(project as FeaturedProject).description}</p>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Project Solutions Section - Moved from Home */}
-      <section className="border-b border-white/10 bg-[#232323]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              Solutions by Project Type
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              Tailored solutions for every project
-            </h2>
-            <p className="text-gray-300 max-w-2xl text-base sm:text-lg">
-              From residential renovations to commercial installations, we provide specialized solutions for each project type.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Residential",
-                image: mosaicInterior,
-                description: "Homes, apartments, and private spaces",
-                applications: ["Floors & walls", "Bathrooms & kitchens", "Outdoor patios"],
-              },
-              {
-                title: "Commercial",
-                image: concreteInstallation || landmarkInstallation,
-                description: "Retail, offices, and public spaces",
-                applications: ["Lobbies & corridors", "Retail floors", "Restaurant interiors"],
-              },
-              {
-                title: "Hospitality",
-                image: concreteFinish || mosaicFacadeDetail,
-                description: "Hotels, spas, and restaurants",
-                applications: ["Spa treatments", "Hotel suites", "Dining areas"],
-              },
-              {
-                title: "Outdoor",
-                image: concretePanelDetail || structuralPanels,
-                description: "Patios, terraces, and exterior surfaces",
-                applications: ["Terrace floors", "Pool surrounds", "Outdoor walls"],
-              },
-              {
-                title: "Industrial",
-                image: workshopCloseup,
-                description: "Workshops, warehouses, and production areas",
-                applications: ["Durable floors", "Utility surfaces", "Heavy-duty finishes"],
-              },
-              {
-                title: "Custom",
-                image: concreteTexture2,
-                description: "Bespoke projects and unique requirements",
-                applications: ["Custom colors", "Special textures", "Designer finishes"],
-              },
-            ].map((solution, index) => (
-              <div key={solution.title} className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] shadow-xl">
-                <div className="aspect-[4/3] overflow-hidden">
+      {/* ===== PROJECT GRID ===== */}
+      <section className={`py-24 sm:py-32 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
+      }`}>
+        <div 
+          ref={gridAnim.ref}
+          className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            gridAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            {projects.map((project) => (
+              <Link
+                key={project.id}
+                to={`/projects/${project.id}`}
+                className="group block"
+              >
+                {/* Image */}
+                <div className={`aspect-[4/3] overflow-hidden mb-6 ${
+                  isDark ? "bg-white/5" : "bg-[#E0E0E0]"
+                }`}>
                   <img
-                    src={solution.image}
-                    alt={solution.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    src={project.image}
+                    alt={project.title}
+                    className={`w-full h-full object-cover transition-all duration-700 ${
+                      isDark 
+                        ? "opacity-80 group-hover:opacity-100 group-hover:scale-105" 
+                        : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                    }`}
                     loading="lazy"
                   />
                 </div>
-                <div className="p-6 space-y-4">
-                  <div className="text-xs uppercase tracking-[0.24em] text-white/60 font-semibold">/{String(index + 1).padStart(2, "0")}</div>
-                  <h3 className="text-xl font-bold uppercase text-white">{solution.title}</h3>
-                  <p className="text-sm text-gray-300 leading-relaxed">{solution.description}</p>
-                  <ul className="space-y-2 pt-2 border-t border-white/10">
-                    {solution.applications.map((app) => (
-                      <li key={app} className="flex items-center gap-2 text-xs text-gray-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
-                        {app}
-                      </li>
-                    ))}
-                  </ul>
+                
+                {/* Content */}
+                <div className="space-y-2">
+                  <h3 className={`text-lg font-medium transition-colors ${
+                    isDark 
+                      ? "text-white group-hover:text-white/80" 
+                      : "text-[#1B1B1B] group-hover:text-[#6F6F6F]"
+                  }`}>
+                    {project.title} — {project.location}
+                  </h3>
+                  <p className={`text-sm font-light ${
+                    isDark ? "text-white/50" : "text-[#AFAFAF]"
+                  }`}>
+                    {project.material}
+                  </p>
                 </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CALLOUT SECTION ===== */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
+        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+      }`}>
+        <div 
+          ref={calloutAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            calloutAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight leading-relaxed mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Every project is a dialogue between material and space.
+          </h2>
+          
+          <p className={`text-lg font-light ${
+            isDark ? "text-white/60" : "text-[#6F6F6F]"
+          }`}>
+            We work closely with architects, designers, and builders to develop surfaces that reflect the intention of the environment.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== VISUAL GALLERY ===== */}
+      <section className={`py-16 sm:py-24 transition-colors duration-300 ${
+        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
+          <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
+            {[
+              { image: mosaicFacadeDetail, alt: "Architectural detail" },
+              { image: structuralPanels, alt: "Surface texture" },
+              { image: concreteTexture2, alt: "Material closeup" },
+            ].map((item, index) => (
+              <div 
+                key={index} 
+                className={`aspect-[3/4] overflow-hidden ${
+                  isDark ? "bg-white/5" : "bg-[#E0E0E0]"
+                }`}
+              >
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  className={`w-full h-full object-cover transition-all duration-700 ${
+                    isDark ? "opacity-60 hover:opacity-100" : "grayscale hover:grayscale-0"
+                  }`}
+                  loading="lazy"
+                />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-             {/* Project Types & Applications */}
-             <section className="border-b border-white/10 bg-[#353535]">
-               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-                 <div className="mb-12 space-y-4">
-                   <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-                     Applications
-                   </p>
-                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                     Where our solutions excel
-                   </h2>
-                   <p className="text-gray-300 max-w-2xl text-base sm:text-lg">
-                     From residential renovations to commercial landmarks, our concrete solutions transform spaces across diverse applications.
-                   </p>
-                 </div>
+      {/* ===== CTA BLOCK ===== */}
+      <section className="relative py-32 sm:py-40 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <img
+            src={concreteTexture2}
+            alt="Concrete texture"
+            className={`w-full h-full object-cover ${isDark ? "opacity-10" : "opacity-15"}`}
+          />
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/95 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-white via-white/95 to-white"
+          }`} />
+        </div>
 
-                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                   {[
-                     {
-                       category: "Residential",
-                       applications: ["Homes & Apartments", "Bathrooms & Kitchens", "Outdoor Terraces", "Feature Walls"],
-                       description: "Seamless microcement and custom finishes for modern living spaces.",
-                     },
-                     {
-                       category: "Commercial",
-                       applications: ["Retail Spaces", "Office Lobbies", "Restaurants", "Showrooms"],
-                       description: "Durable, high-traffic solutions for commercial environments.",
-                     },
-                     {
-                       category: "Hospitality",
-                       applications: ["Hotels & Resorts", "Spas & Wellness", "Restaurants", "Lounges"],
-                       description: "Luxury finishes that create memorable guest experiences.",
-                     },
-                     {
-                       category: "Institutional",
-                       applications: ["Museums", "Cultural Centers", "Educational Facilities", "Healthcare"],
-                       description: "Sophisticated surfaces for public and institutional spaces.",
-                     },
-                     {
-                       category: "Exterior",
-                       applications: ["Facades", "Terraces", "Pool Surrounds", "Landscape Features"],
-                       description: "Weather-resistant systems for outdoor applications.",
-                     },
-                     {
-                       category: "Custom",
-                       applications: ["Sculptural Elements", "Art Installations", "Bespoke Designs", "Special Projects"],
-                       description: "Unique solutions for one-of-a-kind architectural visions.",
-                     },
-                   ].map((type) => (
-                     <div key={type.category} className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 space-y-4">
-                       <h3 className="text-xl font-bold text-white uppercase">{type.category}</h3>
-                       <p className="text-sm text-gray-300 leading-relaxed">{type.description}</p>
-                       <ul className="space-y-2 pt-4 border-t border-white/10">
-                         {type.applications.map((app) => (
-                           <li key={app} className="flex items-center gap-2 text-xs text-gray-400">
-                             <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
-                             {app}
-                           </li>
-                         ))}
-                       </ul>
-                     </div>
-                   ))}
-                 </div>
-               </div>
-             </section>
+        <div 
+          ref={ctaAnim.ref}
+          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
+            isDark ? "text-white" : "text-[#1B1B1B]"
+          }`}>
+            Let's shape your next space.
+          </h2>
+          
+          <p className={`text-lg font-light mb-12 max-w-xl mx-auto ${
+            isDark ? "text-white/60" : "text-[#6F6F6F]"
+          }`}>
+            For consultations, samples, or project discussions, connect with our team.
+          </p>
 
-             {/* CTA Section */}
-             <section className="bg-[#232323]">
-               <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-                 <div className="text-center space-y-6">
-                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                     Ready to start your project?
-                   </h2>
-                   <p className="text-gray-300 max-w-2xl mx-auto text-base sm:text-lg">
-                     Let's discuss how we can bring your vision to life with our premium concrete solutions.
-                   </p>
-                   <div className="flex flex-wrap justify-center gap-4">
-                     <Link
-                       to="/contact"
-                       className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black text-sm font-bold uppercase tracking-[0.18em] hover:bg-gray-100 transition-all min-h-[52px] hover-lift shadow-lg shadow-black/20"
-                     >
-                       Get in Touch
-                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                       </svg>
-                     </Link>
-                     <Link
-                       to="/catalog"
-                       className="inline-flex items-center gap-2 px-8 py-4 bg-[#353535] border border-white/10 text-white text-sm font-bold uppercase tracking-[0.18em] hover:bg-[#232323] transition-all min-h-[52px]"
-                     >
-                       View Catalog
-                     </Link>
-                   </div>
-                 </div>
-               </div>
-             </section>
-           </div>
-         );
-       }
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/contact"
+              className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
+                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+              }`}
+            >
+              Start a Project
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <Link
+              to="/contact"
+              className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark 
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
+            >
+              Contact Us
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
