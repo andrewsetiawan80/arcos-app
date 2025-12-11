@@ -248,76 +248,117 @@ function PublicLayoutInner() {
       </main>
 
       {/* Footer */}
-      <footer className={`border-t transition-colors duration-300 ${
-        isDark 
-          ? "border-white/10 bg-[#232323]" 
-          : "border-[#1B1B1B]/10 bg-[#F8F8F8]"
-      }`}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16 sm:py-20">
-          {/* Top Section - Brand & Tagline */}
-          <div className="text-center mb-16">
-            <div className="mb-6">
-              <span className={`text-xl font-light tracking-[0.1em] ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
-                ARCOS
-              </span>
-              <span className={`text-xl font-light ml-2 ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>—</span>
-              <span className={`text-xl font-light ml-2 ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
-                Architectural Concrete Surfaces
-              </span>
+      <footer className="border-t border-[#353535] bg-[#232323]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-12 sm:py-14">
+          {/* Main Footer Content - 3 Columns */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-16 mb-12">
+            
+            {/* Column 1 - Brand Block */}
+            <div className="text-center md:text-left">
+              {/* Logo */}
+              <div className="mb-6">
+                <NavLink to="/" className="inline-block hover:opacity-90 transition-opacity">
+                  <ArcosLogo size="medium" variant="light" className="mx-auto md:mx-0" />
+                </NavLink>
+              </div>
+              
+              {/* Brand Line */}
+              <p className="text-white/70 text-sm font-light leading-relaxed mb-3">
+                Architectural concrete surfaces, crafted with precision, emotion, and timeless design.
+              </p>
+              
+              {/* Tagline */}
+              <p className="text-white/40 text-xs font-light italic">
+                Surfaces, reimagined.
+              </p>
             </div>
-            <p className={`text-sm font-light italic ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
-              "Where form, function, and feeling coexist in perfect balance."
-            </p>
-          </div>
 
-          {/* Navigation Links */}
-          <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-16 text-sm">
-            {[
-              { to: "/surfaces", label: "Surfaces" },
-              { to: "/projects", label: "Projects" },
-              { to: "/about", label: "About" },
-              { to: "/process", label: "Process" },
-              { to: "/contact", label: "Contact" },
-            ].map((item) => (
-              <NavLink 
-                key={item.to}
-                to={item.to} 
-                className={`tracking-wide transition-colors ${
-                  isDark 
-                    ? "text-white/50 hover:text-white" 
-                    : "text-[#6F6F6F] hover:text-[#1B1B1B]"
-                }`}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
+            {/* Column 2 - Navigation */}
+            <div className="text-center md:text-left">
+              <h4 className="text-white/50 text-xs font-medium uppercase tracking-[0.2em] mb-6">
+                Navigate
+              </h4>
+              <nav className="flex flex-col gap-3">
+                {[
+                  { to: "/surfaces", label: "Surfaces" },
+                  { to: "/projects", label: "Projects" },
+                  { to: "/about", label: "About" },
+                  { to: "/process", label: "Process" },
+                  { to: "/contact", label: "Contact" },
+                ].map((item) => (
+                  <NavLink 
+                    key={item.to}
+                    to={item.to} 
+                    className="text-white/70 text-sm font-light hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
 
-          {/* Contact Info */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12 mb-12 text-sm ${
-            isDark ? "text-white/40" : "text-[#AFAFAF]"
-          }`}>
-            <span>Jl. Concrete No. 42, Jakarta Selatan</span>
-            <span className="hidden sm:block">·</span>
-            <a 
-              href="https://wa.me/6281234567890" 
-              className={`transition-colors ${isDark ? "hover:text-white" : "hover:text-[#1B1B1B]"}`}
-            >
-              WhatsApp: +62 812 3456 7890
-            </a>
+            {/* Column 3 - Contact */}
+            <div className="text-center md:text-left">
+              <h4 className="text-white/50 text-xs font-medium uppercase tracking-[0.2em] mb-6">
+                Contact
+              </h4>
+              <div className="space-y-3 text-sm font-light">
+                <p className="text-white/70">
+                  <span className="text-white/40">Email: </span>
+                  <a 
+                    href="mailto:info@arcosworks.com" 
+                    className="hover:text-white transition-colors"
+                  >
+                    info@arcosworks.com
+                  </a>
+                </p>
+                <p className="text-white/70">
+                  <span className="text-white/40">WhatsApp: </span>
+                  <a 
+                    href="https://wa.me/6281234567890" 
+                    className="hover:text-white transition-colors"
+                  >
+                    +62 812 3456 7890
+                  </a>
+                </p>
+                <p className="text-white/50">
+                  Surabaya, Indonesia
+                </p>
+              </div>
+
+              {/* Social Links */}
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <h5 className="text-white/40 text-xs font-medium uppercase tracking-[0.15em] mb-4">
+                  Social
+                </h5>
+                <div className="flex justify-center md:justify-start gap-4">
+                  <a 
+                    href="https://instagram.com/arcosworks" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/50 hover:text-white transition-colors text-sm"
+                  >
+                    Instagram
+                  </a>
+                  <a 
+                    href="https://pinterest.com/arcosworks" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/50 hover:text-white transition-colors text-sm"
+                  >
+                    Pinterest
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className={`pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4 text-xs ${
-            isDark ? "border-white/10 text-white/30" : "border-[#1B1B1B]/10 text-[#AFAFAF]"
-          }`}>
+          <div className="pt-8 border-t border-[#353535] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/30">
             <p>© {new Date().getFullYear()} ARCOS. All rights reserved.</p>
-            <NavLink 
-              to="/login" 
-              className={`transition-colors ${isDark ? "hover:text-white/50" : "hover:text-[#6F6F6F]"}`}
-            >
-              Staff Portal
-            </NavLink>
+            <p className="text-center sm:text-right font-light italic">
+              Where form, function, and feeling coexist in perfect balance.
+            </p>
           </div>
         </div>
       </footer>
