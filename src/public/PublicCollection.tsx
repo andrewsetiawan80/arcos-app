@@ -5,8 +5,8 @@ import type { Product } from "../types";
 import { useFadeIn } from "../utils/useAnimation";
 import { usePublicTheme } from "./PublicThemeContext";
 
-// Import images
-import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
+// Import images - high quality hero
+import heroImage from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
 
 function uniqueTags(products: Product[]): string[] {
   const set = new Set<string>();
@@ -44,8 +44,8 @@ export default function PublicCollection() {
         {/* Hero Background */}
         <div className="absolute inset-0">
           <img
-            src={concreteTexture2}
-            alt="Concrete texture"
+            src={heroImage}
+            alt="Modern concrete interior"
             className="w-full h-full object-cover"
           />
           <div
