@@ -11,6 +11,9 @@ import microcementInterior1 from "../assets/images/minimalist-concrete-interior-
 import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
 import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
 
+// Hero image - high quality inspiration image
+import heroImage from "../assets/images/inspiration/microcement-03.png";
+
 // Material systems data
 const MATERIALS = [
   {
@@ -131,20 +134,20 @@ export default function PublicSurfaces() {
       }`}
     >
       {/* ===== PAGE HEADER / HERO ===== */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
         {/* Hero Background Image */}
         <div className="absolute inset-0">
           <img
-            src={concreteTexture2}
-            alt="Concrete texture"
+            src={heroImage}
+            alt="Modern concrete surfaces"
             className="w-full h-full object-cover"
           />
           {/* Overlay */}
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/60 via-[#1B1B1B]/50 to-[#1B1B1B]"
-                : "bg-gradient-to-b from-white/70 via-white/60 to-white"
+                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
+                : "bg-gradient-to-b from-white/70 via-white/50 to-white"
             }`}
           />
         </div>
@@ -157,7 +160,7 @@ export default function PublicSurfaces() {
         >
           {/* Main Title */}
           <h1
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
               isDark ? "text-white" : "text-[#1B1B1B]"
             }`}
           >
