@@ -8,8 +8,11 @@ import workshopCloseup from "../assets/images/workshop-closeup.webp";
 import mixDesign from "../assets/images/mix-design.webp";
 import structuralPanels from "../assets/images/structural-panels.webp";
 import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
+import concretePanelDetail from "../assets/images/concrete-panel-detail.webp";
+import concreteInstallation from "../assets/images/concrete-installation.webp";
+import qualityReview from "../assets/images/quality-review.webp";
 
-// Process steps data
+// Process steps data with images
 const PROCESS_STEPS = [
   {
     step: "01",
@@ -20,6 +23,7 @@ const PROCESS_STEPS = [
       "Sample viewing",
       "Material guidance",
     ],
+    image: concretePanelDetail,
   },
   {
     step: "02",
@@ -31,6 +35,7 @@ const PROCESS_STEPS = [
       "Aesthetic concept alignment",
       "Feasibility & engineering discussion",
     ],
+    image: mixDesign,
   },
   {
     step: "03",
@@ -42,6 +47,7 @@ const PROCESS_STEPS = [
       "UHPC/GFRC casting",
       "Quality control & refinement",
     ],
+    image: workshopCloseup,
   },
   {
     step: "04",
@@ -53,6 +59,7 @@ const PROCESS_STEPS = [
       "On-site support if required",
       "Surface protection recommendations",
     ],
+    image: concreteInstallation,
   },
   {
     step: "05",
@@ -64,6 +71,7 @@ const PROCESS_STEPS = [
       "Maintenance guidelines",
       "Long-term support",
     ],
+    image: structuralPanels,
   },
 ];
 
@@ -81,12 +89,25 @@ export default function PublicProcess() {
     }`}>
       
       {/* ===== HERO / INTRO SECTION ===== */}
-      <section className={`py-24 sm:py-32 lg:py-40 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10" : "border-[#E0E0E0]"
-      }`}>
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        {/* Hero Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src={workshopCloseup}
+            alt="Craftsmanship process"
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay */}
+          <div className={`absolute inset-0 ${
+            isDark 
+              ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-white/70 via-white/50 to-white"
+          }`} />
+        </div>
+
         <div 
           ref={heroAnim.ref}
-          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 py-32 text-center ${
             heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
           }`}
         >
@@ -99,14 +120,14 @@ export default function PublicProcess() {
           
           {/* Intro Paragraph */}
           <p className={`text-lg sm:text-xl font-light leading-relaxed mb-8 max-w-3xl mx-auto ${
-            isDark ? "text-white/70" : "text-[#6F6F6F]"
+            isDark ? "text-white/80" : "text-[#4A4A4A]"
           }`}>
             Our process blends engineering precision with human craftsmanship. Each stage is designed to shape concrete into expressive surfaces that elevate modern architecture. From concept to installation, ARCOS ensures clarity, quality, and collaboration at every step.
           </p>
           
           {/* Secondary Text */}
           <p className={`text-sm tracking-wide ${
-            isDark ? "text-white/40" : "text-[#AFAFAF]"
+            isDark ? "text-white/50" : "text-[#6F6F6F]"
           }`}>
             A seamless journey built on expertise, transparency, and architectural intention.
           </p>
@@ -131,16 +152,32 @@ export default function PublicProcess() {
                   isDark ? "border-white/10" : "border-[#E0E0E0]"
                 } ${index === 0 ? "pt-0" : ""} ${index === PROCESS_STEPS.length - 1 ? "border-b-0 pb-0" : ""}`}
               >
-                <div className="grid lg:grid-cols-[120px_1fr] gap-8 lg:gap-16">
-                  {/* Step Number */}
-                  <div className={`text-6xl sm:text-7xl lg:text-8xl font-extralight tracking-tight ${
-                    isDark ? "text-white/20" : "text-[#E0E0E0]"
-                  }`}>
-                    {step.step}
+                <div className={`grid lg:grid-cols-2 gap-12 lg:gap-16 ${
+                  index % 2 === 1 ? "lg:grid-flow-dense" : ""
+                }`}>
+                  {/* Image */}
+                  <div className={`aspect-[4/3] overflow-hidden ${
+                    isDark ? "bg-white/5" : "bg-[#E0E0E0]"
+                  } ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className={`w-full h-full object-cover transition-all duration-700 ${
+                        isDark ? "opacity-80 hover:opacity-100" : "grayscale hover:grayscale-0"
+                      }`}
+                      loading="lazy"
+                    />
                   </div>
                   
                   {/* Content */}
-                  <div className="space-y-8">
+                  <div className="flex flex-col justify-center space-y-6">
+                    {/* Step Number */}
+                    <div className={`text-5xl sm:text-6xl font-extralight tracking-tight ${
+                      isDark ? "text-white/20" : "text-[#E0E0E0]"
+                    }`}>
+                      {step.step}
+                    </div>
+                    
                     {/* Title */}
                     <h2 className={`text-2xl sm:text-3xl font-light tracking-tight ${
                       isDark ? "text-white" : "text-[#1B1B1B]"
@@ -149,14 +186,14 @@ export default function PublicProcess() {
                     </h2>
                     
                     {/* Paragraph */}
-                    <p className={`text-base sm:text-lg font-light leading-relaxed max-w-2xl ${
+                    <p className={`text-base sm:text-lg font-light leading-relaxed ${
                       isDark ? "text-white/70" : "text-[#6F6F6F]"
                     }`}>
                       {step.paragraph}
                     </p>
                     
                     {/* Key Points */}
-                    <ul className="space-y-3 pt-4">
+                    <ul className="space-y-3 pt-2">
                       {step.points.map((point) => (
                         <li 
                           key={point} 

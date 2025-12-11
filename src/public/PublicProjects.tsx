@@ -100,24 +100,25 @@ export default function PublicProjects() {
     }`}>
       
       {/* ===== PAGE HEADER ===== */}
-      <section className="relative py-32 sm:py-40 lg:py-48 overflow-hidden">
-        {/* Background */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        {/* Hero Background Image */}
         <div className="absolute inset-0">
           <img
             src={landmarkInstallation}
             alt="Architectural concrete wall"
-            className={`w-full h-full object-cover ${isDark ? "opacity-20" : "opacity-15"}`}
+            className="w-full h-full object-cover"
           />
+          {/* Overlay */}
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/90 to-[#1B1B1B]" 
-              : "bg-gradient-to-b from-white via-white/90 to-white"
+              ? "bg-gradient-to-b from-[#1B1B1B]/60 via-[#1B1B1B]/40 to-[#1B1B1B]" 
+              : "bg-gradient-to-b from-white/70 via-white/50 to-white"
           }`} />
         </div>
 
         <div 
           ref={heroAnim.ref}
-          className={`relative z-10 max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+          className={`relative z-10 max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 py-32 text-center ${
             heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
           }`}
         >
@@ -130,7 +131,7 @@ export default function PublicProjects() {
           
           {/* Subheadline */}
           <p className={`text-lg sm:text-xl font-light leading-relaxed max-w-3xl mx-auto ${
-            isDark ? "text-white/70" : "text-[#6F6F6F]"
+            isDark ? "text-white/80" : "text-[#4A4A4A]"
           }`}>
             A curated selection of projects where ARCOS surfaces define atmosphere, identity, and spatial emotion.
           </p>

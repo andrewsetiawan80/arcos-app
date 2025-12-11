@@ -264,29 +264,50 @@ export default function PublicHome() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 title: "UHPC",
-                description: "Ultra High Performance Concrete with refined texture, thin profiles, and exceptional durability. Ideal for sculptural elements and precise architectural details."
+                description: "Ultra High Performance Concrete with refined texture, thin profiles, and exceptional durability. Ideal for sculptural elements and precise architectural details.",
+                image: structuralPanels
               },
               {
                 title: "GFRC",
-                description: "Lightweight, flexible, and strong. Engineered for detailed forms, façade panels, and refined surface geometry."
+                description: "Lightweight, flexible, and strong. Engineered for detailed forms, façade panels, and refined surface geometry.",
+                image: concretePanelDetail
               },
               {
                 title: "Microcement",
-                description: "A seamless finishing system for modern interiors. Smooth, continuous, and tactile across walls, floors, and furniture."
+                description: "A seamless finishing system for modern interiors. Smooth, continuous, and tactile across walls, floors, and furniture.",
+                image: microcementInterior1
               }
             ].map((material) => (
-              <div key={material.title} className="space-y-6">
-                <div className={`w-12 h-px ${isDark ? "bg-white" : "bg-[#1B1B1B]"}`} />
-                <h3 className={`text-xl font-medium tracking-tight ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
-                  {material.title}
-                </h3>
-                <p className={`leading-relaxed font-light ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
-                  {material.description}
-                </p>
+              <div key={material.title} className="group">
+                {/* Image */}
+                <div className={`aspect-[4/3] overflow-hidden mb-8 ${
+                  isDark ? "bg-white/5" : "bg-[#E0E0E0]"
+                }`}>
+                  <img
+                    src={material.image}
+                    alt={material.title}
+                    className={`w-full h-full object-cover transition-all duration-700 ${
+                      isDark 
+                        ? "opacity-80 group-hover:opacity-100 group-hover:scale-105" 
+                        : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                    }`}
+                    loading="lazy"
+                  />
+                </div>
+                {/* Content */}
+                <div className="space-y-4">
+                  <div className={`w-12 h-px ${isDark ? "bg-white" : "bg-[#1B1B1B]"}`} />
+                  <h3 className={`text-xl font-medium tracking-tight ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                    {material.title}
+                  </h3>
+                  <p className={`leading-relaxed font-light ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
+                    {material.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
