@@ -4,7 +4,7 @@ import { Routes, Route, Navigate, Link } from "react-router-dom";
 // ===== Public =====
 import PublicLayout from "./public/PublicLayout";
 import PublicHome from "./public/PublicHome";
-import PublicCatalog from "./public/PublicCatalog";
+import PublicCollection from "./public/PublicCollection";
 import PublicProductDetail from "./public/PublicProductDetail";
 import PublicPage from "./public/PublicPage";
 import PublicServices from "./public/PublicServices";
@@ -87,7 +87,7 @@ export default function App() {
       {/* ========= PUBLIC ========= */}
       <Route element={<PublicLayout />}>
         <Route index element={<PublicHome />} /> {/* / */}
-        <Route path="/catalog" element={<PublicCatalog />} />
+        <Route path="/collection" element={<PublicCollection />} />
         <Route path="/product/:slug" element={<PublicProductDetail />} />
         <Route path="/services" element={<PublicServices />} />
         <Route path="/surfaces" element={<PublicSurfaces />} />

@@ -88,7 +88,7 @@ function PublicLayoutInner() {
           }`}>
             {[
               { key: "surfaces", to: "/surfaces", label: "Surfaces" },
-              { key: "collection", to: "/catalog", label: "Collection" },
+              { key: "collection", to: "/collection", label: "Collection" },
               { key: "services", to: "/services", label: "Services" },
               { key: "projects", to: "/projects", label: "Projects" },
               { key: "process", to: "/process", label: "Process" },
@@ -185,7 +185,7 @@ function PublicLayoutInner() {
             </NavLink>
             {[
               { key: "surfaces", to: "/surfaces", label: "Surfaces" },
-              { key: "collection", to: "/catalog", label: "Collection" },
+              { key: "collection", to: "/collection", label: "Collection" },
               { key: "services", to: "/services", label: "Services" },
               { key: "projects", to: "/projects", label: "Projects" },
               { key: "process", to: "/process", label: "Process" },
