@@ -84,7 +84,7 @@ function PublicLayoutInner() {
             isDark ? "text-white/70" : "text-[#6F6F6F]"
           }`}>
             {[
-              { key: "catalog", to: "/catalog", label: "Surfaces" },
+              { key: "surfaces", to: "/surfaces", label: "Surfaces" },
               { key: "services", to: "/services" },
               { key: "process", to: "/process" },
               { key: "projects", to: "/projects" },
@@ -270,7 +270,7 @@ function PublicLayoutInner() {
           {/* Navigation Links */}
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-16 text-sm">
             {[
-              { to: "/catalog", label: "Surfaces" },
+              { to: "/surfaces", label: "Surfaces" },
               { to: "/projects", label: "Projects" },
               { to: "/about", label: "About" },
               { to: "/process", label: "Process" },

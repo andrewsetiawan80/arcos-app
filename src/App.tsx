@@ -14,6 +14,7 @@ import PublicAbout from "./public/PublicAbout";
 import PublicContact from "./public/PublicContact";
 import PublicInspiration from "./public/PublicInspiration";
 import PublicFAQ from "./public/PublicFAQ";
+import PublicSurfaces from "./public/PublicSurfaces";
 
 // ===== Internal =====
 import Layout from "./Layout";
@@ -86,6 +87,7 @@ export default function App() {
         <Route path="/catalog" element={<PublicCatalog />} />
         <Route path="/product/:slug" element={<PublicProductDetail />} />
         <Route path="/services" element={<PublicServices />} />
+        <Route path="/surfaces" element={<PublicSurfaces />} />
         <Route path="/process" element={<PublicProcess />} />
         <Route path="/projects" element={<PublicProjects />} />
         <Route path="/about" element={<PublicAbout />} />
