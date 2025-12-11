@@ -1,538 +1,593 @@
-import { useState, useEffect } from "react";
-import landmarkInstallation from "../assets/images/landmark-installation.webp";
-import microcementStairs from "../assets/images/grey-microcement-stairs-stairs-viewed-from-modern-design-innovative-material-metal-railing.webp";
-import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
-import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
-import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
-import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
-import tile02 from "../assets/images/inspiration/3d-tile-02.webp";
-import tile07 from "../assets/images/inspiration/3d-tile-07.webp";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
-import mosaicInterior from "../assets/images/mosaic-interior.webp";
-import concreteInstallation from "../assets/images/concrete-installation.webp";
-import workshopCloseup from "../assets/images/workshop-closeup.webp";
-import { api } from "../lib/api";
-import { ArcosSectionTwo } from "../components/brand";
+import { Link } from "react-router-dom";
+import { useFadeIn } from "../utils/useAnimation";
+import { usePublicTheme } from "./PublicThemeContext";
 
-interface Service {
-  id: number;
-  title: string;
-  titleId?: string;
-  description: string;
-  descriptionId?: string;
-  category: string;
-  categoryId?: string;
-  accent: string;
-  accentId?: string;
-  imageUrl: string;
-  points: string[];
-  pointsId?: string[];
-  displayOrder: number;
-}
+// Import images
+import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
+import workshopCloseup from "../assets/images/workshop-closeup.webp";
+import concretePanelDetail from "../assets/images/concrete-panel-detail.webp";
+import structuralPanels from "../assets/images/structural-panels.webp";
+import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
+import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
+
+// Core Services Data
+const CORE_SERVICES = [
+  {
+    title: "Material Consultation",
+    description:
+      "We help identify the right material system — UHPC, GFRC, or microcement — based on thickness, performance, and desired expression.",
+    bullets: [
+      "Early design guidance",
+      "Sample and tone selection",
+      "Substrate recommendations",
+    ],
+    image: concretePanelDetail,
+  },
+  {
+    title: "Design & Engineering",
+    description:
+      "From joint layout to fixing strategy, we translate design concepts into engineered solutions.",
+    bullets: [
+      "Technical drawings",
+      "Panel sizing & joint studies",
+      "Custom mold engineering",
+    ],
+    image: workshopCloseup,
+  },
+  {
+    title: "Fabrication & Craft",
+    description:
+      "Our team casts, finishes, and textures every piece with precision and consistency.",
+    bullets: [
+      "UHPC casting",
+      "GFRC panel forming",
+      "Microcement application",
+    ],
+    image: structuralPanels,
+  },
+];
+
+// Specialized Capabilities
+const SPECIALIZED_CAPABILITIES = [
+  {
+    title: "Bespoke Surface Design",
+    description: "Custom textures, forms, curves, and profiles.",
+  },
+  {
+    title: "Architectural Feature Walls",
+    description: "Large-format panels, sculptural planes, custom geometries.",
+  },
+  {
+    title: "Integrated Furniture & Elements",
+    description: "Benches, counters, niches, monolithic blocks.",
+  },
+  {
+    title: "Façade Systems (GFRC/UHPC)",
+    description: "Lightweight or high-performance panels designed for exterior environments.",
+  },
+  {
+    title: "Seamless Microcement Interiors",
+    description: "Bathrooms, floors, cabinetry, built-ins, and continuous surfaces.",
+  },
+  {
+    title: "Installation Support",
+    description: "Alignment, fixing details, and on-site coordination.",
+  },
+];
+
+// Process Steps
+const PROCESS_STEPS = [
+  "Discover",
+  "Design",
+  "Engineering",
+  "Craft",
+  "Installation Support",
+  "Completion & Care",
+];
+
+// Industries
+const INDUSTRIES = [
+  "Residential Villas",
+  "Hospitality & Hotels",
+  "Retail & Commercial",
+  "Creative Studios",
+  "Public Spaces",
+  "Developers",
+  "Architects & Interior Designers",
+];
+
+// Why ARCOS
+const WHY_ARCOS = [
+  {
+    title: "Material Expertise",
+    description: "Mastery of UHPC, GFRC, and microcement systems.",
+  },
+  {
+    title: "Architectural Sensitivity",
+    description: "Surfaces designed with clarity, proportion, and timeless restraint.",
+  },
+  {
+    title: "Craftsmanship",
+    description: "Hand-finished surfaces that elevate the spatial experience.",
+  },
+];
 
 export default function PublicServices() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { isDark } = usePublicTheme();
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await api.getServices();
-        if (res.error) {
-          throw new Error(res.error);
-        }
-        setServices((res.data as Service[]) || []);
-      } catch (err) {
-        console.error("Failed to fetch services:", err);
-        setError(err instanceof Error ? err.message : "Failed to load services");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchServices();
-  }, []);
-
-  const categories = Array.from(new Set(services.map(s => s.category)));
-
-  if (loading) {
-    return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading services...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-400 mb-4">Error loading services</p>
-          <p className="text-gray-400 text-sm">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  // Animation refs
+  const heroAnim = useFadeIn({ delay: 100 });
+  const overviewAnim = useFadeIn({ delay: 150 });
+  const coreAnim = useFadeIn({ delay: 200 });
+  const specializedAnim = useFadeIn({ delay: 250 });
+  const processAnim = useFadeIn({ delay: 300 });
+  const industriesAnim = useFadeIn({ delay: 350 });
+  const whyAnim = useFadeIn({ delay: 400 });
+  const ctaAnim = useFadeIn({ delay: 450 });
 
   return (
-    <div className="bg-[#232323] text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
-        {/* Hero Background */}
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      }`}
+    >
+      {/* ===== PAGE HEADER / HERO ===== */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        {/* Hero Background Image */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0">
-            <img
-              src={landmarkInstallation}
-              alt="Architectural concrete services"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]/70" />
+          <img
+            src={microcementWalls}
+            alt="Architectural concrete surfaces"
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay */}
+          <div
+            className={`absolute inset-0 ${
+              isDark
+                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
+                : "bg-gradient-to-b from-white/70 via-white/50 to-white"
+            }`}
+          />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32">
-          <div className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Ecosystem of Expertise</p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1]">
-                Full-spectrum concrete innovation, tailored to your project.
-              </h1>
-              <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                Arcos delivers Southeast Asia–specific concrete solutions: seamless microcement finishes, polished concrete overlays, terrazzo systems, 3D tiles, and architectural panels—all engineered, fabricated, and installed by our in-house team of mix lab specialists, fabrication experts, and certified installers.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-300 max-w-xl">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
-                <p className="uppercase text-xs tracking-[0.25em] text-white/60 font-semibold mb-2">Delivery Model</p>
-                <p>Design-assist, substrate diagnostics, mockups, and on-site supervision backed by digital progress reporting.</p>
+
+        <div
+          ref={heroAnim.ref}
+          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 py-32 text-center ${
+            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          {/* Title */}
+          <h1
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Services
+          </h1>
+
+          {/* Subheadline */}
+          <p
+            className={`text-lg sm:text-xl font-light leading-relaxed max-w-2xl mx-auto ${
+              isDark ? "text-white/80" : "text-[#4A4A4A]"
+            }`}
+          >
+            From concept to completion, we support architects, designers, developers, and homeowners
+            with end-to-end concrete surface solutions.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 1: OVERVIEW ===== */}
+      <section
+        className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        }`}
+      >
+        <div
+          ref={overviewAnim.ref}
+          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            overviewAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            What we do
+          </h2>
+
+          <p
+            className={`text-lg font-light leading-relaxed ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}
+          >
+            ARCOS provides design, engineering, fabrication, and finishing services for projects
+            that require refined concrete surfaces. Our approach blends material expertise with
+            architectural sensitivity — ensuring every surface aligns with the emotional and spatial
+            intent of the environment.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 2: CORE SERVICES ===== */}
+      <section
+        className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+        }`}
+      >
+        <div
+          ref={coreAnim.ref}
+          className={`max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            coreAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Our core services
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+            {CORE_SERVICES.map((service, index) => (
+              <div key={index} className="group">
+                {/* Image */}
+                <div
+                  className={`aspect-[4/3] overflow-hidden mb-6 ${
+                    isDark ? "bg-white/5" : "bg-[#E0E0E0]"
+                  }`}
+                >
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className={`w-full h-full object-cover transition-all duration-700 ${
+                      isDark
+                        ? "opacity-80 group-hover:opacity-100 group-hover:scale-105"
+                        : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                    }`}
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Content */}
+                <h3
+                  className={`text-lg font-medium mb-4 ${
+                    isDark ? "text-white" : "text-[#1B1B1B]"
+                  }`}
+                >
+                  {service.title}
+                </h3>
+                <p
+                  className={`text-base font-light leading-relaxed mb-6 ${
+                    isDark ? "text-white/60" : "text-[#6F6F6F]"
+                  }`}
+                >
+                  {service.description}
+                </p>
+
+                {/* Bullets */}
+                <ul className="space-y-2">
+                  {service.bullets.map((bullet, bIndex) => (
+                    <li key={bIndex} className="flex items-start gap-3">
+                      <span
+                        className={`w-1 h-1 rounded-full mt-2.5 flex-shrink-0 ${
+                          isDark ? "bg-white/40" : "bg-[#AFAFAF]"
+                        }`}
+                      />
+                      <span
+                        className={`text-sm font-light ${
+                          isDark ? "text-white/50" : "text-[#AFAFAF]"
+                        }`}
+                      >
+                        {bullet}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
-                    <p className="uppercase text-xs tracking-[0.25em] text-white/60 font-semibold mb-2">Why Arcos</p>
-                <p>Certified applicators, JCtec training lineage, and real-time QA to guarantee the finish you approved.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Services by Category */}
-      {categories.map((category) => {
-        const categoryServices = services.filter(s => s.category === category);
-        return (
-          <section key={category} className="border-b border-white/10 bg-[#353535]">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-              <div className="mb-12 space-y-4">
-                <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">{category}</p>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                  {category}
-                </h2>
-                <p className="text-gray-400 text-sm mt-2">
-                  {category === "Seamless Applied Finishes" && "Thin-layer coatings applied directly on-site for seamless, joint-free surfaces"}
-                  {category === "Outdoor Applied Finishes" && "Weather-resistant coatings applied on-site for exterior applications"}
-                  {category === "Precast Panels & Tiles" && "Prefabricated panels and tiles manufactured off-site, ready for installation"}
-                </p>
-              </div>
-
-              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                {categoryServices.map((service) => (
-                  <div
-                    key={service.id}
-                    className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#353535]/90 backdrop-blur-sm shadow-2xl hover:-translate-y-1.5 hover:border-white/30 transition-all"
-                  >
-                    {/* Main Image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <img src={service.imageUrl} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="relative p-8 sm:p-10 flex flex-col gap-8 h-full">
-                      <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/[0.06] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                        <span className="h-2 w-2 rounded-full bg-white/70" />
-                        {service.accent}
-                      </div>
-                      <div className="space-y-4">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white uppercase leading-tight">{service.title}</h2>
-                        <p className="text-sm sm:text-base text-gray-300 leading-relaxed">{service.description}</p>
-                      </div>
-                      <div className="space-y-3 pt-4 border-t border-white/10">
-                        {service.points.map((point, idx) => (
-                          <div key={idx} className="flex items-center gap-3 text-sm sm:text-base text-gray-200">
-                            <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span>{point}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })}
-
-      {/* Microcement Project Showcase Section */}
-      <section className="border-b border-white/10 bg-[#232323]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              Project Showcase
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              Microcement in action
-            </h2>
-            <p className="text-gray-300 max-w-2xl text-base sm:text-lg">
-              Explore real-world microcement applications showcasing seamless floors, walls, and custom finishes in residential and commercial spaces.
-            </p>
-          </div>
+      {/* ===== SECTION 3: SPECIALIZED CAPABILITIES ===== */}
+      <section
+        className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        }`}
+      >
+        <div
+          ref={specializedAnim.ref}
+          className={`max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            specializedAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Specialized capabilities
+          </h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Modern Staircase Design",
-                location: "Jakarta, Indonesia",
-                description: "Seamless microcement stairs with modern design and innovative material application.",
-                image: microcementStairs,
-                category: "Residential",
-              },
-              {
-                title: "Minimalist Interior",
-                location: "Singapore",
-                description: "Contemporary microcement interior with seamless floors and walls creating a cohesive space.",
-                image: microcementInterior1,
-                category: "Residential",
-              },
-              {
-                title: "Concrete Walls & Modern Furniture",
-                location: "Melbourne, Australia",
-                description: "Minimalist interior design featuring microcement walls with modern furniture integration.",
-                image: microcementWalls,
-                category: "Commercial",
-              },
-              {
-                title: "Stone Sculptures & Steps",
-                location: "Bali, Indonesia",
-                description: "Modern concrete interior design with stone sculptures and seamless microcement steps.",
-                image: microcementInterior2,
-                category: "Hospitality",
-              },
-              {
-                title: "Luxury Staircase",
-                location: "Bangkok, Thailand",
-                description: "Grey microcement stairs with metal railing creating a sophisticated architectural element.",
-                image: microcementStairs,
-                category: "Hospitality",
-              },
-              {
-                title: "Contemporary Living Space",
-                location: "Jakarta, Indonesia",
-                description: "Seamless microcement floors and walls creating a modern, minimalist living environment.",
-                image: microcementInterior1,
-                category: "Commercial",
-              },
-            ].map((project, index) => (
-              <div key={index} className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] shadow-xl hover:-translate-y-1.5 hover:border-white/30 transition-all">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
+            {SPECIALIZED_CAPABILITIES.map((capability, index) => (
+              <div
+                key={index}
+                className={`p-6 border transition-colors duration-300 ${
+                  isDark
+                    ? "border-white/10 bg-white/5 hover:border-white/20"
+                    : "border-[#E0E0E0] bg-[#F8F8F8] hover:border-[#AFAFAF]"
+                }`}
+              >
+                <div
+                  className={`text-3xl font-extralight mb-4 ${
+                    isDark ? "text-white/20" : "text-[#E0E0E0]"
+                  }`}
+                >
+                  {String(index + 1).padStart(2, "0")}
                 </div>
-                <div className="p-6 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs uppercase tracking-[0.24em] text-white/60 font-semibold">/{String(index + 1).padStart(2, "0")}</span>
-                    <span className="text-xs uppercase tracking-[0.2em] text-gray-400">{project.category}</span>
-                  </div>
-                  <h3 className="text-xl font-bold uppercase text-white">{project.title}</h3>
-                  <p className="text-sm text-gray-400">{project.location}</p>
-                  <p className="text-sm text-gray-300 leading-relaxed">{project.description}</p>
-                </div>
+                <h3
+                  className={`text-base font-medium mb-3 ${
+                    isDark ? "text-white" : "text-[#1B1B1B]"
+                  }`}
+                >
+                  {capability.title}
+                </h3>
+                <p
+                  className={`text-sm font-light leading-relaxed ${
+                    isDark ? "text-white/60" : "text-[#6F6F6F]"
+                  }`}
+                >
+                  {capability.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Float Concrete Architectural Panels Showcase */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="mb-12 space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              Architectural Panels & Tiles
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-              Architectural Panels & Tiles
-            </h2>
-            <p className="text-gray-300 max-w-2xl text-base sm:text-lg">
-              Discover our range of architectural concrete panels and 3D tiles—from feature walls to complete facades, engineered for modern architecture.
-            </p>
-          </div>
+      {/* ===== SECTION 4: PROCESS REFERENCE ===== */}
+      <section
+        className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+        }`}
+      >
+        <div
+          ref={processAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            processAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 text-center ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            How we work
+          </h2>
 
-          <div className="grid lg:grid-cols-2 gap-8 mb-12">
-            {/* 3D Tiles Feature */}
-            <div className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={tile01}
-                  alt="3D concrete tiles"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 space-y-4">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  3D Tiles
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  3D Concrete Tiles
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  Add depth and dimension to your walls with innovative 3D concrete tiles. Multiple patterns available for interior and exterior applications.
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Multiple 3D pattern options</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Lightweight and easy installation</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Custom designs available</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <p
+            className={`text-lg font-light leading-relaxed text-center mb-12 max-w-3xl mx-auto ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}
+          >
+            Our process is collaborative and transparent. We join your project at any stage — from
+            early concept to final installation — ensuring both structure and aesthetics align
+            seamlessly.
+          </p>
 
-            {/* Wall Panels Feature */}
-            <div className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={tile02}
-                  alt="Concrete wall panels"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 space-y-4">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  Wall Panels
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  Architectural Wall Panels
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  High-performance precast concrete panels for facades and interior feature walls. Custom sizes, textures, and finishes to match your design vision.
-                </p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Precast precision manufacturing</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Custom sizes and finishes</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Weather-resistant formulations</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          {/* Horizontal Stepper */}
+          <div className="relative">
+            {/* Connection Line */}
+            <div
+              className={`hidden md:block absolute top-6 left-0 right-0 h-px ${
+                isDark ? "bg-white/20" : "bg-[#E0E0E0]"
+              }`}
+            />
 
-          <div className="grid sm:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Modular Systems",
-                description: "Interlocking tile systems for quick installation and pattern flexibility.",
-                image: mosaicFacadeDetail,
-              },
-              {
-                title: "Custom Fabrication",
-                description: "Bespoke panels fabricated to your exact specifications and design requirements.",
-                image: concreteInstallation,
-              },
-              {
-                title: "Thin Panel Solutions",
-                description: "Lightweight thin panels perfect for renovations and retrofit applications.",
-                    image: tile01,
-              },
-            ].map((feature, index) => (
-              <div key={index} className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] shadow-xl">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6 space-y-3">
-                  <h3 className="text-xl font-bold uppercase text-white">{feature.title}</h3>
-                  <p className="text-sm text-gray-300 leading-relaxed">{feature.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Floors & Walls Section - Using Brand Layout */}
-      <ArcosSectionTwo
-        id="microcement-floors"
-        label="Floors"
-        headline="Microcement Floors"
-        subheadline="Seamless, durable floor finishes perfect for residential and commercial spaces. Available in 60+ colors with custom textures and patterns."
-        image={microcementInterior2}
-        imageAlt="Microcement floors"
-        imagePosition="left"
-        variant="primary"
-        body={
-          <ul className="space-y-3 text-sm">
-            {["2-3mm thin overlay on existing substrates", "High abrasion resistance for heavy traffic", "Moisture and UV-resistant sealants"].map((item) => (
-              <li key={item} className="flex items-center gap-3">
-                <svg className="w-4 h-4 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        }
-      />
-
-      <ArcosSectionTwo
-        id="microcement-walls"
-        label="Walls"
-        headline="Microcement Walls"
-        subheadline="Transform walls with seamless microcement finishes. Perfect for bathrooms, kitchens, and feature walls with custom textures and colors."
-        image={microcementWalls}
-        imageAlt="Microcement walls"
-        imagePosition="right"
-        variant="secondary"
-        body={
-          <ul className="space-y-3 text-sm">
-            {["Seamless application on vertical surfaces", "Water-resistant for wet areas", "Custom textures: smooth, brushed, or textured"].map((item) => (
-              <li key={item} className="flex items-center gap-3">
-                <svg className="w-4 h-4 text-white/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        }
-      />
-
-      {/* Applications Section - Moved from Home */}
-      <section className="border-b border-white/10 bg-[#353535]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
-          <div className="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-8 mb-16">
-            <div className="max-w-2xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">Signature Environments</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-tight">
-                Crafted to transform every dimension of space.
-              </h2>
-            </div>
-            <p className="max-w-xl text-sm text-gray-300">
-              Arcos surfaces and structures land impact—from skyline icons and hospitality environments to bespoke residences and cultural destinations.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-6 lg:gap-10">
-            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl group">
-              <img
-                src={landmarkInstallation}
-                alt="Urban landmark facade"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8 sm:p-10">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 bg-white/[0.08] text-xs uppercase tracking-[0.28em] text-white/70 font-semibold mb-5">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  Landmark Installations
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white">
-                  Facades & Cultural Icons
-                </h3>
-                <p className="mt-3 text-sm text-gray-300 leading-relaxed">
-                  Parametric panel systems, kinetic fins, and sculptural envelopes engineered in UHPC and GFRC for world-stage architecture.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {[
-                {
-                  title: "Hospitality & Lifestyle",
-                  image: mosaicInterior,
-                  description: "Immersive lobbies, spas, and suites rendered in microcement and modular panels.",
-                },
-                {
-                  title: "Residential Statements",
-                  image: mosaicFacadeDetail,
-                  description: "Bespoke kitchens, baths, and courtyards formed with seamless surfaces.",
-                },
-                {
-                  title: "Public Realm & Landscape",
-                  image: tile07,
-                  description: "Sculptural seating, bridges, water features, and wayfinding elements.",
-                },
-                {
-                  title: "Structural Components",
-                  image: workshopCloseup,
-                  description: "Lightweight yet resilient beams, canopies, and modular shells.",
-                },
-              ].map((card, index) => (
-                <div key={card.title} className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] shadow-xl group">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-40 sm:h-44 object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="p-6 space-y-3">
-                    <div className="text-xs uppercase tracking-[0.24em] text-white/60 font-semibold">/{String(index + 1).padStart(2, "0")}</div>
-                    <h3 className="text-lg font-bold uppercase text-white">{card.title}</h3>
-                    <p className="text-sm text-gray-300 leading-relaxed">{card.description}</p>
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-6 md:gap-4">
+              {PROCESS_STEPS.map((step, index) => (
+                <div key={index} className="text-center relative">
+                  {/* Step Number */}
+                  <div
+                    className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-sm font-medium ${
+                      isDark
+                        ? "bg-[#1B1B1B] border border-white/20 text-white"
+                        : "bg-white border border-[#E0E0E0] text-[#1B1B1B]"
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, "0")}
                   </div>
+                  {/* Step Name */}
+                  <p
+                    className={`text-sm font-light ${
+                      isDark ? "text-white/70" : "text-[#6F6F6F]"
+                    }`}
+                  >
+                    {step}
+                  </p>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Link to Process Page */}
+          <div className="text-center mt-12">
+            <Link
+              to="/process"
+              className={`inline-flex items-center gap-2 text-sm font-medium transition-colors ${
+                isDark ? "text-white/70 hover:text-white" : "text-[#6F6F6F] hover:text-[#1B1B1B]"
+              }`}
+            >
+              Learn more about our process
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 5: INDUSTRIES WE SERVE ===== */}
+      <section
+        className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        }`}
+      >
+        <div
+          ref={industriesAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            industriesAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 text-center ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Industries we serve
+          </h2>
+
+          <p
+            className={`text-lg font-light leading-relaxed text-center mb-12 max-w-2xl mx-auto ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}
+          >
+            We support a wide range of project types, from luxury residential to commercial
+            environments.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {INDUSTRIES.map((industry, index) => (
+              <div
+                key={index}
+                className={`p-4 text-center border transition-colors duration-300 ${
+                  isDark
+                    ? "border-white/10 bg-white/5"
+                    : "border-[#E0E0E0] bg-[#F8F8F8]"
+                }`}
+              >
+                <p
+                  className={`text-sm font-light ${
+                    isDark ? "text-white/70" : "text-[#6F6F6F]"
+                  }`}
+                >
+                  {industry}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 6: WHY ARCOS ===== */}
+      <section
+        className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+        }`}
+      >
+        <div
+          ref={whyAnim.ref}
+          className={`max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            whyAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Why work with ARCOS
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {WHY_ARCOS.map((item, index) => (
+              <div key={index} className="text-center">
+                <h3
+                  className={`text-lg font-medium mb-4 ${
+                    isDark ? "text-white" : "text-[#1B1B1B]"
+                  }`}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className={`text-base font-light leading-relaxed ${
+                    isDark ? "text-white/60" : "text-[#6F6F6F]"
+                  }`}
+                >
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 7: CTA ===== */}
+      <section className="py-24 sm:py-32">
+        <div
+          ref={ctaAnim.ref}
+          className={`max-w-3xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
+            ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Let's build something meaningful.
+          </h2>
+
+          <p
+            className={`text-lg font-light leading-relaxed mb-10 ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}
+          >
+            Share your drawings or early concepts — we'll help translate them into refined concrete
+            surfaces.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/contact"
+              className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark
+                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
+                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+              }`}
+            >
+              Start a Project
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </Link>
+            <a
+              href="mailto:samples@arcosworks.com?subject=Sample%20Request"
+              className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
+            >
+              Request Samples
+            </a>
           </div>
         </div>
       </section>
     </div>
   );
 }
-
-
-
-
