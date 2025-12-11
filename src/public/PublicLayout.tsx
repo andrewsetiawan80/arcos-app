@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import ArcosLogo from "../components/ArcosLogo";
 import LanguageToggle from "../components/LanguageToggle";
+import ScrollToTop from "../components/ScrollToTop";
 import { useLanguage } from "../i18n/LanguageContext";
 import { PublicThemeProvider, usePublicTheme } from "./PublicThemeContext";
 
@@ -66,10 +67,12 @@ function PublicLayoutInner() {
   }, [mobileMenuOpen]);
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${
-      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
-    }`}>
-      {/* Header */}
+    <>
+      <ScrollToTop />
+      <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      }`}>
+        {/* Header */}
       <header className={`sticky top-0 z-30 border-b backdrop-blur transition-colors duration-300 ${
         isDark 
           ? "border-white/10 bg-[#1B1B1B]/95" 
@@ -318,7 +321,8 @@ function PublicLayoutInner() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }
 
