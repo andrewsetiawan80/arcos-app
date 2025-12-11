@@ -11,8 +11,8 @@ import microcementInterior1 from "../assets/images/minimalist-concrete-interior-
 import microcementWalls from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
 import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
 
-// Hero image - high quality inspiration image
-import heroImage from "../assets/images/inspiration/microcement-03.png";
+// Hero image - high quality microcement stairs (2.7MB)
+import heroImage from "../assets/images/grey-microcement-stairs-stairs-viewed-from-modern-design-innovative-material-metal-railing.webp";
 
 // Material systems data
 const MATERIALS = [
