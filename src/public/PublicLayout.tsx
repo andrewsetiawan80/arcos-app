@@ -88,8 +88,8 @@ function PublicLayoutInner() {
           }`}>
             {[
               { key: "surfaces", to: "/surfaces", label: "Surfaces" },
+              { key: "collection", to: "/catalog", label: "Collection" },
               { key: "services", to: "/services" },
-              { key: "process", to: "/process" },
               { key: "projects", to: "/projects" },
               { key: "about", to: "/about" },
               { key: "contact", to: "/contact" },
@@ -183,14 +183,13 @@ function PublicLayoutInner() {
               {t("nav.home")}
             </NavLink>
             {[
-              { key: "catalog", to: "/catalog" },
-              { key: "services", to: "/services" },
-              { key: "process", to: "/process" },
-              { key: "projects", to: "/projects" },
-              { key: "about", to: "/about" },
-              { key: "inspiration", to: "/inspiration" },
-              { key: "faq", to: "/faq" },
-              { key: "contact", to: "/contact" },
+              { key: "surfaces", to: "/surfaces", label: "Surfaces" },
+              { key: "collection", to: "/catalog", label: "Collection" },
+              { key: "services", to: "/services", label: "Services" },
+              { key: "projects", to: "/projects", label: "Projects" },
+              { key: "process", to: "/process", label: "Process" },
+              { key: "about", to: "/about", label: "About" },
+              { key: "contact", to: "/contact", label: "Contact" },
             ].map((item) => (
               <NavLink
                 key={item.to}
@@ -202,7 +201,7 @@ function PublicLayoutInner() {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t(`nav.${item.key}`)}
+                {item.label}
               </NavLink>
             ))}
             <div className={`pt-4 mt-4 border-t ${isDark ? "border-white/10" : "border-[#1B1B1B]/10"}`}>
