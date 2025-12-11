@@ -15,6 +15,9 @@ import PublicContact from "./public/PublicContact";
 import PublicInspiration from "./public/PublicInspiration";
 import PublicFAQ from "./public/PublicFAQ";
 import PublicSurfaces from "./public/PublicSurfaces";
+import SeriesUHPCSolis from "./public/SeriesUHPCSolis";
+import SeriesGFRCAeris from "./public/SeriesGFRCAeris";
+import SeriesMicrocement from "./public/SeriesMicrocement";
 
 // ===== Internal =====
 import Layout from "./Layout";
@@ -88,6 +91,9 @@ export default function App() {
         <Route path="/product/:slug" element={<PublicProductDetail />} />
         <Route path="/services" element={<PublicServices />} />
         <Route path="/surfaces" element={<PublicSurfaces />} />
+        <Route path="/surfaces/uhpc-solis" element={<SeriesUHPCSolis />} />
+        <Route path="/surfaces/gfrc-aeris" element={<SeriesGFRCAeris />} />
+        <Route path="/surfaces/microcement" element={<SeriesMicrocement />} />
         <Route path="/process" element={<PublicProcess />} />
         <Route path="/projects" element={<PublicProjects />} />
         <Route path="/about" element={<PublicAbout />} />

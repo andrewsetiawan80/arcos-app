@@ -21,7 +21,7 @@ const MATERIALS = [
     title: "UHPC — Ultra High Performance Concrete",
     description:
       "A dense, ultra-strong concrete with refined texture and high durability. Ideal for thin profiles, sculptural elements, and architectural details that demand precision and longevity.",
-    link: "/catalog?category=uhpc",
+    link: "/surfaces/uhpc-solis",
     buttonText: "Explore UHPC Solis Series",
     image: workshopCloseup,
   },
@@ -30,7 +30,7 @@ const MATERIALS = [
     title: "GFRC — Glass Fiber Reinforced Concrete",
     description:
       "Lightweight yet strong. GFRC allows thinner, more expressive forms while reducing structural load — perfect for panels, façades, and bespoke design pieces.",
-    link: "/catalog?category=gfrc",
+    link: "/surfaces/gfrc-aeris",
     buttonText: "Explore GFRC Aeris Series",
     image: mosaicFacadeDetail,
   },
@@ -39,7 +39,7 @@ const MATERIALS = [
     title: "Microcement — Seamless surface system",
     description:
       "A thin, continuous finishing system applicable over walls, floors, and furniture. Minimalist, tactile, and ideal for contemporary interiors requiring seamless surfaces.",
-    link: "/catalog?category=microcement",
+    link: "/surfaces/microcement",
     buttonText: "Explore Microcement",
     image: microcementInterior1,
   },
@@ -89,21 +89,21 @@ const SERIES = [
     title: "UHPC Solis Series",
     description: "Surfaces that embody permanence, clarity, and structural expression.",
     buttonText: "View Solis Series",
-    link: "/catalog?category=uhpc",
+    link: "/surfaces/uhpc-solis",
     image: workshopCloseup,
   },
   {
     title: "GFRC Aeris Series",
     description: "Light, versatile, and expressive — designed for sculptural panels and refined geometry.",
     buttonText: "View Aeris Series",
-    link: "/catalog?category=gfrc",
+    link: "/surfaces/gfrc-aeris",
     image: landmarkInstallation,
   },
   {
     title: "Microcement Systems",
     description: "Seamless, tactile finishes for interiors that feel grounded yet minimal.",
     buttonText: "View Microcement",
-    link: "/catalog?category=microcement",
+    link: "/surfaces/microcement",
     image: microcementInterior2,
   },
 ];
