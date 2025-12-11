@@ -89,10 +89,11 @@ function PublicLayoutInner() {
             {[
               { key: "surfaces", to: "/surfaces", label: "Surfaces" },
               { key: "collection", to: "/catalog", label: "Collection" },
-              { key: "services", to: "/services" },
-              { key: "projects", to: "/projects" },
-              { key: "about", to: "/about" },
-              { key: "contact", to: "/contact" },
+              { key: "services", to: "/services", label: "Services" },
+              { key: "projects", to: "/projects", label: "Projects" },
+              { key: "process", to: "/process", label: "Process" },
+              { key: "about", to: "/about", label: "About" },
+              { key: "contact", to: "/contact", label: "Contact" },
             ].map((item) => (
               <NavLink 
                 key={item.to}
