@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useFadeIn } from "../utils/useAnimation";
-import { useLanguage } from "../i18n/LanguageContext";
+import { usePublicTheme } from "./PublicThemeContext";
 import { api } from "../lib/api";
 
-// High-quality hero image for inspiration page
-import heroImage from "../assets/images/minimalist-interior-design-with-concrete-walls-modern-furniture.webp";
-// Fallback image
-import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
+// High-quality hero image
+import heroImage from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
 
 interface InspirationCategory {
   id: string;
@@ -27,20 +25,23 @@ interface InspirationImage {
 }
 
 export default function PublicInspiration() {
-  const { t, language } = useLanguage();
+  const { isDark } = usePublicTheme();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [selectedImage, setSelectedImage] = useState<InspirationImage | null>(null);
   const [categories, setCategories] = useState<InspirationCategory[]>([]);
   const [images, setImages] = useState<InspirationImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+
+  // Animation refs
+  const heroAnim = useFadeIn({ delay: 100 });
+  const filterAnim = useFadeIn({ delay: 150 });
   const galleryAnim = useFadeIn({ delay: 200 });
 
-  // Fetch categories and images on mount with retry logic
+  // Fetch data on mount
   useEffect(() => {
-    const fetchData = async (retryCount = 0) => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -50,142 +51,94 @@ export default function PublicInspiration() {
           api.getInspirationImages(),
         ]);
 
-        if (categoriesRes.error) {
-          throw new Error(categoriesRes.error);
-        }
-        if (imagesRes.error) {
-          throw new Error(imagesRes.error);
-        }
+        if (categoriesRes.error) throw new Error(categoriesRes.error);
+        if (imagesRes.error) throw new Error(imagesRes.error);
 
-        const fetchedCategories = categoriesRes.data || [];
-        const fetchedImages = imagesRes.data || [];
-
-        // Validate that we got data
-        if (fetchedCategories.length === 0) {
-          throw new Error("No categories found");
-        }
-        if (fetchedImages.length === 0) {
-          throw new Error("No images found");
-        }
-
-        setCategories(fetchedCategories);
-        setImages(fetchedImages);
-        setInitialLoadComplete(true);
+        setCategories(categoriesRes.data || []);
+        setImages(imagesRes.data || []);
       } catch (err) {
         console.error("Failed to fetch inspiration data:", err);
-        
-        // Retry up to 2 times with exponential backoff
-        if (retryCount < 2) {
-          const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s
-          console.log(`Retrying in ${delay}ms... (attempt ${retryCount + 1}/2)`);
-          setTimeout(() => fetchData(retryCount + 1), delay);
-        } else {
-          setError(err instanceof Error ? err.message : "Failed to load inspiration data");
-          setLoading(false);
-        }
+        setError(err instanceof Error ? err.message : "Failed to load");
       } finally {
-        if (retryCount === 0 || retryCount >= 2) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  // Fetch images when category changes (only after initial load to avoid race condition)
+  // Fetch images when category changes
   useEffect(() => {
-    // Skip if initial load hasn't completed yet
-    if (!initialLoadComplete) return;
-    
-    // Skip if category is "all" and we already have images (avoid duplicate fetch)
-    if (selectedCategory === "all" && images.length > 0) return;
+    if (selectedCategory === "all" || !categories.length) return;
 
     const fetchCategoryImages = async () => {
       try {
-        setLoading(true);
-        const res = selectedCategory === "all" 
-          ? await api.getInspirationImages()
-          : await api.getInspirationImages(selectedCategory);
-        
+        const res = await api.getInspirationImages(selectedCategory);
         if (!res.error && res.data) {
           setImages(res.data);
         }
       } catch (err) {
         console.error("Failed to fetch category images:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchCategoryImages();
-  }, [selectedCategory, initialLoadComplete]); // Only refetch when category changes after initial load
+  }, [selectedCategory, categories.length]);
 
-  // Handle hash navigation from home page links
+  // Handle hash navigation
   useEffect(() => {
-    // Scroll to top when component mounts
-    window.scrollTo(0, 0);
-    
-    // Check if there's a hash in the URL
     const hash = location.hash.replace("#", "");
     if (hash && categories.length > 0) {
-      // Check if the hash matches a valid category
-      const validCategory = categories.find(cat => cat.id === hash);
+      const validCategory = categories.find((cat) => cat.id === hash);
       if (validCategory) {
         setSelectedCategory(hash);
       }
     }
   }, [location.hash, categories]);
 
-  // Ensure images are visible on mobile - check if gallery is already in viewport on mount
-  useEffect(() => {
-    const checkInitialVisibility = () => {
-      if (galleryAnim.ref.current && !galleryAnim.isVisible) {
-        const rect = galleryAnim.ref.current.getBoundingClientRect();
-        const isInViewport = rect.top < window.innerHeight * 1.5 && rect.bottom > -100;
-        if (isInViewport) {
-          // If already in viewport, make visible immediately (common on mobile)
-          setTimeout(() => {
-            if (galleryAnim.ref.current) {
-              galleryAnim.ref.current.classList.remove("opacity-0");
-              galleryAnim.ref.current.classList.add("opacity-100");
-            }
-          }, 300);
-        }
-      }
-    };
-    
-    // Check after a short delay to allow IntersectionObserver to work first
-    const timeout = setTimeout(checkInitialVisibility, 500);
-    return () => clearTimeout(timeout);
-  }, [galleryAnim.isVisible, galleryAnim.ref]);
+  // Filter images
+  const filteredImages =
+    selectedCategory === "all"
+      ? images
+      : images.filter((img) => img.categoryId === selectedCategory);
 
-  const getCategoryName = (categoryId: string) => {
-    const category = categories.find((c) => c.id === categoryId);
-    return language === "id" ? category?.nameId || category?.name : category?.name || "";
-  };
-
-  const selectedImageData = images.find((img) => img.id === selectedImage);
-
+  // Loading state
   if (loading) {
     return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
+      <div
+        className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
+          isDark ? "bg-[#1B1B1B]" : "bg-white"
+        }`}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading inspiration...</p>
+          <div
+            className={`w-12 h-12 border-2 rounded-full animate-spin mx-auto mb-4 ${
+              isDark ? "border-white/20 border-t-white" : "border-[#E0E0E0] border-t-[#1B1B1B]"
+            }`}
+          />
+          <p className={isDark ? "text-white/50" : "text-[#AFAFAF]"}>Loading inspiration...</p>
         </div>
       </div>
     );
   }
 
+  // Error state
   if (error) {
     return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-400 mb-4">Error: {error}</p>
+      <div
+        className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
+          isDark ? "bg-[#1B1B1B]" : "bg-white"
+        }`}
+      >
+        <div className="text-center max-w-md px-6">
+          <p className={`mb-6 ${isDark ? "text-white/70" : "text-[#6F6F6F]"}`}>{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+            className={`px-6 py-3 text-sm font-medium tracking-wider transition-all duration-300 ${
+              isDark
+                ? "bg-white text-[#1B1B1B] hover:bg-white/90"
+                : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+            }`}
           >
             Retry
           </button>
@@ -195,167 +148,259 @@ export default function PublicInspiration() {
   }
 
   return (
-    <div className="bg-[#232323] text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative border-b border-white/10 overflow-hidden min-h-[60vh] flex items-center">
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      }`}
+    >
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0">
-            <img
-              src={heroImage}
-              alt="Design inspiration"
-              className="w-full h-full object-cover"
-              loading="eager"
-              fetchPriority="high"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#353535]/60 via-[#353535]/40 to-[#353535]/60" />
+          <img src={heroImage} alt="Design inspiration" className="w-full h-full object-cover" />
+          <div
+            className={`absolute inset-0 ${
+              isDark
+                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
+                : "bg-gradient-to-b from-white/70 via-white/50 to-white"
+            }`}
+          />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full animate-fade-in-up">
-          <div className="max-w-3xl space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              {language === "id" ? "Inspirasi Desain" : "Design Inspiration"}
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
-              {language === "id"
-                ? "Koleksi inspirasi untuk proyek Anda"
-                : "Inspiration collection for your projects"}
-            </h1>
-            <p className="text-gray-200 text-base sm:text-lg leading-relaxed">
-              {language === "id"
-                ? "Jelajahi berbagai pola, tekstur, dan aplikasi microcement dan ubin 3D untuk menginspirasi proyek arsitektur Anda."
-                : "Explore diverse patterns, textures, and applications of microcement and 3D tiles to inspire your architectural projects."}
-            </p>
-          </div>
+
+        <div
+          ref={heroAnim.ref}
+          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 py-32 text-center ${
+            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h1
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Inspiration
+          </h1>
+          <p
+            className={`text-lg sm:text-xl font-light leading-relaxed max-w-2xl mx-auto ${
+              isDark ? "text-white/80" : "text-[#4A4A4A]"
+            }`}
+          >
+            Explore patterns, textures, and applications of architectural concrete surfaces to
+            inspire your next project.
+          </p>
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="border-b border-white/10 bg-[#353535] sticky top-16 sm:top-20 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
+      {/* ===== CATEGORY FILTER ===== */}
+      {categories.length > 0 && (
+        <section
+          className={`sticky top-16 sm:top-20 z-20 border-b transition-colors duration-300 ${
+            isDark
+              ? "border-white/10 bg-[#1B1B1B]/95 backdrop-blur"
+              : "border-[#E0E0E0] bg-white/95 backdrop-blur"
+          }`}
+        >
+          <div
+            ref={filterAnim.ref}
+            className={`max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 py-5 ${
+              filterAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+            }`}
+          >
+            <div className="flex flex-wrap items-center gap-3">
               <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-all ${
-                  selectedCategory === category.id
-                    ? "bg-white text-black"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white"
+                onClick={() => setSelectedCategory("all")}
+                className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
+                  selectedCategory === "all"
+                    ? isDark
+                      ? "bg-white text-[#1B1B1B] border-white"
+                      : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                    : isDark
+                    ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
+                    : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
                 }`}
               >
-                {getCategoryName(category.id)}
+                All
               </button>
-            ))}
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
+                    selectedCategory === category.id
+                      ? isDark
+                        ? "bg-white text-[#1B1B1B] border-white"
+                        : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                      : isDark
+                      ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
+                      : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Gallery Grid */}
-      <section className="bg-[#353535]">
-        <div ref={galleryAnim.ref} className={`max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 transition-opacity duration-500 ${galleryAnim.isVisible || images.length > 0 ? "animate-fade-in-up opacity-100" : "opacity-0"}`}>
-          <div className="mb-8">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              {language === "id" ? `${images.length} Gambar` : `${images.length} Images`}
+      {/* ===== GALLERY GRID ===== */}
+      <section
+        className={`py-16 sm:py-20 transition-colors duration-300 ${
+          isDark ? "bg-[#1B1B1B]" : "bg-white"
+        }`}
+      >
+        <div
+          ref={galleryAnim.ref}
+          className={`max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 ${
+            galleryAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          {/* Results count */}
+          <div className="flex items-center justify-between mb-10">
+            <p className={`text-sm font-light ${isDark ? "text-white/50" : "text-[#AFAFAF]"}`}>
+              {filteredImages.length} {filteredImages.length === 1 ? "image" : "images"}
             </p>
           </div>
-          {images.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-gray-400">No images found in this category.</p>
+
+          {filteredImages.length === 0 ? (
+            <div
+              className={`border p-12 sm:p-16 text-center ${
+                isDark ? "border-white/10 bg-white/5" : "border-[#E0E0E0] bg-[#F8F8F8]"
+              }`}
+            >
+              <p className={`text-lg font-light ${isDark ? "text-white/70" : "text-[#6F6F6F]"}`}>
+                No images found in this category.
+              </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {images.map((image, index) => {
-                // Ensure imageUrl is absolute if it's relative
-                const imageSrc = image.imageUrl.startsWith('http') 
-                  ? image.imageUrl 
-                  : image.imageUrl.startsWith('/') 
-                    ? image.imageUrl 
-                    : `/${image.imageUrl}`;
-                
-                return (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {filteredImages.map((image, index) => (
+                <div
+                  key={image.id}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(image)}
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
                   <div
-                    key={`image-${image.id}-${index}`}
-                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] cursor-pointer hover:border-white/30 transition-all hover:-translate-y-1"
-                    onClick={() => setSelectedImage(image.id)}
+                    className={`aspect-square overflow-hidden mb-3 ${
+                      isDark ? "bg-white/5" : "bg-[#F0F0F0]"
+                    }`}
                   >
-                    <div className="aspect-square overflow-hidden bg-white/5 relative">
-                      <img
-                        key={`img-${image.id}-${image.imageUrl}`}
-                        src={imageSrc}
-                        alt={language === "id" ? image.titleId : image.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        loading={index < 16 ? "eager" : "lazy"}
-                        decoding={index < 16 ? "sync" : "async"}
-                        onLoad={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.opacity = '1';
-                          target.style.visibility = 'visible';
-                        }}
-                        onError={(e) => {
-                          console.error('Image failed to load:', imageSrc, image.id);
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <p className="text-sm font-semibold text-white">
-                        {language === "id" ? image.titleId : image.title}
-                      </p>
-                    </div>
+                    <img
+                      src={image.imageUrl}
+                      alt={image.title}
+                      className={`w-full h-full object-cover transition-all duration-700 ${
+                        isDark
+                          ? "opacity-80 group-hover:opacity-100 group-hover:scale-105"
+                          : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                      }`}
+                      loading={index < 12 ? "eager" : "lazy"}
+                    />
                   </div>
-                );
-              })}
+                  <p
+                    className={`text-xs font-light truncate transition-colors ${
+                      isDark
+                        ? "text-white/50 group-hover:text-white/70"
+                        : "text-[#AFAFAF] group-hover:text-[#6F6F6F]"
+                    }`}
+                  >
+                    {image.title}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* Image Modal */}
-      {selectedImage !== null && selectedImageData && (
+      {/* ===== CTA SECTION ===== */}
+      <section
+        className={`py-20 sm:py-24 border-t transition-colors duration-300 ${
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
+        }`}
+      >
+        <div className="max-w-3xl mx-auto px-6 sm:px-12 lg:px-20 text-center">
+          <h2
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
+              isDark ? "text-white" : "text-[#1B1B1B]"
+            }`}
+          >
+            Ready to bring your vision to life?
+          </h2>
+          <p
+            className={`text-lg font-light leading-relaxed mb-10 ${
+              isDark ? "text-white/70" : "text-[#6F6F6F]"
+            }`}
+          >
+            Let's discuss how ARCOS surfaces can transform your space.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/contact"
+              className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark
+                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
+                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+              }`}
+            >
+              Start a Project
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </Link>
+            <Link
+              to="/surfaces"
+              className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+                isDark
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
+                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+              }`}
+            >
+              Explore Surfaces
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== IMAGE MODAL ===== */}
+      {selectedImage && (
         <div
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative max-w-5xl w-full max-h-[90vh]">
+          <div className="relative max-w-4xl w-full">
+            {/* Close button */}
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+              className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors"
               aria-label="Close"
             >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
-            <div className="bg-[#232323] rounded-2xl overflow-hidden border border-white/10">
-              <div className="aspect-square max-h-[80vh] overflow-hidden">
+
+            {/* Image container */}
+            <div className="bg-[#1B1B1B] border border-white/10 overflow-hidden">
+              <div className="aspect-square max-h-[75vh] overflow-hidden">
                 <img
-                  src={selectedImageData.fullImageUrl || selectedImageData.imageUrl}
-                  alt={language === "id" ? selectedImageData.titleId : selectedImageData.title}
+                  src={selectedImage.fullImageUrl || selectedImage.imageUrl}
+                  alt={selectedImage.title}
                   className="w-full h-full object-contain"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    // If full image failed, try thumbnail
-                    if (selectedImageData.fullImageUrl && target.src === selectedImageData.fullImageUrl) {
-                      target.src = selectedImageData.imageUrl;
-                    } else {
-                      // Fallback to hero image
-                      console.error('Modal image failed to load:', target.src);
-                      target.src = tile01;
-                    }
-                  }}
                 />
               </div>
               <div className="p-6 border-t border-white/10">
-                <h3 className="text-xl font-bold uppercase mb-2">
-                  {language === "id" ? selectedImageData.titleId : selectedImageData.title}
-                </h3>
-                <p className="text-sm text-gray-400">
-                  {language === "id"
-                    ? "Klik di luar gambar untuk menutup"
-                    : "Click outside image to close"}
-                </p>
+                <h3 className="text-lg font-light text-white mb-2">{selectedImage.title}</h3>
+                <p className="text-sm text-white/50">Click outside to close</p>
               </div>
             </div>
           </div>
