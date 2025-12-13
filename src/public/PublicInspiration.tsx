@@ -67,24 +67,6 @@ export default function PublicInspiration() {
     fetchData();
   }, []);
 
-  // Fetch images when category changes
-  useEffect(() => {
-    if (selectedCategory === "all" || !categories.length) return;
-
-    const fetchCategoryImages = async () => {
-      try {
-        const res = await api.getInspirationImages(selectedCategory);
-        if (!res.error && res.data) {
-          setImages(res.data);
-        }
-      } catch (err) {
-        console.error("Failed to fetch category images:", err);
-      }
-    };
-
-    fetchCategoryImages();
-  }, [selectedCategory, categories.length]);
-
   // Handle hash navigation
   useEffect(() => {
     const hash = location.hash.replace("#", "");
@@ -96,11 +78,19 @@ export default function PublicInspiration() {
     }
   }, [location.hash, categories]);
 
-  // Filter images
+  // Filter images based on selected category
   const filteredImages =
     selectedCategory === "all"
       ? images
       : images.filter((img) => img.categoryId === selectedCategory);
+
+  // Helper to get proper image URL
+  const getImageUrl = (url: string) => {
+    if (!url) return "";
+    if (url.startsWith("http")) return url;
+    if (url.startsWith("/")) return url;
+    return `/${url}`;
+  };
 
   // Loading state
   if (loading) {
@@ -273,40 +263,47 @@ export default function PublicInspiration() {
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-              {filteredImages.map((image, index) => (
-                <div
-                  key={image.id}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedImage(image)}
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
+              {filteredImages.map((image, index) => {
+                const imageSrc = getImageUrl(image.imageUrl);
+                return (
                   <div
-                    className={`aspect-square overflow-hidden mb-3 ${
-                      isDark ? "bg-white/5" : "bg-[#F0F0F0]"
-                    }`}
+                    key={`${image.id}-${index}`}
+                    className="group cursor-pointer"
+                    onClick={() => setSelectedImage(image)}
                   >
-                    <img
-                      src={image.imageUrl}
-                      alt={image.title}
-                      className={`w-full h-full object-cover transition-all duration-700 ${
-                        isDark
-                          ? "opacity-80 group-hover:opacity-100 group-hover:scale-105"
-                          : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                    <div
+                      className={`aspect-square overflow-hidden mb-3 ${
+                        isDark ? "bg-white/5" : "bg-[#F0F0F0]"
                       }`}
-                      loading={index < 12 ? "eager" : "lazy"}
-                    />
+                    >
+                      <img
+                        src={imageSrc}
+                        alt={image.title}
+                        className={`w-full h-full object-cover transition-all duration-700 ${
+                          isDark
+                            ? "opacity-80 group-hover:opacity-100 group-hover:scale-105"
+                            : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                        }`}
+                        loading={index < 12 ? "eager" : "lazy"}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          console.error("Image failed to load:", imageSrc);
+                          target.style.display = "none";
+                        }}
+                      />
+                    </div>
+                    <p
+                      className={`text-xs font-light truncate transition-colors ${
+                        isDark
+                          ? "text-white/50 group-hover:text-white/70"
+                          : "text-[#AFAFAF] group-hover:text-[#6F6F6F]"
+                      }`}
+                    >
+                      {image.title}
+                    </p>
                   </div>
-                  <p
-                    className={`text-xs font-light truncate transition-colors ${
-                      isDark
-                        ? "text-white/50 group-hover:text-white/70"
-                        : "text-[#AFAFAF] group-hover:text-[#6F6F6F]"
-                    }`}
-                  >
-                    {image.title}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -393,9 +390,16 @@ export default function PublicInspiration() {
             <div className="bg-[#1B1B1B] border border-white/10 overflow-hidden">
               <div className="aspect-square max-h-[75vh] overflow-hidden">
                 <img
-                  src={selectedImage.fullImageUrl || selectedImage.imageUrl}
+                  src={getImageUrl(selectedImage.fullImageUrl || selectedImage.imageUrl)}
                   alt={selectedImage.title}
                   className="w-full h-full object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    // Try thumbnail if full image fails
+                    if (selectedImage.fullImageUrl && target.src.includes(selectedImage.fullImageUrl)) {
+                      target.src = getImageUrl(selectedImage.imageUrl);
+                    }
+                  }}
                 />
               </div>
               <div className="p-6 border-t border-white/10">
