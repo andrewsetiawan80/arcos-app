@@ -562,3 +562,4 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
     </div>
   );
 }
+

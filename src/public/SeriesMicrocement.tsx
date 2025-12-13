@@ -71,3 +71,4 @@ const MICROCEMENT_SERIES: SeriesData = {
 export default function SeriesMicrocement() {
   return <SeriesDetailPage series={MICROCEMENT_SERIES} />;
 }
+

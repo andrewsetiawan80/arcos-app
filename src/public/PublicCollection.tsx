@@ -381,3 +381,4 @@ function CollectionCard({
     </Link>
   );
 }
+

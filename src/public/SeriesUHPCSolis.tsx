@@ -71,3 +71,4 @@ const SOLIS_SERIES: SeriesData = {
 export default function SeriesUHPCSolis() {
   return <SeriesDetailPage series={SOLIS_SERIES} />;
 }
+

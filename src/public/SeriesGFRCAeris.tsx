@@ -71,3 +71,4 @@ const AERIS_SERIES: SeriesData = {
 export default function SeriesGFRCAeris() {
   return <SeriesDetailPage series={AERIS_SERIES} />;
 }
+

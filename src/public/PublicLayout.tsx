@@ -91,7 +91,7 @@ function PublicLayoutInner() {
               { key: "collection", to: "/collection", label: "Collection" },
               { key: "services", to: "/services", label: "Services" },
               { key: "projects", to: "/projects", label: "Projects" },
-              { key: "process", to: "/process", label: "Process" },
+              { key: "inspiration", to: "/inspiration", label: "Inspiration" },
               { key: "about", to: "/about", label: "About" },
               { key: "contact", to: "/contact", label: "Contact" },
             ].map((item) => (
@@ -102,7 +102,7 @@ function PublicLayoutInner() {
                   isDark ? "hover:text-white" : "hover:text-[#1B1B1B]"
                 }`}
               >
-                {item.label || t(`nav.${item.key}`)}
+                {item.label}
               </NavLink>
             ))}
           </nav>
@@ -188,6 +188,7 @@ function PublicLayoutInner() {
               { key: "collection", to: "/collection", label: "Collection" },
               { key: "services", to: "/services", label: "Services" },
               { key: "projects", to: "/projects", label: "Projects" },
+              { key: "inspiration", to: "/inspiration", label: "Inspiration" },
               { key: "process", to: "/process", label: "Process" },
               { key: "about", to: "/about", label: "About" },
               { key: "contact", to: "/contact", label: "Contact" },
