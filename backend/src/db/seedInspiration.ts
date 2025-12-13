@@ -14,8 +14,8 @@ const INSPIRATION_CATEGORIES = [
 const getImageUrls = (baseName: string, index: number) => {
   const padded = String(index).padStart(2, '0');
   return {
-    thumbnail: `/assets/images/inspiration/${baseName}-${padded}.png`,
-    full: `/assets/images/inspiration/${baseName}-${padded}.png`,
+    thumbnail: `/images/inspiration/${baseName}-${padded}.webp`,
+    full: `/images/inspiration/${baseName}-${padded}.webp`,
   };
 };
 
