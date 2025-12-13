@@ -86,13 +86,13 @@ export default function ArcosLogo({
     >
       {/* Main Logo SVG */}
       <svg 
-        width="auto" 
         height={config.logoHeight}
         viewBox="0 0 200 60"
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
         aria-label="Arcos"
         role="img"
+        style={{ width: 'auto' }}
       >
         {/* Horizontal line above the 'a' */}
         <rect 
