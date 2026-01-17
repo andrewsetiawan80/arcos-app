@@ -1,4 +1,5 @@
-import SeriesDetailPage, { SeriesData } from "./SeriesDetailPage";
+import SeriesDetailPage from "./SeriesDetailPage";
+import type { SeriesData } from "./SeriesDetailPage";
 
 // Import images
 import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
@@ -71,4 +72,6 @@ const MICROCEMENT_SERIES: SeriesData = {
 export default function SeriesMicrocement() {
   return <SeriesDetailPage series={MICROCEMENT_SERIES} />;
 }
+
+
 

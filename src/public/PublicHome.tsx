@@ -76,7 +76,7 @@ function FeaturedProjectsCarousel() {
                 src={project.image}
                 alt={project.title}
                 className={`w-full h-full object-cover transition-all duration-700 ${
-                  isDark ? "opacity-80 group-hover:opacity-100" : "grayscale group-hover:grayscale-0"
+                  isDark ? "opacity-80 group-hover:opacity-100" : "group-hover:scale-105"
                 }`}
                 loading="lazy"
               />
@@ -293,7 +293,7 @@ export default function PublicHome() {
                     className={`w-full h-full object-cover transition-all duration-700 ${
                       isDark 
                         ? "opacity-80 group-hover:opacity-100 group-hover:scale-105" 
-                        : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                        : "group-hover:scale-105"
                     }`}
                     loading="lazy"
                   />
@@ -343,7 +343,7 @@ export default function PublicHome() {
                   src={structuralPanels}
                   alt="UHPC Solis Series"
                   className={`w-full h-full object-cover transition-all duration-700 ${
-                    isDark ? "opacity-80 group-hover:opacity-100" : "grayscale group-hover:grayscale-0"
+                    isDark ? "opacity-80 group-hover:opacity-100" : "group-hover:scale-105"
                   }`}
                   loading="lazy"
                 />
@@ -368,7 +368,7 @@ export default function PublicHome() {
                   src={concretePanelDetail}
                   alt="GFRC Aeris Series"
                   className={`w-full h-full object-cover transition-all duration-700 ${
-                    isDark ? "opacity-80 group-hover:opacity-100" : "grayscale group-hover:grayscale-0"
+                    isDark ? "opacity-80 group-hover:opacity-100" : "group-hover:scale-105"
                   }`}
                   loading="lazy"
                 />

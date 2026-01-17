@@ -196,7 +196,7 @@ export default function PublicProjects() {
                     className={`w-full h-full object-cover transition-all duration-700 ${
                       isDark 
                         ? "opacity-80 group-hover:opacity-100 group-hover:scale-105" 
-                        : "grayscale group-hover:grayscale-0 group-hover:scale-105"
+                        : "group-hover:scale-105"
                     }`}
                     loading="lazy"
                   />
@@ -268,7 +268,7 @@ export default function PublicProjects() {
                   src={item.image}
                   alt={item.alt}
                   className={`w-full h-full object-cover transition-all duration-700 ${
-                    isDark ? "opacity-60 hover:opacity-100" : "grayscale hover:grayscale-0"
+                    isDark ? "opacity-60 hover:opacity-100" : "hover:scale-105"
                   }`}
                   loading="lazy"
                 />

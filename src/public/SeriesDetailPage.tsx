@@ -483,7 +483,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                   className={`w-full h-full object-cover transition-all duration-700 ${
                     isDark
                       ? "opacity-80 group-hover:opacity-100"
-                      : "grayscale group-hover:grayscale-0"
+                      : "group-hover:scale-105"
                   } ${index === 0 ? "aspect-square" : "aspect-[4/3]"}`}
                   loading="lazy"
                 />
@@ -562,4 +562,6 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
     </div>
   );
 }
+
+
 

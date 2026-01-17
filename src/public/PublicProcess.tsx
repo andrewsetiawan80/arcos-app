@@ -163,7 +163,7 @@ export default function PublicProcess() {
                       src={step.image}
                       alt={step.title}
                       className={`w-full h-full object-cover transition-all duration-700 ${
-                        isDark ? "opacity-80 hover:opacity-100" : "grayscale hover:grayscale-0"
+                        isDark ? "opacity-80 hover:opacity-100" : "hover:scale-105"
                       }`}
                       loading="lazy"
                     />
@@ -237,7 +237,7 @@ export default function PublicProcess() {
                   src={item.image}
                   alt={item.alt}
                   className={`w-full h-full object-cover transition-all duration-700 ${
-                    isDark ? "opacity-70 hover:opacity-100" : "grayscale hover:grayscale-0"
+                    isDark ? "opacity-70 hover:opacity-100" : "hover:scale-105"
                   }`}
                   loading="lazy"
                 />

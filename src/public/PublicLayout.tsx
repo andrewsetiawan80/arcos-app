@@ -357,9 +357,17 @@ function PublicLayoutInner() {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-[#353535] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/30">
             <p>© {new Date().getFullYear()} ARCOS. All rights reserved.</p>
-            <p className="text-center sm:text-right font-light italic">
-              Where form, function, and feeling coexist in perfect balance.
-            </p>
+            <div className="flex items-center gap-6">
+              <NavLink 
+                to="/login" 
+                className="hover:text-white/50 transition-colors"
+              >
+                {t("nav.staffLogin")}
+              </NavLink>
+              <p className="text-center sm:text-right font-light italic">
+                Where form, function, and feeling coexist in perfect balance.
+              </p>
+            </div>
           </div>
         </div>
       </footer>

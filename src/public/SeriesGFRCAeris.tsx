@@ -1,4 +1,5 @@
-import SeriesDetailPage, { SeriesData } from "./SeriesDetailPage";
+import SeriesDetailPage from "./SeriesDetailPage";
+import type { SeriesData } from "./SeriesDetailPage";
 
 // Import images
 import landmarkInstallation from "../assets/images/landmark-installation.webp";
@@ -71,4 +72,6 @@ const AERIS_SERIES: SeriesData = {
 export default function SeriesGFRCAeris() {
   return <SeriesDetailPage series={AERIS_SERIES} />;
 }
+
+
 

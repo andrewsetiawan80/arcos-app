@@ -1,4 +1,5 @@
-import SeriesDetailPage, { SeriesData } from "./SeriesDetailPage";
+import SeriesDetailPage from "./SeriesDetailPage";
+import type { SeriesData } from "./SeriesDetailPage";
 
 // Import images
 import workshopCloseup from "../assets/images/workshop-closeup.webp";
@@ -71,4 +72,6 @@ const SOLIS_SERIES: SeriesData = {
 export default function SeriesUHPCSolis() {
   return <SeriesDetailPage series={SOLIS_SERIES} />;
 }
+
+
 

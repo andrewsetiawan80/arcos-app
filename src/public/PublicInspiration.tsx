@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useFadeIn } from "../utils/useAnimation";
+import { Link } from "react-router-dom";
 import { usePublicTheme } from "./PublicThemeContext";
 import { api } from "../lib/api";
 
-// High-quality hero image
+// Hero image
 import heroImage from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
 
 interface InspirationCategory {
@@ -26,18 +25,12 @@ interface InspirationImage {
 
 export default function PublicInspiration() {
   const { isDark } = usePublicTheme();
-  const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState<InspirationImage | null>(null);
   const [categories, setCategories] = useState<InspirationCategory[]>([]);
   const [images, setImages] = useState<InspirationImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Animation refs
-  const heroAnim = useFadeIn({ delay: 100 });
-  const filterAnim = useFadeIn({ delay: 150 });
-  const galleryAnim = useFadeIn({ delay: 200 });
 
   // Fetch data on mount
   useEffect(() => {
@@ -66,17 +59,6 @@ export default function PublicInspiration() {
 
     fetchData();
   }, []);
-
-  // Handle hash navigation
-  useEffect(() => {
-    const hash = location.hash.replace("#", "");
-    if (hash && categories.length > 0) {
-      const validCategory = categories.find((cat) => cat.id === hash);
-      if (validCategory) {
-        setSelectedCategory(hash);
-      }
-    }
-  }, [location.hash, categories]);
 
   // Filter images based on selected category
   const filteredImages =
@@ -144,26 +126,28 @@ export default function PublicInspiration() {
       }`}
     >
       {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[50vh] flex items-center overflow-hidden">
+        {/* Background Image */}
         <div className="absolute inset-0">
-          <img src={heroImage} alt="Design inspiration" className="w-full h-full object-cover" />
+          <img 
+            src={heroImage} 
+            alt="Design inspiration" 
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay */}
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
-                : "bg-gradient-to-b from-white/70 via-white/50 to-white"
+                ? "bg-gradient-to-b from-[#1B1B1B]/80 via-[#1B1B1B]/60 to-[#1B1B1B]"
+                : "bg-gradient-to-b from-white/80 via-white/60 to-white"
             }`}
           />
         </div>
 
-        <div
-          ref={heroAnim.ref}
-          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 py-32 text-center ${
-            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 py-24 text-center">
           <h1
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
+            className={`text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight mb-6 ${
               isDark ? "text-white" : "text-[#1B1B1B]"
             }`}
           >
@@ -174,8 +158,8 @@ export default function PublicInspiration() {
               isDark ? "text-white/80" : "text-[#4A4A4A]"
             }`}
           >
-            Explore patterns, textures, and applications of architectural concrete surfaces to
-            inspire your next project.
+            Explore patterns, textures, and applications of architectural concrete surfaces 
+            to inspire your next project.
           </p>
         </div>
       </section>
@@ -189,13 +173,8 @@ export default function PublicInspiration() {
               : "border-[#E0E0E0] bg-white/95 backdrop-blur"
           }`}
         >
-          <div
-            ref={filterAnim.ref}
-            className={`max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 py-5 ${
-              filterAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-            }`}
-          >
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 py-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <button
                 onClick={() => setSelectedCategory("all")}
                 className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
@@ -210,23 +189,25 @@ export default function PublicInspiration() {
               >
                 All
               </button>
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
-                    selectedCategory === category.id
-                      ? isDark
-                        ? "bg-white text-[#1B1B1B] border-white"
-                        : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
-                      : isDark
-                      ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
-                      : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+              {categories
+                .filter((cat) => cat.id !== "all")
+                .map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
+                      selectedCategory === category.id
+                        ? isDark
+                          ? "bg-white text-[#1B1B1B] border-white"
+                          : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                        : isDark
+                        ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
+                        : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
             </div>
           </div>
         </section>
@@ -234,23 +215,19 @@ export default function PublicInspiration() {
 
       {/* ===== GALLERY GRID ===== */}
       <section
-        className={`py-16 sm:py-20 transition-colors duration-300 ${
+        className={`py-12 sm:py-16 transition-colors duration-300 ${
           isDark ? "bg-[#1B1B1B]" : "bg-white"
         }`}
       >
-        <div
-          ref={galleryAnim.ref}
-          className={`max-w-6xl mx-auto px-6 sm:px-12 lg:px-20 ${
-            galleryAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
+        <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-20">
           {/* Results count */}
-          <div className="flex items-center justify-between mb-10">
+          <div className="mb-8">
             <p className={`text-sm font-light ${isDark ? "text-white/50" : "text-[#AFAFAF]"}`}>
               {filteredImages.length} {filteredImages.length === 1 ? "image" : "images"}
             </p>
           </div>
 
+          {/* Gallery */}
           {filteredImages.length === 0 ? (
             <div
               className={`border p-12 sm:p-16 text-center ${
@@ -262,48 +239,34 @@ export default function PublicInspiration() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-              {filteredImages.map((image, index) => {
-                const imageSrc = getImageUrl(image.imageUrl);
-                return (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+              {filteredImages.map((image, index) => (
+                <div
+                  key={`${image.id}-${index}`}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(image)}
+                >
                   <div
-                    key={`${image.id}-${index}`}
-                    className="group cursor-pointer"
-                    onClick={() => setSelectedImage(image)}
+                    className={`aspect-square overflow-hidden mb-2 ${
+                      isDark ? "bg-white/5" : "bg-[#F0F0F0]"
+                    }`}
                   >
-                    <div
-                      className={`aspect-square overflow-hidden mb-3 ${
-                        isDark ? "bg-white/5" : "bg-[#F0F0F0]"
-                      }`}
-                    >
-                      <img
-                        src={imageSrc}
-                        alt={image.title}
-                        className={`w-full h-full object-cover transition-all duration-700 ${
-                          isDark
-                            ? "opacity-80 group-hover:opacity-100 group-hover:scale-105"
-                            : "grayscale group-hover:grayscale-0 group-hover:scale-105"
-                        }`}
-                        loading={index < 12 ? "eager" : "lazy"}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          console.error("Image failed to load:", imageSrc);
-                          target.style.display = "none";
-                        }}
-                      />
-                    </div>
-                    <p
-                      className={`text-xs font-light truncate transition-colors ${
-                        isDark
-                          ? "text-white/50 group-hover:text-white/70"
-                          : "text-[#AFAFAF] group-hover:text-[#6F6F6F]"
-                      }`}
-                    >
-                      {image.title}
-                    </p>
+                    <img
+                      src={getImageUrl(image.imageUrl)}
+                      alt={image.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading={index < 12 ? "eager" : "lazy"}
+                    />
                   </div>
-                );
-              })}
+                  <p
+                    className={`text-xs font-light truncate ${
+                      isDark ? "text-white/50" : "text-[#AFAFAF]"
+                    }`}
+                  >
+                    {image.title}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -311,20 +274,20 @@ export default function PublicInspiration() {
 
       {/* ===== CTA SECTION ===== */}
       <section
-        className={`py-20 sm:py-24 border-t transition-colors duration-300 ${
+        className={`py-16 sm:py-20 border-t transition-colors duration-300 ${
           isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-[#F8F8F8]"
         }`}
       >
         <div className="max-w-3xl mx-auto px-6 sm:px-12 lg:px-20 text-center">
           <h2
-            className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
+            className={`text-2xl sm:text-3xl font-light tracking-tight mb-4 ${
               isDark ? "text-white" : "text-[#1B1B1B]"
             }`}
           >
             Ready to bring your vision to life?
           </h2>
           <p
-            className={`text-lg font-light leading-relaxed mb-10 ${
+            className={`text-base sm:text-lg font-light leading-relaxed mb-8 ${
               isDark ? "text-white/70" : "text-[#6F6F6F]"
             }`}
           >
@@ -333,7 +296,7 @@ export default function PublicInspiration() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/contact"
-              className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
+              className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
                   ? "bg-white text-[#1B1B1B] hover:bg-white/90"
                   : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
@@ -341,17 +304,12 @@ export default function PublicInspiration() {
             >
               Start a Project
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
             <Link
               to="/surfaces"
-              className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
+              className={`inline-flex items-center gap-2 px-6 py-3 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
                   ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
                   : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
@@ -369,7 +327,7 @@ export default function PublicInspiration() {
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative max-w-4xl w-full">
+          <div className="relative max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
             {/* Close button */}
             <button
               onClick={() => setSelectedImage(null)}
@@ -377,34 +335,19 @@ export default function PublicInspiration() {
               aria-label="Close"
             >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M6 18L18 6M6 6l12 12"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            {/* Image container */}
-            <div className="bg-[#1B1B1B] border border-white/10 overflow-hidden">
-              <div className="aspect-square max-h-[75vh] overflow-hidden">
-                <img
-                  src={getImageUrl(selectedImage.fullImageUrl || selectedImage.imageUrl)}
-                  alt={selectedImage.title}
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    // Try thumbnail if full image fails
-                    if (selectedImage.fullImageUrl && target.src.includes(selectedImage.fullImageUrl)) {
-                      target.src = getImageUrl(selectedImage.imageUrl);
-                    }
-                  }}
-                />
-              </div>
-              <div className="p-6 border-t border-white/10">
-                <h3 className="text-lg font-light text-white mb-2">{selectedImage.title}</h3>
-                <p className="text-sm text-white/50">Click outside to close</p>
+            {/* Image */}
+            <div className="bg-[#1B1B1B] overflow-hidden">
+              <img
+                src={getImageUrl(selectedImage.fullImageUrl || selectedImage.imageUrl)}
+                alt={selectedImage.title}
+                className="w-full max-h-[80vh] object-contain"
+              />
+              <div className="p-4 border-t border-white/10">
+                <h3 className="text-lg font-light text-white">{selectedImage.title}</h3>
               </div>
             </div>
           </div>

@@ -375,7 +375,7 @@ export default function PublicAbout() {
                 src={workshopCloseup}
                 alt="Craftsmanship detail"
                 className={`w-full h-full object-cover transition-all duration-700 ${
-                  isDark ? "opacity-70 hover:opacity-100" : "grayscale hover:grayscale-0"
+                  isDark ? "opacity-70 hover:opacity-100" : "hover:scale-105"
                 }`}
                 loading="lazy"
               />
@@ -385,7 +385,7 @@ export default function PublicAbout() {
                 src={mosaicFacadeDetail}
                 alt="Surface texture"
                 className={`w-full h-full object-cover transition-all duration-700 ${
-                  isDark ? "opacity-70 hover:opacity-100" : "grayscale hover:grayscale-0"
+                  isDark ? "opacity-70 hover:opacity-100" : "hover:scale-105"
                 }`}
                 loading="lazy"
               />
