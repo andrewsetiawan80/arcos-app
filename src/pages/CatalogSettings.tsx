@@ -133,14 +133,13 @@ export default function CatalogSettings() {
   }, [products]);
 
   return (
-    <div className="space-y-8 animate-in fade-in-0 duration-700">
+    <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Catalog Settings</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
@@ -182,8 +181,7 @@ export default function CatalogSettings() {
 
       {/* Site / Hero configuration */}
       <section className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-        <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-blue-400" />
             <h2 className="text-lg font-black text-white">Public Site Configuration</h2>
@@ -238,8 +236,7 @@ export default function CatalogSettings() {
 
       {/* Category Manager */}
       <section className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-        <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-400" />

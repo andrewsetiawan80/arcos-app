@@ -102,11 +102,36 @@ function scheduleRefresh(force = false) {
   return refreshPromise;
 }
 
+function stateFingerprint(state: AppState): string {
+  try {
+    return [
+      state.materials?.length ?? 0,
+      state.recipes?.length ?? 0,
+      state.products?.length ?? 0,
+      state.productRecipes?.length ?? 0,
+      state.labEntries?.length ?? 0,
+      state.categories?.length ?? 0,
+      state.pages?.length ?? 0,
+      // Cheap content hashes — enough to skip no-op refreshes
+      (state.recipes || []).map((r) => `${r.id}:${r.updatedAt || ""}`).join(","),
+      (state.products || []).map((p: any) => `${p.id}:${p.updatedAt || p.title || p.name || ""}`).join(","),
+      (state.materials || []).map((m) => `${m.id}:${m.amount ?? m.pricePerKg ?? ""}`).join(","),
+    ].join("|");
+  } catch {
+    return String(Date.now());
+  }
+}
+
 async function refreshState() {
   const newState = await fetchState();
+  const prevFp = stateFingerprint(cachedState);
+  const nextFp = stateFingerprint(newState);
   cachedState = newState;
   persistState(newState);
-  notifyListeners();
+  // Skip notify when nothing meaningful changed — prevents layout/page flicker
+  if (prevFp !== nextFp) {
+    notifyListeners();
+  }
 }
 
 async function fetchState(): Promise<AppState> {
@@ -153,13 +178,19 @@ async function loadPublicState(): Promise<AppState> {
 function buildPublicState(productsData: any[], settingsData: Record<string, any>): AppState {
   const normalizedProducts = (productsData || []).map((product) => ({
     id: product.id,
-    name: product.name,
+    title: product.name,
     slug: product.slug,
     description: product.description,
     categorySlug: product.category_slug || product.categorySlug,
     public: product.public,
     featured: product.featured,
     coverImageUrl: product.cover_image_url || product.coverImageUrl,
+    textureUrl: product.texture_url || product.textureUrl,
+    normalMapUrl: product.normal_map_url || product.normalMapUrl,
+    roughnessMapUrl: product.roughness_map_url || product.roughnessMapUrl,
+    heightMapUrl: product.height_map_url || product.heightMapUrl,
+    aoMapUrl: product.ao_map_url || product.aoMapUrl,
+    size: product.size,
     variants: (product.variants || []).map((variant: any) => ({
       id: variant.id,
       name: variant.name,

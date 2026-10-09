@@ -33,13 +33,11 @@
 /* Typography System     */
 /* ===================== */
 
-/* Host Grotesk Font Family - Headlines & Sub-headlines */
-/* Using Google Fonts fallback to similar geometric sans-serif */
-@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap');
-
+/* Arcos Brand Typography (PDF): Headlines = Host Grotesk Bold/Semibold, Body = Helvetica Neue Regular */
+/* Host Grotesk is custom; we use DM Sans as similar geometric sans for web. Preload in index.html. */
 :root {
-  /* Typography Families */
-  --arcos-font-heading: 'Host Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Typography Families - DM Sans approximates Host Grotesk; Helvetica Neue for body per PDF */
+  --arcos-font-heading: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --arcos-font-body: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   
   /* Typography Sizes - Desktop */
@@ -54,9 +52,9 @@
   --arcos-size-small: 0.875rem;   /* 14px - Small text */
   --arcos-size-label: 0.75rem;    /* 12px - Labels, captions */
   
-  /* Line Heights */
-  --arcos-leading-tight: 1.1;
-  --arcos-leading-heading: 1.15;
+  /* Line Heights — keep headings ≥1.25 so bold/uppercase glyphs are not clipped */
+  --arcos-leading-tight: 1.2;
+  --arcos-leading-heading: 1.25;
   --arcos-leading-body: 1.6;
   --arcos-leading-relaxed: 1.8;
   
@@ -307,6 +305,14 @@
     --arcos-size-h3: 1.25rem;
   }
 }
+
+/* ===================== */
+/* Supergraphics         */
+/* PDF: "Supergraphics taken from horizontal cut letter O" — the shape is the */
+/* curved arc (semi-circle) from that cut, not lines or stripes. Use the       */
+/* Supergraphic / OcutShape / SupergraphicStrip components from                */
+/* src/components/brand/Supergraphic.tsx for the correct O-cut arc shapes.     */
+/* ===================== */
 
 /* ===================== */
 /* Utility Classes       */

@@ -4,6 +4,7 @@ import { useFadeIn } from "../utils/useAnimation";
 import { usePublicTheme } from "./PublicThemeContext";
 import { useLanguage } from "../i18n/LanguageContext";
 import { api } from "../lib/api";
+import AnimatedSection from "../components/AnimatedSection";
 
 // Import images
 import landmarkInstallation from "../assets/images/landmark-installation.webp";
@@ -96,7 +97,7 @@ export default function PublicProjects() {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
-      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
     }`}>
       
       {/* ===== PAGE HEADER ===== */}
@@ -111,7 +112,7 @@ export default function PublicProjects() {
           {/* Overlay */}
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B]/60 via-[#1B1B1B]/40 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323]/60 via-[#232323]/40 to-[#232323]" 
               : "bg-gradient-to-b from-white/70 via-white/50 to-white"
           }`} />
         </div>
@@ -124,7 +125,7 @@ export default function PublicProjects() {
         >
           {/* Main Title */}
           <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Spaces shaped through concrete.
           </h1>
@@ -140,7 +141,7 @@ export default function PublicProjects() {
 
       {/* ===== INTRODUCTION BLOCK ===== */}
       <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={introAnim.ref}
@@ -149,7 +150,7 @@ export default function PublicProjects() {
           }`}
         >
           <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-10 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Designed to endure. Crafted to inspire.
           </h2>
@@ -180,9 +181,9 @@ export default function PublicProjects() {
           }`}
         >
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {projects.map((project) => (
+            {projects.map((project, idx) => (
+              <AnimatedSection key={project.id} animation="fade-up" delay={idx * 100}>
               <Link
-                key={project.id}
                 to={`/projects/${project.id}`}
                 className="group block"
               >
@@ -207,7 +208,7 @@ export default function PublicProjects() {
                   <h3 className={`text-lg font-medium transition-colors ${
                     isDark 
                       ? "text-white group-hover:text-white/80" 
-                      : "text-[#1B1B1B] group-hover:text-[#6F6F6F]"
+                      : "text-[#232323] group-hover:text-[#6F6F6F]"
                   }`}>
                     {project.title} — {project.location}
                   </h3>
@@ -218,6 +219,7 @@ export default function PublicProjects() {
                   </p>
                 </div>
               </Link>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -225,7 +227,7 @@ export default function PublicProjects() {
 
       {/* ===== CALLOUT SECTION ===== */}
       <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={calloutAnim.ref}
@@ -234,7 +236,7 @@ export default function PublicProjects() {
           }`}
         >
           <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight leading-relaxed mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Every project is a dialogue between material and space.
           </h2>
@@ -289,7 +291,7 @@ export default function PublicProjects() {
           />
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/95 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#232323]" 
               : "bg-gradient-to-b from-white via-white/95 to-white"
           }`} />
         </div>
@@ -301,7 +303,7 @@ export default function PublicProjects() {
           }`}
         >
           <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Let's shape your next space.
           </h2>
@@ -317,8 +319,8 @@ export default function PublicProjects() {
               to="/contact"
               className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90" 
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Start a Project
@@ -330,8 +332,8 @@ export default function PublicProjects() {
               to="/contact"
               className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Contact Us

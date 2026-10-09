@@ -1,10 +1,23 @@
 import { Router, Request, Response } from 'express';
+import rateLimit from 'express-rate-limit';
 import bcrypt from 'bcryptjs';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import pool from '../db/client';
 import { z } from 'zod';
 
 const router = Router();
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many login attempts. Try again later.' },
+});
+
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 3,
+  message: { error: 'Too many registration attempts. Try again later.' },
+});
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -14,11 +27,11 @@ const loginSchema = z.object({
 const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-  role: z.enum(['user', 'admin', 'production']).optional(),
+  role: z.enum(['user', 'admin', 'engineer', 'production', 'sales']).optional(),
 });
 
 // Login
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', loginLimiter, async (req: Request, res: Response) => {
   try {
     const { email, password } = loginSchema.parse(req.body);
 
@@ -70,7 +83,10 @@ router.post('/login', async (req: Request, res: Response) => {
 });
 
 // Register (optional - can be disabled in production)
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register', registerLimiter, async (req: Request, res: Response) => {
+  if (process.env.DISABLE_REGISTER === 'true') {
+    return res.status(403).json({ error: 'Registration is disabled' });
+  }
   try {
     const { email, password, role = 'user' } = registerSchema.parse(req.body);
 

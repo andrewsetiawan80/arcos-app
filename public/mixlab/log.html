@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-page="log">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mix Lab — Mix log</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="nav.css" />
+  <script src="nav.js" defer></script>
+  <style>
+    :root {
+      --bg: #232323; --panel: #353535; --bg-2: #2a2a2a; --line: rgba(255, 255, 255, 0.1);
+      --ink: #ffffff; --muted: rgba(255, 255, 255, 0.5);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); }
+    body {
+      font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+    }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 16px 14px calc(24px + env(safe-area-inset-bottom)); }
+    @media (min-width: 720px) { .wrap { padding: 28px 24px 64px; } }
+    header { margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45); margin: 0 0 6px; font-weight: 700;
+    }
+    h1 {
+      font-weight: 900; font-size: clamp(28px, 4vw, 36px); margin: 0;
+      letter-spacing: -0.03em; text-transform: uppercase; line-height: 1.2;
+    }
+    .sub { color: var(--muted); font-size: 14px; margin: 8px 0 0; line-height: 1.5; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 16px; align-items: end; }
+    label {
+      display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    input[type="search"], select {
+      height: 44px; padding: 0 12px; font-size: 15px;
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 0;
+      color: var(--ink); min-width: 180px;
+    }
+    .btn {
+      height: 44px; padding: 0 16px; border-radius: 0; border: 1px solid var(--line);
+      background: var(--panel); color: var(--ink); font-size: 12px; cursor: pointer;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .btn:active { transform: scale(0.97); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); padding: 0 8px 10px 0; border-bottom: 1px solid var(--line); font-weight: 700;
+    }
+    th:last-child, td:last-child { text-align: right; }
+    td { padding: 12px 8px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    td b { font-weight: 700; }
+    td small { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13px; }
+    .empty { color: var(--muted); padding: 28px 0; }
+    .open {
+      border: 0; background: transparent; color: #ffffff; font-size: 12px;
+      padding: 0; cursor: pointer; text-decoration: underline;
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Mix Lab · production</p>
+      <h1>Mix log</h1>
+      <p class="sub">Batches logged when staff prints a ticket. Newest first.</p>
+    </header>
+    <div class="toolbar">
+      <div>
+        <label for="filterRecipe">Recipe</label>
+        <select id="filterRecipe"><option value="">All recipes</option></select>
+      </div>
+      <div>
+        <label for="filterPerson">Weighed by</label>
+        <input type="search" id="filterPerson" placeholder="Anyone" />
+      </div>
+      <button class="btn" type="button" id="refreshBtn">Refresh</button>
+    </div>
+    <div id="logTable"></div>
+  </div>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const fmtDry = (g) => {
+      const n = Number(g) || 0;
+      return n >= 1000
+        ? (n / 1000).toLocaleString(undefined, { maximumFractionDigits: 2 }) + " kg"
+        : Math.round(n).toLocaleString() + " g";
+    };
+    const fmtWhen = (iso) => {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return iso || "—";
+      return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+    };
+
+    let entries = [];
+
+    async function loadLog() {
+      try {
+        const urls = ["/api/mix-log", "http://192.168.2.189/api/mix-log", "http://192.168.2.103/api/mix-log"];
+        for (const url of urls) {
+          try {
+            const res = await fetch(url, { cache: "no-store" });
+            if (!res.ok) continue;
+            const data = await res.json();
+            if (Array.isArray(data)) {
+              entries = data;
+              break;
+            }
+          } catch (_) {}
+        }
+      } catch (_) {}
+      renderFilters();
+      render();
+    }
+
+    function renderFilters() {
+      const sel = $("filterRecipe");
+      const current = sel.value;
+      const names = [...new Set(entries.map((e) => e.recipeName || "Untitled"))].sort();
+      sel.innerHTML = `<option value="">All recipes</option>` +
+        names.map((n) => `<option value="${esc(n)}">${esc(n)}</option>`).join("");
+      if ([...sel.options].some((o) => o.value === current)) sel.value = current;
+    }
+
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+      }[c]));
+    }
+
+    function filtered() {
+      const recipe = $("filterRecipe").value;
+      const person = $("filterPerson").value.trim().toLowerCase();
+      return entries.filter((e) => {
+        if (recipe && (e.recipeName || "Untitled") !== recipe) return false;
+        if (person && !(e.weighedBy || "").toLowerCase().includes(person)) return false;
+        return true;
+      });
+    }
+
+    function render() {
+      const rows = filtered();
+      if (!rows.length) {
+        $("logTable").innerHTML = `<p class="empty">No mixes logged yet. Print a ticket from the Staff page to start the log.</p>`;
+        return;
+      }
+      $("logTable").innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>Recipe</th>
+              <th>Weighed by</th>
+              <th>Dry</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((e) => `
+              <tr>
+                <td class="mono">${esc(fmtWhen(e.at))}</td>
+                <td><b>${esc(e.recipeName || "Untitled")}</b><small>${esc(e.source || "staff")}</small></td>
+                <td>${esc(e.weighedBy || "—")}</td>
+                <td class="mono">${esc(fmtDry(e.dryWeight))}</td>
+                <td>${e.recipeId
+                  ? `<button class="open" type="button" data-r="${esc(e.recipeId)}" data-d="${Number(e.dryWeight) || ""}">Open ticket</button>`
+                  : ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    $("logTable").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-r]");
+      if (!btn) return;
+      const url = new URL("staff.html", location.href);
+      url.searchParams.set("r", btn.dataset.r);
+      if (btn.dataset.d) url.searchParams.set("d", btn.dataset.d);
+      location.href = url.href;
+    });
+    $("filterRecipe").onchange = render;
+    $("filterPerson").oninput = render;
+    $("refreshBtn").onclick = loadLog;
+    loadLog();
+  </script>
+</body>
+</html>

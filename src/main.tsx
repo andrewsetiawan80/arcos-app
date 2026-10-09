@@ -10,6 +10,7 @@ import App from "./App";
 import ErrorBoundary from "./ErrorBoundary";
 import { ThemeProvider } from "./theme/ThemeProvider";
 import { LanguageProvider } from "./i18n/LanguageContext";
+import { ToastProvider } from "./components/Toast";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -18,7 +19,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <LanguageProvider>
         <ThemeProvider defaultTheme="concrete">
           <ErrorBoundary>
-            <App />
+            <ToastProvider>
+              <App />
+            </ToastProvider>
           </ErrorBoundary>
         </ThemeProvider>
       </LanguageProvider>

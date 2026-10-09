@@ -1,11 +1,22 @@
-/* Tailwind v4 entrypoint */
+/* Tailwind v4 entrypoint - @import must precede other statements */
 @import "tailwindcss";
+@import "./styles/brand.css";
 @reference "tailwindcss";
 
-/* ===================== */
-/* Arcos Brand System    */
-/* ===================== */
-@import "./styles/brand.css";
+/* Scroll performance: sticky backdrop-blur + card filters cause flicker while scrolling */
+.admin-page [class*="backdrop-blur"],
+.admin-page .backdrop-blur,
+.admin-page .backdrop-blur-sm,
+.admin-page .backdrop-blur-xl {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.admin-page [class*="blur-2xl"],
+.admin-page [class*="blur-3xl"] {
+  filter: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 
 /* ===================== */
 /* Design Tokens (Themes) */
@@ -72,7 +83,8 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--arcos-font-heading);
     font-weight: 700;
-    line-height: var(--arcos-leading-heading);
+    /* 1.25+ avoids DM Sans bold/uppercase clipping under overflow:hidden / truncate */
+    line-height: 1.25;
     letter-spacing: var(--arcos-tracking-tight);
   }
 
@@ -105,7 +117,6 @@
     box-shadow: 0 0 0 4px hsl(var(--ring) / 0.15);
     border-color: var(--accent);
     background: var(--surface-elevated);
-    transform: translateY(-1px);
   }
   input:hover, select:hover, textarea:hover {
     border-color: var(--border-light);
@@ -139,15 +150,21 @@
 /* Print   */
 /* ======= */
 @media print {
-  header, nav, aside, .print\:hidden, .app-sidebar, .app-header {
+  header, nav, aside, .print\:hidden, .app-sidebar, .app-header, .arcos-no-print {
     display: none !important; visibility: hidden !important;
   }
   main, #root, body {
     margin: 0 !important; padding: 0 !important; width: 100% !important;
     background: #ffffff !important; color: #000 !important;
   }
-  table { border-collapse: collapse !important; }
-  th, td { border: 1px solid rgba(0,0,0,0.2) !important; padding: 6px 8px !important; }
+  /* Global table borders — skip Mix Lab / Mix designer tickets (they use ticket-print.css) */
+  table:not(.mix-batch-ticket table):not(.ticket table):not(.cost-table) {
+    border-collapse: collapse !important;
+  }
+  body:not(.printing-mix-ticket) th,
+  body:not(.printing-mix-ticket) td {
+    border: 1px solid rgba(0,0,0,0.2) !important; padding: 6px 8px !important;
+  }
   a { color: inherit !important; text-decoration: none !important; }
   .avoid-break { page-break-inside: avoid; }
   body { background-image: none !important; }
@@ -363,6 +380,21 @@ a.active > span[aria-hidden] { opacity: 1 !important; }
     will-change: opacity, transform;
   }
 
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s ease-out forwards;
+  }
+
   /* Staggered animation delays */
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
@@ -443,6 +475,16 @@ a.active > span[aria-hidden] { opacity: 1 !important; }
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
+  /* Range slider: ensure thumb reaches edges in narrow containers */
+  input[type="range"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -453,5 +495,28 @@ a.active > span[aria-hidden] { opacity: 1 !important; }
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/* Admin app mobile comfort */
+.admin-page {
+  min-width: 0;
+}
+.admin-page h1 {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 639px) {
+  .admin-page {
+    font-size: 15px;
+  }
+  /* Prefer larger tap targets in admin forms */
+  .admin-page button,
+  .admin-page a.inline-flex {
+    min-height: 2.5rem;
+  }
+  .admin-page input,
+  .admin-page select,
+  .admin-page textarea {
+    font-size: 16px; /* avoid iOS zoom on focus */
   }
 }

@@ -11,14 +11,12 @@ type Props = {
 };
 
 export default function MegaMenuSheet({ open, groups, role, mode = "smooth", onClose }: Props) {
-  // Compact translucent panel
+  // Compact translucent panel — fully unmount hit-target when closed so it cannot block page clicks
   const base =
     "absolute left-0 right-0 top-full z-30 bg-[#232323]/98 backdrop-blur-xl shadow-xl border-t border-white/10";
 
-  const smoothVisible =
-    "opacity-100 translate-y-0 pointer-events-auto";
-  const smoothHidden =
-    "opacity-0 -translate-y-4 pointer-events-none";
+  const smoothVisible = "opacity-100 translate-y-0 pointer-events-auto visible";
+  const smoothHidden = "opacity-0 -translate-y-4 pointer-events-none invisible h-0 overflow-hidden";
   const smoothTrans =
     "transition-all duration-300 ease-[cubic-bezier(.25,.46,.45,.94)] will-change-transform will-change-opacity";
 
@@ -30,8 +28,10 @@ export default function MegaMenuSheet({ open, groups, role, mode = "smooth", onC
       ? [base, smoothTrans, open ? smoothVisible : smoothHidden].join(" ")
       : [base, open ? instantVisible : instantHidden].join(" ");
 
+  if (!open && mode === "instant") return null;
+
   return (
-    <div className={cls}>
+    <div className={cls} aria-hidden={!open}>
       <div className="max-w-5xl mx-auto px-6 py-6">
         <div className="grid lg:grid-cols-4 gap-6">
           {groups.map((g, idx) => (
@@ -44,7 +44,13 @@ export default function MegaMenuSheet({ open, groups, role, mode = "smooth", onC
               )}
               <ul className="space-y-1">
                 {g.items
-                  .filter((it) => !it.roles || it.roles.includes(role) || role === "admin")
+                  .filter((it) => {
+                    if (!it.roles?.length) return true;
+                    if (role === "admin") return true;
+                    // Role not loaded yet — still show non-admin-only links
+                    if (role === "guest") return !it.roles.every((r) => r === "admin");
+                    return it.roles.includes(role);
+                  })
                   .map((item) => (
                     <li key={item.to}>
                       <NavLink
@@ -79,24 +85,18 @@ export default function MegaMenuSheet({ open, groups, role, mode = "smooth", onC
             </div>
             <div className="flex items-center gap-2">
               <NavLink
-                to="/app/products/edit"
+                to="/app/studio"
                 onClick={onClose}
-                className="group inline-flex items-center gap-2 px-4 py-2 bg-[#353535] border border-white/10 text-xs uppercase tracking-wider font-bold text-white hover:bg-[#232323] hover:border-white/20 transition-all hover-lift"
+                className="group inline-flex items-center gap-2 px-4 py-2 bg-[#353535] border border-white/10 text-xs uppercase tracking-wider font-bold text-white hover:bg-[#232323] hover:border-white/20 transition-all"
               >
-                New Product
-                <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                Mix designer
               </NavLink>
               <NavLink
-                to="/app/derive-recipe"
+                to="/app/mix-log"
                 onClick={onClose}
-                className="group inline-flex items-center gap-2 px-4 py-2 bg-[#353535] border border-white/10 text-xs uppercase tracking-wider font-bold text-white hover:bg-[#232323] hover:border-white/20 transition-all hover-lift"
+                className="group inline-flex items-center gap-2 px-4 py-2 bg-[#353535] border border-white/10 text-xs uppercase tracking-wider font-bold text-white hover:bg-[#232323] hover:border-white/20 transition-all"
               >
-                New Recipe
-                <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                Mix log
               </NavLink>
             </div>
           </div>

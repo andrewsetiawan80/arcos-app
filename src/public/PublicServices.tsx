@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useFadeIn } from "../utils/useAnimation";
 import { usePublicTheme } from "./PublicThemeContext";
+import AnimatedSection from "../components/AnimatedSection";
 
 // Import images
 import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
@@ -128,7 +129,7 @@ export default function PublicServices() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+        isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
       }`}
     >
       {/* ===== PAGE HEADER / HERO ===== */}
@@ -144,7 +145,7 @@ export default function PublicServices() {
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
+                ? "bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]"
                 : "bg-gradient-to-b from-white/70 via-white/50 to-white"
             }`}
           />
@@ -159,7 +160,7 @@ export default function PublicServices() {
           {/* Title */}
           <h1
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Services
@@ -180,7 +181,7 @@ export default function PublicServices() {
       {/* ===== SECTION 1: OVERVIEW ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -191,7 +192,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             What we do
@@ -224,7 +225,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Our core services
@@ -232,7 +233,8 @@ export default function PublicServices() {
 
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             {CORE_SERVICES.map((service, index) => (
-              <div key={index} className="group">
+              <AnimatedSection key={index} animation="fade-up" delay={index * 120}>
+              <div className="group">
                 {/* Image */}
                 <div
                   className={`aspect-[4/3] overflow-hidden mb-6 ${
@@ -254,7 +256,7 @@ export default function PublicServices() {
                 {/* Content */}
                 <h3
                   className={`text-lg font-medium mb-4 ${
-                    isDark ? "text-white" : "text-[#1B1B1B]"
+                    isDark ? "text-white" : "text-[#232323]"
                   }`}
                 >
                   {service.title}
@@ -287,6 +289,7 @@ export default function PublicServices() {
                   ))}
                 </ul>
               </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -295,7 +298,7 @@ export default function PublicServices() {
       {/* ===== SECTION 3: SPECIALIZED CAPABILITIES ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -306,7 +309,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Specialized capabilities
@@ -331,7 +334,7 @@ export default function PublicServices() {
                 </div>
                 <h3
                   className={`text-base font-medium mb-3 ${
-                    isDark ? "text-white" : "text-[#1B1B1B]"
+                    isDark ? "text-white" : "text-[#232323]"
                   }`}
                 >
                   {capability.title}
@@ -363,7 +366,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             How we work
@@ -395,8 +398,8 @@ export default function PublicServices() {
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-sm font-medium ${
                       isDark
-                        ? "bg-[#1B1B1B] border border-white/20 text-white"
-                        : "bg-white border border-[#E0E0E0] text-[#1B1B1B]"
+                        ? "bg-[#232323] border border-white/20 text-white"
+                        : "bg-white border border-[#E0E0E0] text-[#232323]"
                     }`}
                   >
                     {String(index + 1).padStart(2, "0")}
@@ -419,7 +422,7 @@ export default function PublicServices() {
             <Link
               to="/process"
               className={`inline-flex items-center gap-2 text-sm font-medium transition-colors ${
-                isDark ? "text-white/70 hover:text-white" : "text-[#6F6F6F] hover:text-[#1B1B1B]"
+                isDark ? "text-white/70 hover:text-white" : "text-[#6F6F6F] hover:text-[#232323]"
               }`}
             >
               Learn more about our process
@@ -439,7 +442,7 @@ export default function PublicServices() {
       {/* ===== SECTION 5: INDUSTRIES WE SERVE ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -450,7 +453,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Industries we serve
@@ -502,7 +505,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Why work with ARCOS
@@ -513,7 +516,7 @@ export default function PublicServices() {
               <div key={index} className="text-center">
                 <h3
                   className={`text-lg font-medium mb-4 ${
-                    isDark ? "text-white" : "text-[#1B1B1B]"
+                    isDark ? "text-white" : "text-[#232323]"
                   }`}
                 >
                   {item.title}
@@ -541,7 +544,7 @@ export default function PublicServices() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Let's build something meaningful.
@@ -561,8 +564,8 @@ export default function PublicServices() {
               to="/contact"
               className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90"
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Start a Project
@@ -579,8 +582,8 @@ export default function PublicServices() {
               href="mailto:samples@arcosworks.com?subject=Sample%20Request"
               className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]"
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Request Samples

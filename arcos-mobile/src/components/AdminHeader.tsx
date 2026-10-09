@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeProvider';
 import { useMenu } from '../context/MenuContext';
 import ArcosLogo from './ArcosLogo';
+import NotificationBell from './NotificationBell';
 
 interface AdminHeaderProps {
   title?: string;
@@ -52,18 +53,21 @@ export default function AdminHeader({ title, subtitle, navigation, rightAction }
           <ArcosLogo size="medium" />
         </TouchableOpacity>
 
-        {/* Right Action Button or Spacer */}
-        {rightAction ? (
-          <TouchableOpacity
-            onPress={rightAction.onPress}
-            style={styles.rightActionButton}
-            activeOpacity={0.7}
-          >
-            <Ionicons name={rightAction.icon as any} size={24} color={colors.text} />
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.headerSpacer} />
-        )}
+        {/* Notification Bell + Right Action */}
+        <View style={styles.rightRow}>
+          <NotificationBell
+            onPress={() => navigation?.navigate?.('Notifications')}
+          />
+          {rightAction ? (
+            <TouchableOpacity
+              onPress={rightAction.onPress}
+              style={styles.rightActionButton}
+              activeOpacity={0.7}
+            >
+              <Ionicons name={rightAction.icon as any} size={24} color={colors.text} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
       
       {title && (
@@ -100,8 +104,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 16,
   },
-  headerSpacer: {
-    width: 40, // Same width as menu button for balance
+  rightRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rightActionButton: {
     padding: 8,

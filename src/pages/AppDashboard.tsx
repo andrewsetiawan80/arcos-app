@@ -1,5 +1,5 @@
 // src/pages/AppDashboard.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import type { Product, Recipe, Material } from "../types";
 import { 
@@ -9,9 +9,14 @@ import {
   Calculator, 
   TrendingUp, 
   Users, 
-  Settings
+  Settings,
+  Database,
+  FileText,
+  UserCheck,
+  Download
 } from "lucide-react";
 import { useAppState } from "../hooks/useAppState";
+import { api } from "../lib/api";
 
 /* ---------- UI Components ---------- */
 
@@ -166,6 +171,36 @@ function currencyIDR(n: number) {
 
 export default function AppDashboard() {
   const { state, loading } = useAppState();
+  const [dbStatus, setDbStatus] = useState<'online' | 'offline' | 'loading'>('loading');
+  const [quotes, setQuotes] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    api.getDatabaseStatus().then((status) => {
+      if (!cancelled) setDbStatus(status);
+    }).catch(() => {
+      if (!cancelled) setDbStatus('offline');
+    });
+    const interval = setInterval(() => {
+      api.getDatabaseStatus().then((status) => {
+        if (!cancelled) setDbStatus(status);
+      }).catch(() => {
+        if (!cancelled) setDbStatus('offline');
+      });
+    }, 30000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    api.getQuotes().then(r => { if (r.data) setQuotes(r.data as any[]); });
+    api.getJobs().then(r => { if (r.data) setJobs(r.data as any[]); });
+    api.getClients().then(r => { if (r.data) setClients(r.data as any[]); });
+  }, []);
 
   // Safe fallbacks
   const products = (state.products || []) as Product[];
@@ -176,12 +211,23 @@ export default function AppDashboard() {
   const labEntries = state.labEntries || [];
   const proposals = state.proposals || [];
 
+  // Quote analytics
+  const quotesByStatus = {
+    draft: quotes.filter(q => q.status === 'draft').length,
+    sent: quotes.filter(q => q.status === 'sent').length,
+    approved: quotes.filter(q => q.status === 'approved').length,
+    rejected: quotes.filter(q => q.status === 'rejected').length,
+  };
+  const totalQuoteValue = quotes.reduce((s, q) => s + (parseFloat(q.total) || 0), 0);
+  const approvedValue = quotes.filter(q => q.status === 'approved').reduce((s, q) => s + (parseFloat(q.total) || 0), 0);
+
   // Quick stats
   const stats = [
     { label: "Public Products", value: products.filter((p) => p.public).length, icon: <Package className="w-5 h-5 text-blue-400" /> },
     { label: "Recipes", value: recipes.length, icon: <Beaker className="w-5 h-5 text-green-400" /> },
+    { label: "Clients", value: clients.length, icon: <UserCheck className="w-5 h-5 text-cyan-400" /> },
+    { label: "Quotes", value: quotes.length, icon: <FileText className="w-5 h-5 text-purple-400" /> },
     { label: "Materials", value: materials.length, icon: <Settings className="w-5 h-5 text-gray-400" /> },
-    { label: "Open Proposals", value: (proposals || []).filter((p) => p.status !== "won" && p.status !== "lost").length, icon: <Users className="w-5 h-5 text-purple-400" /> },
   ];
 
   // Derived lists
@@ -224,16 +270,31 @@ export default function AppDashboard() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Arcos Dashboard</p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase leading-tight">
               Welcome Back
             </h1>
-            <p className="text-base text-gray-300 max-w-xl leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-300 max-w-xl leading-relaxed">
               Manage your concrete products, recipes, and lab testing with precision and efficiency.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+          <div className="flex flex-wrap items-center gap-4 lg:flex-col lg:items-end">
+            {/* Database status */}
+            <div
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded border text-xs font-semibold uppercase tracking-wider ${
+                dbStatus === 'online'
+                  ? 'bg-green-500/15 border-green-500/50 text-green-400'
+                  : dbStatus === 'offline'
+                  ? 'bg-red-500/15 border-red-500/50 text-red-400'
+                  : 'bg-gray-500/15 border-gray-500/50 text-gray-400'
+              }`}
+              title={dbStatus === 'loading' ? 'Checking…' : `Database is ${dbStatus}`}
+            >
+              <Database className="w-3.5 h-3.5 shrink-0" />
+              <span>Database: {dbStatus === 'loading' ? '…' : dbStatus}</span>
+            </div>
             <Action to="/app/products/edit" label="Add Product" icon={<Package className="w-4 h-4" />} primary />
-            <Action to="/app/derive-recipe" label="New Recipe" icon={<Beaker className="w-4 h-4" />} />
+            <Action to="/app/studio" label="Mix designer" icon={<Beaker className="w-4 h-4" />} />
+            <Action to="/app/derive-recipe" label="Derive recipe" icon={<Beaker className="w-4 h-4" />} />
             <Action to="/app/lab/new" label="Lab Entry" icon={<Microscope className="w-4 h-4" />} />
             <Action to="/app/planner/tile" label="Calculate" icon={<Calculator className="w-4 h-4" />} />
           </div>
@@ -273,7 +334,7 @@ export default function AppDashboard() {
 
       {/* Stats */}
       <section className="border-b border-white/10 pb-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {stats.map((s) => (
             <div key={s.label}>
               <Stat label={s.label} value={s.value} icon={s.icon} />
@@ -284,48 +345,64 @@ export default function AppDashboard() {
 
       {/* Visual Analytics */}
       <section className="grid gap-6 lg:grid-cols-2 border-b border-white/10 pb-8">
+        {/* Quote Pipeline */}
         <div className="group border border-white/10 bg-[#353535] p-6 hover:border-white/20 transition-all hover-lift">
           <div className="mb-6">
-            <h3 className="text-lg font-black uppercase mb-2 text-white">Monthly Overview</h3>
-            <p className="text-sm text-gray-400">Project activity and performance metrics</p>
+            <h3 className="text-lg font-black uppercase mb-2 text-white">Quote Pipeline</h3>
+            <p className="text-sm text-gray-400">Quotes by status and total value</p>
           </div>
-            <div className="h-40 flex items-end justify-between gap-2 pb-4">
-              {[65, 80, 45, 90, 75, 85, 70].map((height, i) => (
+          <div className="h-40 flex items-end justify-between gap-3 pb-4">
+            {[
+              { label: 'Draft', value: quotesByStatus.draft, color: 'from-gray-400 to-gray-500' },
+              { label: 'Sent', value: quotesByStatus.sent, color: 'from-blue-400 to-blue-600' },
+              { label: 'Approved', value: quotesByStatus.approved, color: 'from-green-400 to-green-600' },
+              { label: 'Rejected', value: quotesByStatus.rejected, color: 'from-red-400 to-red-600' },
+            ].map((bar, i) => {
+              const maxVal = Math.max(quotesByStatus.draft, quotesByStatus.sent, quotesByStatus.approved, quotesByStatus.rejected, 1);
+              const pct = Math.max((bar.value / maxVal) * 100, 8);
+              return (
                 <div key={i} className="flex-1 flex flex-col items-center group/bar">
-                  <div 
-                    className="w-full rounded-t-lg bg-gradient-to-t from-blue-600 via-purple-500 to-pink-500 transition-all duration-300 hover:scale-110 cursor-pointer relative group-hover/bar:shadow-lg group-hover/bar:shadow-purple-500/20"
-                    style={{ height: `${height}%` }}
+                  <div
+                    className={`w-full rounded-t-lg bg-gradient-to-t ${bar.color} transition-all duration-300 hover:scale-110 cursor-pointer relative`}
+                    style={{ height: `${pct}%` }}
                   >
                     <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                      {height}%
+                      {bar.value}
                     </div>
                   </div>
-                  <div className="text-xs text-gray-400 mt-2 font-medium group-hover/bar:text-gray-300 transition-colors duration-300">
-                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'][i]}
-                  </div>
+                  <div className="text-xs text-gray-400 mt-2 font-medium">{bar.label}</div>
                 </div>
-              ))}
+              );
+            })}
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Total Pipeline</div>
+              <div className="text-xl font-black text-white">{currencyIDR(totalQuoteValue)}</div>
             </div>
-            <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
-              <div className="text-xl font-black text-white">$24,580</div>
-              <div className="flex items-center gap-1.5 text-sm text-green-400 font-semibold">
+            <div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Won</div>
+              <div className="flex items-center gap-1.5 text-lg font-black text-green-400">
                 <TrendingUp className="w-4 h-4" />
-                +12.5%
+                {currencyIDR(approvedValue)}
               </div>
             </div>
           </div>
+        </div>
 
+        {/* Overview Stats */}
         <div className="group border border-white/10 bg-[#353535] p-6 hover:border-white/20 transition-all hover-lift">
           <div className="mb-6">
-            <h3 className="text-lg font-black uppercase mb-2 text-white">Project Status</h3>
-            <p className="text-sm text-gray-400">Current project pipeline overview</p>
+            <h3 className="text-lg font-black uppercase mb-2 text-white">Overview</h3>
+            <p className="text-sm text-gray-400">Current system metrics</p>
           </div>
           <div className="space-y-3">
             {[
-              { label: 'Active Projects', value: 8, color: 'from-blue-500 to-cyan-500' },
-              { label: 'In Progress', value: 12, color: 'from-purple-500 to-pink-500' },
-              { label: 'Completed', value: 24, color: 'from-green-500 to-emerald-500' },
-              { label: 'On Hold', value: 3, color: 'from-gray-500 to-gray-600' },
+              { label: 'Clients', value: clients.length, color: 'from-cyan-500 to-blue-500' },
+              { label: 'Total Quotes', value: quotes.length, color: 'from-purple-500 to-pink-500' },
+              { label: 'Products (Published)', value: products.filter(p => p.public).length, color: 'from-green-500 to-emerald-500' },
+              { label: 'Recipes', value: recipes.length, color: 'from-orange-500 to-amber-500' },
+              { label: 'Lab Entries', value: labEntries.length, color: 'from-blue-500 to-indigo-500' },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between p-4 bg-[#232323] border border-white/10 hover:bg-[#353535] hover:border-white/20 transition-all group/item">
                 <div className="flex items-center gap-3">
@@ -335,6 +412,23 @@ export default function AppDashboard() {
                 <div className="text-xl font-black text-white group-hover/item:scale-110 transition-transform">{item.value}</div>
               </div>
             ))}
+          </div>
+
+          {/* CSV Export */}
+          <div className="mt-4 pt-4 border-t border-white/10">
+            <button
+              onClick={() => {
+                const rows = [['Metric', 'Value'], ['Clients', clients.length], ['Quotes', quotes.length], ['Approved Quote Value', approvedValue], ['Products', products.length], ['Recipes', recipes.length], ['Materials', materials.length]];
+                const csv = rows.map(r => r.join(',')).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'arcos-analytics.csv'; a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white border border-white/10 hover:border-white/20 transition-all"
+            >
+              <Download className="w-3.5 h-3.5" /> Export CSV
+            </button>
           </div>
         </div>
       </section>
@@ -384,22 +478,40 @@ export default function AppDashboard() {
         {/* Right rail */}
         <div className="space-y-4">
           <Card
-            title="Open Proposals"
-            emptyText="No open proposals."
-            action={<Link to="/app/proposal" className="text-sm text-gray-400 hover:text-white font-semibold">Create proposal →</Link>}
+            title="Recent Quotes"
+            emptyText="No quotes yet."
+            action={<Link to="/app/quotes" className="text-sm text-gray-400 hover:text-white font-semibold">All quotes →</Link>}
           >
             <List>
-              {(proposals || [])
-                .filter((p) => p.status !== "won" && p.status !== "lost")
-                .slice(0, 6)
-                .map((p) => (
-                  <ListItem
-                    key={p.id}
-                    title={p.title || `Proposal ${p.id}`}
-                    to={`/app/proposal?id=${encodeURIComponent(p.id)}`}
-                    meta={[p.client || "—", p.total ? currencyIDR(p.total) : ""]}
-                  />
-                ))}
+              {quotes.slice(0, 5).map((q) => (
+                <ListItem
+                  key={q.id}
+                  title={q.title}
+                  to={`/app/quotes/${q.id}`}
+                  meta={[q.status, q.client_name || '']}
+                />
+              ))}
+            </List>
+          </Card>
+
+          <Card
+            title="Jobs"
+            emptyText="No jobs yet — price custom client work under Sales → Jobs."
+            action={<Link to="/app/jobs" className="text-sm text-gray-400 hover:text-white font-semibold">All jobs →</Link>}
+          >
+            <List>
+              {jobs.slice(0, 5).map((j) => (
+                <ListItem
+                  key={j.id}
+                  title={j.title}
+                  to={`/app/jobs/${j.id}`}
+                  meta={[
+                    j.status,
+                    j.client_name || j.client_company || "",
+                    j.item_count != null ? `${j.item_count} lines` : "",
+                  ].filter(Boolean)}
+                />
+              ))}
             </List>
           </Card>
 

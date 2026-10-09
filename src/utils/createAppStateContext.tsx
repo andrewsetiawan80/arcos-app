@@ -32,21 +32,30 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       } as AppState;
     }
   });
-  const [loading, setLoading] = useState(true);
+  // Don't flash a loading screen when local cache already has data
+  const [loading, setLoading] = useState(() => {
+    try {
+      const s = load();
+      const empty =
+        !(s.products?.length || s.recipes?.length || s.materials?.length);
+      return empty;
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     let mounted = true;
-    setLoading(true);
 
     const unsubscribe = subscribe((nextState) => {
       if (!mounted) {
         return;
       }
-      setState(nextState);
+      setState((prev) => (prev === nextState ? prev : nextState));
       setLoading(false);
     });
 
-    // Refresh in the background
+    // Refresh in the background (do not flash loading on every notify)
     refreshStore().catch(() => {
       if (mounted) {
         setLoading(false);

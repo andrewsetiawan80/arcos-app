@@ -36,7 +36,7 @@ export default function PublicCollection() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+        isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
       }`}
     >
       {/* ===== PAGE HEADER / HERO ===== */}
@@ -51,7 +51,7 @@ export default function PublicCollection() {
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/80 via-[#1B1B1B]/60 to-[#1B1B1B]"
+                ? "bg-gradient-to-b from-[#232323]/80 via-[#232323]/60 to-[#232323]"
                 : "bg-gradient-to-b from-white/80 via-white/60 to-white"
             }`}
           />
@@ -66,7 +66,7 @@ export default function PublicCollection() {
           {/* Title */}
           <h1
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Collection
@@ -109,8 +109,8 @@ export default function PublicCollection() {
                 className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
                   !activeTag
                     ? isDark
-                      ? "bg-white text-[#1B1B1B] border-white"
-                      : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                      ? "bg-white text-[#232323] border-white"
+                      : "bg-[#232323] text-white border-[#232323]"
                     : isDark
                     ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
                     : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
@@ -125,8 +125,8 @@ export default function PublicCollection() {
                   className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
                     activeTag === tag
                       ? isDark
-                        ? "bg-white text-[#1B1B1B] border-white"
-                        : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                        ? "bg-white text-[#232323] border-white"
+                        : "bg-[#232323] text-white border-[#232323]"
                       : isDark
                       ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
                       : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
@@ -144,7 +144,7 @@ export default function PublicCollection() {
       {/* ===== COLLECTION GRID ===== */}
       <section
         className={`py-16 sm:py-20 transition-colors duration-300 ${
-          isDark ? "bg-[#1B1B1B]" : "bg-white"
+          isDark ? "bg-[#232323]" : "bg-white"
         }`}
       >
         <div
@@ -164,7 +164,7 @@ export default function PublicCollection() {
               {activeTag && (
                 <span>
                   {" "}
-                  in <span className={isDark ? "text-white" : "text-[#1B1B1B]"}>{activeTag}</span>
+                  in <span className={isDark ? "text-white" : "text-[#232323]"}>{activeTag}</span>
                 </span>
               )}
             </p>
@@ -196,7 +196,7 @@ export default function PublicCollection() {
         <div className="max-w-3xl mx-auto px-6 sm:px-12 lg:px-20 text-center">
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Looking for something specific?
@@ -214,8 +214,8 @@ export default function PublicCollection() {
               to="/contact"
               className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90"
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Contact Us
@@ -232,8 +232,8 @@ export default function PublicCollection() {
               to="/surfaces"
               className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]"
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Explore Materials
@@ -257,7 +257,7 @@ function EmptyState({ activeTag, isDark }: { activeTag: string | null; isDark: b
         <div>
           <p className={`text-lg font-light mb-4 ${isDark ? "text-white/70" : "text-[#6F6F6F]"}`}>
             No pieces found for{" "}
-            <span className={isDark ? "text-white" : "text-[#1B1B1B]"}>"{activeTag}"</span>
+            <span className={isDark ? "text-white" : "text-[#232323]"}>"{activeTag}"</span>
           </p>
           <p className={`text-sm ${isDark ? "text-white/50" : "text-[#AFAFAF]"}`}>
             Try selecting a different category or view all pieces.
@@ -280,7 +280,7 @@ function EmptyState({ activeTag, isDark }: { activeTag: string | null; isDark: b
             </svg>
           </div>
           <h3
-            className={`text-xl font-light mb-4 ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+            className={`text-xl font-light mb-4 ${isDark ? "text-white" : "text-[#232323]"}`}
           >
             Collection coming soon
           </h3>
@@ -296,8 +296,8 @@ function EmptyState({ activeTag, isDark }: { activeTag: string | null; isDark: b
             to="/contact"
             className={`inline-flex items-center gap-3 px-6 py-3 text-sm font-medium tracking-wider transition-all duration-300 ${
               isDark
-                ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                ? "bg-white text-[#232323] hover:bg-white/90"
+                : "bg-[#232323] text-white hover:bg-[#353535]"
             }`}
           >
             Get in Touch
@@ -349,7 +349,7 @@ function CollectionCard({
       <div className="space-y-2">
         <h3
           className={`text-base font-medium transition-colors ${
-            isDark ? "text-white group-hover:text-white/80" : "text-[#1B1B1B] group-hover:text-[#6F6F6F]"
+            isDark ? "text-white group-hover:text-white/80" : "text-[#232323] group-hover:text-[#6F6F6F]"
           }`}
         >
           {product.title}

@@ -138,14 +138,13 @@ export default function Proposal() {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in-0 duration-700">
+    <div className="space-y-8">
       {/* Header */}
       <header className="relative print:hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Sales & Proposals</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">

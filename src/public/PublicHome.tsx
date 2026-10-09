@@ -4,6 +4,7 @@ import { useFadeIn } from "../utils/useAnimation";
 import { api } from "../lib/api";
 import { useLanguage } from "../i18n/LanguageContext";
 import { usePublicTheme } from "./PublicThemeContext";
+import { OcutShape } from "../components/brand/Supergraphic";
 
 // Import images
 import heroFacade from "../assets/images/hero-facade.webp";
@@ -82,7 +83,7 @@ function FeaturedProjectsCarousel() {
               />
             </div>
             <div className="pt-6 space-y-2">
-              <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+              <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-[#232323]"}`}>
                 {project.title}
               </h3>
               <p className={`text-sm tracking-wide ${isDark ? "text-white/50" : "text-[#6F6F6F]"}`}>
@@ -101,7 +102,7 @@ function FeaturedProjectsCarousel() {
             onClick={() => goToSlide(index)}
             className={`h-2 rounded-full transition-all ${
               index === currentIndex
-                ? `w-8 ${isDark ? "bg-white" : "bg-[#1B1B1B]"}`
+                ? `w-8 ${isDark ? "bg-white" : "bg-[#232323]"}`
                 : `w-2 ${isDark ? "bg-white/30 hover:bg-white/50" : "bg-[#AFAFAF] hover:bg-[#6F6F6F]"}`
             }`}
             aria-label={`Go to slide ${index + 1}`}
@@ -127,7 +128,7 @@ export default function PublicHome() {
   const ctaAnim = useFadeIn({ delay: 600 });
 
   return (
-    <div className={`transition-colors duration-300 ${isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"}`}>
+    <div className={`transition-colors duration-300 ${isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"}`}>
       {/* ===== SECTION 1: HERO ===== */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         {/* Background */}
@@ -140,8 +141,8 @@ export default function PublicHome() {
           {/* Overlay - different for light/dark */}
           {isDark ? (
             <>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#1B1B1B] via-[#1B1B1B]/80 to-[#1B1B1B]/40" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1B1B1B] via-transparent to-[#1B1B1B]/50" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#232323] via-[#232323]/80 to-[#232323]/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#232323] via-transparent to-[#232323]/50" />
             </>
           ) : (
             <>
@@ -155,10 +156,14 @@ export default function PublicHome() {
           ref={heroRef} 
           className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-32 w-full animate-fade-in-up"
         >
+          {/* Supergraphic: horizontal cut of letter O (arc shape) */}
+          <div className="mb-8" aria-hidden>
+            <OcutShape size={80} variant={isDark ? "on-black" : "on-white"} opacity={0.5} />
+          </div>
           <div className="max-w-3xl space-y-10">
             {/* Headline */}
             <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight leading-[1.05] ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               Surfaces,<br />reimagined.
             </h1>
@@ -176,8 +181,8 @@ export default function PublicHome() {
                 to="/catalog"
                 className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                   isDark 
-                    ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                    : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                    ? "bg-white text-[#232323] hover:bg-white/90" 
+                    : "bg-[#232323] text-white hover:bg-[#353535]"
                 }`}
               >
                 Explore Surfaces
@@ -189,8 +194,8 @@ export default function PublicHome() {
                 to="/projects"
                 className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                   isDark 
-                    ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                    : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                    ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                    : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
                 }`}
               >
                 View Projects
@@ -213,7 +218,7 @@ export default function PublicHome() {
 
       {/* ===== SECTION 2: BRAND INTRO ===== */}
       <section className={`py-32 sm:py-40 lg:py-48 transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B]" : "bg-white"
+        isDark ? "bg-[#232323]" : "bg-white"
       }`}>
         <div 
           ref={brandIntroAnim.ref} 
@@ -221,7 +226,7 @@ export default function PublicHome() {
         >
           <div className="space-y-12 text-center">
             <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               Concrete, as a language of design.
             </h2>
@@ -258,7 +263,7 @@ export default function PublicHome() {
         >
           <div className="text-center mb-20">
             <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               Material innovation, engineered for design.
             </h2>
@@ -300,8 +305,8 @@ export default function PublicHome() {
                 </div>
                 {/* Content */}
                 <div className="space-y-4">
-                  <div className={`w-12 h-px ${isDark ? "bg-white" : "bg-[#1B1B1B]"}`} />
-                  <h3 className={`text-xl font-medium tracking-tight ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                  <div className={`w-12 h-px ${isDark ? "bg-white" : "bg-[#232323]"}`} />
+                  <h3 className={`text-xl font-medium tracking-tight ${isDark ? "text-white" : "text-[#232323]"}`}>
                     {material.title}
                   </h3>
                   <p className={`leading-relaxed font-light ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
@@ -316,7 +321,7 @@ export default function PublicHome() {
 
       {/* ===== SECTION 4: SIGNATURE COLLECTIONS ===== */}
       <section className={`py-32 sm:py-40 transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B]" : "bg-white"
+        isDark ? "bg-[#232323]" : "bg-white"
       }`}>
         <div 
           ref={collectionsAnim.ref} 
@@ -324,7 +329,7 @@ export default function PublicHome() {
         >
           <div className="text-center mb-16">
             <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               Signature surface collections.
             </h2>
@@ -352,7 +357,7 @@ export default function PublicHome() {
                 <p className={`text-xs tracking-[0.2em] uppercase ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
                   UHPC
                 </p>
-                <h3 className={`text-2xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                <h3 className={`text-2xl font-light ${isDark ? "text-white" : "text-[#232323]"}`}>
                   Solis Series
                 </h3>
                 <p className={`font-light leading-relaxed ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
@@ -377,7 +382,7 @@ export default function PublicHome() {
                 <p className={`text-xs tracking-[0.2em] uppercase ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
                   GFRC
                 </p>
-                <h3 className={`text-2xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                <h3 className={`text-2xl font-light ${isDark ? "text-white" : "text-[#232323]"}`}>
                   Aeris Series
                 </h3>
                 <p className={`font-light leading-relaxed ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
@@ -391,7 +396,7 @@ export default function PublicHome() {
 
       {/* ===== SECTION 5: APPLICATIONS ===== */}
       <section className={`py-32 sm:py-40 transition-colors duration-300 ${
-        isDark ? "bg-[#232323]" : "bg-[#1B1B1B]"
+        isDark ? "bg-[#232323]" : "bg-[#232323]"
       } text-white`}>
         <div 
           ref={applicationsAnim.ref} 
@@ -435,7 +440,7 @@ export default function PublicHome() {
 
       {/* ===== SECTION 6: PROJECTS HIGHLIGHT ===== */}
       <section className={`py-32 sm:py-40 transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B]" : "bg-white"
+        isDark ? "bg-[#232323]" : "bg-white"
       }`}>
         <div 
           ref={projectsAnim.ref} 
@@ -443,7 +448,7 @@ export default function PublicHome() {
         >
           <div className="text-center mb-16">
             <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               Designed to endure, crafted to inspire.
             </h2>
@@ -461,8 +466,8 @@ export default function PublicHome() {
               to="/projects"
               className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               View All Projects
@@ -484,7 +489,7 @@ export default function PublicHome() {
         >
           <div className="text-center mb-20">
             <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               A seamless process, from concept to creation.
             </h2>
@@ -517,7 +522,7 @@ export default function PublicHome() {
                 <span className={`text-xs tracking-[0.2em] ${isDark ? "text-white/40" : "text-[#AFAFAF]"}`}>
                   {phase.step}
                 </span>
-                <h3 className={`text-xl font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                <h3 className={`text-xl font-medium ${isDark ? "text-white" : "text-[#232323]"}`}>
                   {phase.title}
                 </h3>
                 <p className={`font-light leading-relaxed ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
@@ -531,7 +536,7 @@ export default function PublicHome() {
 
       {/* ===== SECTION 8: BRAND STATEMENT ===== */}
       <section className={`py-32 sm:py-40 lg:py-48 transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B]" : "bg-white"
+        isDark ? "bg-[#232323]" : "bg-white"
       }`}>
         <div 
           ref={statementAnim.ref} 
@@ -539,12 +544,12 @@ export default function PublicHome() {
         >
           <blockquote className="space-y-6">
             <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               We shape experiences.
             </p>
             <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               We blend artistry with architectural integrity.
             </p>
@@ -568,7 +573,7 @@ export default function PublicHome() {
           />
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#232323] to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323] to-[#232323]" 
               : "bg-gradient-to-b from-[#E3DFD9] to-[#D6D6D6]"
           }`} />
         </div>
@@ -578,7 +583,7 @@ export default function PublicHome() {
           className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}
         >
           <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Let's shape your next space.
           </h2>
@@ -593,8 +598,8 @@ export default function PublicHome() {
               to="/contact"
               className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90" 
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Contact Us
@@ -606,8 +611,8 @@ export default function PublicHome() {
               href="mailto:hello@arcos.id?subject=Sample%20Request"
               className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Request Samples

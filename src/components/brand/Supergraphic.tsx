@@ -1,13 +1,13 @@
 import React from 'react';
+import { SUPERGRAPHIC_PATH_D, SUPERGRAPHIC_VIEWBOX } from '../../assets/brand/supergraphicPath';
 
 /**
  * Arcos Supergraphic Component
- * 
- * Based on the Arcos Brand Guidelines:
+ *
+ * Shape comes from src/assets/brand/supergraphicPath.ts — replace that path with
+ * the exact path from the PDF (pages 25–26) for accurate supergraphics.
  * - Derived from the horizontal cut of the letter "O"
- * - Creates a column/cluster of repeating semi-circle shapes
- * - Always monochrome: #353535 on #232323, or #232323 on white with low opacity
- * - Minimalist and architectural, not decorative
+ * - Monochrome: #353535 on #232323, or #232323 on white
  */
 
 interface SupergraphicProps {
@@ -52,7 +52,7 @@ export function Supergraphic({
   const gap = size === 'small' ? 8 : size === 'medium' ? 12 : 16;
   
   return (
-    <div 
+    <div
       className={`supergraphic ${className}`}
       style={{
         display: 'flex',
@@ -63,24 +63,19 @@ export function Supergraphic({
       aria-hidden="true"
     >
       {Array.from({ length: count }).map((_, index) => {
-        // Determine rotation: alternating creates visual interest
         const rotation = alternating ? (index % 2 === 0 ? 0 : 180) : 0;
-        
         return (
           <svg
             key={index}
             width={width}
             height={height}
-            viewBox={`0 0 ${width} ${height}`}
+            viewBox={SUPERGRAPHIC_VIEWBOX}
+            preserveAspectRatio="none"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            {/* The "cut O" shape - a semi-circle representing the horizontal slice of the O */}
-            <path
-              d={`M 0 ${height} A ${width/2} ${height} 0 0 1 ${width} ${height} L ${width} ${height} L 0 ${height} Z`}
-              fill={fillColor}
-            />
+            <path d={SUPERGRAPHIC_PATH_D} fill={fillColor} />
           </svg>
         );
       })}
@@ -156,15 +151,20 @@ interface SupergraphicStripProps {
   className?: string;
 }
 
+/** Cell size for strip: viewBox is 100×50 so aspect 2:1 */
+const STRIP_CELL_ASPECT = 100 / 50;
+
 export function SupergraphicStrip({
   variant = 'on-black',
   height = 60,
   className = ''
 }: SupergraphicStripProps) {
   const fillColor = variant === 'on-black' ? '#353535' : '#232323';
-  
+  const cellWidth = height * STRIP_CELL_ASPECT;
+  const count = Math.max(1, Math.ceil(400 / cellWidth));
+
   return (
-    <div 
+    <div
       className={`w-full overflow-hidden ${className}`}
       style={{ height }}
       aria-hidden="true"
@@ -172,26 +172,18 @@ export function SupergraphicStrip({
       <svg
         width="100%"
         height={height}
-        viewBox={`0 0 400 ${height}`}
+        viewBox={`0 0 ${count * 100} 50`}
         preserveAspectRatio="none"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Repeating semi-circle pattern */}
-        {Array.from({ length: 10 }).map((_, index) => {
-          const x = index * 40;
+        {Array.from({ length: count }).map((_, index) => {
+          const x = index * 100;
           const isUp = index % 2 === 0;
-          
           return (
-            <path
-              key={index}
-              d={isUp 
-                ? `M ${x} ${height} A 20 ${height/2} 0 0 1 ${x + 40} ${height} Z`
-                : `M ${x} 0 A 20 ${height/2} 0 0 0 ${x + 40} 0 Z`
-              }
-              fill={fillColor}
-              opacity={0.3}
-            />
+            <g key={index} transform={`translate(${x}, 0) ${isUp ? 'scale(1, -1) translate(0, -50)' : ''}`}>
+              <path d={SUPERGRAPHIC_PATH_D} fill={fillColor} opacity={0.35} />
+            </g>
           );
         })}
       </svg>
@@ -218,26 +210,24 @@ export function OcutShape({
   className = ''
 }: OcutShapeProps) {
   const fillColor = variant === 'on-black' ? '#353535' : '#232323';
-  const halfSize = size / 2;
-  
+  const height = size / 2;
+
   return (
     <svg
       width={size}
-      height={halfSize}
-      viewBox={`0 0 ${size} ${halfSize}`}
+      height={height}
+      viewBox={SUPERGRAPHIC_VIEWBOX}
+      preserveAspectRatio="none"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      style={{ 
+      style={{
         transform: `rotate(${rotation}deg)`,
-        opacity 
+        opacity
       }}
       aria-hidden="true"
     >
-      <path
-        d={`M 0 ${halfSize} A ${halfSize} ${halfSize} 0 0 1 ${size} ${halfSize} Z`}
-        fill={fillColor}
-      />
+      <path d={SUPERGRAPHIC_PATH_D} fill={fillColor} />
     </svg>
   );
 }

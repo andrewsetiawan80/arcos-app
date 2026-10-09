@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" data-page="prices">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mix Lab — Material prices</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="nav.css" />
+  <script src="nav.js" defer></script>
+  <style>
+    :root {
+      --bg: #232323; --panel: #353535; --bg-2: #2a2a2a; --line: rgba(255, 255, 255, 0.1);
+      --ink: #ffffff; --muted: rgba(255, 255, 255, 0.5);
+      --ok: #8bc34a; --radius: 0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: clip; }
+    body {
+      font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+    }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 16px 14px calc(28px + env(safe-area-inset-bottom)); }
+    @media (min-width: 720px) { .wrap { padding: 28px 24px 64px; } }
+    header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45); margin: 0 0 6px; font-weight: 700;
+    }
+    h1 {
+      font-weight: 900; font-size: clamp(28px, 4vw, 40px); margin: 0;
+      letter-spacing: -0.03em; text-transform: uppercase; line-height: 1.2;
+    }
+    .sub { color: var(--muted); font-size: 14px; max-width: 56ch; margin: 8px 0 0; line-height: 1.5; }
+    .btn {
+      border: 1px solid var(--line); background: var(--panel);
+      padding: 10px 14px; border-radius: 0; color: var(--ink);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; min-height: 44px;
+    }
+    .btn.primary { background: #ffffff; border-color: #ffffff; color: #232323; }
+    .btn.danger { border-color: rgba(255, 138, 128, 0.4); color: #ff8a80; background: transparent; }
+    .btn:disabled { opacity: 0.5; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line); border-radius: 0; padding: 18px;
+      margin-bottom: 16px;
+    }
+    .card h2 { margin: 0 0 6px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+    .card .notes { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .price-list { display: grid; gap: 14px; }
+    @media (min-width: 720px) { .price-list { grid-template-columns: 1fr 1fr; column-gap: 24px; } }
+    .price-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--line);
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; flex: 1 1 140px; min-width: 120px; margin: 0; }
+    .field label { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .field label b { color: var(--ink); font-weight: 700; }
+    .field input, .field select {
+      width: 100%; background: var(--bg-2); border: 1px solid var(--line);
+      border-radius: 0; padding: 0 12px; height: 44px; font-size: 16px;
+    }
+    .field[hidden] { display: none !important; }
+    .price-eq { flex: 1 1 100%; margin: 0; font-size: 12px; color: var(--muted); }
+    .row-actions { flex: 1 1 100%; display: flex; justify-content: flex-end; }
+    .meta { font-size: 11px; color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+    .save-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .save-row .btn { flex: 1; text-align: center; min-height: 44px; }
+    .save-status { flex: 1 1 100%; margin: 0; font-size: 13px; min-height: 1.2em; }
+    .save-status.ok { color: var(--ok); }
+    .save-status.err { color: #ff8a80; }
+    .save-status.busy { color: var(--muted); }
+    .add-grid { display: grid; gap: 8px; }
+    @media (min-width: 600px) { .add-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <p class="eyebrow">Mix Lab · shared with Arcos</p>
+        <h1>Material prices</h1>
+        <p class="sub">Same catalog as Arcos Materials. Add pigment per color/brand — each SKU has its own price. Changes sync both ways.</p>
+      </div>
+    </header>
+
+    <section class="card" id="addCard">
+      <h2>Add material / pigment</h2>
+      <p class="notes">Example: name “Bayferrox 330 Black”, kind Pigment, brand Bayferrox, color black → id <code>pigment-bayferrox-330-black</code>.</p>
+      <div class="add-grid">
+        <div class="field"><label>Name</label><input id="addName" placeholder="Bayferrox 330 Black" /></div>
+        <div class="field">
+          <label>Kind</label>
+          <select id="addKind">
+            <option value="pigment" selected>Pigment</option>
+            <option value="cement">Cement</option>
+            <option value="sand">Sand</option>
+            <option value="polymer">Polymer</option>
+            <option value="admix">Admix</option>
+            <option value="fiber">Fiber</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Brand</label><input id="addBrand" placeholder="Bayferrox" /></div>
+        <div class="field"><label>Color</label><input id="addColor" placeholder="black" /></div>
+        <div class="field"><label>Rp</label><input id="addAmount" type="number" min="0" step="1000" value="0" /></div>
+        <div class="field"><label>Pack kg</label><input id="addPack" type="number" min="0.01" step="1" value="1" /></div>
+      </div>
+      <div class="save-row">
+        <button class="btn primary" type="button" id="addMaterial">Add to catalog</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Pigments</h2>
+      <p class="notes">One price per color/brand. Ticket “pigment %” still costs against <b>pigment (generic)</b> unless you wire a SKU later.</p>
+      <div class="price-list" id="pigmentFields"></div>
+    </section>
+
+    <section class="card">
+      <h2>Other materials</h2>
+      <div class="price-list" id="priceFields"></div>
+      <div class="save-row">
+        <button class="btn primary" type="button" id="savePrices">Save prices</button>
+        <button class="btn" type="button" id="exportPrices">Export file</button>
+        <button class="btn" type="button" id="importPrices">Import file</button>
+        <input type="file" id="importPricesFile" accept="application/json,.json" hidden />
+        <p class="save-status" id="priceSaveStatus" aria-live="polite"></p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const SHOP_PRICES_URL = "http://192.168.2.103/api/prices";
+    const $ = (id) => document.getElementById(id);
+
+    /** catalog[id] = full shared schema */
+    let catalog = {};
+
+    function hydrateEntry(raw, fallbackId) {
+      if (typeof raw === "number") {
+        return { id: fallbackId, name: fallbackId, amount: raw, packKg: 1, kind: "other" };
+      }
+      if (raw && typeof raw === "object") {
+        const amount = Number(raw.amount ?? raw.perKg) || 0;
+        const packKg = Number(raw.packKg) > 0 ? Number(raw.packKg) : 1;
+        return {
+          id: String(raw.id || fallbackId),
+          name: String(raw.name || fallbackId),
+          amount,
+          packKg,
+          densityKgM3: raw.densityKgM3 != null ? Number(raw.densityKgM3) : undefined,
+          kind: String(raw.kind || "other"),
+          brand: raw.brand || null,
+          color: raw.color || null,
+        };
+      }
+      return { id: fallbackId, name: fallbackId, amount: 0, packKg: 1, kind: "other" };
+    }
+
+    function hydrateCatalog(obj) {
+      const out = {};
+      if (!obj || typeof obj !== "object" || Array.isArray(obj)) return out;
+      Object.keys(obj).forEach((id) => {
+        if (id.startsWith("_")) return;
+        out[id] = hydrateEntry(obj[id], id);
+      });
+      return out;
+    }
+
+    function pricePerKg(id) {
+      const e = catalog[id];
+      if (!e || !(e.packKg > 0)) return 0;
+      return e.amount / e.packKg;
+    }
+
+    function rp(n) {
+      if (!Number.isFinite(n)) return "—";
+      return "Rp " + Math.round(n).toLocaleString("id-ID");
+    }
+
+    function isPigment(e) {
+      return e.kind === "pigment" || String(e.id).startsWith("pigment");
+    }
+
+    function cacheLocally() {
+      try { localStorage.setItem("mesh-lab-prices", JSON.stringify(catalog)); } catch (_) {}
+    }
+
+    async function fetchRemote() {
+      for (const url of ["/api/prices", SHOP_PRICES_URL, "http://192.168.2.189/api/shop-prices"]) {
+        try {
+          const res = await fetch(url, { cache: "no-store" });
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (data && typeof data === "object" && !Array.isArray(data)) return hydrateCatalog(data);
+        } catch (_) {}
+      }
+      return null;
+    }
+
+    async function persistCatalog() {
+      for (const url of ["/api/prices", SHOP_PRICES_URL, "http://192.168.2.189/api/shop-prices"]) {
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(catalog),
+          });
+          if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (data.catalog) catalog = hydrateCatalog(data.catalog);
+            cacheLocally();
+            return true;
+          }
+        } catch (_) {}
+      }
+      return false;
+    }
+
+    function showStatus(msg, kind) {
+      const el = $("priceSaveStatus");
+      if (!el) return;
+      el.textContent = msg;
+      el.className = "save-status" + (kind ? " " + kind : "");
+    }
+
+    function readFromDom() {
+      Object.keys(catalog).forEach((id) => {
+        const amountEl = $("price-" + id);
+        const modeEl = $("price-mode-" + id);
+        const nameEl = $("name-" + id);
+        const brandEl = $("brand-" + id);
+        const colorEl = $("color-" + id);
+        if (!amountEl || !modeEl) return;
+        const amount = Number(amountEl.value) || 0;
+        let packKg = 1;
+        if (modeEl.value === "bag") {
+          const bagEl = $("price-bag-" + id);
+          const bag = bagEl ? bagEl.value : "25";
+          packKg = bag === "custom" ? (Number($("price-pack-" + id)?.value) || 1) : (Number(bag) || 25);
+        }
+        catalog[id] = {
+          ...catalog[id],
+          amount,
+          packKg,
+          name: nameEl ? nameEl.value.trim() || catalog[id].name : catalog[id].name,
+          brand: brandEl ? (brandEl.value.trim() || null) : catalog[id].brand,
+          color: colorEl ? (colorEl.value.trim() || null) : catalog[id].color,
+        };
+      });
+    }
+
+    function applyRowUi(id) {
+      const modeEl = $("price-mode-" + id);
+      const bagField = $("price-bag-" + id)?.closest(".field");
+      const packField = $("price-pack-" + id)?.closest(".field");
+      const bagEl = $("price-bag-" + id);
+      const isKg = modeEl && modeEl.value === "kg";
+      const isCustom = !isKg && bagEl && bagEl.value === "custom";
+      if (bagField) bagField.hidden = isKg;
+      if (packField) packField.hidden = !isCustom;
+      const hint = $("price-eq-" + id);
+      if (hint) {
+        const per = pricePerKg(id);
+        hint.textContent = per > 0
+          ? (isKg ? `= ${rp(per)} / kg` : `= ${rp(per)} / kg (from bag)`)
+          : "Enter price.";
+      }
+    }
+
+    function rowHtml(e) {
+      const id = e.id;
+      const mode = e.packKg === 1 ? "kg" : "bag";
+      const preset = e.packKg === 25 ? "25" : e.packKg === 40 ? "40" : e.packKg === 1 ? "25" : "custom";
+      const customKg = preset === "custom" ? e.packKg : 20;
+      return `
+        <div class="price-row" data-id="${id}">
+          <div class="field" style="flex:1 1 100%">
+            <label>Name</label>
+            <div class="meta">${id}</div>
+            <input type="text" id="name-${id}" value="${String(e.name || "").replace(/"/g, "&quot;")}" />
+          </div>
+          <div class="field">
+            <label>Brand</label>
+            <input type="text" id="brand-${id}" value="${String(e.brand || "").replace(/"/g, "&quot;")}" placeholder="optional" />
+          </div>
+          <div class="field">
+            <label>Color</label>
+            <input type="text" id="color-${id}" value="${String(e.color || "").replace(/"/g, "&quot;")}" placeholder="optional" />
+          </div>
+          <div class="field" style="flex:1 1 100%">
+            <label>Rp</label>
+            <input type="number" id="price-${id}" min="0" step="100" value="${e.amount || 0}" />
+          </div>
+          <div class="field">
+            <label>Priced as</label>
+            <select id="price-mode-${id}">
+              <option value="kg" ${mode === "kg" ? "selected" : ""}>Per kg</option>
+              <option value="bag" ${mode === "bag" ? "selected" : ""}>Per bag</option>
+            </select>
+          </div>
+          <div class="field" ${mode === "bag" ? "" : "hidden"}>
+            <label>Bag size</label>
+            <select id="price-bag-${id}">
+              <option value="25" ${preset === "25" ? "selected" : ""}>25 kg</option>
+              <option value="40" ${preset === "40" ? "selected" : ""}>40 kg</option>
+              <option value="custom" ${preset === "custom" ? "selected" : ""}>Other</option>
+            </select>
+          </div>
+          <div class="field" ${mode === "bag" && preset === "custom" ? "" : "hidden"}>
+            <label>Other size <b>kg</b></label>
+            <input type="number" id="price-pack-${id}" min="0.01" step="1" value="${customKg}" />
+          </div>
+          <p class="price-eq" id="price-eq-${id}"></p>
+          <div class="row-actions">
+            <button type="button" class="btn danger" data-remove="${id}">Remove</button>
+          </div>
+        </div>`;
+    }
+
+    function render() {
+      const entries = Object.values(catalog).sort((a, b) =>
+        String(a.name).localeCompare(String(b.name))
+      );
+      const pigments = entries.filter(isPigment);
+      const others = entries.filter((e) => !isPigment(e));
+      $("pigmentFields").innerHTML = pigments.length
+        ? pigments.map(rowHtml).join("")
+        : `<p class="notes">No pigment SKUs yet — add Bayferrox Black, yellow oxide, etc. above.</p>`;
+      $("priceFields").innerHTML = others.map(rowHtml).join("");
+      entries.forEach((e) => applyRowUi(e.id));
+    }
+
+    function bindCard(root) {
+      root.addEventListener("input", () => {
+        readFromDom();
+        Object.keys(catalog).forEach(applyRowUi);
+      });
+      root.addEventListener("change", () => {
+        readFromDom();
+        Object.keys(catalog).forEach(applyRowUi);
+      });
+      root.addEventListener("click", async (e) => {
+        const btn = e.target.closest("[data-remove]");
+        if (!btn) return;
+        const id = btn.getAttribute("data-remove");
+        const name = catalog[id]?.name || id;
+        if (!confirm(`Remove “${name}” from Mix Lab and Arcos?`)) return;
+        showStatus("Removing…", "busy");
+        for (const url of [
+          `/api/prices/${encodeURIComponent(id)}`,
+          `http://192.168.2.189/api/shop-prices/${encodeURIComponent(id)}`,
+        ]) {
+          try {
+            const res = await fetch(url, { method: "DELETE" });
+            if (res.ok) {
+              const data = await res.json();
+              if (data.catalog) catalog = hydrateCatalog(data.catalog);
+              else delete catalog[id];
+              cacheLocally();
+              render();
+              showStatus(data.restoredCore ? "Core item re-seeded (required)." : "Removed on both apps.", data.restoredCore ? "err" : "ok");
+              setTimeout(() => showStatus("", ""), 4000);
+              return;
+            }
+          } catch (_) {}
+        }
+        showStatus("Could not remove — server unreachable.", "err");
+      });
+    }
+
+    bindCard($("pigmentFields"));
+    bindCard($("priceFields"));
+
+    $("savePrices").onclick = async () => {
+      readFromDom();
+      $("savePrices").disabled = true;
+      showStatus("Saving to Arcos DB…", "busy");
+      const ok = await persistCatalog();
+      $("savePrices").disabled = false;
+      render();
+      showStatus(ok ? "Saved — Arcos Materials updated." : "Could not reach server.", ok ? "ok" : "err");
+      setTimeout(() => showStatus("", ""), 5000);
+    };
+
+    $("addMaterial").onclick = async () => {
+      const name = $("addName").value.trim();
+      if (!name) return;
+      const payload = {
+        name,
+        kind: $("addKind").value,
+        brand: $("addBrand").value.trim() || null,
+        color: $("addColor").value.trim() || null,
+        amount: Number($("addAmount").value) || 0,
+        packKg: Number($("addPack").value) || 1,
+      };
+      showStatus("Adding…", "busy");
+      for (const url of ["/api/prices/item", "http://192.168.2.189/api/shop-prices/item"]) {
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.catalog) catalog = hydrateCatalog(data.catalog);
+            cacheLocally();
+            render();
+            $("addName").value = "";
+            $("addBrand").value = "";
+            $("addColor").value = "";
+            $("addAmount").value = "0";
+            showStatus("Added — visible in Arcos too.", "ok");
+            setTimeout(() => showStatus("", ""), 4000);
+            return;
+          }
+        } catch (_) {}
+      }
+      showStatus("Could not add — is Arcos API up?", "err");
+    };
+
+    $("exportPrices").onclick = () => {
+      readFromDom();
+      const blob = new Blob([JSON.stringify(catalog, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "mix-lab-materials.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    };
+
+    $("importPrices").onclick = () => $("importPricesFile").click();
+    $("importPricesFile").addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          catalog = hydrateCatalog(JSON.parse(String(reader.result || "{}")));
+          render();
+          showStatus("Importing…", "busy");
+          const ok = await persistCatalog();
+          showStatus(ok ? "Imported and saved." : "Imported on screen only — tap Save.", ok ? "ok" : "err");
+        } catch (_) {
+          showStatus("Could not read that file.", "err");
+        }
+        e.target.value = "";
+      };
+      reader.readAsText(file);
+    });
+
+    showStatus("Loading catalog…", "busy");
+    fetchRemote().then((remote) => {
+      if (remote) {
+        catalog = remote;
+        cacheLocally();
+        showStatus("", "");
+      } else {
+        try { catalog = hydrateCatalog(JSON.parse(localStorage.getItem("mesh-lab-prices") || "{}")); } catch (_) {}
+        showStatus("Offline — cached catalog.", "err");
+      }
+      render();
+    });
+  </script>
+</body>
+</html>

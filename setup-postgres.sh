@@ -1,6 +1,6 @@
 #!/bin/bash
 # PostgreSQL Setup Script for Proxmox
-# Run this on your PostgreSQL container/server (192.168.2.124)
+# Run this on your PostgreSQL container/server (192.168.2.111)
 
 set -e
 
@@ -75,6 +75,6 @@ echo "User: ${DB_USER}"
 echo "Password: ${DB_PASSWORD}"
 echo ""
 echo "Connection string:"
-echo "postgresql://${DB_USER}:${DB_PASSWORD}@192.168.2.124:5432/${DB_NAME}"
+echo "postgresql://${DB_USER}:${DB_PASSWORD}@192.168.2.111:5432/${DB_NAME}"
 echo ""
 echo "Make sure port 5432 is accessible from your Docker containers!"

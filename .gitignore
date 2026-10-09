@@ -41,3 +41,9 @@ deploy-with-password.sh
 deploy-remote-auto.sh
 deploy-remote.sh
 /tmp/cretewerkz-deploy.tar.gz
+
+# Mix Lab standalone build output
+dist-mixlab
+
+# Local design rollback snapshots
+design-backup-rollback/

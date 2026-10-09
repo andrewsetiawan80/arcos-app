@@ -1,8 +1,18 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/__tests__/setup.ts'],
+    exclude: ['**/node_modules/**', '**/dist/**', '**/arcos-mobile/**'],
+  },
   define: {
     // Polyfill for Buffer (needed by @react-pdf/renderer)
     global: 'globalThis',
@@ -26,10 +36,14 @@ export default defineConfig({
     sourcemap: false,
     minify: 'esbuild',
     rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        mixlab: resolve(__dirname, 'mixlab.html'),
+      },
+      // No manualChunks for react/react-pdf — splitting them creates broken shared graphs.
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['lucide-react'],
+        manualChunks(id) {
+          if (id.includes("node_modules/lucide-react")) return "ui-vendor";
         },
       },
     },

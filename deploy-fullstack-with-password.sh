@@ -15,7 +15,7 @@ puts "   Host: $REMOTE_HOST"
 puts "   User: $REMOTE_USER"
 puts ""
 
-# Check if .env.production exists
+# Check if .env.production exists (SMTP vars optional: SMTP_HOST, SMTP_USER, SMTP_PASS, CONTACT_EMAIL for contact form)
 if {![file exists .env.production]} {
     puts "⚠️  .env.production not found. Creating from template..."
     set fp [open .env.production w]
@@ -69,7 +69,7 @@ expect {
 }
 
 puts "📦 Creating deployment package..."
-spawn bash -c "tar czf /tmp/arcos-full-deploy.tar.gz --exclude='node_modules' --exclude='.git' dist/ backend/src/ backend/package.json backend/package-lock.json backend/tsconfig.json backend/Dockerfile backend/.dockerignore docker-compose.yml nginx.conf .env.production 2>&1 && echo 'Package created' && tar -tzf /tmp/arcos-full-deploy.tar.gz | grep 'dist/assets/images/inspiration.*webp' | wc -l | xargs echo 'WebP images in package:'"
+spawn bash -c "tar czf /tmp/arcos-full-deploy.tar.gz --exclude='node_modules' --exclude='.git' dist/ backend/dist/ backend/src/ backend/package.json backend/package-lock.json backend/tsconfig.json backend/Dockerfile backend/.dockerignore docker-compose.yml nginx.conf .env.production 2>&1 && echo 'Package created' && tar -tzf /tmp/arcos-full-deploy.tar.gz | grep 'dist/assets/images/inspiration.*webp' | wc -l | xargs echo 'WebP images in package:'"
 expect {
     timeout {
         puts "❌ Package creation timeout"
@@ -143,7 +143,7 @@ expect {
 puts "✅ Files transferred"
 
 puts "🚀 Deploying on remote server..."
-    set deploy_script "mkdir -p $REMOTE_DIR && cd $REMOTE_DIR && tar xzf /tmp/arcos-full-deploy.tar.gz && rm /tmp/arcos-full-deploy.tar.gz && mkdir -p /opt/arcos-app/dist/assets/images && cp -r dist/assets/images/* /opt/arcos-app/dist/assets/images/ 2>/dev/null || true && cd backend && npm install --production && npm run build && cd .. && systemctl restart arcos-backend.service && systemctl reload nginx 2>/dev/null || true && echo '' && echo '✅ Deployment complete!' && echo 'Services running:' && echo '  🌐 Frontend:  http://$REMOTE_HOST' && echo '  🔌 Backend:   http://$REMOTE_HOST:3001 (runs directly via systemd)' && echo '' && echo 'Default admin: admin@arcos.com / admin123'"
+    set deploy_script "mkdir -p $REMOTE_DIR && cd $REMOTE_DIR && tar xzf /tmp/arcos-full-deploy.tar.gz && rm /tmp/arcos-full-deploy.tar.gz && mkdir -p /opt/arcos-app/dist/assets/images && cp -r dist/assets/images/* /opt/arcos-app/dist/assets/images/ 2>/dev/null || true && cd backend && npm install --omit=dev && cd .. && systemctl restart arcos-backend.service 2>/dev/null || true && systemctl reload nginx 2>/dev/null || true && echo '' && echo '✅ Deployment complete!' && echo 'Services running:' && echo '  🌐 Frontend:  http://$REMOTE_HOST' && echo '  🔌 Backend:   http://$REMOTE_HOST:3001' && echo '' && echo 'Default admin: admin@arcos.com / admin123'"
 spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $REMOTE_USER@$REMOTE_HOST $deploy_script
 
 expect "password:"

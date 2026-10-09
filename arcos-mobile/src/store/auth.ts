@@ -4,7 +4,19 @@ import { api } from '../lib/api';
 
 const DEFAULT_ROLE = 'guest';
 
-export type Role = 'admin' | 'production' | 'guest';
+export type Role = 'admin' | 'production' | 'sales' | 'engineer' | 'guest';
+
+function mapBackendRoleToRole(userRole: string): Role {
+  if (userRole === 'admin') return 'admin';
+  if (userRole === 'production') return 'production';
+  if (userRole === 'sales') return 'sales';
+  if (userRole === 'engineer') return 'engineer';
+  return 'guest';
+}
+
+function isAuthenticatedRole(role: Role): boolean {
+  return role !== 'guest';
+}
 
 type AuthStore = {
   role: Role;
@@ -27,12 +39,8 @@ export const useAuth = create<AuthStore>((set) => ({
       const result = await api.getCurrentUser();
       if (result.data?.user) {
         const userRole = result.data.user.role;
-        const role: Role = userRole === 'admin' ? 'admin' : userRole === 'production' ? 'production' : 'guest';
-        set({
-          user: result.data.user,
-          role,
-          isAuthenticated: userRole === 'admin' || userRole === 'production',
-        });
+        const role = mapBackendRoleToRole(userRole);
+        set({ user: result.data.user, role, isAuthenticated: isAuthenticatedRole(role) });
       } else {
         set({ role: DEFAULT_ROLE, isAuthenticated: false, user: null });
       }
@@ -42,24 +50,17 @@ export const useAuth = create<AuthStore>((set) => ({
     }
   },
   
-  setRole: async (role: Role) => {
-    set({ role, isAuthenticated: role === 'admin' || role === 'production' });
+  setRole: (role: Role) => {
+    set({ role, isAuthenticated: isAuthenticatedRole(role) });
   },
   
   login: async (email: string, password: string) => {
     try {
       const result = await api.login(email, password);
-      if (result.error) {
-        return { success: false, error: result.error };
-      }
+      if (result.error) return { success: false, error: result.error };
       if (result.data?.user) {
-        const userRole = result.data.user.role;
-        const role: Role = userRole === 'admin' ? 'admin' : userRole === 'production' ? 'production' : 'guest';
-        set({
-          user: result.data.user,
-          role,
-          isAuthenticated: userRole === 'admin' || userRole === 'production',
-        });
+        const role = mapBackendRoleToRole(result.data.user.role);
+        set({ user: result.data.user, role, isAuthenticated: isAuthenticatedRole(role) });
         return { success: true };
       }
       return { success: false, error: 'Login failed' };
@@ -71,17 +72,10 @@ export const useAuth = create<AuthStore>((set) => ({
   register: async (email: string, password: string) => {
     try {
       const result = await api.register(email, password);
-      if (result.error) {
-        return { success: false, error: result.error };
-      }
+      if (result.error) return { success: false, error: result.error };
       if (result.data?.user) {
-        const userRole = result.data.user.role;
-        const role: Role = userRole === 'admin' ? 'admin' : userRole === 'production' ? 'production' : 'guest';
-        set({
-          user: result.data.user,
-          role,
-          isAuthenticated: userRole === 'admin' || userRole === 'production',
-        });
+        const role = mapBackendRoleToRole(result.data.user.role);
+        set({ user: result.data.user, role, isAuthenticated: isAuthenticatedRole(role) });
         return { success: true };
       }
       return { success: false, error: 'Registration failed' };

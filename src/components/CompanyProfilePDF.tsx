@@ -523,6 +523,45 @@ const ContactPage = () => (
   </Page>
 );
 
+// Short variant: Cover + Services overview + Contact (3 pages)
+const ShortServicesPage = () => (
+  <Page size="A4" style={styles.pageDark}>
+    <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Logo color={COLORS.white} size="small" />
+      <Tagline color={COLORS.muted} />
+    </View>
+    <View style={{ backgroundColor: COLORS.gray, padding: 40, flex: 1 }}>
+      <Text style={[styles.headline, { color: COLORS.white, fontSize: 28 }]}>Our Services</Text>
+      <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Full-spectrum concrete innovation</Text>
+      <View style={{ marginTop: 24, flexDirection: 'row', flexWrap: 'wrap', gap: 20 }}>
+        <View style={{ width: '45%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>01</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 12 }]}>Microcement</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Seamless 2-3mm coatings. 60+ colors.</Text>
+        </View>
+        <View style={{ width: '45%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>02</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 12 }]}>Architectural Panels</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>UHPC and GFRC panels.</Text>
+        </View>
+        <View style={{ width: '45%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>03</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 12 }]}>3D Concrete Tiles</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Dimensional tiles with patterns.</Text>
+        </View>
+        <View style={{ width: '45%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>04</Text>
+          <Text style={[styles.subHeadline, { color: COLORS.white, fontFamily: 'Helvetica-Bold', fontSize: 12 }]}>Bespoke Solutions</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Custom designs and installations.</Text>
+        </View>
+      </View>
+    </View>
+    <View style={{ backgroundColor: COLORS.black, padding: 20, flexDirection: 'row', justifyContent: 'flex-end' }}>
+      <Supergraphic size={70} color={COLORS.gray} rows={2} cols={4} />
+    </View>
+  </Page>
+);
+
 // Main Document
 const CompanyProfileDocument = () => (
   <Document title="Arcos Company Profile" author="Arcos" subject="Architectural Concrete Solutions">
@@ -536,9 +575,72 @@ const CompanyProfileDocument = () => (
   </Document>
 );
 
-// Download button
+// Short Document (3 pages)
+const CompanyProfileShortDocument = () => (
+  <Document title="Arcos Company Profile (Short)" author="Arcos" subject="Architectural Concrete Solutions">
+    <CoverPage />
+    <ShortServicesPage />
+    <ContactPage />
+  </Document>
+);
+
+// Landscape Document (cover + services + contact in landscape)
+const CompanyProfileLandscapeDocument = () => (
+  <Document title="Arcos Company Profile (Landscape)" author="Arcos" subject="Architectural Concrete Solutions">
+    <Page size="A4" orientation="landscape" style={styles.pageDark}>
+      <View style={{ flexDirection: 'row', height: '100%' }}>
+        <View style={{ width: '55%', position: 'relative' }}>
+          <Image src={heroFacade} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <View style={{ position: 'absolute', top: 30, left: 30 }}>
+            <Text style={[styles.headline, { color: COLORS.white, fontSize: 32 }]}>Engineered</Text>
+            <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 14 }]}>Concrete Artistry</Text>
+          </View>
+        </View>
+        <View style={{ width: '45%', backgroundColor: COLORS.black, padding: 35, justifyContent: 'center' }}>
+          <Logo color={COLORS.white} size="large" />
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 9, marginTop: 15 }]}>
+            From seamless microcement finishes to parametric facade systems — Arcos delivers Southeast Asia's most advanced architectural concrete solutions.
+          </Text>
+          <View style={{ marginTop: 20 }}>
+            <Supergraphic size={80} color={COLORS.gray} rows={2} cols={3} />
+          </View>
+        </View>
+      </View>
+    </Page>
+    <Page size="A4" orientation="landscape" style={styles.pageDark}>
+      <View style={{ backgroundColor: COLORS.black, padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Logo color={COLORS.white} size="small" />
+        <Tagline color={COLORS.muted} />
+      </View>
+      <View style={{ padding: 30, flexDirection: 'row', flexWrap: 'wrap', gap: 30 }}>
+        <View style={{ width: '30%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>01 Microcement</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Seamless 2-3mm coatings. 60+ colors.</Text>
+        </View>
+        <View style={{ width: '30%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>02 Architectural Panels</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>UHPC and GFRC panels.</Text>
+        </View>
+        <View style={{ width: '30%' }}>
+          <Text style={[styles.label, { color: COLORS.muted }]}>03 3D Tiles & Bespoke</Text>
+          <Text style={[styles.body, { color: COLORS.muted, fontSize: 8 }]}>Dimensional tiles and custom designs.</Text>
+        </View>
+      </View>
+      <View style={{ flex: 1, backgroundColor: COLORS.gray, padding: 30, margin: 25, marginTop: 0 }}>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Email hello@arcosworks.com</Text>
+        <Text style={[styles.subHeadline, { color: COLORS.white, fontSize: 12 }]}>Website arcosworks.com</Text>
+        <Text style={[styles.body, { color: COLORS.muted, fontSize: 8, marginTop: 10 }]}>Southeast Asia</Text>
+      </View>
+    </Page>
+  </Document>
+);
+
+type Variant = 'regular' | 'short' | 'landscape';
+
+// Download button with variant selector
 export function CompanyProfileDownloadButton({ className = '' }: { className?: string }) {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [variant, setVariant] = useState<Variant>('regular');
 
   const handleDownload = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -546,11 +648,13 @@ export function CompanyProfileDownloadButton({ className = '' }: { className?: s
     if (isGenerating) return;
     setIsGenerating(true);
     try {
-      const blob = await pdf(<CompanyProfileDocument />).toBlob();
+      const Doc = variant === 'short' ? CompanyProfileShortDocument : variant === 'landscape' ? CompanyProfileLandscapeDocument : CompanyProfileDocument;
+      const blob = await pdf(<Doc />).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'Arcos-Company-Profile-2025.pdf';
+      const suffix = variant === 'short' ? '-Short' : variant === 'landscape' ? '-Landscape' : '';
+      link.download = `Arcos-Company-Profile-2025${suffix}.pdf`;
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
@@ -567,36 +671,49 @@ export function CompanyProfileDownloadButton({ className = '' }: { className?: s
   };
 
   return (
-    <button
-      type="button"
-      onClick={(e) => handleDownload(e)}
-      disabled={isGenerating}
-      style={{ pointerEvents: 'auto' }}
-      className={`cursor-pointer disabled:opacity-50 disabled:cursor-wait ${className}`}
-    >
-      <span className="inline-flex items-center gap-2">
-        {isGenerating ? (
-          <>
-            <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Generating...
-          </>
-        ) : (
-          <>
-            <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Download Company Profile
-          </>
-        )}
-      </span>
-    </button>
+    <div className="relative inline-block">
+      <div className="inline-flex rounded-sm overflow-hidden border border-white/20">
+        <select
+          value={variant}
+          onChange={(e) => setVariant(e.target.value as Variant)}
+          className="bg-[#353535] text-white text-sm px-3 py-2 border-r border-white/10 outline-none cursor-pointer"
+        >
+          <option value="regular">Regular (7 pages)</option>
+          <option value="short">Short (3 pages)</option>
+          <option value="landscape">Landscape</option>
+        </select>
+        <button
+          type="button"
+          onClick={(e) => handleDownload(e)}
+          disabled={isGenerating}
+          style={{ pointerEvents: 'auto' }}
+          className={`cursor-pointer disabled:opacity-50 disabled:cursor-wait bg-[#232323] text-white px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[#353535] transition-colors ${className}`}
+        >
+          <span className="inline-flex items-center gap-2">
+            {isGenerating ? (
+              <>
+                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Generating...
+              </>
+            ) : (
+              <>
+                <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download
+              </>
+            )}
+          </span>
+        </button>
+      </div>
+    </div>
   );
 }
 
-export { CompanyProfileDocument };
+export { CompanyProfileDocument, CompanyProfileShortDocument, CompanyProfileLandscapeDocument };
 export default CompanyProfileDownloadButton;
 
 

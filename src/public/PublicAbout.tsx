@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useFadeIn } from "../utils/useAnimation";
 import { usePublicTheme } from "./PublicThemeContext";
-import CompanyProfileDownloadButton from "../components/CompanyProfilePDF";
+import CompanyProfileDownloadButton from "../components/CompanyProfileDownloadButtonLazy";
 
 // Import images
 import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
@@ -25,7 +25,7 @@ export default function PublicAbout() {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
-      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
     }`}>
       
       {/* ===== PAGE HEADER SECTION ===== */}
@@ -40,7 +40,7 @@ export default function PublicAbout() {
           {/* Overlay */}
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B]/60 via-[#1B1B1B]/40 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323]/60 via-[#232323]/40 to-[#232323]" 
               : "bg-gradient-to-b from-white/70 via-white/50 to-white"
           }`} />
         </div>
@@ -53,7 +53,7 @@ export default function PublicAbout() {
         >
           {/* Main Title */}
           <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Concrete, reimagined as a medium of expression.
           </h1>
@@ -70,7 +70,7 @@ export default function PublicAbout() {
             className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium tracking-wider transition-all ${
               isDark 
                 ? "bg-white/10 border border-white/20 text-white hover:bg-white/20" 
-                : "bg-[#1B1B1B]/5 border border-[#1B1B1B]/10 text-[#1B1B1B] hover:bg-[#1B1B1B]/10"
+                : "bg-[#232323]/5 border border-[#232323]/10 text-[#232323] hover:bg-[#232323]/10"
             }`}
           />
         </div>
@@ -78,7 +78,7 @@ export default function PublicAbout() {
 
       {/* ===== SECTION 1: ABOUT THE BRAND ===== */}
       <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={aboutAnim.ref}
@@ -111,7 +111,7 @@ export default function PublicAbout() {
           </div>
 
           <p className={`mt-16 text-base font-medium tracking-wide ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Every surface is crafted with intention, engineered to endure, and shaped to inspire.
           </p>
@@ -151,7 +151,7 @@ export default function PublicAbout() {
 
       {/* ===== SECTION 3: BRAND PURPOSE ===== */}
       <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={purposeAnim.ref}
@@ -167,7 +167,7 @@ export default function PublicAbout() {
 
           {/* Large Statement */}
           <p className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed mb-12 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             To redefine the perception of concrete — from a cold, utilitarian substance into a warm, expressive medium of art and architecture.
           </p>
@@ -220,8 +220,8 @@ export default function PublicAbout() {
               }
             ].map((value) => (
               <div key={value.title} className="space-y-4">
-                <div className={`w-12 h-px ${isDark ? "bg-white/30" : "bg-[#1B1B1B]/20"}`} />
-                <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                <div className={`w-12 h-px ${isDark ? "bg-white/30" : "bg-[#232323]/20"}`} />
+                <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-[#232323]"}`}>
                   {value.title}
                 </h3>
                 <p className={`text-sm font-light leading-relaxed ${
@@ -241,7 +241,7 @@ export default function PublicAbout() {
 
       {/* ===== SECTION 5: BRAND PERSONALITY ===== */}
       <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={personalityAnim.ref}
@@ -271,7 +271,7 @@ export default function PublicAbout() {
               }
             ].map((item) => (
               <div key={item.pillar} className="space-y-4">
-                <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+                <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#232323]"}`}>
                   {item.pillar}
                 </h3>
                 <p className={`text-base font-light leading-relaxed ${
@@ -327,7 +327,7 @@ export default function PublicAbout() {
             ))}
           </ul>
 
-          <p className={`text-base font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+          <p className={`text-base font-medium ${isDark ? "text-white" : "text-[#232323]"}`}>
             We merge design sensibility with engineering precision.
           </p>
         </div>
@@ -335,7 +335,7 @@ export default function PublicAbout() {
 
       {/* ===== SECTION 7: OUR STORY ===== */}
       <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={storyAnim.ref}
@@ -396,7 +396,7 @@ export default function PublicAbout() {
 
       {/* ===== SECTION 8: BRAND MANIFESTO ===== */}
       <section className={`py-32 sm:py-40 lg:py-48 transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B]" : "bg-white"
+        isDark ? "bg-[#232323]" : "bg-white"
       }`}>
         <div 
           ref={manifestoAnim.ref}
@@ -415,7 +415,7 @@ export default function PublicAbout() {
               <p 
                 key={index}
                 className={`text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed ${
-                  isDark ? "text-white" : "text-[#1B1B1B]"
+                  isDark ? "text-white" : "text-[#232323]"
                 }`}
               >
                 {line}
@@ -442,7 +442,7 @@ export default function PublicAbout() {
           />
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#232323]" 
               : "bg-gradient-to-b from-[#F8F8F8] via-[#F8F8F8]/95 to-white"
           }`} />
         </div>
@@ -454,7 +454,7 @@ export default function PublicAbout() {
           }`}
         >
           <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Let's create meaningful spaces.
           </h2>
@@ -470,8 +470,8 @@ export default function PublicAbout() {
               to="/contact"
               className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90" 
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Contact Us
@@ -483,8 +483,8 @@ export default function PublicAbout() {
               href="mailto:hello@arcos.id?subject=Sample%20Request"
               className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Request Samples

@@ -13,8 +13,22 @@ export default function SalesScreen({ navigation }: any) {
 
   const clientWorkItems = [
     {
+      title: 'Clients',
+      subtitle: 'Manage client database',
+      icon: 'people-outline' as const,
+      color: colors.primary,
+      onPress: () => navigation.navigate('Clients'),
+    },
+    {
+      title: 'Quotes',
+      subtitle: 'Create and manage quotes',
+      icon: 'document-text-outline' as const,
+      color: colors.primary,
+      onPress: () => navigation.navigate('Quotes'),
+    },
+    {
       title: 'Create Proposals',
-      subtitle: 'Generate client proposals and quotes',
+      subtitle: 'Generate client proposals',
       icon: 'document-text-outline' as const,
       color: colors.primary,
       onPress: () => navigation.navigate('Proposals'),
@@ -25,6 +39,13 @@ export default function SalesScreen({ navigation }: any) {
       icon: 'calculator-outline' as const,
       color: colors.success,
       onPress: () => navigation.navigate('CostCalculator'),
+    },
+    {
+      title: 'Notifications',
+      subtitle: 'View system notifications',
+      icon: 'notifications-outline' as const,
+      color: colors.warning,
+      onPress: () => navigation.navigate('Notifications'),
     },
   ];
 

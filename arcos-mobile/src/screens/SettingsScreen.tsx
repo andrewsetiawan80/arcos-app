@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/ThemeProvider';
 import { load, resetToSeedData } from '../store';
+import { api } from '../lib/api';
 import type { AppState, MobileTheme } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -17,6 +18,7 @@ export default function SettingsScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
   const [state, setState] = useState<AppState | null>(null);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [syncEnabled, setSyncEnabled] = useState(true);
 
@@ -91,9 +93,22 @@ export default function SettingsScreen({ navigation }: any) {
       title: 'Export Data',
       subtitle: 'Backup your data',
       icon: 'download-outline' as const,
-      onPress: () => {
-        // Export data
-        console.log('Export Data');
+      color: colors.success,
+      onPress: async () => {
+        if (exporting) return;
+        setExporting(true);
+        try {
+          const res = await api.createBackup();
+          if (res.error) {
+            Alert.alert('Export Failed', res.error);
+          } else {
+            Alert.alert('Success', 'Database backup created successfully on the server.');
+          }
+        } catch (e) {
+          Alert.alert('Export Failed', e instanceof Error ? e.message : 'Unknown error');
+        } finally {
+          setExporting(false);
+        }
       },
     },
   ];

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { load, save } from "../store";
-import type { AppState, LabEntry, Unit } from "../types";
+import type { AppState, LabEntry, Recipe, RecipeLine, Unit } from "../types";
+import { getProcesses } from "../lib/process";
 
 const newid = () => Math.random().toString(36).slice(2, 10);
 const UNITS: Unit[] = ["ratio", "kg", "g", "L", "mL"];
@@ -143,9 +144,41 @@ export default function LabEntryEditor() {
     }
   };
 
+  function handleConvertToRecipe(navigateTo: string) {
+    const lines = (entry as { lines?: RecipeLine[] }).lines ?? (entry as { modifications?: RecipeLine[] }).modifications ?? [];
+    if (lines.length === 0) {
+      alert("Add at least one material line before converting to a recipe.");
+      return;
+    }
+    const processes = getProcesses(state);
+    const processKey = processes[0]?.key ?? "GENERAL";
+    const now = new Date().toISOString();
+    const recipe: Recipe = {
+      id: newid(),
+      name: entry.title || "From Lab",
+      process: processKey,
+      lines: lines.map((l) => ({ ...l, id: newid() })),
+      createdAt: now,
+      updatedAt: now,
+    };
+    const nextState = {
+      ...state,
+      recipes: [...(state.recipes || []), recipe],
+    };
+    setState(nextState);
+    setHasUnsavedChanges(true);
+    save(nextState).then(
+      () => navigate(navigateTo),
+      (err) => {
+        console.error("Save failed:", err);
+        alert("Recipe created but save failed. Try saving again.");
+      }
+    );
+  }
+
   if (!entry) {
     return (
-      <div className="space-y-8 animate-in fade-in-0 duration-700">
+      <div className="space-y-8">
         <div className="flex flex-col items-center gap-6 py-12 text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,14 +204,13 @@ export default function LabEntryEditor() {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in-0 duration-700">
+    <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Lab Entry Editor</p>
             </div>
             <div className="flex items-center gap-4">
@@ -393,18 +425,18 @@ export default function LabEntryEditor() {
             )}
           </div>
 
-          {/* Promote to recipe/product (stubs) */}
+          {/* Promote to recipe/product */}
           <div className="pt-2 border-t border-white/10">
             <div className="text-xs text-stone-400 mb-2">Actions</div>
             <button
               className="w-full rounded-lg px-3 py-2 text-sm border border-white/10 hover:bg-white/10 mb-2"
-              onClick={() => alert("Stub: convert to base recipe mix")}
+              onClick={() => handleConvertToRecipe('/app/recipes')}
             >
               Convert to Base Recipe…
             </button>
             <button
               className="w-full rounded-lg px-3 py-2 text-sm border border-white/10 hover:bg-white/10"
-              onClick={() => alert("Stub: convert to product recipe")}
+              onClick={() => handleConvertToRecipe('/app/product-recipes')}
             >
               Convert to Product Recipe…
             </button>

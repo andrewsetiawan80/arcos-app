@@ -4,6 +4,7 @@ import { load, save } from "../store";
 import type { AppState, Recipe, RecipeLine, Unit } from "../types";
 import { getProcesses, getProcessLabel } from "../lib/process";
 import NumberField from "../components/NumberField";
+import { syncMixLabBaseRecipes } from "../lib/mixLabBaseRecipes";
 
 const newid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
@@ -19,28 +20,14 @@ export default function Recipes() {
   const recipes = state.recipes || [];
   const materials = state.materials || [];
 
-  // Refresh data when component mounts or becomes visible
+  // Pull Mix Lab formulas in as bases once (throttled; skip setState when unchanged)
   useEffect(() => {
-    const refreshData = () => {
-      const freshState = load();
-      setState(freshState);
-      console.log('Recipes page refreshed - recipes count:', freshState.recipes?.length || 0);
-    };
-    
-    // Refresh immediately
-    refreshData();
-    
-    // Also refresh when page becomes visible (user navigates back to this page)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        refreshData();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+    let cancelled = false;
+    void syncMixLabBaseRecipes().then(({ state: synced, changed }) => {
+      if (!cancelled && changed) setState(synced);
+    });
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      cancelled = true;
     };
   }, []);
 
@@ -209,11 +196,10 @@ export default function Recipes() {
     <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Recipe Management</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
@@ -222,6 +208,14 @@ export default function Recipes() {
             <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
               Manage your concrete formulations, ingredients, and specifications for different processes.
             </p>
+            <div className="flex flex-wrap gap-3 pt-1 text-xs font-bold uppercase tracking-wider">
+              <Link to="/app/studio" className="text-gray-300 hover:text-white underline-offset-2 hover:underline">
+                Mix designer →
+              </Link>
+              <Link to="/app/mix-log" className="text-gray-300 hover:text-white underline-offset-2 hover:underline">
+                Mix log →
+              </Link>
+            </div>
           </div>
           <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
             <button
@@ -250,7 +244,10 @@ export default function Recipes() {
             <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
               <div>
                 <h4 className="font-semibold text-blue-400 mb-2">🏗️ Base Recipes</h4>
-                <p>Create fundamental recipes (UHPC, GFRC, etc.) that serve as foundations for all your products.</p>
+                <p>
+                  Mix Lab formulas (Studio) sync here automatically as bases — plus any you create by hand.
+                  Use them for Derive and catalog products.
+                </p>
               </div>
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">🏭 Product Recipes</h4>
@@ -272,14 +269,13 @@ export default function Recipes() {
       <div className="space-y-8">
         {/* Main Recipes Section */}
         <section className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/3 via-transparent to-blue-600/3 rounded-2xl blur-2xl" />
-          <div className="relative space-y-4">
+<div className="relative space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-blue-400" />
               <h2 className="text-lg font-black text-white">Main Recipes</h2>
               <span className="text-xs text-gray-400 font-mono bg-white/5 px-2 py-1 rounded-lg">{mainRecipes.length}</span>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 overflow-hidden hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture divide-y divide-white/10">
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 overflow-hidden divide-y divide-white/10">
               {mainRecipes.map(r => (
                   <div key={r.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-all duration-200 group">
                     <div className="flex-1">
@@ -355,8 +351,7 @@ export default function Recipes() {
         {/* Product Recipes Section */}
         {productRecipes.length > 0 && (
           <section className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500/3 via-transparent to-green-600/3 rounded-2xl blur-2xl" />
-            <div className="relative space-y-4">
+<div className="relative space-y-4">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-400" />
                 <h2 className="text-lg font-black text-white">Product Recipes</h2>
@@ -365,14 +360,13 @@ export default function Recipes() {
               <div className="space-y-6">
                 {Object.entries(productGrouped).map(([familyName, recipes]) => (
                   <div key={familyName} className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-                    <div className="relative space-y-4">
+<div className="relative space-y-4">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-green-400" />
                         <h3 className="text-lg font-black text-white">{familyName} Family</h3>
                         <span className="text-xs text-gray-400 font-mono bg-white/5 px-2 py-1 rounded-lg">{recipes.length}</span>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 overflow-hidden hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture divide-y divide-white/10">
+                      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 overflow-hidden divide-y divide-white/10">
                         {recipes.map(r => (
                   <div key={r.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-all duration-200 group">
                     <div className="flex-1">
@@ -438,8 +432,7 @@ export default function Recipes() {
         {/* Empty State */}
         {mainRecipes.length === 0 && productRecipes.length === 0 && (
           <section className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-            <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-8 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-8">
               <div className="flex flex-col items-center gap-4 py-8 text-center">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
                   <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -458,8 +451,8 @@ export default function Recipes() {
 
       {/* Recipe Derivation Modal */}
       {showDeriveModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white">Derive Recipe</h2>
               <button
@@ -480,7 +473,7 @@ export default function Recipes() {
                     <button
                       key={recipe.id}
                       onClick={() => startDerivation(recipe)}
-                      className="p-4 rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture text-left"
+                      className="p-4 rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 text-left"
                     >
                       <div className="font-semibold text-white">{recipe.name}</div>
                       <div className="text-sm text-gray-400">

@@ -49,21 +49,23 @@ export default function Lab() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in-0 duration-700">
+    <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Laboratory</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-              Lab Trials
+              Lab notebook
             </h1>
             <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
-              Document your concrete experiments, test results, and research findings.
+              R&amp;D only — photos, notes, trial lines. Not your production mix builder.
+              When a trial is ready to pour, rebuild or import it in{" "}
+              <Link to="/app/studio" className="text-white underline underline-offset-2">Mix designer</Link>
+              {" "}as a base recipe.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
@@ -99,8 +101,7 @@ export default function Lab() {
       <div className="grid md:grid-cols-[320px_1fr] gap-6">
         {/* Left rail */}
         <section className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-          <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-4 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-4">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-2 h-2 rounded-full bg-blue-400" />
               <h2 className="text-sm font-bold text-white">Lab Entries</h2>
@@ -142,8 +143,7 @@ export default function Lab() {
 
         {/* Empty state right side */}
         <section className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-          <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-8 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-8">
             <div className="flex flex-col items-center gap-4 py-8 text-center">
               <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
                 <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

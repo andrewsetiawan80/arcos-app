@@ -7,37 +7,38 @@ import type { Role } from "../state/auth";
 type Item = { label: string; to: string; roles?: Role[] };
 
 const ITEMS: Item[] = [
-  // Dashboard
   { label: "Dashboard", to: "/app/dashboard" },
-  
-  // Products & Catalog
-  { label: "View Products", to: "/app/products" },
-  { label: "Add/Edit Products", to: "/app/products/edit", roles: ["admin"] },
-  { label: "Product Settings", to: "/app/settings/catalog" },
-  
-  // Recipes & Mixes
-  { label: "Recipe Library", to: "/app/recipes" },
-  { label: "Create New Recipe", to: "/app/derive-recipe" },
-  { label: "Mix Studio", to: "/app/studio" },
-  
-  // Planning & Estimating
-  { label: "Tile Calculator", to: "/app/planner/tile" },
-  { label: "Slab Calculator", to: "/app/planner/slab" },
-  { label: "Production Planning", to: "/app/planner/production" },
-  { label: "Cost Calculator", to: "/app/cost" },
-  
-  // Sales & Proposals
-  { label: "Create Proposals", to: "/app/proposal" },
-  { label: "Pricing Tools", to: "/app/cost" },
-  
-  // Lab & R&D
-  { label: "Lab Notebook", to: "/app/lab" },
-  { label: "Experiment Ideas", to: "/app/ideas" },
-  
-  // Settings
-  { label: "Materials", to: "/app/materials" },
+
+  { label: "All products", to: "/app/products" },
+  { label: "Add / edit product", to: "/app/products/edit", roles: ["admin"] },
+  { label: "Product settings", to: "/app/settings/catalog" },
+
+  { label: "Mix designer", to: "/app/studio" },
+  { label: "Projects", to: "/app/mix-projects" },
+  { label: "Mix log", to: "/app/mix-log" },
+  { label: "Materials & prices", to: "/app/materials" },
+  { label: "Base recipes", to: "/app/recipes" },
+  { label: "Product recipes", to: "/app/product-recipes" },
+  { label: "Derive from base", to: "/app/derive-recipe" },
+
+  { label: "Tile calculator", to: "/app/planner/tile" },
+  { label: "Slab calculator", to: "/app/planner/slab" },
+  { label: "Production planning", to: "/app/planner/production" },
+  { label: "Cost calculator", to: "/app/cost" },
+
+  { label: "Clients", to: "/app/clients" },
+  { label: "Jobs", to: "/app/jobs" },
+  { label: "Quotes", to: "/app/quotes" },
+  { label: "Mix Projects", to: "/app/mix-projects" },
+
+  { label: "Lab notebook", to: "/app/lab" },
+  { label: "Idea sparks", to: "/app/ideas" },
+
   { label: "Processes", to: "/app/settings/processes" },
-  { label: "Site Settings", to: "/app/content/pages" },
+  { label: "Site pages", to: "/app/content/pages" },
+  { label: "Mail", to: "/app/settings/mail" },
+  { label: "Webhooks", to: "/app/webhooks", roles: ["admin"] },
+  { label: "Backups", to: "/app/backups", roles: ["admin"] },
 ];
 
 export default function CommandPalette() {
@@ -52,75 +53,58 @@ export default function CommandPalette() {
     return ITEMS
       .filter((it) => !it.roles || it.roles.includes(role) || role === "admin")
       .filter((it) => (query ? it.label.toLowerCase().includes(query) : true))
-      .slice(0, 10);
+      .slice(0, 12);
   }, [q, role]);
 
-  // Esc to close
   useEffect(() => {
     if (!commandOpen) return;
+    setQ("");
+    const t = window.setTimeout(() => inputRef.current?.focus(), 20);
+    return () => window.clearTimeout(t);
+  }, [commandOpen]);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setCommandOpen(false);
     };
-    window.addEventListener("keydown", onKey);
+    if (commandOpen) window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [commandOpen, setCommandOpen]);
-
-  // Autofocus when opened
-  useEffect(() => {
-    if (commandOpen) {
-      setQ("");
-      setTimeout(() => inputRef.current?.focus(), 0);
-    }
-  }, [commandOpen]);
 
   if (!commandOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={() => setCommandOpen(false)}
-      />
+    <div className="fixed inset-0 z-[80]">
+      <div className="absolute inset-0 bg-black/60" onClick={() => setCommandOpen(false)} />
       <div className="relative mx-auto mt-24 w-full max-w-2xl border border-white/10 bg-[#232323] shadow-2xl">
-        <div className="px-6 py-5 border-b border-white/10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Command Palette</div>
-          </div>
+        <div className="p-3 border-b border-white/10">
           <input
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search commands..."
-            className="w-full bg-[#353535] border border-white/10 px-4 py-3 outline-none text-base font-medium text-white placeholder:text-gray-500 focus:border-white/20 focus:bg-[#232323] transition-colors"
+            placeholder="Search pages…"
+            className="w-full bg-[#353535] border border-white/10 px-4 py-3 outline-none text-base font-medium text-white placeholder:text-gray-500 focus:border-white/20"
           />
         </div>
-        <div className="p-2 max-h-80 overflow-auto">
-          {results.length === 0 ? (
-            <div className="text-center py-12 text-gray-400">
-              <div className="text-sm uppercase tracking-wider mb-2">No commands found</div>
-            </div>
-          ) : (
-            <ul className="space-y-1">
-              {results.map((r) => (
-                <li key={r.to}>
-                  <button
-                    onClick={() => {
-                      setCommandOpen(false);
-                      nav(r.to);
-                    }}
-                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#353535] transition-colors group"
-                  >
-                    <div className="font-bold text-white">{r.label}</div>
-                    <div className="text-xs text-gray-500 mt-1 font-mono">{r.to}</div>
-                  </button>
-                </li>
-              ))}
-            </ul>
+        <ul className="max-h-[50vh] overflow-auto divide-y divide-white/5">
+          {results.map((it) => (
+            <li key={it.to}>
+              <button
+                type="button"
+                className="w-full text-left px-4 py-3 text-sm hover:bg-white/5"
+                onClick={() => {
+                  setCommandOpen(false);
+                  nav(it.to);
+                }}
+              >
+                {it.label}
+              </button>
+            </li>
+          ))}
+          {!results.length && (
+            <li className="px-4 py-6 text-sm text-gray-500">No matches</li>
           )}
-        </div>
-        <div className="px-6 py-3 border-t border-white/10 text-xs text-gray-500 bg-[#353535] uppercase tracking-wider">
-          ⌘K to open • Esc to close • Enter to navigate
-        </div>
+        </ul>
       </div>
     </div>
   );

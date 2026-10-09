@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { load, save } from "../store";
 import type { AppState, Recipe, RecipeLine, Unit, ProductRecipe } from "../types";
 import { getProcesses, getProcessLabel } from "../lib/process";
+import { syncMixLabBaseRecipes } from "../lib/mixLabBaseRecipes";
 
 const newid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
@@ -24,65 +25,46 @@ export default function DeriveRecipe() {
 
   const [state, setState] = useState<AppState>(() => load());
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  
-  // Refresh data when component mounts or becomes visible
+  const [name, setName] = useState("Derived Recipe");
+  const [version, setVersion] = useState("v0.1");
+  const [density, setDensity] = useState<number | "">("");
+  const [tags, setTags] = useState("");
+  const [selectedProcess, setSelectedProcess] = useState(processKey || "");
+  const [lines, setLines] = useState<RecipeLine[]>([]);
+  const hydratedBaseId = React.useRef<string | null>(null);
+
   useEffect(() => {
-    const refreshData = () => {
-      const freshState = load();
-      setState(freshState);
-      console.log('DeriveRecipe page refreshed - recipes count:', freshState.recipes?.length || 0);
-    };
-    
-    // Refresh immediately
-    refreshData();
-    
-    // Also refresh when page becomes visible (user navigates back to this page)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        refreshData();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+    let cancelled = false;
+    void syncMixLabBaseRecipes().then(({ state: synced, changed }) => {
+      if (!cancelled && changed) setState(synced);
+    });
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      cancelled = true;
     };
   }, []);
-  
-  // Ensure arrays exist
+
   const recipes = state.recipes || [];
   const materials = state.materials || [];
-  const base = recipes.find(r => r.id === baseId);
-  
-  // Debug logging
-  console.log('DeriveRecipe Debug:', {
-    baseId,
-    productId,
-    variantId,
-    processKey,
-    base: base ? base.name : 'Not found',
-    recipesCount: recipes.length
-  });
-
-  const [name, setName] = useState<string>(() => {
-    const pv = productVariantTitle(state, productId, variantId);
-    return base ? `${base.name} — ${pv || "variant"} (${new Date().toLocaleDateString()})` : "Derived Recipe";
-  });
-  const [version, setVersion] = useState<string>("v0.1");
-  const [density, setDensity] = useState<number | "">(() => base?.densityKgM3 ?? "");
-  const [tags, setTags] = useState<string>("");
-  const [selectedProcess, setSelectedProcess] = useState<string>(() => base?.process || processKey || "");
-  const [lines, setLines] = useState<RecipeLine[]>(() =>
-    base ? base.lines.map(l => ({ ...l, id: newid() })) : []
-  );
+  const base = recipes.find((r) => r.id === baseId);
 
   function productVariantTitle(s: AppState, pid: string, vid: string) {
     const products = s.products || [];
-    const p = products.find(x => x.id === pid);
-    const v = p?.variants?.find(x => x.id === vid);
+    const p = products.find((x) => x.id === pid);
+    const v = p?.variants?.find((x) => x.id === vid);
     return p && v ? `${p.title} / ${v.name}` : "";
   }
+
+  // Hydrate form once when base is available (including after Mix Lab sync)
+  useEffect(() => {
+    if (!base) return;
+    if (hydratedBaseId.current === base.id) return;
+    hydratedBaseId.current = base.id;
+    const pv = productVariantTitle(state, productId, variantId);
+    setName(`${base.name} — ${pv || "variant"} (${new Date().toLocaleDateString()})`);
+    setDensity(base.densityKgM3 ?? "");
+    setSelectedProcess(base.process || processKey || "");
+    setLines(base.lines.map((l) => ({ ...l, id: newid() })));
+  }, [base?.id, productId, variantId, processKey]);
 
   async function handleDeleteRecipe(recipeId: string) {
     if (!confirm('Are you sure you want to delete this recipe? This action cannot be undone.')) {
@@ -141,51 +123,68 @@ export default function DeriveRecipe() {
 
   async function saveDerived() {
     if (!base) {
-      console.error('DeriveRecipe: Base recipe not found');
       return alert("Base recipe not found.");
     }
     if (!name.trim()) {
-      console.error('DeriveRecipe: Recipe name is empty');
       return alert("Please enter a name.");
     }
-    
-    console.log('DeriveRecipe: Starting recipe derivation with base:', base.name);
-    const newProductRecipe: ProductRecipe = {
-      id: newid(),
+
+    const recipeId = newid();
+    const stamp = now();
+    const familyTag = productId ? `${productId}-family` : "product-family";
+
+    // Backend product_recipes.recipe_id FK → recipes.id, so the derived
+    // formula must live in recipes (not only in productRecipes).
+    const newRecipe: Recipe = {
+      id: recipeId,
       name: name.trim(),
-      process: selectedProcess,
+      process: selectedProcess || base.process || processKey || "GENERAL",
       version,
       densityKgM3: density === "" ? undefined : Number(density),
+      lines,
+      tags: [familyTag, "derived"],
+      createdAt: stamp,
+      updatedAt: stamp,
+    };
+
+    const newProductRecipe: ProductRecipe = {
+      id: recipeId,
+      name: newRecipe.name,
+      process: newRecipe.process,
+      version,
+      densityKgM3: newRecipe.densityKgM3,
       lines,
       productId: productId || "",
       variantId: variantId || "",
       baseRecipeId: base.id,
-      createdAt: now(),
-      updatedAt: now(),
-    };
-    
-    console.log('DeriveRecipe: Created new product recipe:', newProductRecipe);
-
-    // write new product recipe and assign to variant if provided
-    const next: AppState = { 
-      ...state, 
-      productRecipes: [newProductRecipe, ...(state.productRecipes || [])] 
+      createdAt: stamp,
+      updatedAt: stamp,
     };
 
-    if (productId && variantId && processKey) {
+    const next: AppState = {
+      ...state,
+      recipes: [newRecipe, ...(state.recipes || []).filter((r) => r.id !== recipeId)],
+      productRecipes: [
+        newProductRecipe,
+        ...(state.productRecipes || []).filter((r) => r.id !== recipeId),
+      ],
+    };
+
+    const assignProcess = processKey || selectedProcess || newRecipe.process;
+    if (productId && variantId && assignProcess) {
       const products = next.products || [];
-      const pIdx = products.findIndex(p => p.id === productId);
+      const pIdx = products.findIndex((p) => p.id === productId);
       if (pIdx >= 0) {
         const prod = { ...products[pIdx] };
         const variants = prod.variants || [];
-        const vIdx = variants.findIndex(v => v.id === variantId);
+        const vIdx = variants.findIndex((v) => v.id === variantId);
         if (vIdx >= 0) {
           const v = { ...variants[vIdx] };
           const map = { ...(v.recipeByProcess || {}) };
-          map[processKey] = newProductRecipe.id;
+          map[assignProcess] = recipeId;
           v.recipeByProcess = map;
           prod.variants = variants.map((vv, i) => (i === vIdx ? v : vv));
-          prod.updatedAt = now();
+          prod.updatedAt = stamp;
           next.products = products.map((pp, i) => (i === pIdx ? prod : pp));
         }
       }
@@ -193,19 +192,24 @@ export default function DeriveRecipe() {
 
     setState(next);
     setHasUnsavedChanges(true);
-    
-    // Auto-save the recipe
+
     try {
-      console.log('DeriveRecipe: Saving product recipe:', newProductRecipe.name, 'with ID:', newProductRecipe.id);
       await save(next);
       setHasUnsavedChanges(false);
-      console.log('DeriveRecipe: Product recipe saved successfully');
-      alert(`Product recipe "${newProductRecipe.name}" created and assigned successfully! This recipe is specific to this product variant and won't appear in the main recipe library.`);
-      // go back to product editor since this is a product-specific recipe
-      navigate(`/app/products/edit?product=${productId}&variant=${variantId}`);
+      alert(`Product recipe “${newRecipe.name}” saved and assigned.`);
+      if (productId) {
+        navigate(`/app/products/edit?product=${productId}&variant=${variantId}`);
+      } else {
+        navigate(`/app/recipes/${recipeId}`);
+      }
     } catch (error) {
       console.error("DeriveRecipe: Failed to save recipe:", error);
-      alert("Recipe created but failed to save. Please try saving manually.");
+      const detail = error instanceof Error ? error.message : String(error);
+      alert(
+        detail
+          ? `Recipe created locally but failed to save: ${detail}`
+          : "Recipe created but failed to save. Please try saving manually."
+      );
     }
   }
 
@@ -224,11 +228,10 @@ export default function DeriveRecipe() {
     <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Recipe Development</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
@@ -271,7 +274,7 @@ export default function DeriveRecipe() {
       {!base ? (
         <div className="rounded-2xl border border-white/10 p-6 bg-black/20 space-y-4">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
             <h2 className="text-lg font-bold text-white">Select Base Recipe</h2>
           </div>
           <p className="text-sm text-gray-300 mb-6">

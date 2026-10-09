@@ -26,34 +26,34 @@ export default function ArcosLogo({
   withTagline = false,
   className = '' 
 }: ArcosLogoProps) {
-  // Size configurations with safe zone built in
+  // Size configurations — parent controls padding (safeZone = 0)
   const sizeConfig = {
     small: { 
-      logoHeight: 28, 
+      logoHeight: 20, 
       lineWidth: 32,
       lineHeight: 3,
       letterSpacing: '0.12em',
       fontSize: 20,
-      taglineSize: 8,
-      safeZone: 14 // Half the logo height
+      taglineSize: 6,
+      safeZone: 0
     },
     medium: { 
-      logoHeight: 40, 
+      logoHeight: 28, 
       lineWidth: 46,
       lineHeight: 4,
       letterSpacing: '0.12em',
       fontSize: 28,
-      taglineSize: 10,
-      safeZone: 20
+      taglineSize: 8,
+      safeZone: 0
     },
     large: { 
-      logoHeight: 56, 
+      logoHeight: 40, 
       lineWidth: 64,
       lineHeight: 5,
       letterSpacing: '0.12em',
       fontSize: 40,
-      taglineSize: 12,
-      safeZone: 28
+      taglineSize: 10,
+      safeZone: 0
     }
   };
 

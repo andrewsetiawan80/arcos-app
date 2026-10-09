@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-PROXMOX_HOST="${PROXMOX_HOST:-192.168.2.124}"
+PROXMOX_HOST="${PROXMOX_HOST:-192.168.2.170}"
 PROXMOX_USER="${PROXMOX_USER:-root}"
 DEPLOY_PATH="${DEPLOY_PATH:-/opt/arcos-app}"
 
@@ -76,7 +76,7 @@ DB_PASSWORD=arcos_secure_password_change_me
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
 
 # CORS Origins (comma-separated)
-CORS_ORIGIN=http://localhost,http://192.168.2.124,https://arcosworks.com
+CORS_ORIGIN=http://localhost,http://192.168.2.170,https://arcosworks.com
 
 # Node environment
 NODE_ENV=production

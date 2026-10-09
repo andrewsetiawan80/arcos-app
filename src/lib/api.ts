@@ -86,6 +86,12 @@ class ApiClient {
     return this.request('/auth/me');
   }
 
+  /** Database status for dashboard: 'online' | 'offline' */
+  async getDatabaseStatus(): Promise<'online' | 'offline'> {
+    const result = await this.request<{ database: 'online' | 'offline' }>('/status');
+    return result.data?.database ?? 'offline';
+  }
+
   // Data endpoints
   async getState() {
     return this.request('/data/state');
@@ -153,6 +159,69 @@ class ApiClient {
   async getHighlights() {
     return this.request('/about/highlights');
   }
+
+  // Contact form
+  async submitContactForm(data: { fullName: string; email: string; phone?: string; company?: string; message: string }) {
+    return this.request('/contact', { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  // Client endpoints
+  async getClients() { return this.request('/clients'); }
+  async getClient(id: string) { return this.request(`/clients/${id}`); }
+  async createClient(data: any) { return this.request('/clients', { method: 'POST', body: JSON.stringify(data) }); }
+  async updateClient(id: string, data: any) { return this.request(`/clients/${id}`, { method: 'PUT', body: JSON.stringify(data) }); }
+  async deleteClient(id: string) { return this.request(`/clients/${id}`, { method: 'DELETE' }); }
+
+  // Quote endpoints
+  async getQuotes() { return this.request('/quotes'); }
+  async getQuote(id: string) { return this.request(`/quotes/${id}`); }
+  async createQuote(data: any) { return this.request('/quotes', { method: 'POST', body: JSON.stringify(data) }); }
+  async updateQuote(id: string, data: any) { return this.request(`/quotes/${id}`, { method: 'PUT', body: JSON.stringify(data) }); }
+  async deleteQuote(id: string) { return this.request(`/quotes/${id}`, { method: 'DELETE' }); }
+  async getSharedQuote(token: string) { return this.request(`/quotes/share/${token}`); }
+  async respondToQuote(token: string, action: 'approved' | 'rejected') {
+    return this.request(`/quotes/share/${token}/respond`, { method: 'POST', body: JSON.stringify({ action }) });
+  }
+
+  // Jobs (priced custom projects → quote)
+  async getJobs() { return this.request('/jobs'); }
+  async getJob(id: string) { return this.request(`/jobs/${id}`); }
+  async createJob(data: any) { return this.request('/jobs', { method: 'POST', body: JSON.stringify(data) }); }
+  async updateJob(id: string, data: any) { return this.request(`/jobs/${id}`, { method: 'PUT', body: JSON.stringify(data) }); }
+  async deleteJob(id: string) { return this.request(`/jobs/${id}`, { method: 'DELETE' }); }
+  async createQuoteFromJob(jobId: string, data: { replace?: boolean; ppn_pct?: number } = {}) {
+    return this.request(`/jobs/${jobId}/quote`, { method: 'POST', body: JSON.stringify(data) });
+  }
+  async getJobLabourPresets() { return this.request('/jobs/labour-presets'); }
+  async saveJobLabourPresets(presets: any[]) {
+    return this.request('/jobs/labour-presets', { method: 'PUT', body: JSON.stringify({ presets }) });
+  }
+
+  // Notification endpoints
+  async getNotifications() { return this.request('/notifications'); }
+  async getUnreadCount() { return this.request<{ count: number }>('/notifications/unread-count'); }
+  async markNotificationRead(id: string) { return this.request(`/notifications/${id}/read`, { method: 'POST' }); }
+  async markAllNotificationsRead() { return this.request('/notifications/read-all', { method: 'POST' }); }
+
+  // Backup endpoints
+  async getBackups() { return this.request('/backups'); }
+  async createBackup() { return this.request('/backups', { method: 'POST' }); }
+  async restoreBackup(filename: string) { return this.request('/backups/restore', { method: 'POST', body: JSON.stringify({ filename }) }); }
+  async deleteBackup(filename: string) { return this.request(`/backups/${filename}`, { method: 'DELETE' }); }
+
+  // Mail settings (admin only)
+  async getMailSettings() { return this.request<{ smtpHost: string; smtpPort: number; smtpUser: string; smtpPass: string; contactEmail: string }>('/settings/mail'); }
+  async saveMailSettings(data: { smtpHost?: string; smtpPort?: number; smtpUser?: string; smtpPass?: string; contactEmail?: string }) { return this.request('/settings/mail', { method: 'PUT', body: JSON.stringify(data) }); }
+
+  // Webhook endpoints
+  async getWebhooks() { return this.request('/webhooks'); }
+  async createWebhook(data: any) { return this.request('/webhooks', { method: 'POST', body: JSON.stringify(data) }); }
+  async updateWebhook(id: string, data: any) { return this.request(`/webhooks/${id}`, { method: 'PUT', body: JSON.stringify(data) }); }
+  async deleteWebhook(id: string) { return this.request(`/webhooks/${id}`, { method: 'DELETE' }); }
+
+  // Project share
+  async getSharedProject(token: string) { return this.request(`/projects/share/${token}`); }
+  async createProjectShare(productId: string) { return this.request<{ shareToken: string; shareUrl: string }>(`/projects/${productId}/share`, { method: 'POST' }); }
 
   logout() {
     this.setToken(null);

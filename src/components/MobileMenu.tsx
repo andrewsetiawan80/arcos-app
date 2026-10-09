@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ArcosLogo from "./ArcosLogo";
 
 type Role = string;
@@ -12,13 +12,16 @@ export default function MobileMenu({
   onClose,
   areas,
   role,
+  onLogout,
 }: {
   open: boolean;
   onClose: () => void;
   areas: Record<string, Area>;
   role: Role;
+  onLogout?: () => void;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   // close on ESC / outside
   useEffect(() => {
@@ -48,7 +51,7 @@ export default function MobileMenu({
       {/* Drawer - matching public menu style, slides from right */}
       <aside
         ref={panelRef}
-        className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-[#232323] border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 z-50 h-full w-[min(100%,20rem)] max-w-full bg-[#232323] border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out safe-area-pad ${open ? 'translate-x-0' : 'translate-x-full'}`}
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
@@ -67,7 +70,7 @@ export default function MobileMenu({
             </svg>
           </button>
         </div>
-        <nav className="overflow-y-auto h-[calc(100vh-4rem)] p-6 space-y-6">
+        <nav className="overflow-y-auto h-[calc(100dvh-4rem)] p-4 sm:p-6 space-y-6 overscroll-contain">
           {/* Home/Dashboard Link */}
           <div className="pb-2 border-b border-white/10">
             <NavLink
@@ -82,9 +85,12 @@ export default function MobileMenu({
             // Collect all visible items from all groups in this area
             const visibleGroups = area.groups
               .map((group) => {
-                const visibleItems = group.items.filter(
-                  (it) => !it.roles || it.roles.includes(role) || role === "admin"
-                );
+                const visibleItems = group.items.filter((it) => {
+                  if (!it.roles?.length) return true;
+                  if (role === "admin") return true;
+                  if (role === "guest") return !it.roles.every((r) => r === "admin");
+                  return it.roles.includes(role);
+                });
                 return visibleItems.length > 0 ? { ...group, items: visibleItems } : null;
               })
               .filter((g): g is Group & { items: Item[] } => g !== null);
@@ -128,8 +134,8 @@ export default function MobileMenu({
             );
           })}
           
-          {/* Footer section with Public Site link */}
-          <div className="pt-4 mt-4 border-t border-white/10">
+          {/* Footer section */}
+          <div className="pt-4 mt-4 border-t border-white/10 space-y-1">
             <NavLink
               to="/"
               className="block text-sm text-gray-500 hover:text-gray-300 transition-colors py-2 px-2 rounded-md hover:bg-white/5"
@@ -137,6 +143,18 @@ export default function MobileMenu({
             >
               Go to Public Site
             </NavLink>
+            {onLogout && (
+              <button
+                onClick={async () => {
+                  onClose();
+                  await onLogout();
+                  navigate("/login");
+                }}
+                className="block w-full text-left text-sm text-gray-500 hover:text-gray-300 transition-colors py-2 px-2 rounded-md hover:bg-white/5"
+              >
+                Log out
+              </button>
+            )}
           </div>
         </nav>
       </aside>

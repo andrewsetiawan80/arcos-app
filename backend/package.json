@@ -13,25 +13,32 @@
     "db:seed-faq": "tsx src/db/seedFAQ.ts",
     "db:seed-featured-projects": "tsx src/db/seedFeaturedProjects.ts",
     "db:seed-services": "tsx src/db/seedServices.ts",
-    "db:seed-about": "tsx src/db/seedAbout.ts"
+    "db:seed-about": "tsx src/db/seedAbout.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "pg": "^8.11.3",
-    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
-    "zod": "^3.22.4",
-    "tsx": "^4.7.0"
+    "nodemailer": "^8.0.1",
+    "pg": "^8.11.3",
+    "tsx": "^4.7.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/cors": "^2.8.17",
-    "@types/node": "^20.10.5",
-    "@types/pg": "^8.10.9",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.10.5",
+    "@types/nodemailer": "^7.0.9",
+    "@types/pg": "^8.10.9",
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.18"
   }
 }

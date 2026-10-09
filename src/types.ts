@@ -14,9 +14,14 @@ export type Material = {
   name: string;
   densityKgM3?: number;
 
-  // Optional pricing
+  // Shared with Mix Lab shop_prices
   pricePerKg?: number;
   priceCurrency?: Currency; // default "IDR"
+  amount?: number;
+  packKg?: number;
+  kind?: string;
+  brand?: string | null;
+  color?: string | null;
 };
 
 export type RecipeLine = {
@@ -32,7 +37,12 @@ export type Recipe = {
   process: string;         // e.g. "gfrc", "uhpc", etc.
   version?: string;
   densityKgM3?: number;
+  /** Estimated / working cured density from model (kg/m³). */
+  densityWetKgM3?: number;
+  densityCuredEstKgM3?: number;
+  densityCuredMeasuredKgM3?: number;
   lines: RecipeLine[];
+  tags?: string[];
 
   createdAt: string;
   updatedAt: string;
@@ -80,6 +90,11 @@ export type Product = {
   featured?: boolean;      // show on homepage hero/featured
 
   coverImageUrl?: string;  // hero/cover
+  textureUrl?: string;     // flat tileable texture for visualizer (falls back to coverImageUrl if not set)
+  normalMapUrl?: string;   // PBR normal map for relief tiles
+  roughnessMapUrl?: string; // PBR roughness map
+  heightMapUrl?: string;   // optional parallax height
+  aoMapUrl?: string;       // optional ambient occlusion
   categorySlug?: string;   // normalized, from Categories
 
   // Core specs

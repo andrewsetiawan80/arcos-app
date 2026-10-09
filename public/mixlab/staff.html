@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en" data-page="staff">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#232323" />
+  <title>Mix Lab — Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="nav.css" />
+  <link rel="stylesheet" href="print.css" media="print" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script src="nav.js" defer></script>
+  <style>
+    :root {
+      --bg: #232323; --panel: #353535; --bg-2: #2a2a2a; --line: rgba(255, 255, 255, 0.1);
+      --ink: #ffffff; --muted: rgba(255, 255, 255, 0.5);
+      --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: clip; }
+    body {
+      font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+    }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 16px 14px calc(24px + env(safe-area-inset-bottom)); }
+    @media (min-width: 720px) { .wrap { padding: 28px 24px 64px; } }
+    header {
+      margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px;
+    }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45); margin: 0 0 6px; font-weight: 700; line-height: 1.4;
+    }
+    h1 {
+      font-weight: 900; font-size: clamp(28px, 4vw, 40px); margin: 0;
+      letter-spacing: -0.03em; text-transform: uppercase; line-height: 1.2;
+    }
+    .sub { color: var(--muted); font-size: 14px; margin: 8px 0 0; line-height: 1.5; max-width: 48ch; }
+    .list { display: grid; gap: 10px; }
+    .pick {
+      display: block; width: 100%; text-align: left;
+      background: var(--panel); border: 1px solid var(--line);
+      color: var(--ink); border-radius: 0; padding: 16px;
+      font-size: 16px; font-weight: 700; min-height: 56px;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+    .pick:hover { border-color: rgba(255, 255, 255, 0.22); background: var(--bg-2); }
+    .pick:active { background: #1f1f1f; }
+    .pick small {
+      display: block; color: var(--muted); font-size: 12px; font-weight: 500;
+      margin-top: 4px; letter-spacing: 0.04em;
+    }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .back {
+      border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+      border-radius: 0; padding: 10px 14px; min-height: 44px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .back:hover { border-color: rgba(255, 255, 255, 0.2); background: var(--bg-2); }
+    .back:active { background: #1f1f1f; }
+    .page-title { margin: 0 0 16px; }
+    .scale { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+    .chip {
+      border: 1px solid var(--line); background: transparent; color: var(--muted);
+      border-radius: 0; padding: 10px 14px; min-height: 44px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .chip.on { color: #232323; border-color: #ffffff; background: #ffffff; }
+    label {
+      display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    input[type="number"] {
+      width: 100%; height: 52px; padding: 0 14px; font-size: 20px;
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 0;
+      color: var(--ink); appearance: textfield; font-family: var(--font-mono);
+    }
+    .print-btn {
+      width: 100%; margin: 8px 0 10px; min-height: 48px; border-radius: 0;
+      border: 1px solid #ffffff; background: #ffffff; color: #232323;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .print-btn:hover { background: #f0f0f0; }
+    .print-btn:active { background: #e5e5e5; }
+    .pdf-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+    .pdf-btn {
+      min-height: 48px; border-radius: 0; border: 1px solid var(--line);
+      background: var(--panel); color: var(--ink); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 12px;
+    }
+    .pdf-btn:hover { border-color: rgba(255, 255, 255, 0.2); background: var(--bg-2); }
+    .pdf-btn:active { background: #1f1f1f; }
+    .pdf-btn small {
+      display: block; color: var(--muted); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.04em; text-transform: none; margin-top: 2px;
+    }
+    .ticket {
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 0; padding: 16px;
+    }
+    .ticket h2 {
+      margin: 0 0 10px; font-size: 11px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted); font-weight: 700;
+    }
+    .ticket-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    th {
+      text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; padding: 0 0 8px;
+    }
+    td { padding: 8px 0; border-top: 1px solid var(--line); }
+    td:last-child, th:last-child { text-align: right; font-family: var(--font-mono); }
+    tr.group td {
+      border-top: 0; color: var(--muted); font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase; padding-top: 14px;
+    }
+    tr.total td { border-top: 1px solid rgba(255, 255, 255, 0.28); font-weight: 700; }
+    .callout {
+      margin-top: 14px; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 0; background: var(--bg-2);
+    }
+    .callout b { font-family: var(--font-mono); color: #ffffff; }
+    .water { margin-top: 12px; display: grid; gap: 8px; }
+    .kv { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+    .kv span { color: var(--muted); }
+    .kv b { font-family: var(--font-mono); font-weight: 500; }
+    .empty { color: var(--muted); padding: 20px 0; }
+    .mark {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45); margin: 0 0 8px; font-weight: 700;
+    }
+    .print-only { display: none; }
+    .weighed-field { margin: 0 0 10px; }
+    .weighed-field input[type="text"],
+    .weighed-field select {
+      width: 100%; height: 52px; padding: 0 14px; font-size: 16px;
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 0;
+      color: var(--ink);
+    }
+    .ticket-meta .ticket-mix {
+      display: block; width: 100%; color: var(--muted); font-size: 12px; font-weight: 600;
+      margin-top: -2px;
+    }
+    .log-status {
+      color: var(--muted); font-size: 13px; margin: -8px 0 14px; min-height: 1.2em;
+    }
+    .log-status.ok { color: #4caf50; }
+    .log-status.err { color: #ff8a80; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="listView">
+      <header>
+        <p class="eyebrow">Mix Lab · floor weigh-out</p>
+        <h1>Staff</h1>
+        <p class="sub">Arcos job lines, shop recipes, and project mixes. You only change the batch size.</p>
+      </header>
+      <div class="list" id="recipeList"></div>
+    </div>
+
+    <div id="ticketView" hidden>
+      <div class="top no-print">
+        <button class="back" type="button" id="backBtn">← Back to recipes</button>
+      </div>
+      <h1 class="page-title no-print" id="recipeTitle">Recipe</h1>
+      <p class="sub no-print" id="recipeMixHint" hidden></p>
+    <div class="no-print">
+      <div class="scale" id="scaleChips"></div>
+      <label>Target dry weight (g)</label>
+      <input type="number" id="dryWeight" min="1" step="100" value="1000" />
+      <div class="weighed-field">
+        <label for="projectSelect">Project (optional)</label>
+        <select id="projectSelect">
+          <option value="">— No project —</option>
+        </select>
+      </div>
+      <div class="weighed-field">
+        <label for="weighedBy">Weighed by</label>
+        <input type="text" id="weighedBy" autocomplete="name" placeholder="Your name" />
+      </div>
+      <button class="print-btn" type="button" id="printBtn">Print &amp; log ticket</button>
+      <div class="pdf-row">
+        <button class="pdf-btn" type="button" id="pdfPrintBtn">
+          PDF · print layout
+          <small>A4 batch ticket</small>
+        </button>
+        <button class="pdf-btn" type="button" id="pdfPhoneBtn">
+          PDF · phone layout
+          <small>Big type, easy to read</small>
+        </button>
+      </div>
+      <p class="log-status" id="logStatus"></p>
+    </div>
+    <section class="ticket" id="staffTicket">
+      <div class="mix-print-sheet" id="staffPrintSheet" hidden>
+        <header class="pt-head">
+          <div class="pt-head-brand">
+            <svg class="print-arcos-logo" height="22" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Arcos" role="img">
+              <rect x="0" y="2" width="38" height="4" fill="#232323"/>
+              <text x="0" y="52" font-family="DM Sans, system-ui, sans-serif" font-size="48" font-weight="700" letter-spacing="0.02em" fill="#232323">arcos</text>
+            </svg>
+            <span class="pt-doc-label">Batch ticket</span>
+          </div>
+          <div class="pt-head-right">
+            <div class="pt-scale-chip" id="printScaleChip">—</div>
+            <canvas class="print-qr" id="printQr" width="64" height="64" aria-hidden="true"></canvas>
+          </div>
+        </header>
+        <h1 class="pt-title" id="printTitle">Recipe</h1>
+        <p class="pt-mix" id="printMixSub" hidden></p>
+        <table class="pt-table">
+          <thead>
+            <tr><th class="pt-col-name">Weigh</th><th class="pt-col-amt">Amount</th></tr>
+          </thead>
+          <tbody id="printTicketBody"></tbody>
+        </table>
+        <div class="pt-add-water">
+          <div class="pt-add-label">Add water (bucket)</div>
+          <div class="pt-add-amt">
+            <span class="pt-num" id="printAddWater">—</span>
+            <span class="pt-unit">g</span>
+          </div>
+          <p class="pt-add-note" id="printAddWaterNote" hidden></p>
+        </div>
+        <div class="pt-facts" id="printFacts"></div>
+        <footer class="pt-sign">
+          <div><span>Weighed by</span><i></i></div>
+          <div><span>Checked</span><i></i></div>
+          <div><span>Date</span><i></i></div>
+        </footer>
+      </div>
+      <h2 class="screen-only">Batch ticket</h2>
+      <div class="ticket-meta">
+        <span id="ticketName">—</span>
+        <span id="ticketMixSub" class="ticket-mix" hidden></span>
+        <span id="ticketScale">—</span>
+      </div>
+      <table>
+        <thead><tr><th>Material</th><th>g</th></tr></thead>
+        <tbody id="ticketBody"></tbody>
+      </table>
+      <div class="callout" id="waterCallout"></div>
+      <div class="water">
+        <div class="kv"><span>Portland share of binder</span><b id="kvPortland">—</b></div>
+        <div class="kv"><span>Pozzolan share of binder</span><b id="kvPozz">—</b></div>
+        <div class="kv" id="kvDesignWRow"><span>Design water (included in w/b)</span><b id="kvDesignW">—</b></div>
+        <div class="kv" id="kvAcrylicRow"><span id="kvAcrylicLabel">Already in the liquid polymer — do not add</span><b id="kvAcrylicW">—</b></div>
+      </div>
+    </section>
+    </div>
+  </div>
+
+  <script>
+    const MESHES = [
+      { id: "m25", name: "20–40 mesh" },
+      { id: "m40", name: "30–60 mesh" },
+      { id: "m60", name: "60–80 mesh" },
+      { id: "m80", name: "80–100 mesh" },
+      { id: "m200", name: "200 mesh" },
+      { id: "m300", name: "300 mesh" },
+    ];
+    const SCALES = [500, 1000, 1500, 18000];
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n, d = 1) => Number.isFinite(n) ? n.toLocaleString(undefined, { maximumFractionDigits: d, minimumFractionDigits: d }) : "—";
+    const pct = (n) => (n * 100).toFixed(1) + "%";
+
+    /** Shop production + project recipes (floor needs project mixes like Meja Bulat). */
+    function staffListRecipe(r) {
+      if (!r) return false;
+      if (r.kind !== "experiment") return true;
+      return !!(r.projectId && String(r.projectId).trim());
+    }
+    function hydrate(r) {
+      const out = { ...r, parts: { m25: 0, m40: 0, m60: 0, m80: 0, m200: 0, m300: 0, ...(r.parts || {}) } };
+      out.hpmc = out.hpmc || 0;
+      out.gaugingOfDry = Number(out.gaugingOfDry) > 0 ? Number(out.gaugingOfDry) : 0;
+      out.polymerType = out.polymerType === "rdp" ? "rdp" : "acrylic";
+      out.cementType = out.cementType === "white" ? "white" : "grey";
+      if (out.sandShare != null && out.binderShare) out.sandBinder = Number(out.sandShare) / Number(out.binderShare);
+      else out.sandBinder = Number(out.sandBinder) || 1;
+      return out;
+    }
+
+    function compute(s) {
+      const total = MESHES.reduce((n, m) => n + Number(s.parts[m.id] || 0), 0);
+      const fr = Object.fromEntries(MESHES.map((m) => [m.id, total > 0 ? s.parts[m.id] / total : 0]));
+      const binder = (1 / (1 + s.sandBinder)) * s.dryWeight;
+      const portland = binder / (1 + s.pozzolanCement);
+      const pozzolan = s.pozzolanCement * portland;
+      const sand = (s.sandBinder / (1 + s.sandBinder)) * s.dryWeight;
+      const sands = Object.fromEntries(MESHES.map((m) => [m.id, fr[m.id] * sand]));
+      const isRdp = s.polymerType === "rdp";
+      const solidContent = isRdp ? 1 : s.acrylicSolidContent;
+      const acrylic = solidContent > 0 ? (s.acrylicSolidTarget * binder) / solidContent : 0;
+      const waterFromAcrylic = isRdp ? 0 : (1 - solidContent) * acrylic;
+      const gaugingOfDry = Number(s.gaugingOfDry) || 0;
+      let waterGross;
+      let waterToAdd;
+      if (gaugingOfDry > 0) {
+        const gauging = gaugingOfDry * (binder + sand);
+        waterToAdd = isRdp ? gauging : Math.max(0, gauging - acrylic);
+        waterGross = waterToAdd + waterFromAcrylic;
+      } else {
+        waterGross = s.waterBinder * binder;
+        waterToAdd = waterGross - waterFromAcrylic;
+      }
+      const admix = {
+        plasticizer: s.plasticizer * binder,
+        defoamer: s.defoamer * binder,
+        accelerator: s.accelerator * binder,
+        retarder: s.retarder * binder,
+        expander: s.expander * binder,
+        wetting: s.wetting * binder,
+        hpmc: (s.hpmc || 0) * binder,
+        fiber: s.fiber * binder,
+        pigment: s.pigment * binder,
+      };
+      const waterOfBinder = binder > 0 ? waterGross / binder : 0;
+      const effectiveWB = waterOfBinder + s.plasticizer * s.plasticizerWater + s.wetting;
+      const wet = binder + sand + acrylic + waterToAdd + Object.values(admix).reduce((a, b) => a + b, 0);
+      return { binder, portland, pozzolan, sand, sands, acrylic, waterFromAcrylic, waterGross, waterToAdd, admix, effectiveWB, wet, isRdp, gaugingOfDry };
+    }
+
+    function polymerWaterRows(m) {
+      const rows = [];
+      if (m.acrylic > 1e-9) {
+        rows.push(["group", "Polymer"]);
+        rows.push([m.isRdp ? "VAE RDP" : "Acrylic polymer (liquid)", m.acrylic]);
+      }
+      if (m.waterToAdd > 1e-9) {
+        rows.push(["group", "Water"]);
+        rows.push(["Water", m.waterToAdd]);
+      }
+      return rows;
+    }
+
+    function renderWaterDetails(m, s) {
+      $("kvPortland").textContent = pct(1 / (1 + s.pozzolanCement));
+      $("kvPozz").textContent = pct(s.pozzolanCement / (1 + s.pozzolanCement));
+      if ($("kvDesignWRow")) $("kvDesignWRow").style.display = "";
+      $("kvDesignW").textContent = fmt(m.waterGross) + " g";
+      const acrylicRow = $("kvAcrylicRow");
+      if (!m.isRdp && m.waterFromAcrylic > 1e-9) {
+        if (acrylicRow) acrylicRow.style.display = "";
+        $("kvAcrylicLabel").textContent = "Already in liquid polymer row — do not add separately";
+        $("kvAcrylicW").textContent = fmt(m.waterFromAcrylic) + " g";
+      } else if (acrylicRow) {
+        acrylicRow.style.display = "none";
+      }
+      const gauging = Number(s.gaugingOfDry) || 0;
+      const gaugingBit = gauging > 0
+        ? ` Gauging liquid <b>${(gauging * 100).toFixed(0)}%</b> of dry${m.isRdp ? " (all as water for RDP)" : ""}.`
+        : "";
+      $("waterCallout").innerHTML =
+        `Total water/binder ratio: <b>${(m.effectiveWB * 100).toFixed(2)}%</b> of binder.${gaugingBit}`;
+    }
+
+    let recipes = [];
+    let floorJobs = [];
+    let displayLabel = "";
+    let current = null;
+    let dryWeight = 1000;
+
+    function ticketUrl(recipeId, grams) {
+      const url = new URL("staff.html", location.href);
+      url.searchParams.set("r", recipeId);
+      url.searchParams.set("d", String(Math.round(Number(grams) || 0)));
+      return url.href;
+    }
+
+    function renderQr(recipeId, grams) {
+      const canvas = $("printQr");
+      if (!canvas || !recipeId || typeof QRCode === "undefined") return;
+      QRCode.toCanvas(canvas, ticketUrl(recipeId, grams), {
+        width: 64,
+        margin: 0,
+        color: { dark: "#111111", light: "#ffffff" },
+      }, () => {});
+    }
+
+    async function logMix() {
+      if (!current) return false;
+      const weighedBy = ($("weighedBy").value || "").trim();
+      if (!weighedBy) {
+        $("logStatus").className = "log-status err";
+        $("logStatus").textContent = "Enter who weighed this batch before printing.";
+        $("weighedBy").focus();
+        return false;
+      }
+      try { localStorage.setItem("mesh-lab-weighed-by", weighedBy); } catch (_) {}
+      const projectId = ($("projectSelect") && $("projectSelect").value) || "";
+      const entry = {
+        recipeId: current.id,
+        recipeName: displayLabel
+          ? `${displayLabel} · ${current.name || "Untitled"}`
+          : (current.name || "Untitled"),
+        dryWeight,
+        weighedBy,
+        at: new Date().toISOString(),
+        source: "staff",
+        projectId: projectId || null,
+      };
+      try {
+        const res = await fetch("/api/mix-log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(entry),
+        });
+        if (!res.ok) throw new Error("save failed");
+        $("logStatus").className = "log-status ok";
+        $("logStatus").textContent = "Logged to mix history.";
+        return true;
+      } catch (_) {
+        $("logStatus").className = "log-status err";
+        $("logStatus").textContent = "Could not save mix log. Printing anyway.";
+        return true;
+      }
+    }
+
+    async function loadRecipes() {
+      try {
+        const res = await fetch("/api/recipes", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            recipes = data.map(hydrate).filter(staffListRecipe);
+            try { localStorage.setItem("mesh-lab-recipes", JSON.stringify(data)); } catch (_) {}
+            return true;
+          }
+        }
+      } catch (_) {}
+      try {
+        const res = await fetch("http://192.168.2.103/api/recipes", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            recipes = data.map(hydrate).filter(staffListRecipe);
+            try { localStorage.setItem("mesh-lab-recipes", JSON.stringify(data)); } catch (_) {}
+            return true;
+          }
+        }
+      } catch (_) {}
+      try {
+        const stored = JSON.parse(localStorage.getItem("mesh-lab-recipes") || "[]");
+        if (Array.isArray(stored) && stored.length) {
+          recipes = stored.map(hydrate).filter(staffListRecipe);
+          return false;
+        }
+      } catch (_) {}
+      recipes = [];
+      return false;
+    }
+
+    async function loadFloorJobs() {
+      floorJobs = [];
+      const urls = ["/api/floor-jobs", "http://192.168.2.189/api/floor-jobs"];
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { cache: "no-store" });
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            floorJobs = data;
+            return;
+          }
+        } catch (_) {}
+      }
+    }
+
+    function renderList() {
+      $("listView").hidden = false;
+      $("ticketView").hidden = true;
+      const shop = recipes.filter((r) => r.kind !== "experiment");
+      const projects = recipes.filter((r) => r.kind === "experiment" && r.projectId);
+      const block = (title, items, badge) => {
+        if (!items.length) return "";
+        return (
+          `<p class="eyebrow" style="margin:16px 0 8px">${title}</p>` +
+          items.map((r) =>
+            `<button class="pick" type="button" data-id="${r.id}">` +
+              `<b>${r.name || "Untitled"}</b>` +
+              `<small>${badge}</small>` +
+            `</button>`
+          ).join("")
+        );
+      };
+      const jobBlock = () => {
+        if (!floorJobs.length) return "";
+        let html = `<p class="eyebrow" style="margin:16px 0 8px">Arcos jobs</p>`;
+        for (const job of floorJobs) {
+          const client = job.clientName ? ` · ${job.clientName}` : "";
+          html += `<p style="margin:10px 0 6px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:0.06em;text-transform:uppercase">${job.title || "Job"}${client} · ${job.status || ""}</p>`;
+          for (const line of job.lines || []) {
+            const dryKg = Number(line.batchDryKg) || 0;
+            const dryLabel = dryKg >= 1
+              ? dryKg.toLocaleString(undefined, { maximumFractionDigits: 2 }) + " kg dry"
+              : Math.round((Number(line.batchDryGrams) || 0)) + " g dry";
+            const mix = recipes.find((r) => r.id === line.mixRecipeId);
+            const mixName = mix ? (mix.name || mix.id) : (line.mixRecipeId || "mix");
+            html +=
+              `<button class="pick" type="button" data-floor="1" data-id="${line.mixRecipeId}" data-d="${Number(line.batchDryGrams) || ""}" data-n="${encodeURIComponent(line.description || "")}">` +
+                `<b>${line.description || "Line"}</b>` +
+                `<small>${line.qty || 1} ${line.unit || "pcs"} · ${dryLabel} · mix: ${mixName}</small>` +
+              `</button>`;
+          }
+        }
+        return html;
+      };
+      if (!recipes.length && !floorJobs.length) {
+        $("recipeList").innerHTML = `<p class="empty">No recipes or job lines yet. Save a mix, or price a Job line with Cast from mix.</p>`;
+        return;
+      }
+      $("recipeList").innerHTML =
+        jobBlock() +
+        block("Shop production", shop, "Tap to open batch ticket") +
+        block("Project mixes", projects, "Project recipe · tap to weigh");
+    }
+
+    function openRecipe(id, dryOverride, labelOverride) {
+      current = recipes.find((r) => r.id === id);
+      if (!current) return;
+      displayLabel = String(labelOverride || "").trim();
+      $("listView").hidden = true;
+      $("ticketView").hidden = false;
+      const mixName = current.name || "Untitled";
+      if (displayLabel) {
+        $("recipeTitle").textContent = displayLabel;
+        $("recipeMixHint").hidden = false;
+        $("recipeMixHint").textContent = "Mix recipe: " + mixName + " (ingredients below)";
+      } else {
+        $("recipeTitle").textContent = mixName;
+        $("recipeMixHint").hidden = true;
+        $("recipeMixHint").textContent = "";
+      }
+      if (Number.isFinite(dryOverride) && dryOverride > 0) dryWeight = dryOverride;
+      else dryWeight = Number(current.dryWeight) > 0 ? Number(current.dryWeight) : dryWeight;
+      $("dryWeight").value = dryWeight;
+      $("logStatus").className = "log-status";
+      $("logStatus").textContent = "";
+      if (current.projectId && $("projectSelect")) {
+        $("projectSelect").value = current.projectId;
+      }
+      renderTicket();
+    }
+
+    function buildTicketRows(s, m) {
+      const totals = new Set(["Binder total", "Sand total", "Total dry weight"]);
+      return [
+        ["group", "Binder"],
+        [s.cementType === "white" ? "White Portland cement" : "Grey Portland cement", m.portland],
+        ["Silica fume / metakaolin", m.pozzolan],
+        ["Binder total", m.binder],
+        ["group", "Sand"],
+        ...MESHES.map((x) => [x.name, m.sands[x.id]]),
+        ["Sand total", m.sand],
+        ["Total dry weight", m.binder + m.sand],
+        ...polymerWaterRows(m),
+        ["group", "Admixtures"],
+        ["Plasticizer", m.admix.plasticizer],
+        ["Defoamer", m.admix.defoamer],
+        ["Accelerator", m.admix.accelerator],
+        ["Retarder", m.admix.retarder],
+        ["Expander / shrinkage", m.admix.expander],
+        ["Wetting agent", m.admix.wetting],
+        ["HPMC", m.admix.hpmc],
+        ["Glass fiber", m.admix.fiber],
+        ["Pigment", m.admix.pigment],
+        ["total", "Wet batch", m.wet],
+      ].filter((row, i, all) => {
+        if (row[0] === "total") return true;
+        if (row[0] === "group") {
+          for (const next of all.slice(i + 1)) {
+            if (next[0] === "group" || next[0] === "total") break;
+            if (totals.has(next[0]) || Number(next[1]) > 1e-9) return true;
+          }
+          return false;
+        }
+        return totals.has(row[0]) || Number(row[1]) > 1e-9;
+      });
+    }
+
+    function ticketSnapshot() {
+      if (!current) return null;
+      const s = hydrate({ ...current, dryWeight });
+      const m = compute(s);
+      const scale = dryWeight >= 1000
+        ? `${fmt(dryWeight / 1000, 2)} kg dry`
+        : `${fmt(dryWeight, 0)} g dry`;
+      const when = new Date().toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+      const sandBinder = `${s.sandShare || s.sandBinder}:${s.binderShare || 1}`;
+      const mixName = s.name || "Untitled";
+      const jobName = String(displayLabel || "").trim();
+      const title = jobName || mixName;
+      return {
+        s,
+        m,
+        rows: buildTicketRows(s, m),
+        name: title,
+        mixName,
+        jobName,
+        scale,
+        when,
+        sandBinder,
+        meta: jobName
+          ? `${when} · ${scale} · Mix: ${mixName} · Sand : binder ${sandBinder}`
+          : `${when} · ${scale} · Sand : binder ${sandBinder}`,
+        weighedBy: ($("weighedBy").value || "").trim(),
+        wb: (m.effectiveWB * 100).toFixed(2) + "%",
+        url: ticketUrl(current.id, dryWeight),
+      };
+    }
+
+    function fileSlug(name) {
+      return String(name || "recipe")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .slice(0, 48) || "recipe";
+    }
+
+    function qrDataUrl(text, size) {
+      return new Promise((resolve) => {
+        if (typeof QRCode === "undefined") {
+          resolve("");
+          return;
+        }
+        QRCode.toDataURL(text, {
+          width: size || 160,
+          margin: 1,
+          color: { dark: "#111111", light: "#ffffff" },
+        }, (err, url) => resolve(err ? "" : url));
+      });
+    }
+
+    function jsPdf() {
+      const mod = window.jspdf;
+      if (!mod || !mod.jsPDF) throw new Error("PDF library missing");
+      return mod.jsPDF;
+    }
+
+    async function downloadPdfPrint() {
+      const snap = ticketSnapshot();
+      if (!snap) return;
+      const JsPDF = jsPdf();
+      const doc = new JsPDF({ unit: "mm", format: "a4" });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const left = 14;
+      const right = pageW - 14;
+      let y = 14;
+
+      doc.setDrawColor(17);
+      doc.setLineWidth(0.6);
+      doc.line(left, y, right, y);
+      y += 8;
+
+      // Left: label · Right: Arcos logo
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(85);
+      doc.text("BATCH TICKET", left, y - 0.5);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(15);
+      doc.setTextColor(17);
+      const logoText = "arcos";
+      const logoW = doc.getTextWidth(logoText);
+      const logoX = right - logoW;
+      doc.setFillColor(17);
+      doc.rect(logoX, y - 5.2, 7.2, 0.85, "F");
+      doc.text(logoText, logoX, y);
+      y += 7;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.setTextColor(17);
+      const titleLines = doc.splitTextToSize(snap.name, right - left);
+      doc.text(titleLines, left, y);
+      y += titleLines.length * 7 + 1;
+
+      if (snap.jobName) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        doc.text("Mix recipe: " + snap.mixName, left, y);
+        y += 5;
+      }
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(51);
+      const metaLines = doc.splitTextToSize(snap.meta, right - left);
+      doc.text(metaLines, left, y);
+      y += metaLines.length * 4.5 + 2;
+
+      // QR deferred to bottom
+      const qr = await qrDataUrl(snap.url, 180);
+
+      doc.setDrawColor(17);
+      doc.setLineWidth(0.3);
+      doc.line(left, y, right, y);
+      y += 6;
+
+      doc.setFontSize(8);
+      doc.setTextColor(85);
+      doc.text("MATERIAL", left, y);
+      doc.text("g", right, y, { align: "right" });
+      y += 2;
+      doc.setDrawColor(17);
+      doc.line(left, y, right, y);
+      y += 5;
+
+      snap.rows.forEach((row) => {
+        if (y > pageH - 28) {
+          doc.addPage();
+          y = 16;
+        }
+        if (row[0] === "group") {
+          y += 2;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(8);
+          doc.setTextColor(51);
+          doc.text(String(row[1]).toUpperCase(), left, y);
+          y += 5;
+          return;
+        }
+        if (row[0] === "total") {
+          doc.setDrawColor(17);
+          doc.setLineWidth(0.5);
+          doc.line(left, y - 2, right, y - 2);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.setTextColor(17);
+          doc.text(row[1], left, y + 2);
+          doc.text(fmt(row[2]), right, y + 2, { align: "right" });
+          y += 8;
+          return;
+        }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(17);
+        doc.text(row[0], left, y);
+        doc.setFont("courier", "normal");
+        doc.text(fmt(row[1]), right, y, { align: "right" });
+        doc.setDrawColor(232);
+        doc.setLineWidth(0.2);
+        doc.line(left, y + 1.8, right, y + 1.8);
+        y += 6;
+      });
+
+      y += 4;
+      if (y > pageH - 40) {
+        doc.addPage();
+        y = 16;
+      }
+      doc.setDrawColor(180);
+      doc.setLineWidth(0.3);
+      doc.rect(left, y, right - left, 12);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(17);
+      doc.text(`Total water/binder ratio: ${snap.wb} of binder`, left + 3, y + 7.5);
+      y += 18;
+
+      doc.setFontSize(9);
+      doc.setTextColor(85);
+      doc.text(`Portland ${pct(1 / (1 + snap.s.pozzolanCement))}   Pozzolan ${pct(snap.s.pozzolanCement / (1 + snap.s.pozzolanCement))}   Design water ${fmt(snap.m.waterGross)} g`, left, y);
+      y += 8;
+      if (!snap.m.isRdp && snap.m.waterFromAcrylic > 1e-9) {
+        doc.text(`Already in liquid polymer — do not add separately: ${fmt(snap.m.waterFromAcrylic)} g`, left, y);
+        y += 8;
+      }
+
+      if (y > pageH - 42) {
+        doc.addPage();
+        y = 16;
+      }
+      doc.setDrawColor(17);
+      doc.setLineWidth(0.3);
+      doc.line(left, y, right, y);
+      y += 8;
+      doc.setFontSize(9);
+      doc.setTextColor(85);
+      const signRight = qr ? right - 28 : right;
+      const mid = (left + signRight) / 2;
+      doc.text("Weighed by", left, y);
+      doc.text("Checked / date", mid + 4, y);
+      y += 14;
+      doc.setDrawColor(17);
+      doc.line(left, y, mid - 4, y);
+      doc.line(mid + 4, y, signRight, y);
+      if (snap.weighedBy) {
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(17);
+        doc.text(snap.weighedBy, left, y - 2);
+      }
+      if (qr) {
+        doc.addImage(qr, "PNG", right - 24, y - 18, 24, 24);
+      }
+
+      doc.save(`${fileSlug(snap.name)}-${Math.round(dryWeight)}g-print.pdf`);
+      $("logStatus").className = "log-status ok";
+      $("logStatus").textContent = "Downloaded print-layout PDF.";
+    }
+
+    async function downloadPdfPhone() {
+      const snap = ticketSnapshot();
+      if (!snap) return;
+      const JsPDF = jsPdf();
+      // Tall phone-ish page: easy full-screen reading on mobile PDF viewers
+      const doc = new JsPDF({ unit: "mm", format: [95, 170], orientation: "portrait" });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const left = 8;
+      const right = pageW - 8;
+      let y = 10;
+
+      const newPage = () => {
+        doc.addPage([95, 170], "portrait");
+        y = 10;
+      };
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(120);
+      doc.text("MIX LAB", left, y);
+      y += 7;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(17);
+      const titleLines = doc.splitTextToSize(snap.name, right - left);
+      doc.text(titleLines, left, y);
+      y += titleLines.length * 6.5 + 2;
+
+      if (snap.jobName) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(90);
+        doc.text("Mix: " + snap.mixName, left, y);
+        y += 5;
+      }
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+      doc.setTextColor(40);
+      doc.text(snap.scale, left, y);
+      y += 5;
+      doc.setFontSize(9);
+      doc.setTextColor(100);
+      doc.text(snap.when, left, y);
+      y += 4;
+      doc.text(`Sand : binder ${snap.sandBinder}`, left, y);
+      y += 6;
+
+      const qr = await qrDataUrl(snap.url, 200);
+      if (qr) {
+        doc.addImage(qr, "PNG", right - 24, 8, 22, 22);
+      }
+
+      doc.setFillColor(17);
+      doc.rect(left, y, right - left, 0.6, "F");
+      y += 7;
+
+      doc.setFillColor(245, 240, 230);
+      doc.roundedRect(left, y, right - left, 14, 2, 2, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(17);
+      doc.text(`w/b  ${snap.wb}`, left + 3, y + 9);
+      y += 20;
+
+      snap.rows.forEach((row) => {
+        if (y > pageH - 22) newPage();
+
+        if (row[0] === "group") {
+          y += 2;
+          doc.setFillColor(17);
+          doc.roundedRect(left, y, right - left, 9, 1.5, 1.5, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.setTextColor(255);
+          doc.text(String(row[1]).toUpperCase(), left + 3, y + 6.2);
+          y += 13;
+          return;
+        }
+
+        if (row[0] === "total") {
+          if (y > pageH - 28) newPage();
+          doc.setFillColor(17);
+          doc.roundedRect(left, y, right - left, 16, 2, 2, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(11);
+          doc.setTextColor(255);
+          doc.text(row[1], left + 3, y + 6.5);
+          doc.setFontSize(16);
+          doc.text(fmt(row[2]) + " g", right - 3, y + 11.5, { align: "right" });
+          y += 20;
+          return;
+        }
+
+        const nameLines = doc.splitTextToSize(row[0], right - left - 34);
+        const blockH = Math.max(14, nameLines.length * 5 + 8);
+        if (y + blockH > pageH - 12) newPage();
+
+        doc.setDrawColor(220);
+        doc.setLineWidth(0.3);
+        doc.roundedRect(left, y, right - left, blockH, 2, 2);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        doc.setTextColor(30);
+        doc.text(nameLines, left + 3, y + 6);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        doc.setTextColor(17);
+        doc.text(fmt(row[1]), right - 3, y + blockH / 2 + 2, { align: "right" });
+        y += blockH + 3;
+      });
+
+      if (y > pageH - 24) newPage();
+      y += 2;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(80);
+      doc.text(`Weighed by: ${snap.weighedBy || "_______________"}`, left, y);
+      y += 6;
+      doc.text("Checked / date: _______________", left, y);
+
+      doc.save(`${fileSlug(snap.name)}-${Math.round(dryWeight)}g-phone.pdf`);
+      $("logStatus").className = "log-status ok";
+      $("logStatus").textContent = "Downloaded phone-layout PDF.";
+    }
+
+    function renderTicket() {
+      if (!current) return;
+      const snap = ticketSnapshot();
+      if (!snap) return;
+      $("ticketBody").innerHTML = snap.rows.map((row) => {
+        if (row[0] === "group") return `<tr class="group"><td colspan="2">${row[1]}</td></tr>`;
+        if (row[0] === "total") return `<tr class="total"><td>${row[1]}</td><td>${fmt(row[2])}</td></tr>`;
+        return `<tr><td>${row[0]}</td><td>${fmt(row[1])}</td></tr>`;
+      }).join("");
+      $("ticketName").textContent = snap.name;
+      if ($("ticketMixSub")) {
+        if (snap.jobName) {
+          $("ticketMixSub").hidden = false;
+          $("ticketMixSub").textContent = "Mix: " + snap.mixName;
+        } else {
+          $("ticketMixSub").hidden = true;
+          $("ticketMixSub").textContent = "";
+        }
+      }
+      $("ticketScale").textContent = snap.scale;
+      $("printTitle").textContent = snap.name;
+      if ($("printMixSub")) {
+        if (snap.jobName) {
+          $("printMixSub").hidden = false;
+          $("printMixSub").textContent = "Mix recipe: " + snap.mixName;
+        } else {
+          $("printMixSub").hidden = true;
+          $("printMixSub").textContent = "";
+        }
+      }
+      if ($("printScaleChip")) $("printScaleChip").textContent = snap.scale;
+      renderWaterDetails(snap.m, snap.s);
+      if ($("printTicketBody")) {
+        $("printTicketBody").innerHTML = snap.rows.map((row) => {
+          if (row[0] === "group") return `<tr class="pt-group"><td colspan="2">${row[1]}</td></tr>`;
+          const amt = (g) => {
+            const n = Number(g) || 0;
+            if (n >= 1000) return { primary: fmt(n / 1000, 2), unit: "kg" };
+            return { primary: fmt(n, n >= 100 ? 0 : 1), unit: "g" };
+          };
+          if (row[0] === "total") {
+            const a = amt(row[2]);
+            return `<tr class="pt-total"><td>${row[1]}</td><td class="pt-amt"><span class="pt-num">${a.primary}</span><span class="pt-unit">${a.unit}</span></td></tr>`;
+          }
+          const isWater = String(row[0]).toLowerCase() === "water";
+          const a = amt(row[1]);
+          return `<tr class="pt-line${isWater ? " pt-water-line" : ""}"><td>${row[0]}</td><td class="pt-amt"><span class="pt-num">${a.primary}</span><span class="pt-unit">${a.unit}</span></td></tr>`;
+        }).join("");
+      }
+      const addW = Number(snap.m.waterToAdd) || 0;
+      if ($("printAddWater")) {
+        const a = addW >= 1000
+          ? { primary: fmt(addW / 1000, 2), unit: "kg" }
+          : { primary: fmt(addW, addW >= 100 ? 0 : 1), unit: "g" };
+        $("printAddWater").textContent = a.primary;
+        const unitEl = $("printAddWater").parentElement && $("printAddWater").parentElement.querySelector(".pt-unit");
+        if (unitEl) unitEl.textContent = a.unit;
+      }
+      const note = $("printAddWaterNote");
+      if (note) {
+        if (!snap.m.isRdp && snap.m.waterFromAcrylic > 1e-9) {
+          note.hidden = false;
+          note.textContent = `Polymer already brings ${fmt(snap.m.waterFromAcrylic, 0)} g water — do not double-count.`;
+        } else {
+          note.hidden = true;
+          note.textContent = "";
+        }
+      }
+      if ($("printFacts")) {
+        $("printFacts").innerHTML =
+          `<div><span>w/b</span><b>${(snap.m.effectiveWB * 100).toFixed(1)}%</b></div>` +
+          `<div><span>Portland</span><b>${$("kvPortland").textContent}</b></div>` +
+          `<div><span>Pozzolan</span><b>${$("kvPozz").textContent}</b></div>`;
+      }
+      renderQr(current.id, dryWeight);
+      $("scaleChips").innerHTML = SCALES.map((n) =>
+        `<button class="chip ${dryWeight === n ? "on" : ""}" type="button" data-scale="${n}">${n === 18000 ? "18 kg" : n + " g"}</button>`
+      ).join("");
+    }
+
+    function printStaffTicket() {
+      const sheet = $("staffPrintSheet");
+      if (!sheet) {
+        window.print();
+        return;
+      }
+      const old = document.getElementById("mix-ticket-print-frame");
+      if (old) old.remove();
+      const iframe = document.createElement("iframe");
+      iframe.id = "mix-ticket-print-frame";
+      iframe.setAttribute("aria-hidden", "true");
+      iframe.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;opacity:0;pointer-events:none;";
+      document.body.appendChild(iframe);
+      const doc = iframe.contentDocument;
+      const win = iframe.contentWindow;
+      if (!doc || !win) {
+        iframe.remove();
+        window.print();
+        return;
+      }
+      doc.open();
+      doc.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title></title><link rel="stylesheet" href="print.css"></head><body class="mix-ticket-print-root"></body></html>');
+      doc.close();
+      const clone = sheet.cloneNode(true);
+      clone.removeAttribute("hidden");
+      const srcCanvas = sheet.querySelector("canvas.print-qr");
+      const dstCanvas = clone.querySelector("canvas.print-qr");
+      if (srcCanvas && dstCanvas) {
+        dstCanvas.width = srcCanvas.width;
+        dstCanvas.height = srcCanvas.height;
+        const ctx = dstCanvas.getContext("2d");
+        if (ctx) ctx.drawImage(srcCanvas, 0, 0);
+      }
+      doc.body.appendChild(clone);
+      setTimeout(() => {
+        try {
+          win.focus();
+          win.print();
+        } finally {
+          setTimeout(() => { try { iframe.remove(); } catch (_) {} }, 800);
+        }
+      }, 200);
+    }
+
+    $("recipeList").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-id]");
+      if (!btn) return;
+      const dry = Number(btn.dataset.d);
+      let label = "";
+      try {
+        label = btn.dataset.n ? decodeURIComponent(btn.dataset.n) : "";
+      } catch (_) {
+        label = btn.dataset.n || "";
+      }
+      openRecipe(btn.dataset.id, Number.isFinite(dry) && dry > 0 ? dry : undefined, label);
+    });
+    $("backBtn").onclick = () => { current = null; renderList(); };
+    $("printBtn").onclick = async () => {
+      const ok = await logMix();
+      if (!ok) return;
+      printStaffTicket();
+    };
+    $("pdfPrintBtn").onclick = async () => {
+      try {
+        await downloadPdfPrint();
+      } catch (err) {
+        $("logStatus").className = "log-status err";
+        $("logStatus").textContent = "Could not build print PDF.";
+        console.error(err);
+      }
+    };
+    $("pdfPhoneBtn").onclick = async () => {
+      try {
+        await downloadPdfPhone();
+      } catch (err) {
+        $("logStatus").className = "log-status err";
+        $("logStatus").textContent = "Could not build phone PDF.";
+        console.error(err);
+      }
+    };
+    try {
+      const savedName = localStorage.getItem("mesh-lab-weighed-by");
+      if (savedName) $("weighedBy").value = savedName;
+    } catch (_) {}
+
+    async function loadProjects() {
+      const sel = $("projectSelect");
+      if (!sel) return;
+      try {
+        const res = await fetch("/api/mix-projects", { cache: "no-store" });
+        if (!res.ok) throw new Error("fail");
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : [];
+        const active = items.filter((p) => p.status === "trial" || p.status === "active");
+        const saved = localStorage.getItem("mesh-lab-project-id") || "";
+        sel.innerHTML =
+          '<option value="">— No project —</option>' +
+          active
+            .map((p) => {
+              const label = (p.clientName ? p.clientName + " · " : "") + (p.title || p.id);
+              return `<option value="${p.id}">${label}</option>`;
+            })
+            .join("");
+        if (saved && [...sel.options].some((o) => o.value === saved)) sel.value = saved;
+        sel.onchange = () => {
+          try { localStorage.setItem("mesh-lab-project-id", sel.value || ""); } catch (_) {}
+        };
+      } catch (_) {
+        /* Arcos unreachable — leave empty */
+      }
+    }
+    loadProjects();
+    $("scaleChips").addEventListener("click", (e) => {
+      const n = Number(e.target.dataset.scale);
+      if (!n) return;
+      dryWeight = n;
+      $("dryWeight").value = n;
+      renderTicket();
+    });
+    function selectInputAll(el) {
+      if (!el || el.tagName !== "INPUT") return;
+      if (el.type !== "number" && el.type !== "text") return;
+      const run = () => {
+        el.focus();
+        try {
+          el.select();
+          if (typeof el.setSelectionRange === "function") {
+            el.setSelectionRange(0, String(el.value).length);
+          }
+        } catch (_) {}
+        delete el.dataset.selectPending;
+      };
+      if (el.type === "number") {
+        el.dataset.restoreNumber = "1";
+        el.dataset.selectPending = "1";
+        el.type = "text";
+        requestAnimationFrame(() => requestAnimationFrame(run));
+      } else {
+        run();
+      }
+    }
+
+    document.addEventListener("dblclick", (e) => {
+      const el = e.target;
+      if (!el || el.tagName !== "INPUT") return;
+      if (el.type !== "number" && el.type !== "text" && el.dataset.restoreNumber !== "1") return;
+      e.preventDefault();
+      selectInputAll(el);
+    });
+    document.addEventListener("blur", (e) => {
+      const el = e.target;
+      if (!el || el.dataset.restoreNumber !== "1") return;
+      if (el.dataset.selectPending === "1") return;
+      el.type = "number";
+      delete el.dataset.restoreNumber;
+    }, true);
+
+    $("dryWeight").addEventListener("input", () => {
+      dryWeight = Number($("dryWeight").value) || 0;
+      renderTicket();
+    });
+    $("dryWeight").addEventListener("blur", () => {
+      if (!$("dryWeight").value) {
+        dryWeight = 0;
+        $("dryWeight").value = "0";
+        renderTicket();
+      }
+    });
+
+    Promise.all([loadRecipes(), loadFloorJobs()]).then(() => {
+      renderList();
+      const params = new URLSearchParams(location.search);
+      const rid = params.get("r");
+      const d = Number(params.get("d"));
+      const n = params.get("n") || "";
+      if (rid && recipes.some((r) => r.id === rid)) {
+        openRecipe(rid, Number.isFinite(d) && d > 0 ? d : undefined, n);
+      } else if (rid) {
+        $("recipeList").insertAdjacentHTML(
+          "afterbegin",
+          `<p class="empty">Recipe “${rid}” not in Mix Lab yet. Save it in the recipe builder, or pick an Arcos job line below.</p>`,
+        );
+      }
+    });
+    window.addEventListener("focus", () => {
+      Promise.all([loadRecipes(), loadFloorJobs()]).then(() => {
+        if (current && recipes.some((r) => r.id === current.id)) {
+          current = recipes.find((r) => r.id === current.id);
+          renderTicket();
+        } else if (!current) {
+          renderList();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

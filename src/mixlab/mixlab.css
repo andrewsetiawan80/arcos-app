@@ -1,0 +1,510 @@
+/* Shared Mix Lab builder — Arcos concrete theme */
+.mixlab-root {
+  --bg: #232323;
+  --bg-2: #2a2a2a;
+  --panel: #353535;
+  --panel-2: #3a3a3a;
+  --line: rgba(255, 255, 255, 0.1);
+  --ink: #ffffff;
+  --muted: rgba(255, 255, 255, 0.5);
+  --oxide: #ffffff;
+  --oxide-2: rgba(255, 255, 255, 0.8);
+  --ok: #4caf50;
+  --warn: #ff9800;
+  --sand-0: #e8e8e8;
+  --sand-1: #c8c8c8;
+  --sand-2: #a0a0a0;
+  --sand-3: #787878;
+  --sand-4: #505050;
+  --sand-5: #383838;
+  --radius: 0;
+  --font-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  box-sizing: border-box;
+  background: var(--bg);
+}
+.mixlab-root *, .mixlab-root *::before, .mixlab-root *::after { box-sizing: border-box; }
+.mixlab-root button, .mixlab-root input, .mixlab-root select, .mixlab-root textarea { font: inherit; color: inherit; }
+.mixlab-root button { cursor: pointer; }
+
+html:has(.mixlab-root[data-shell="mixlab"]),
+html:has(.mixlab-root[data-shell="mixlab"]) body {
+  margin: 0;
+  background: #232323;
+  color: #ffffff;
+  overflow-x: clip;
+}
+html:has(.mixlab-root[data-shell="mixlab"]) body {
+  font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  min-height: 100vh;
+  background: #232323;
+}
+.mixlab-root[data-shell="arcos"] {
+  background: transparent;
+  overflow: visible;
+}
+.mixlab-root[data-shell="arcos"] > .wrap {
+  padding-top: 4px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.mixlab-root[data-shell="arcos"] header h1 {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.mixlab-root .wrap { max-width: 1440px; margin: 0 auto; padding: 16px 14px calc(28px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 720px) {
+.mixlab-root .wrap { padding: 28px 24px 64px; }
+}
+.mixlab-root header {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
+      margin-bottom: 28px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+    }
+.mixlab-root .brand { display: flex; flex-direction: column; gap: 6px; }
+.mixlab-root .eyebrow {
+      font-family: var(--font-ui);
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45); font-weight: 700; line-height: 1.4;
+    }
+.mixlab-root h1 {
+      font-family: var(--font-ui);
+      font-weight: 900; font-size: clamp(32px, 4vw, 48px);
+      margin: 0; letter-spacing: -0.03em; line-height: 1.2;
+      text-transform: uppercase;
+    }
+.mixlab-root .sub { color: var(--muted); font-size: 14px; max-width: 46ch; line-height: 1.5; }
+.mixlab-root .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.mixlab-root a.btn { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.mixlab-root .btn {
+      border: 1px solid var(--line); background: var(--panel);
+      padding: 10px 14px; border-radius: 0; color: var(--ink);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    }
+.mixlab-root .btn:hover { border-color: rgba(255, 255, 255, 0.2); background: #2a2a2a; }
+.mixlab-root .btn:active:not(:disabled) { background: #1f1f1f; }
+.mixlab-root .btn.primary:active:not(:disabled) { background: #e5e5e5; }
+.mixlab-root .btn.primary { background: #ffffff; border-color: #ffffff; color: #232323; }
+.mixlab-root .btn.primary:hover { background: #f0f0f0; }
+.mixlab-root .btn.ghost { background: transparent; }
+.mixlab-root .btn.active { background: #ffffff; color: #232323; border-color: #ffffff; }
+.mixlab-root .btn.danger { border-color: rgba(244, 67, 54, 0.45); color: #ff8a80; }
+.mixlab-root .btn.danger:hover { background: rgba(244, 67, 54, 0.12); }
+.mixlab-root .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+      min-width: 0;
+    }
+.mixlab-root .wrap, .mixlab-root .card, .mixlab-root .ticket { min-width: 0; max-width: 100%; }
+@media (min-width: 960px) {
+.mixlab-root .grid {
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+        grid-template-areas:
+          "recipe ticket"
+          "mix    ticket"
+          "sand   ticket"
+          "dens   dens";
+      }
+.mixlab-root .card-recipe { grid-area: recipe; }
+.mixlab-root .card-mix { grid-area: mix; }
+.mixlab-root .card-sand { grid-area: sand; }
+.mixlab-root .card-density { grid-area: dens; }
+.mixlab-root .ticket {
+        grid-area: ticket;
+        position: sticky;
+        top: 20px;
+        align-self: start;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+      }
+}
+@media (min-width: 1180px) {
+.mixlab-root .grid {
+        grid-template-columns: minmax(280px, 1fr) minmax(340px, 1.2fr) minmax(300px, 360px);
+        grid-template-areas:
+          "recipe sand ticket"
+          "mix    sand ticket"
+          "dens   dens dens";
+      }
+.mixlab-root .card-mix .row2.admix { grid-template-columns: repeat(3, 1fr); }
+}
+.mixlab-root .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+    }
+.mixlab-root .card h2 {
+      margin: 0 0 14px; font-size: 12px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted); font-weight: 600;
+    }
+.mixlab-root .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.mixlab-root .field label {
+      display: flex; justify-content: space-between; gap: 8px;
+      font-size: 12px; color: var(--muted);
+    }
+.mixlab-root .field label b { color: var(--ink); font-weight: 500; }
+/* Admix grid: keep input boxes on one baseline even when a label wraps */
+.mixlab-root .row2.admix {
+  align-items: start;
+}
+.mixlab-root .row2.admix .field {
+  display: grid;
+  grid-template-rows: 2.6em auto;
+  gap: 6px;
+  margin-bottom: 10px;
+  min-width: 0;
+}
+.mixlab-root .row2.admix .field label {
+  align-self: end;
+  line-height: 1.25;
+  min-height: 0;
+}
+@media (min-width: 520px) {
+  .mixlab-root .row2.admix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 720px) {
+  .mixlab-root .row2.admix { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.mixlab-root .field input[type="text"], .mixlab-root .field input[type="number"], .mixlab-root .field select {
+      width: 100%; max-width: 100%; background: var(--bg); border: 1px solid var(--line);
+      border-radius: 0; padding: 0 12px; outline: none;
+      height: 44px; min-height: 44px; line-height: 44px;
+      font-size: 16px;
+    }
+.mixlab-root .field input[type="number"] {
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+.mixlab-root .field input[type="number"]::-webkit-outer-spin-button, .mixlab-root .field input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+.mixlab-root .field input:focus, .mixlab-root .field select:focus { border-color: rgba(255, 255, 255, 0.28); }
+.mixlab-root .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.55) 50%), linear-gradient(135deg, rgba(255,255,255,0.55) 50%, transparent 50%); background-position: calc(100% - 16px) 16px, calc(100% - 11px) 16px; background-size: 5px 5px; background-repeat: no-repeat; }
+.mixlab-root .row2 { display: grid; grid-template-columns: 1fr; gap: 10px; min-width: 0; }
+@media (min-width: 520px) {
+.mixlab-root .row2 { grid-template-columns: 1fr 1fr; }
+}
+.mixlab-root .ratio {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: stretch;
+    }
+.mixlab-root .ratio .colon { color: var(--muted); font-size: 18px; line-height: 44px; }
+.mixlab-root .ratio input[type="number"] {
+      height: 44px;
+      min-height: 44px;
+      line-height: 44px;
+      padding: 0 12px;
+      font-size: 16px;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+.mixlab-root .ratio input[type="number"]::-webkit-outer-spin-button, .mixlab-root .ratio input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+.mixlab-root .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.mixlab-root .chip {
+      border: 1px solid var(--line); background: transparent;
+      border-radius: 0; padding: 6px 10px; font-size: 11px; color: var(--muted);
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    }
+.mixlab-root .chip.on { color: #232323; border-color: #ffffff; background: #ffffff; }
+.mixlab-root .chip:hover { border-color: rgba(255, 255, 255, 0.25); }
+.mixlab-root .chip:active { background: rgba(255, 255, 255, 0.08); }
+.mixlab-root .curve-groups { display: grid; gap: 10px; margin: 0 0 14px; }
+.mixlab-root .curve-group {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+.mixlab-root .curve-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 8px;
+    }
+.mixlab-root .curve-group .chips { margin: 0; }
+.mixlab-root .sand-active {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+.mixlab-root .sand-active b { color: #ffffff; font-weight: 600; }
+.mixlab-root .sand-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.mixlab-root .sand-head p { margin: 0; color: var(--muted); font-size: 13px; max-width: 52ch; }
+.mixlab-root .stack {
+      display: flex; height: 28px; border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--line); margin: 16px 0 8px;
+    }
+.mixlab-root .stack span { display: block; height: 100%; }
+.mixlab-root .stack-legend {
+      display: flex; flex-wrap: wrap; gap: 12px 16px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+      margin-bottom: 18px;
+    }
+.mixlab-root .dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+.mixlab-root .mesh {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 56px 40px;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+.mixlab-root .mesh:first-of-type { border-top: 0; }
+.mixlab-root .mesh > .mesh-name { grid-column: 1; grid-row: 1; min-width: 0; }
+.mixlab-root .mesh > .pct { grid-column: 2; grid-row: 1; }
+.mixlab-root .mesh > .lock { grid-column: 3; grid-row: 1; }
+.mixlab-root .mesh > input[type="range"] { grid-column: 1 / -1; grid-row: 2; }
+.mixlab-root .mesh > input[type="number"] { grid-column: 1 / -1; grid-row: 3; }
+@media (min-width: 1100px) {
+.mixlab-root .mesh {
+        grid-template-columns: 148px minmax(0, 1fr) 72px 64px 36px;
+        gap: 10px;
+        padding: 10px 0;
+      }
+.mixlab-root .mesh > .mesh-name, .mixlab-root .mesh > input[type="range"], .mixlab-root .mesh > input[type="number"], .mixlab-root .mesh > .pct, .mixlab-root .mesh > .lock { grid-column: auto; grid-row: auto; }
+}
+.mixlab-root .mesh-name { font-size: 13px; }
+.mixlab-root .mesh-name small { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.mixlab-root input[type="range"] {
+      width: 100%; max-width: 100%; accent-color: #ffffff; background: transparent;
+    }
+.mixlab-root .mesh input[type="number"] {
+      width: 100%; max-width: 100%; background: var(--bg-2); border: 1px solid var(--line);
+      border-radius: 8px; padding: 0 12px; text-align: right;
+      font-family: var(--font-mono); font-size: 16px;
+      height: 44px; line-height: 44px;
+    }
+.mixlab-root .pct {
+      font-family: var(--font-mono); font-size: 12px; text-align: right; color: var(--ink);
+    }
+.mixlab-root .lock {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; margin: 0;
+    }
+.mixlab-root .lock input { width: 16px; height: 16px; accent-color: #ffffff; cursor: pointer; }
+.mixlab-root .mesh.locked { opacity: 0.55; }
+.mixlab-root .mesh.locked input[type="range"], .mixlab-root .mesh.locked input[type="number"] { pointer-events: none; }
+.mixlab-root .profile {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-top: 16px; height: 120px; align-items: end;
+    }
+@media (min-width: 720px) {
+.mixlab-root .profile { grid-template-columns: repeat(6, 1fr); }
+}
+.mixlab-root .bar {
+      background: var(--panel-2); border: 1px solid var(--line);
+      border-radius: 8px 8px 4px 4px; position: relative; overflow: hidden;
+      min-height: 8px;
+    }
+.mixlab-root .bar i {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      display: block;
+    }
+.mixlab-root .bar label {
+      position: absolute; left: 6px; right: 6px; bottom: 6px;
+      font-size: 10px; color: #2a2a2a; font-weight: 600;
+    }
+.mixlab-root .hint {
+      margin-top: 14px; padding: 12px 14px; border-radius: 0;
+      background: #2a2a2a; border: 1px solid var(--line);
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+.mixlab-root .hint strong { display: block; font-size: 13px; margin-bottom: 3px; }
+.mixlab-root .hint span { color: var(--muted); font-size: 12px; }
+.mixlab-root .ticket-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+.mixlab-root table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.mixlab-root th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0 0 8px; }
+.mixlab-root td { padding: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.mixlab-root td:last-child, .mixlab-root th:last-child { text-align: right; font-family: var(--font-mono); }
+.mixlab-root tr.group td { border-top: 0; color: var(--muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding-top: 14px; }
+.mixlab-root tr.total td { border-top: 1px solid rgba(255, 255, 255, 0.2); font-weight: 600; }
+.mixlab-root .water-callout {
+      margin-top: 16px; padding: 12px 14px; border-radius: 0;
+      background: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 14px; line-height: 1.4;
+    }
+.mixlab-root .water-callout b {
+      font-family: var(--font-mono); font-weight: 500; color: #ffffff;
+    }
+.mixlab-root .cost-box {
+      margin-top: 16px; padding: 12px 14px; border-radius: 0;
+      background: #2a2a2a; border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+.mixlab-root .cost-box h3 {
+      margin: 0 0 10px; font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); font-weight: 600;
+    }
+.mixlab-root .cost-grid { display: grid; gap: 8px; }
+.mixlab-root .cost-grid .kv b { color: #ffffff; }
+.mixlab-root .cost-breakdown {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: grid;
+      gap: 6px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+.mixlab-root .cost-line {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 10px; font-size: 12px;
+    }
+.mixlab-root .cost-line > span { color: var(--muted); min-width: 0; line-height: 1.35; }
+.mixlab-root .cost-line > span small { display: block; color: rgba(255,255,255,0.45); font-size: 11px; margin-top: 1px; }
+.mixlab-root .cost-line > b {
+      font-family: var(--font-mono); font-weight: 500;
+      color: #ffffff; white-space: nowrap;
+    }
+.mixlab-root .cost-line.miss > b { color: rgba(255,255,255,0.55); font-weight: 400; font-size: 11px; }
+.mixlab-root .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+.mixlab-root .cost-table th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 0 6px;
+      font-weight: 600;
+    }
+.mixlab-root .cost-table th:last-child, .mixlab-root .cost-table td:last-child {
+      text-align: right;
+      font-family: var(--font-mono);
+    }
+.mixlab-root .cost-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid #2a2a2a;
+      vertical-align: top;
+    }
+.mixlab-root .cost-table td small { color: var(--muted); font-size: 11px; }
+.mixlab-root .cost-table tr.miss td:last-child {
+      color: var(--muted);
+      font-style: italic;
+      font-family: inherit;
+    }
+.mixlab-root .cost-miss { color: var(--muted); font-size: 12px; margin: 0; }
+.mixlab-root .price-list { display: grid; gap: 14px; }
+.mixlab-root .price-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--line);
+    }
+.mixlab-root .price-row > .field { flex: 1 1 140px; min-width: 120px; margin: 0; }
+.mixlab-root .price-row > .field[hidden] { display: none !important; }
+.mixlab-root .price-row > .price-eq { flex: 1 1 100%; margin: 0; font-size: 12px; color: var(--muted); }
+.mixlab-root .water {
+      margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--line);
+      display: grid; gap: 8px;
+    }
+.mixlab-root .kv { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.mixlab-root .kv span { color: var(--muted); }
+.mixlab-root .kv b { font-family: var(--font-mono); font-weight: 500; }
+.mixlab-root .notes { margin-top: 12px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.mixlab-root .load-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; margin-bottom: 12px; }
+.mixlab-root .load-row .field { margin: 0; }
+.mixlab-root .loaded {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      margin-bottom: 12px; padding: 10px 12px; border-radius: 0;
+      background: var(--bg-2); border: 1px solid var(--line);
+    }
+.mixlab-root .loaded strong { display: block; font-size: 14px; }
+.mixlab-root .badge {
+      display: inline-block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      border-radius: 0; padding: 5px 8px; margin-bottom: 4px; line-height: 1.35;
+      border: 1px solid var(--line); color: var(--muted);
+    }
+.mixlab-root .badge.project {
+      color: #ffffff; border-color: rgba(255, 255, 255, 0.18); background: #2f2f2f;
+    }
+.mixlab-root .badge.shop,
+.mixlab-root .badge.final { color: #ffffff; border-color: rgba(255, 255, 255, 0.1); background: #2a2a2a; }
+.mixlab-root .badge.experiment { color: #ffcc80; border-color: rgba(255,152,0,0.35); background: rgba(255,152,0,0.12); }
+.mixlab-root .kind-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.mixlab-root .kind-row .chip { flex: 1; min-height: 44px; }
+.mixlab-root textarea#recipeNotes {
+      width: 100%; min-height: 88px; padding: 10px 12px; resize: vertical;
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 0;
+      color: var(--ink); font: inherit; font-size: 16px; line-height: 1.4;
+    }
+.mixlab-root textarea#recipeNotes:focus { outline: none; border-color: rgba(255, 255, 255, 0.28); }
+.mixlab-root .save-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.mixlab-root .save-row .btn { flex: 1; text-align: center; padding: 8px 10px; min-height: 44px; }
+.mixlab-root .save-status {
+      flex: 1 1 100%; margin: 0; font-size: 13px; line-height: 1.4; min-height: 1.2em;
+    }
+.mixlab-root .save-status.ok { color: var(--ok); }
+.mixlab-root .save-status.err { color: #ff8a80; }
+.mixlab-root .save-status.warn { color: var(--warn); }
+.mixlab-root .save-status.busy { color: var(--muted); }
+.mixlab-root .btn.danger { color: #ff8a80; border-color: rgba(244,67,54,0.35); }
+.mixlab-root .loaded-date { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+.mixlab-root .dlg-meta { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+.mixlab-root dialog.recipe-dlg,
+dialog.recipe-dlg {
+  /* Native dialog + Tailwind: force viewport center (Arcos was top-left) */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(440px, calc(100vw - 28px));
+  max-height: min(90vh, calc(100dvh - 32px));
+  height: fit-content;
+  overflow: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+.mixlab-root dialog.recipe-dlg::backdrop,
+dialog.recipe-dlg::backdrop {
+  background: rgba(8, 7, 6, 0.72);
+}
+.mixlab-root .dlg { padding: 20px 18px 16px; }
+.mixlab-root .dlg-kind {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 8px;
+    }
+.mixlab-root .dlg-kind.final { color: var(--ok); }
+.mixlab-root .dlg-kind.experiment { color: #ffffff; }
+.mixlab-root .dlg h2 { font-family: var(--font-ui); font-weight: 900; font-size: 26px; text-transform: uppercase; margin: 0 0 10px; }
+.mixlab-root .recipe-dlg .field { margin-bottom: 14px; }
+.mixlab-root .recipe-dlg .field input[type="text"] {
+      width: 100%; background: var(--bg-2); border: 1px solid var(--line);
+      border-radius: 0; padding: 0 12px; height: 44px; font-size: 16px;
+    }
+.mixlab-root .recipe-dlg .field input[type="text"]:focus { outline: none; border-color: rgba(255, 255, 255, 0.28); }
+.mixlab-root .dlg-notes {
+      color: var(--muted); font-size: 14px; line-height: 1.45;
+      margin: 0 0 16px; white-space: pre-wrap;
+    }
+.mixlab-root .dlg-actions { display: grid; gap: 8px; }
+.mixlab-root .dlg-actions .btn { width: 100%; min-height: 44px; text-align: center; }
+.mixlab-root .dlg-actions .danger { color: #ff8a80; border-color: rgba(244,67,54,0.35); }
+.mixlab-root .header-actions { width: 100%; }
+@media (min-width: 720px) {
+.mixlab-root .header-actions { width: auto; }
+}
+.mixlab-root .card h2 + .notes { margin: -8px 0 12px; }
+.mixlab-root .print-only { display: none; }
+.mixlab-root .badge.final { color: #ffffff; border-color: rgba(255, 255, 255, 0.1); background: #2a2a2a; }

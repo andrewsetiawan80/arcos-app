@@ -85,7 +85,7 @@ export default function PublicProcess() {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
-      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
     }`}>
       
       {/* ===== HERO / INTRO SECTION ===== */}
@@ -100,7 +100,7 @@ export default function PublicProcess() {
           {/* Overlay */}
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]" 
               : "bg-gradient-to-b from-white/70 via-white/50 to-white"
           }`} />
         </div>
@@ -113,7 +113,7 @@ export default function PublicProcess() {
         >
           {/* Page Header */}
           <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Crafting concrete as a language of design.
           </h1>
@@ -136,7 +136,7 @@ export default function PublicProcess() {
 
       {/* ===== PROCESS STEPS SECTION ===== */}
       <section className={`py-24 sm:py-32 lg:py-40 ${
-        isDark ? "bg-[#1B1B1B]" : "bg-white"
+        isDark ? "bg-[#232323]" : "bg-white"
       }`}>
         <div 
           ref={stepsAnim.ref}
@@ -180,7 +180,7 @@ export default function PublicProcess() {
                     
                     {/* Title */}
                     <h2 className={`text-2xl sm:text-3xl font-light tracking-tight ${
-                      isDark ? "text-white" : "text-[#1B1B1B]"
+                      isDark ? "text-white" : "text-[#232323]"
                     }`}>
                       {step.step} — {step.title}
                     </h2>
@@ -258,7 +258,7 @@ export default function PublicProcess() {
           />
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B] via-[#1B1B1B]/95 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#232323]" 
               : "bg-gradient-to-b from-white via-white/95 to-white"
           }`} />
         </div>
@@ -271,7 +271,7 @@ export default function PublicProcess() {
         >
           {/* Headline */}
           <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Let's shape your next space.
           </h2>
@@ -289,8 +289,8 @@ export default function PublicProcess() {
               to="/contact"
               className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90" 
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Contact Us
@@ -302,8 +302,8 @@ export default function PublicProcess() {
               href="mailto:hello@arcos.id?subject=Sample%20Request"
               className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Request Samples

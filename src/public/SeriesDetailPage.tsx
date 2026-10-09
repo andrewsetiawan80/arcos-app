@@ -75,7 +75,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+        isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
       }`}
     >
       {/* ===== PAGE HEADER / HERO ===== */}
@@ -91,7 +91,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
+                ? "bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]"
                 : "bg-gradient-to-b from-white/70 via-white/50 to-white"
             }`}
           />
@@ -106,7 +106,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
           {/* Series Name */}
           <h1
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             {series.name}
@@ -126,7 +126,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
       {/* ===== SECTION 1: OVERVIEW ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -137,7 +137,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-10 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Overview
@@ -168,7 +168,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                   Material
                 </span>
                 <span
-                  className={`text-base ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                  className={`text-base ${isDark ? "text-white" : "text-[#232323]"}`}
                 >
                   {series.overviewBullets.material}
                 </span>
@@ -186,7 +186,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                   Ideal for
                 </span>
                 <span
-                  className={`text-base ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                  className={`text-base ${isDark ? "text-white" : "text-[#232323]"}`}
                 >
                   {series.overviewBullets.idealFor}
                 </span>
@@ -200,7 +200,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                   Surface
                 </span>
                 <span
-                  className={`text-base ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                  className={`text-base ${isDark ? "text-white" : "text-[#232323]"}`}
                 >
                   {series.overviewBullets.surfaceCharacter}
                 </span>
@@ -224,7 +224,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Best used for
@@ -249,7 +249,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                 </div>
                 <p
                   className={`text-base font-medium ${
-                    isDark ? "text-white" : "text-[#1B1B1B]"
+                    isDark ? "text-white" : "text-[#232323]"
                   }`}
                 >
                   {app.title}
@@ -272,7 +272,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
       {/* ===== SECTION 3: TECHNICAL SNAPSHOT ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -283,7 +283,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Technical snapshot
@@ -307,7 +307,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                     {spec.label}
                   </span>
                   <span
-                    className={`text-base ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                    className={`text-base ${isDark ? "text-white" : "text-[#232323]"}`}
                   >
                     {spec.value}
                   </span>
@@ -328,8 +328,8 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
                 href="#"
                 className={`inline-flex items-center gap-3 px-6 py-3 border text-sm font-medium tracking-wider transition-all duration-300 ${
                   isDark
-                    ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
-                    : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                    ? "border-white/30 text-white hover:bg-white hover:text-[#232323]"
+                    : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
                 }`}
               >
                 Request Technical Sheet
@@ -353,7 +353,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Texture and tones
@@ -391,7 +391,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
       {/* ===== SECTION 5: DESIGN COLLABORATION ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -405,7 +405,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
             <div>
               <h2
                 className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
-                  isDark ? "text-white" : "text-[#1B1B1B]"
+                  isDark ? "text-white" : "text-[#232323]"
                 }`}
               >
                 Design collaboration
@@ -462,7 +462,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             In context
@@ -512,7 +512,7 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Plan your project with {series.name}.
@@ -532,8 +532,8 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
               to="/contact"
               className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90"
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Start a Project
@@ -550,8 +550,8 @@ export default function SeriesDetailPage({ series }: SeriesDetailPageProps) {
               href="mailto:samples@arcosworks.com?subject=Sample%20Request"
               className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]"
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Request Samples

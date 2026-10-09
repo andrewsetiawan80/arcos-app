@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { load, save } from "../store";
 import type { AppState, Product, ProductVariant, Recipe, ProductRecipe } from "../types";
 import { getProcesses } from "../lib/process";
 import NumberField from "../components/NumberField";
+import { api } from "../lib/api";
+import { syncMixLabBaseRecipes } from "../lib/mixLabBaseRecipes";
 
 const newid = () => Math.random().toString(36).slice(2, 10);
 const slugify = (s: string) =>
@@ -19,6 +21,16 @@ export default function ProductEditor() {
   const [state, setState] = useState<AppState>(() => load());
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void syncMixLabBaseRecipes().then(({ state: synced, changed }) => {
+      if (!cancelled && changed) setState(synced);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   
   // Get product ID from URL parameter
   const productIdFromUrl = searchParams.get('product');
@@ -33,6 +45,7 @@ export default function ProductEditor() {
   const products = state.products;
   const pIdx = products.findIndex((p) => p.id === selectedId);
   const product = pIdx >= 0 ? products[pIdx] : undefined;
+  const [shareLoading, setShareLoading] = useState(false);
 
   const PROC_LIST = getProcesses(state);
 
@@ -72,6 +85,7 @@ export default function ProductEditor() {
       public: false,
       featured: false,
       coverImageUrl: "",
+      textureUrl: undefined,
       categorySlug: undefined, // choose from managed list
       tags: [],
       blurb: "",
@@ -206,14 +220,13 @@ export default function ProductEditor() {
 
   /* -------------------- UI -------------------- */
   return (
-    <div className="space-y-8 animate-in fade-in-0 duration-700">
+    <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Catalog Admin</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
@@ -253,8 +266,7 @@ export default function ProductEditor() {
 
       {/* Product Editor */}
       <section className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-          <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6">
             {product ? (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
@@ -262,9 +274,27 @@ export default function ProductEditor() {
                     <div className="w-2 h-2 rounded-full bg-green-400" />
                     <h2 className="text-lg font-black text-white">Product Editor</h2>
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm font-semibold text-white">{product.title}</div>
-                    <div className="text-xs text-gray-400">{product.variants.length} variants</div>
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      disabled={shareLoading}
+                      onClick={async () => {
+                        setShareLoading(true);
+                        const r = await api.createProjectShare(product.id);
+                        setShareLoading(false);
+                        if (r.data?.shareUrl) {
+                          navigator.clipboard.writeText(r.data.shareUrl);
+                          alert('Share link copied to clipboard.');
+                        } else alert('Failed to create share link.');
+                      }}
+                      className="text-xs font-bold uppercase tracking-wider px-3 py-2 border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
+                    >
+                      {shareLoading ? '...' : 'Copy Share Link'}
+                    </button>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold text-white">{product.title}</div>
+                      <div className="text-xs text-gray-400">{product.variants.length} variants</div>
+                    </div>
                   </div>
                 </div>
               {/* Title + Slug */}
@@ -290,7 +320,7 @@ export default function ProductEditor() {
                 </div>
               </div>
 
-              {/* Cover + Category (dropdown) */}
+              {/* Cover + Texture + Category */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-xs text-gray-400 mb-1">Cover image URL</div>
@@ -300,7 +330,29 @@ export default function ProductEditor() {
                     onChange={(e) => updateProduct({ coverImageUrl: e.target.value })}
                   />
                 </div>
-
+                <div>
+                  <div className="text-xs text-gray-400 mb-1">Texture URL (visualizer)</div>
+                  <input
+                    className="w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
+                    value={product.textureUrl || ""}
+                    onChange={(e) => updateProduct({ textureUrl: e.target.value || undefined })}
+                    placeholder="Flat tileable texture — leave empty to use cover"
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <div className="text-xs text-gray-400 mb-1">Normal Map URL</div>
+                  <input
+                    className="w-full rounded-lg bg-black/30 border border-white/10 px-3 py-2 text-sm"
+                    value={product.normalMapUrl || ""}
+                    onChange={(e) => updateProduct({ normalMapUrl: e.target.value || undefined })}
+                    placeholder="PBR normal map — enables lighting controls"
+                  />
+                </div>
+                <div />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4 mt-0">
                 <div>
                   <div className="text-xs text-gray-400 mb-1">Category</div>
                   <div className="flex gap-2">
@@ -696,7 +748,7 @@ export default function ProductEditor() {
                     <div className="flex items-center gap-2 text-sm">
                       {showSuccessMessage && (
                         <>
-                          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                          <div className="w-2 h-2 rounded-full bg-green-400"></div>
                           <span className="text-green-400 font-semibold">✓ Product saved successfully!</span>
                         </>
                       )}
@@ -708,7 +760,7 @@ export default function ProductEditor() {
                       )}
                       {!showSuccessMessage && saveStatus === 'saving' && (
                         <>
-                          <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></div>
+                          <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
                           <span className="text-yellow-400">Saving changes...</span>
                         </>
                       )}

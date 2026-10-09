@@ -168,6 +168,147 @@ class ApiClient {
     return this.request('/about/highlights');
   }
 
+  // Contact form (public, no auth)
+  async submitContactForm(data: { fullName: string; email: string; phone?: string; company?: string; message: string }) {
+    return this.request('/contact', { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  // Client endpoints (require auth)
+  async getClients() {
+    return this.requestInternal('/clients', {}, true);
+  }
+
+  async getClient(id: string) {
+    return this.requestInternal(`/clients/${id}`, {}, true);
+  }
+
+  async createClient(data: any) {
+    return this.requestInternal('/clients', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true);
+  }
+
+  async updateClient(id: string, data: any) {
+    return this.requestInternal(`/clients/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }, true);
+  }
+
+  async deleteClient(id: string) {
+    return this.requestInternal(`/clients/${id}`, { method: 'DELETE' }, true);
+  }
+
+  // Quote endpoints (require auth)
+  async getQuotes() {
+    return this.requestInternal('/quotes', {}, true);
+  }
+
+  async getQuote(id: string) {
+    return this.requestInternal(`/quotes/${id}`, {}, true);
+  }
+
+  async createQuote(data: any) {
+    return this.requestInternal('/quotes', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true);
+  }
+
+  async updateQuote(id: string, data: any) {
+    return this.requestInternal(`/quotes/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }, true);
+  }
+
+  async deleteQuote(id: string) {
+    return this.requestInternal(`/quotes/${id}`, { method: 'DELETE' }, true);
+  }
+
+  async getSharedQuote(token: string) {
+    return this.request(`/quotes/share/${token}`);
+  }
+
+  async respondToQuote(token: string, action: 'approved' | 'rejected') {
+    return this.request(`/quotes/share/${token}/respond`, { method: 'POST', body: JSON.stringify({ action }) });
+  }
+
+  // Notification endpoints (require auth)
+  async getNotifications() {
+    return this.requestInternal('/notifications', {}, true);
+  }
+
+  async getUnreadCount() {
+    return this.requestInternal<{ count: number }>('/notifications/unread-count', {}, true);
+  }
+
+  async markNotificationRead(id: string) {
+    return this.requestInternal(`/notifications/${id}/read`, { method: 'POST' }, true);
+  }
+
+  async markAllNotificationsRead() {
+    return this.requestInternal('/notifications/read-all', { method: 'POST' }, true);
+  }
+
+  // Backup endpoints (require auth, admin)
+  async getBackups() {
+    return this.requestInternal('/backups', {}, true);
+  }
+
+  async createBackup() {
+    return this.requestInternal('/backups', { method: 'POST' }, true);
+  }
+
+  async restoreBackup(filename: string) {
+    return this.requestInternal('/backups/restore', { method: 'POST', body: JSON.stringify({ filename }) }, true);
+  }
+
+  async deleteBackup(filename: string) {
+    return this.requestInternal(`/backups/${filename}`, { method: 'DELETE' }, true);
+  }
+
+  // Mail settings (require auth, admin)
+  async getMailSettings() {
+    return this.requestInternal('/settings/mail', {}, true);
+  }
+
+  async saveMailSettings(data: { smtpHost?: string; smtpPort?: number; smtpUser?: string; smtpPass?: string; contactEmail?: string }) {
+    return this.requestInternal('/settings/mail', { method: 'PUT', body: JSON.stringify(data) }, true);
+  }
+
+  // Webhook endpoints (require auth, admin)
+  async getWebhooks() {
+    return this.requestInternal('/webhooks', {}, true);
+  }
+
+  async createWebhook(data: any) {
+    return this.requestInternal('/webhooks', { method: 'POST', body: JSON.stringify(data) }, true);
+  }
+
+  async updateWebhook(id: string, data: any) {
+    return this.requestInternal(`/webhooks/${id}`, { method: 'PUT', body: JSON.stringify(data) }, true);
+  }
+
+  async deleteWebhook(id: string) {
+    return this.requestInternal(`/webhooks/${id}`, { method: 'DELETE' }, true);
+  }
+
+  // Project share
+  async getSharedProject(token: string) {
+    return this.request(`/projects/share/${token}`);
+  }
+
+  async createProjectShare(productId: string) {
+    return this.requestInternal<{ shareToken: string; shareUrl: string }>(`/projects/${productId}/share`, { method: 'POST' }, true);
+  }
+
+  async getDatabaseStatus(): Promise<'online' | 'offline'> {
+    const result = await this.request<{ database: 'online' | 'offline' }>('/status');
+    return result.data?.database ?? 'offline';
+  }
+
   async logout() {
     await this.setToken(null);
   }

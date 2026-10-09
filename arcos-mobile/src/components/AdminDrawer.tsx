@@ -37,6 +37,7 @@ export default function AdminDrawer({ visible, onClose, navigation }: AdminDrawe
 
   const menuItems = [
     { title: 'Dashboard', icon: 'home-outline', screen: 'Dashboard' },
+    { title: 'Notifications', icon: 'notifications-outline', screen: 'Notifications' },
     { title: 'Products', icon: 'cube-outline', screen: 'Products' },
     { title: 'Recipes', icon: 'flask-outline', screen: 'Recipes' },
     { title: 'Planning', icon: 'calculator-outline', screen: 'Planning' },

@@ -130,7 +130,7 @@ export default function PublicSurfaces() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+        isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
       }`}
     >
       {/* ===== PAGE HEADER / HERO ===== */}
@@ -146,7 +146,7 @@ export default function PublicSurfaces() {
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/70 via-[#1B1B1B]/50 to-[#1B1B1B]"
+                ? "bg-gradient-to-b from-[#232323]/70 via-[#232323]/50 to-[#232323]"
                 : "bg-gradient-to-b from-white/70 via-white/50 to-white"
             }`}
           />
@@ -161,7 +161,7 @@ export default function PublicSurfaces() {
           {/* Main Title */}
           <h1
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-10 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Surfaces, reimagined.
@@ -182,7 +182,7 @@ export default function PublicSurfaces() {
       {/* ===== SECTION 1: MATERIAL OVERVIEW ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -195,7 +195,7 @@ export default function PublicSurfaces() {
           <div className="text-center mb-16">
             <h2
               className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-                isDark ? "text-white" : "text-[#1B1B1B]"
+                isDark ? "text-white" : "text-[#232323]"
               }`}
             >
               Material systems
@@ -236,7 +236,7 @@ export default function PublicSurfaces() {
                 {/* Content */}
                 <div className="space-y-4">
                   <h3
-                    className={`text-lg font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                    className={`text-lg font-medium ${isDark ? "text-white" : "text-[#232323]"}`}
                   >
                     {material.title}
                   </h3>
@@ -252,7 +252,7 @@ export default function PublicSurfaces() {
                     className={`inline-flex items-center gap-2 text-sm font-medium transition-all duration-300 ${
                       isDark
                         ? "text-white hover:text-white/70"
-                        : "text-[#1B1B1B] hover:text-[#6F6F6F]"
+                        : "text-[#232323] hover:text-[#6F6F6F]"
                     }`}
                   >
                     {material.buttonText}
@@ -292,7 +292,7 @@ export default function PublicSurfaces() {
           {/* Section Title */}
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Why these materials?
@@ -387,7 +387,7 @@ export default function PublicSurfaces() {
       {/* ===== SECTION 3: APPLICATIONS ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -400,7 +400,7 @@ export default function PublicSurfaces() {
           <div className="text-center mb-16">
             <h2
               className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-                isDark ? "text-white" : "text-[#1B1B1B]"
+                isDark ? "text-white" : "text-[#232323]"
               }`}
             >
               Where they belong
@@ -441,7 +441,7 @@ export default function PublicSurfaces() {
                 {/* Content */}
                 <div className="p-6 space-y-4">
                   <h3
-                    className={`text-base font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                    className={`text-base font-medium ${isDark ? "text-white" : "text-[#232323]"}`}
                   >
                     {app.title}
                   </h3>
@@ -475,7 +475,7 @@ export default function PublicSurfaces() {
           <div className="text-center mb-12">
             <h2
               className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-                isDark ? "text-white" : "text-[#1B1B1B]"
+                isDark ? "text-white" : "text-[#232323]"
               }`}
             >
               The character of ARCOS surfaces
@@ -523,7 +523,7 @@ export default function PublicSurfaces() {
       {/* ===== SECTION 5: SERIES CALLOUTS ===== */}
       <section
         className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-          isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+          isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
         }`}
       >
         <div
@@ -535,7 +535,7 @@ export default function PublicSurfaces() {
           {/* Section Title */}
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Explore our series
@@ -569,7 +569,7 @@ export default function PublicSurfaces() {
                 {/* Content */}
                 <div className="p-6 space-y-4">
                   <h3
-                    className={`text-lg font-medium ${isDark ? "text-white" : "text-[#1B1B1B]"}`}
+                    className={`text-lg font-medium ${isDark ? "text-white" : "text-[#232323]"}`}
                   >
                     {series.title}
                   </h3>
@@ -584,8 +584,8 @@ export default function PublicSurfaces() {
                     to={series.link}
                     className={`inline-flex items-center gap-3 px-6 py-3 text-sm font-medium tracking-wider transition-all duration-300 ${
                       isDark
-                        ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                        : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                        ? "bg-white text-[#232323] hover:bg-white/90"
+                        : "bg-[#232323] text-white hover:bg-[#353535]"
                     }`}
                   >
                     {series.buttonText}
@@ -607,7 +607,7 @@ export default function PublicSurfaces() {
         >
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Not sure which material fits your project?
@@ -627,8 +627,8 @@ export default function PublicSurfaces() {
               to="/contact"
               className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90"
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Start a Consultation
@@ -645,8 +645,8 @@ export default function PublicSurfaces() {
               href="#"
               className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]"
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Request Material Guide

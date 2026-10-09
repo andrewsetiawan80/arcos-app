@@ -36,11 +36,17 @@ import ProcessesScreen from '../screens/ProcessesScreen';
 import IdeasScreen from '../screens/IdeasScreen';
 import ProposalScreen from '../screens/ProposalScreen';
 import CatalogSettingsScreen from '../screens/CatalogSettingsScreen';
+import ClientsScreen from '../screens/ClientsScreen';
+import ClientEditorScreen from '../screens/ClientEditorScreen';
+import QuotesScreen from '../screens/QuotesScreen';
+import QuoteEditorScreen from '../screens/QuoteEditorScreen';
+import NotificationsScreen from '../screens/NotificationsScreen';
 import DeriveRecipeScreen from '../screens/DeriveRecipeScreen';
 import StudioScreen from '../screens/StudioScreen';
 import CmsPagesScreen from '../screens/CmsPagesScreen';
 import CmsPageEditorScreen from '../screens/CmsPageEditorScreen';
 import ProductionHomeScreen from '../screens/ProductionHomeScreen';
+import EngineerHomeScreen from '../screens/EngineerHomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -84,8 +90,13 @@ function SalesStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SalesList" component={SalesScreen} />
+      <Stack.Screen name="Clients" component={ClientsScreen} />
+      <Stack.Screen name="ClientEditor" component={ClientEditorScreen} />
+      <Stack.Screen name="Quotes" component={QuotesScreen} />
+      <Stack.Screen name="QuoteEditor" component={QuoteEditorScreen} />
       <Stack.Screen name="Proposals" component={ProposalScreen} />
       <Stack.Screen name="CostCalculator" component={CostCalculatorScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 }
@@ -118,6 +129,7 @@ function AdminStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="Products" component={ProductsStack} />
       <Stack.Screen name="Recipes" component={RecipesStack} />
       <Stack.Screen name="Planning" component={PlanningStack} />
@@ -139,6 +151,18 @@ function ProductionStack() {
       <Stack.Screen name="TilePlanner" component={TilePlannerScreen} />
       <Stack.Screen name="ProductionPlanner" component={ProductionPlannerScreen} />
       <Stack.Screen name="Studio" component={StudioScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function EngineerStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="EngineerHome" component={EngineerHomeScreen} />
+      <Stack.Screen name="Recipes" component={RecipesStack} />
+      <Stack.Screen name="Lab" component={LabStack} />
+      <Stack.Screen name="Studio" component={StudioScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 }
@@ -197,13 +221,19 @@ function AppNavigatorContent() {
           screenOptions={{ headerShown: false }}
           initialRouteName={
             isAuthenticated 
-              ? (role === 'production' ? "Production" : "Admin")
+              ? (role === 'production' ? "Production" : role === 'sales' ? "Sales" : role === 'engineer' ? "Engineer" : "Admin")
               : "Public"
           }
         >
           <Stack.Screen name="Public" component={PublicStack} />
           {isAuthenticated && role === 'production' && (
             <Stack.Screen name="Production" component={ProductionStack} />
+          )}
+          {isAuthenticated && role === 'sales' && (
+            <Stack.Screen name="Sales" component={SalesStack} />
+          )}
+          {isAuthenticated && role === 'engineer' && (
+            <Stack.Screen name="Engineer" component={EngineerStack} />
           )}
           {isAuthenticated && role === 'admin' && (
             <Stack.Screen name="Admin" component={AdminStack} />

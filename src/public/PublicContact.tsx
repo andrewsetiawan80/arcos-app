@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFadeIn } from "../utils/useAnimation";
 import { usePublicTheme } from "./PublicThemeContext";
+import { api } from "../lib/api";
 
 // Import images
 import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
@@ -15,6 +16,7 @@ export default function PublicContact() {
     company: "",
     message: "",
   });
+  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   // Animation refs
   const heroAnim = useFadeIn({ delay: 100 });
@@ -25,16 +27,25 @@ export default function PublicContact() {
   const locationAnim = useFadeIn({ delay: 350 });
   const ctaAnim = useFadeIn({ delay: 400 });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
-    // You can add actual form submission logic here
+    setSubmitState('sending');
+    try {
+      const res = await api.submitContactForm(formData);
+      if (res.error) {
+        setSubmitState('error');
+      } else {
+        setSubmitState('sent');
+        setFormData({ fullName: "", email: "", phone: "", company: "", message: "" });
+      }
+    } catch {
+      setSubmitState('error');
+    }
   };
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
-      isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+      isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
     }`}>
       
       {/* ===== PAGE HEADER / HERO ===== */}
@@ -49,7 +60,7 @@ export default function PublicContact() {
           {/* Overlay */}
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#1B1B1B]/60 via-[#1B1B1B]/50 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323]/60 via-[#232323]/50 to-[#232323]" 
               : "bg-gradient-to-b from-white/70 via-white/60 to-white"
           }`} />
         </div>
@@ -62,7 +73,7 @@ export default function PublicContact() {
         >
           {/* Main Title */}
           <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Let's shape your next space.
           </h1>
@@ -78,7 +89,7 @@ export default function PublicContact() {
 
       {/* ===== INTRO BLOCK ===== */}
       <section className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={introAnim.ref}
@@ -87,7 +98,7 @@ export default function PublicContact() {
           }`}
         >
           <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             We're here to support your vision.
           </h2>
@@ -99,7 +110,7 @@ export default function PublicContact() {
           </p>
 
           <p className={`text-base font-medium ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Every collaboration begins with a conversation.
           </p>
@@ -119,7 +130,7 @@ export default function PublicContact() {
           <div className="grid md:grid-cols-2 gap-12 lg:gap-16 mb-12">
             {/* Column 1: General Inquiries */}
             <div className="space-y-6">
-              <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+              <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#232323]"}`}>
                 General Inquiries
               </h3>
               <p className={`text-base font-light leading-relaxed ${
@@ -130,18 +141,18 @@ export default function PublicContact() {
               <div className={`space-y-3 text-sm ${isDark ? "text-white/70" : "text-[#4A4A4A]"}`}>
                 <p className="flex items-center gap-3">
                   <span className={`w-1 h-1 rounded-full ${isDark ? "bg-white/40" : "bg-[#AFAFAF]"}`} />
-                  Email: <a href="mailto:info@arcosworks.com" className={`hover:underline ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>info@arcosworks.com</a>
+                  Email: <a href="mailto:info@arcosworks.com" className={`hover:underline ${isDark ? "text-white" : "text-[#232323]"}`}>info@arcosworks.com</a>
                 </p>
                 <p className="flex items-center gap-3">
                   <span className={`w-1 h-1 rounded-full ${isDark ? "bg-white/40" : "bg-[#AFAFAF]"}`} />
-                  WhatsApp: <a href="https://wa.me/6281234567890" className={`hover:underline ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>+62 812 3456 7890</a>
+                  WhatsApp: <a href="https://wa.me/6281234567890" className={`hover:underline ${isDark ? "text-white" : "text-[#232323]"}`}>+62 812 3456 7890</a>
                 </p>
               </div>
             </div>
 
             {/* Column 2: Project Consultation */}
             <div className="space-y-6">
-              <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>
+              <h3 className={`text-xl font-light ${isDark ? "text-white" : "text-[#232323]"}`}>
                 Project Consultation
               </h3>
               <p className={`text-base font-light leading-relaxed ${
@@ -176,8 +187,8 @@ export default function PublicContact() {
               href="mailto:projects@arcosworks.com?subject=Project%20Consultation"
               className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90" 
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Start a Consultation
@@ -191,7 +202,7 @@ export default function PublicContact() {
 
       {/* ===== CONTACT FORM SECTION ===== */}
       <section className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={formAnim.ref}
@@ -200,7 +211,7 @@ export default function PublicContact() {
           }`}
         >
           <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-12 text-center ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Send us a message
           </h2>
@@ -222,7 +233,7 @@ export default function PublicContact() {
                 className={`w-full px-5 py-4 border transition-all duration-300 outline-none ${
                   isDark 
                     ? "bg-transparent border-white/20 text-white placeholder-white/30 focus:border-white/50" 
-                    : "bg-transparent border-[#E0E0E0] text-[#1B1B1B] placeholder-[#AFAFAF] focus:border-[#1B1B1B]"
+                    : "bg-transparent border-[#E0E0E0] text-[#232323] placeholder-[#AFAFAF] focus:border-[#232323]"
                 }`}
                 placeholder="Your full name"
                 required
@@ -245,7 +256,7 @@ export default function PublicContact() {
                 className={`w-full px-5 py-4 border transition-all duration-300 outline-none ${
                   isDark 
                     ? "bg-transparent border-white/20 text-white placeholder-white/30 focus:border-white/50" 
-                    : "bg-transparent border-[#E0E0E0] text-[#1B1B1B] placeholder-[#AFAFAF] focus:border-[#1B1B1B]"
+                    : "bg-transparent border-[#E0E0E0] text-[#232323] placeholder-[#AFAFAF] focus:border-[#232323]"
                 }`}
                 placeholder="your@email.com"
                 required
@@ -268,7 +279,7 @@ export default function PublicContact() {
                 className={`w-full px-5 py-4 border transition-all duration-300 outline-none ${
                   isDark 
                     ? "bg-transparent border-white/20 text-white placeholder-white/30 focus:border-white/50" 
-                    : "bg-transparent border-[#E0E0E0] text-[#1B1B1B] placeholder-[#AFAFAF] focus:border-[#1B1B1B]"
+                    : "bg-transparent border-[#E0E0E0] text-[#232323] placeholder-[#AFAFAF] focus:border-[#232323]"
                 }`}
                 placeholder="+62 xxx xxx xxxx"
               />
@@ -290,7 +301,7 @@ export default function PublicContact() {
                 className={`w-full px-5 py-4 border transition-all duration-300 outline-none ${
                   isDark 
                     ? "bg-transparent border-white/20 text-white placeholder-white/30 focus:border-white/50" 
-                    : "bg-transparent border-[#E0E0E0] text-[#1B1B1B] placeholder-[#AFAFAF] focus:border-[#1B1B1B]"
+                    : "bg-transparent border-[#E0E0E0] text-[#232323] placeholder-[#AFAFAF] focus:border-[#232323]"
                 }`}
                 placeholder="Your company or studio name"
               />
@@ -312,7 +323,7 @@ export default function PublicContact() {
                 className={`w-full px-5 py-4 border transition-all duration-300 outline-none resize-none ${
                   isDark 
                     ? "bg-transparent border-white/20 text-white placeholder-white/30 focus:border-white/50" 
-                    : "bg-transparent border-[#E0E0E0] text-[#1B1B1B] placeholder-[#AFAFAF] focus:border-[#1B1B1B]"
+                    : "bg-transparent border-[#E0E0E0] text-[#232323] placeholder-[#AFAFAF] focus:border-[#232323]"
                 }`}
                 placeholder="Tell us about your project or inquiry..."
                 required
@@ -321,19 +332,33 @@ export default function PublicContact() {
 
             {/* Submit Button */}
             <div className="pt-4">
-              <button
-                type="submit"
-                className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
-                  isDark 
-                    ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                    : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
-                }`}
-              >
-                Submit Request
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
+              {submitState === 'sent' ? (
+                <p className={`text-lg font-medium ${isDark ? "text-green-400" : "text-green-700"}`}>
+                  Thank you! Your message has been sent. We'll be in touch shortly.
+                </p>
+              ) : (
+                <>
+                  {submitState === 'error' && (
+                    <p className={`text-sm mb-4 ${isDark ? "text-red-400" : "text-red-600"}`}>
+                      Something went wrong. Please try again or email us directly.
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={submitState === 'sending'}
+                    className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 disabled:opacity-50 ${
+                      isDark 
+                        ? "bg-white text-[#232323] hover:bg-white/90" 
+                        : "bg-[#232323] text-white hover:bg-[#353535]"
+                    }`}
+                  >
+                    {submitState === 'sending' ? 'Sending...' : 'Submit Request'}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
+                </>
+              )}
             </div>
           </form>
         </div>
@@ -350,7 +375,7 @@ export default function PublicContact() {
           }`}
         >
           <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Need samples or material specifications?
           </h2>
@@ -366,8 +391,8 @@ export default function PublicContact() {
               href="mailto:samples@arcosworks.com?subject=Sample%20Request"
               className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90" 
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Request Samples
@@ -376,8 +401,8 @@ export default function PublicContact() {
               href="#"
               className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Download Technical Sheets
@@ -388,7 +413,7 @@ export default function PublicContact() {
 
       {/* ===== LOCATION ===== */}
       <section className={`py-20 sm:py-28 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#1B1B1B]" : "border-[#E0E0E0] bg-white"
+        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
       }`}>
         <div 
           ref={locationAnim.ref}
@@ -397,7 +422,7 @@ export default function PublicContact() {
           }`}
         >
           <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#1B1B1B]"
+            isDark ? "text-white" : "text-[#232323]"
           }`}>
             Studio & Production
           </h2>
@@ -410,7 +435,7 @@ export default function PublicContact() {
 
           {/* Address Block */}
           <div className={`mb-10 ${isDark ? "text-white/60" : "text-[#6F6F6F]"}`}>
-            <p className={`text-lg font-medium mb-2 ${isDark ? "text-white" : "text-[#1B1B1B]"}`}>ARCOS</p>
+            <p className={`text-lg font-medium mb-2 ${isDark ? "text-white" : "text-[#232323]"}`}>ARCOS</p>
             <p className="text-base">Surabaya, Indonesia</p>
           </div>
 
@@ -418,8 +443,8 @@ export default function PublicContact() {
             href="mailto:visit@arcosworks.com?subject=Studio%20Visit%20Request"
             className={`inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
               isDark 
-                ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]" 
-                : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
+                : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
             }`}
           >
             Schedule a Visit
@@ -438,7 +463,7 @@ export default function PublicContact() {
           />
           <div className={`absolute inset-0 ${
             isDark 
-              ? "bg-gradient-to-b from-[#232323] via-[#1B1B1B]/95 to-[#1B1B1B]" 
+              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#232323]" 
               : "bg-gradient-to-b from-[#F8F8F8] via-white/95 to-white"
           }`} />
         </div>
@@ -451,7 +476,7 @@ export default function PublicContact() {
         >
           <div className="space-y-4 mb-12">
             <p className={`text-2xl sm:text-3xl font-light leading-relaxed ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}>
               We respond with intention, clarity, and care.
             </p>
@@ -466,8 +491,8 @@ export default function PublicContact() {
             href="mailto:hello@arcosworks.com"
             className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
               isDark 
-                ? "bg-white text-[#1B1B1B] hover:bg-white/90" 
-                : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                ? "bg-white text-[#232323] hover:bg-white/90" 
+                : "bg-[#232323] text-white hover:bg-[#353535]"
             }`}
           >
             Contact ARCOS

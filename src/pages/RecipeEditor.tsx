@@ -1,9 +1,10 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { load, save } from "../store";
 import type { AppState, Material, Recipe, RecipeLine, Unit } from "../types";
 import { getProcesses, getProcessLabel } from "../lib/process";
 import NumberField from "../components/NumberField";
+import { computeArcosRecipeDensity, fmtDensity, densityToKgPerL } from "../mixlab/density";
 
 const newid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
@@ -15,25 +16,65 @@ export default function RecipeEditor() {
   const { id } = useParams();
   const [state, setState] = useState<AppState>(() => load());
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [customProcess, setCustomProcess] = useState("");
 
   const recipes = state.recipes || [];
-  const idx = recipes.findIndex(r => r.id === id);
+  const idx = recipes.findIndex((r) => r.id === id);
   const recipe = idx >= 0 ? recipes[idx] : undefined;
 
   const materials = state.materials || [];
   const matsById = useMemo(() => {
     const m: Record<string, Material> = {};
-    materials.forEach(x => (m[x.id] = x));
+    materials.forEach((x) => (m[x.id] = x));
     return m;
   }, [materials]);
 
   const PROC_LIST = getProcesses(state);
 
-  // No auto-save - only manual saves
+  function updateRecipe(patch: Partial<Recipe>) {
+    if (!id) return;
+    setState((s) => {
+      const list = [...(s.recipes || [])];
+      const i = list.findIndex((r) => r.id === id);
+      if (i < 0) return s;
+      list[i] = { ...list[i], ...patch, updatedAt: now() };
+      return { ...s, recipes: list };
+    });
+    setHasUnsavedChanges(true);
+  }
+
+  const handleSave = async () => {
+    try {
+      await save(state);
+      setHasUnsavedChanges(false);
+      alert("Recipe saved successfully!");
+    } catch (error) {
+      console.error("Save failed:", error);
+      alert("Failed to save recipe. Please try again.");
+    }
+  };
+
+  function addLine() {
+    if (!recipe) return;
+    const firstMat = materials[0]?.id || "";
+    const line: RecipeLine = { id: newid(), materialId: firstMat, amount: 1, unit: "ratio" };
+    updateRecipe({ lines: [line, ...recipe.lines] });
+  }
+
+  function updateLine(lineId: string, patch: Partial<RecipeLine>) {
+    if (!recipe) return;
+    const lines = recipe.lines.map((l) => (l.id === lineId ? { ...l, ...patch } : l));
+    updateRecipe({ lines });
+  }
+
+  function removeLine(lineId: string) {
+    if (!recipe) return;
+    updateRecipe({ lines: recipe.lines.filter((l) => l.id !== lineId) });
+  }
 
   if (!recipe) {
     return (
-      <div className="space-y-8 animate-in fade-in-0 duration-700">
+      <div className="space-y-8">
         <div className="flex flex-col items-center gap-6 py-12 text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,53 +99,16 @@ export default function RecipeEditor() {
     );
   }
 
-  function updateRecipe(patch: Partial<Recipe>) {
-    setState(s => {
-      const list = [...s.recipes];
-      list[idx] = { ...list[idx], ...patch, updatedAt: now() };
-      return { ...s, recipes: list };
-    });
-    setHasUnsavedChanges(true);
-  }
-
-  const handleSave = async () => {
-    try {
-      await save(state);
-      setHasUnsavedChanges(false);
-      alert("Recipe saved successfully!");
-    } catch (error) {
-      console.error("Save failed:", error);
-      alert("Failed to save recipe. Please try again.");
-    }
-  };
-
-  function addLine() {
-    const firstMat = materials[0]?.id || "";
-    const line: RecipeLine = { id: newid(), materialId: firstMat, amount: 1, unit: "ratio" };
-    updateRecipe({ lines: [line, ...recipe.lines] });
-  }
-
-  function updateLine(lineId: string, patch: Partial<RecipeLine>) {
-    const lines = recipe.lines.map(l => (l.id === lineId ? { ...l, ...patch } : l));
-    updateRecipe({ lines });
-  }
-
-  function removeLine(lineId: string) {
-    updateRecipe({ lines: recipe.lines.filter(l => l.id !== lineId) });
-  }
-
-  const [customProcess, setCustomProcess] = useState<string>("");
   const currentLabel = getProcessLabel(state, recipe.process);
 
   return (
-    <div className="space-y-8 animate-in fade-in-0 duration-700">
+    <div className="space-y-8">
       {/* Header */}
       <header className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-transparent to-gray-600/5 rounded-2xl blur-3xl" />
-        <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
+<div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
               <p className="text-xs uppercase tracking-[0.3em] text-gray-400 font-bold">Recipe Editor</p>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
@@ -145,8 +149,7 @@ export default function RecipeEditor() {
       </header>
 
       <section className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-        <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6 hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 p-6">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-blue-400" />
             <h2 className="text-lg font-black text-white">Recipe Details</h2>
@@ -213,13 +216,61 @@ export default function RecipeEditor() {
                   placeholder="e.g., v1.0"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 md:col-span-3">
                 <label className="text-sm font-semibold text-white">Density (kg/m³)</label>
-                <NumberField
-                  className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
-                  value={recipe.densityKgM3}
-                  onChange={(v)=>updateRecipe({ densityKgM3: v })}
-                />
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <NumberField
+                    className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
+                    value={recipe.densityKgM3}
+                    onChange={(v) => updateRecipe({ densityKgM3: v })}
+                    placeholder="Working / cast"
+                  />
+                  <NumberField
+                    className="w-full rounded-xl bg-white/5 border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 transition-all duration-300"
+                    value={recipe.densityCuredMeasuredKgM3}
+                    onChange={(v) =>
+                      updateRecipe({
+                        densityCuredMeasuredKgM3: v,
+                        densityKgM3: v != null && v > 0 ? v : recipe.densityKgM3,
+                      })
+                    }
+                    placeholder="Measured cured (optional)"
+                  />
+                  <button
+                    type="button"
+                    className="px-4 py-3 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-sm font-semibold"
+                    onClick={() => {
+                      const est = computeArcosRecipeDensity(recipe, materials, {
+                        measuredKgM3: recipe.densityCuredMeasuredKgM3,
+                      });
+                      if (!est || !(est.curedKgM3 > 0)) {
+                        alert("Could not estimate density — check ingredient lines.");
+                        return;
+                      }
+                      updateRecipe({
+                        densityWetKgM3: Math.round(est.wetKgM3),
+                        densityCuredEstKgM3: Math.round(est.curedEstKgM3),
+                        densityKgM3: Math.round(est.curedKgM3),
+                      });
+                    }}
+                  >
+                    Estimate from formula
+                  </button>
+                </div>
+                {(() => {
+                  const est = computeArcosRecipeDensity(recipe, materials, {
+                    measuredKgM3: recipe.densityCuredMeasuredKgM3,
+                  });
+                  if (!est) return null;
+                  return (
+                    <p className="text-xs text-gray-400 mt-2">
+                      Model · wet {fmtDensity(est.wetKgM3)} ({densityToKgPerL(est.wetKgM3).toFixed(2)} kg/L)
+                      {" · "}
+                      cured est. {fmtDensity(est.curedEstKgM3)} ({densityToKgPerL(est.curedEstKgM3).toFixed(2)} kg/L)
+                      {est.measuredKgM3 ? ` · measured ${fmtDensity(est.measuredKgM3)}` : ""}
+                    </p>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -227,8 +278,7 @@ export default function RecipeEditor() {
       </section>
 
       <section className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/3 via-transparent to-gray-600/3 rounded-2xl blur-2xl" />
-        <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 overflow-hidden hover:from-white/12 hover:to-white/6 transition-all duration-500 hover:border-white/20 hover:shadow-xl backdrop-blur-sm concrete-texture">
+<div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 to-white/3 overflow-hidden">
           <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

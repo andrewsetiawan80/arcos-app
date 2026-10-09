@@ -32,10 +32,16 @@ router.get('/public/products', async (req: Request, res: Response) => {
       public: row.public,
       featured: row.featured,
       coverImageUrl: row.cover_image_url,
+      textureUrl: row.texture_url,
+      normalMapUrl: row.normal_map_url,
+      size: row.size,
       variants: variantsByProduct[row.id] || [],
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     }));
+    
+    // Debug logging
+    console.log('Sample product:', JSON.stringify(products[0], null, 2));
     
     res.json(products);
   } catch (error) {
@@ -70,9 +76,14 @@ router.get('/state', async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.userId!;
 
-    // Fetch all data for the user
+    // Shop materials are global (Mix Lab catalog), not per-user
     const [materials, recipes, products, categories, labEntries, proposals, pages, settings] = await Promise.all([
-      pool.query('SELECT * FROM materials WHERE user_id = $1', [userId]),
+      pool.query(
+        `SELECT m.*, s.kind, s.brand, s.color
+         FROM materials m
+         INNER JOIN shop_prices s ON s.id = m.id
+         ORDER BY m.sort_order NULLS LAST, m.id`
+      ),
       pool.query('SELECT * FROM recipes WHERE user_id = $1', [userId]),
       pool.query('SELECT * FROM products WHERE user_id = $1', [userId]),
       pool.query('SELECT * FROM categories WHERE user_id = $1', [userId]),
@@ -145,25 +156,42 @@ router.get('/state', async (req: AuthRequest, res: Response) => {
     const productsWithVariants = products.rows.map(product => ({
       id: product.id,
       name: product.name,
+      title: product.name,
       slug: product.slug,
       description: product.description,
       categorySlug: product.category_slug,
       public: product.public,
       featured: product.featured,
       coverImageUrl: product.cover_image_url,
+      textureUrl: product.texture_url || undefined,
+      normalMapUrl: product.normal_map_url || undefined,
+      size: product.size || undefined,
       variants: variantsByProduct[product.id] || [],
       createdAt: product.created_at,
       updatedAt: product.updated_at,
     }));
 
     res.json({
-      materials: materials.rows.map(m => ({
-        id: m.id,
-        name: m.name,
-        densityKgM3: m.density_kg_m3 ? parseFloat(m.density_kg_m3) : undefined,
-        pricePerKg: m.price_per_kg ? parseFloat(m.price_per_kg) : undefined,
-        priceCurrency: m.price_currency,
-      })),
+      materials: materials.rows.map(m => {
+        const amount = m.amount != null ? parseFloat(m.amount) : undefined;
+        const packKg = m.pack_kg != null && parseFloat(m.pack_kg) > 0 ? parseFloat(m.pack_kg) : 1;
+        const pricePerKg = m.price_per_kg != null
+          ? parseFloat(m.price_per_kg)
+          : (amount != null ? amount / packKg : undefined);
+        // Enrich from shop_prices when joined fields missing — query already on materials
+        return {
+          id: m.id,
+          name: m.name,
+          densityKgM3: m.density_kg_m3 ? parseFloat(m.density_kg_m3) : undefined,
+          pricePerKg,
+          priceCurrency: m.price_currency || 'IDR',
+          amount,
+          packKg,
+          kind: m.kind || undefined,
+          brand: m.brand ?? null,
+          color: m.color ?? null,
+        };
+      }),
       recipes: recipesWithLines,
       productRecipes: productRecipes.rows.map(pr => ({
         id: pr.id,
@@ -233,19 +261,49 @@ router.post('/state', async (req: AuthRequest, res: Response) => {
     try {
       await client.query('BEGIN');
 
-      // Save materials
+      // Save materials → shop_prices (source of truth) + materials mirror
       if (state.materials) {
         for (const material of state.materials) {
+          const packKg = Number(material.packKg) > 0 ? Number(material.packKg) : 1;
+          let amount = material.amount != null ? Number(material.amount) : undefined;
+          if (amount == null && material.pricePerKg != null) {
+            amount = Number(material.pricePerKg) * packKg;
+          }
+          amount = amount ?? 0;
+          const ppk = amount / packKg;
           await client.query(
-            `INSERT INTO materials (id, user_id, name, density_kg_m3, price_per_kg, price_currency)
-             VALUES ($1, $2, $3, $4, $5, $6)
+            `INSERT INTO shop_prices (id, name, amount, pack_kg, sort_order, updated_at)
+             VALUES ($1::varchar, $2, $3, $4,
+               COALESCE((SELECT sort_order FROM shop_prices WHERE id = $1::varchar), 999),
+               NOW())
+             ON CONFLICT (id) DO UPDATE SET
+               name = COALESCE(EXCLUDED.name, shop_prices.name),
+               amount = EXCLUDED.amount,
+               pack_kg = EXCLUDED.pack_kg,
+               updated_at = NOW()`,
+            [material.id, material.name || material.id, amount, packKg]
+          );
+          await client.query(
+            `INSERT INTO materials (id, user_id, name, density_kg_m3, price_per_kg, price_currency, amount, pack_kg)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              ON CONFLICT (id) DO UPDATE SET
                name = $3,
                density_kg_m3 = $4,
                price_per_kg = $5,
                price_currency = $6,
+               amount = $7,
+               pack_kg = $8,
                updated_at = CURRENT_TIMESTAMP`,
-            [material.id, userId, material.name, material.densityKgM3, material.pricePerKg, material.priceCurrency]
+            [
+              material.id,
+              userId,
+              material.name,
+              material.densityKgM3,
+              ppk,
+              material.priceCurrency || 'IDR',
+              amount,
+              packKg,
+            ]
           );
         }
       }
@@ -285,8 +343,8 @@ router.post('/state', async (req: AuthRequest, res: Response) => {
       if (state.products) {
         for (const product of state.products) {
           await client.query(
-            `INSERT INTO products (id, user_id, name, slug, description, category_slug, public, featured, cover_image_url, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, COALESCE($10::timestamp, CURRENT_TIMESTAMP), COALESCE($11::timestamp, CURRENT_TIMESTAMP))
+            `INSERT INTO products (id, user_id, name, slug, description, category_slug, public, featured, cover_image_url, texture_url, normal_map_url, size, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::jsonb, COALESCE($13::timestamp, CURRENT_TIMESTAMP), COALESCE($14::timestamp, CURRENT_TIMESTAMP))
              ON CONFLICT (id) DO UPDATE SET
                name = $3,
                slug = $4,
@@ -295,8 +353,26 @@ router.post('/state', async (req: AuthRequest, res: Response) => {
                public = $7,
                featured = $8,
                cover_image_url = $9,
+               texture_url = $10,
+               normal_map_url = $11,
+               size = $12::jsonb,
                updated_at = CURRENT_TIMESTAMP`,
-            [product.id, userId, product.name, product.slug, product.description, product.categorySlug, product.public, product.featured, product.coverImageUrl, product.createdAt, product.updatedAt]
+            [
+              product.id,
+              userId,
+              product.title || product.name,
+              product.slug,
+              product.description ?? product.blurb ?? null,
+              product.categorySlug,
+              product.public,
+              product.featured,
+              product.coverImageUrl,
+              product.textureUrl || null,
+              product.normalMapUrl || null,
+              product.size ? JSON.stringify(product.size) : null,
+              product.createdAt,
+              product.updatedAt,
+            ]
           );
 
           // Delete old variants and product recipes
@@ -312,13 +388,14 @@ router.post('/state', async (req: AuthRequest, res: Response) => {
                 [variant.id || `${product.id}-${variant.name}`, product.id, variant.name, variant.color]
               );
 
-              // Insert product recipes
+              // Insert product recipes (recipe_id must exist in recipes — skip empties)
               if (variant.recipeByProcess) {
                 for (const [process, recipeId] of Object.entries(variant.recipeByProcess)) {
+                  if (!recipeId || typeof recipeId !== "string") continue;
                   await client.query(
                     `INSERT INTO product_recipes (id, product_id, variant_id, process, recipe_id)
                      VALUES ($1, $2, $3, $4, $5)`,
-                    [`${variant.id}-${process}`, product.id, variant.id, process, recipeId]
+                    [`${variant.id}-${process}`.slice(0, 50), product.id, variant.id, process, recipeId]
                   );
                 }
               }

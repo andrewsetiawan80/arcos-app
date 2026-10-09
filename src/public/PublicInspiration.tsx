@@ -79,13 +79,13 @@ export default function PublicInspiration() {
     return (
       <div
         className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
-          isDark ? "bg-[#1B1B1B]" : "bg-white"
+          isDark ? "bg-[#232323]" : "bg-white"
         }`}
       >
         <div className="text-center">
           <div
             className={`w-12 h-12 border-2 rounded-full animate-spin mx-auto mb-4 ${
-              isDark ? "border-white/20 border-t-white" : "border-[#E0E0E0] border-t-[#1B1B1B]"
+              isDark ? "border-white/20 border-t-white" : "border-[#E0E0E0] border-t-[#232323]"
             }`}
           />
           <p className={isDark ? "text-white/50" : "text-[#AFAFAF]"}>Loading inspiration...</p>
@@ -99,7 +99,7 @@ export default function PublicInspiration() {
     return (
       <div
         className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
-          isDark ? "bg-[#1B1B1B]" : "bg-white"
+          isDark ? "bg-[#232323]" : "bg-white"
         }`}
       >
         <div className="text-center max-w-md px-6">
@@ -108,8 +108,8 @@ export default function PublicInspiration() {
             onClick={() => window.location.reload()}
             className={`px-6 py-3 text-sm font-medium tracking-wider transition-all duration-300 ${
               isDark
-                ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                ? "bg-white text-[#232323] hover:bg-white/90"
+                : "bg-[#232323] text-white hover:bg-[#353535]"
             }`}
           >
             Retry
@@ -122,7 +122,7 @@ export default function PublicInspiration() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
-        isDark ? "bg-[#1B1B1B] text-white" : "bg-white text-[#1B1B1B]"
+        isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
       }`}
     >
       {/* ===== HERO SECTION ===== */}
@@ -138,7 +138,7 @@ export default function PublicInspiration() {
           <div
             className={`absolute inset-0 ${
               isDark
-                ? "bg-gradient-to-b from-[#1B1B1B]/80 via-[#1B1B1B]/60 to-[#1B1B1B]"
+                ? "bg-gradient-to-b from-[#232323]/80 via-[#232323]/60 to-[#232323]"
                 : "bg-gradient-to-b from-white/80 via-white/60 to-white"
             }`}
           />
@@ -148,7 +148,7 @@ export default function PublicInspiration() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 py-24 text-center">
           <h1
             className={`text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight mb-6 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Inspiration
@@ -169,7 +169,7 @@ export default function PublicInspiration() {
         <section
           className={`sticky top-16 sm:top-20 z-20 border-b transition-colors duration-300 ${
             isDark
-              ? "border-white/10 bg-[#1B1B1B]/95 backdrop-blur"
+              ? "border-white/10 bg-[#232323]/95 backdrop-blur"
               : "border-[#E0E0E0] bg-white/95 backdrop-blur"
           }`}
         >
@@ -180,8 +180,8 @@ export default function PublicInspiration() {
                 className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
                   selectedCategory === "all"
                     ? isDark
-                      ? "bg-white text-[#1B1B1B] border-white"
-                      : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                      ? "bg-white text-[#232323] border-white"
+                      : "bg-[#232323] text-white border-[#232323]"
                     : isDark
                     ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
                     : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
@@ -198,8 +198,8 @@ export default function PublicInspiration() {
                     className={`px-4 py-2 text-xs uppercase tracking-wider font-medium border transition-all duration-300 ${
                       selectedCategory === category.id
                         ? isDark
-                          ? "bg-white text-[#1B1B1B] border-white"
-                          : "bg-[#1B1B1B] text-white border-[#1B1B1B]"
+                          ? "bg-white text-[#232323] border-white"
+                          : "bg-[#232323] text-white border-[#232323]"
                         : isDark
                         ? "bg-transparent text-white/60 border-white/20 hover:border-white/40"
                         : "bg-transparent text-[#6F6F6F] border-[#E0E0E0] hover:border-[#AFAFAF]"
@@ -216,7 +216,7 @@ export default function PublicInspiration() {
       {/* ===== GALLERY GRID ===== */}
       <section
         className={`py-12 sm:py-16 transition-colors duration-300 ${
-          isDark ? "bg-[#1B1B1B]" : "bg-white"
+          isDark ? "bg-[#232323]" : "bg-white"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-20">
@@ -281,7 +281,7 @@ export default function PublicInspiration() {
         <div className="max-w-3xl mx-auto px-6 sm:px-12 lg:px-20 text-center">
           <h2
             className={`text-2xl sm:text-3xl font-light tracking-tight mb-4 ${
-              isDark ? "text-white" : "text-[#1B1B1B]"
+              isDark ? "text-white" : "text-[#232323]"
             }`}
           >
             Ready to bring your vision to life?
@@ -298,8 +298,8 @@ export default function PublicInspiration() {
               to="/contact"
               className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "bg-white text-[#1B1B1B] hover:bg-white/90"
-                  : "bg-[#1B1B1B] text-white hover:bg-[#353535]"
+                  ? "bg-white text-[#232323] hover:bg-white/90"
+                  : "bg-[#232323] text-white hover:bg-[#353535]"
               }`}
             >
               Start a Project
@@ -311,8 +311,8 @@ export default function PublicInspiration() {
               to="/surfaces"
               className={`inline-flex items-center gap-2 px-6 py-3 border text-sm font-medium tracking-wider transition-all duration-300 ${
                 isDark
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#1B1B1B]"
-                  : "border-[#1B1B1B] text-[#1B1B1B] hover:bg-[#1B1B1B] hover:text-white"
+                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]"
+                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
               }`}
             >
               Explore Surfaces
@@ -340,7 +340,7 @@ export default function PublicInspiration() {
             </button>
 
             {/* Image */}
-            <div className="bg-[#1B1B1B] overflow-hidden">
+            <div className="bg-[#232323] overflow-hidden">
               <img
                 src={getImageUrl(selectedImage.fullImageUrl || selectedImage.imageUrl)}
                 alt={selectedImage.title}
