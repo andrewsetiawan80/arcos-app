@@ -1,0 +1,7 @@
+export const materialGuide = {
+ GFRC: {id:'gfrc',name:'GFRC',full:'Glass-fibre reinforced concrete',short:'Cast concrete reinforced with glass fibres, chosen for sculptural detail and architectural panels.',uses:'Relief tiles, wall panels and custom forms.',finish:'Smooth or textured, with colour and finish selected separately.'},
+ UHPC: {id:'uhpc',name:'UHPC',full:'Ultra-high-performance concrete',short:'High-performance concrete for refined forms and architectural details. Thickness and reinforcement are designed for each application.',uses:'Bespoke furniture, countertops and architectural elements, subject to project specification.',finish:'Surface texture, colour and edge details developed through sampling.'},
+ Microcement: {id:'microcement',name:'Microcement',full:'A continuous, hand-applied mineral finish',short:'Applied over a prepared substrate to create a continuous surface without tile joints.',uses:'Walls, furniture and suitable floors, with the system selected for the substrate and use.',finish:'Fine or textured finishes with natural trowel variation.'},
+} as const;
+export const materialSelection = {id:'why-engineered',name:'GFRC / UHPC',full:'Specialist architectural concrete',short:'Made with specialist architectural concrete. We confirm GFRC or UHPC for this design when developing your specification; colour and finish are selected separately.'};
+export function materialInfo(name:string){return materialGuide[name as keyof typeof materialGuide] || materialSelection;}

@@ -10,7 +10,7 @@ import concreteInstallation from "../assets/images/concrete-installation.webp";
 import workshopCloseup from "../assets/images/workshop-closeup.webp";
 
 const AERIS_SERIES: SeriesData = {
-  name: "GFRC Aeris Series",
+  name: "GFRC",
   tagline:
     "Light, versatile, and expressive — designed for sculptural panels and refined geometry.",
   materialType: "GFRC",
@@ -20,7 +20,7 @@ const AERIS_SERIES: SeriesData = {
 
   // Overview
   overviewText:
-    "Aeris is built on Glass Fiber Reinforced Concrete, offering the visual weight of concrete with significantly reduced mass. The series enables larger panels, curved forms, and complex geometries that would be impractical with traditional concrete. Aeris brings lightness without sacrificing architectural presence.",
+    "Glass Fiber Reinforced Concrete offers the visual weight of concrete with significantly reduced mass. GFRC enables larger panels, curved forms, and complex geometries that would be impractical with traditional concrete. GFRC brings lightness without sacrificing architectural presence.",
   overviewBullets: {
     material: "Glass Fiber Reinforced Concrete (GFRC)",
     idealFor: "Large panels, façade cladding, curved forms, decorative screens",
@@ -48,7 +48,7 @@ const AERIS_SERIES: SeriesData = {
 
   // Textures & Tones
   textureDescription:
-    "The Aeris series offers a range of finishes from glass-smooth to subtly veined surfaces. Colors lean toward natural concrete tones with options for warm and cool variations that integrate with contemporary façades.",
+    "GFRC offers a range of finishes from glass-smooth to subtly veined surfaces. Colors lean toward natural concrete tones with options for warm and cool variations that integrate with contemporary façades.",
   colorSwatches: [
     { name: "Cloud White", color: "#F0F0F0" },
     { name: "Sand Beige", color: "#E3DFD9" },

@@ -10,9 +10,9 @@ import landmarkInstallation from "../assets/images/landmark-installation.webp";
 import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
 
 const SOLIS_SERIES: SeriesData = {
-  name: "UHPC Solis Series",
+  name: "UHPC",
   tagline:
-    "UHPC surface series that expresses permanence, clarity, and structural calm.",
+    "High-performance concrete for refined forms and architectural details.",
   materialType: "UHPC",
 
   // Hero
@@ -20,7 +20,7 @@ const SOLIS_SERIES: SeriesData = {
 
   // Overview
   overviewText:
-    "Solis is built on Ultra High Performance Concrete, designed for applications where slender thickness meets long-term durability. The series emphasizes quiet strength, refined texture, and a calm architectural presence. Each surface is engineered to perform under demanding conditions while maintaining visual elegance.",
+    "Ultra High Performance Concrete is designed for applications where slender thickness meets long-term durability. UHPC combines quiet strength, refined texture, and a calm architectural presence. Each surface is engineered to perform under demanding conditions while maintaining visual elegance.",
   overviewBullets: {
     material: "Ultra High Performance Concrete (UHPC)",
     idealFor: "Feature walls, sculptural elements, benches, exterior details",
@@ -48,7 +48,7 @@ const SOLIS_SERIES: SeriesData = {
 
   // Textures & Tones
   textureDescription:
-    "The Solis series focuses on subtle texture and tonal variation that complements modern interiors and architecture. Colors are curated to feel grounded, neutral, and timeless — from warm greys to deep charcoal.",
+    "Our UHPC finishes focus on subtle texture and tonal variation that complements modern interiors and architecture. Colors are curated to feel grounded, neutral, and timeless — from warm greys to deep charcoal.",
   colorSwatches: [
     { name: "Pure White", color: "#F5F5F5" },
     { name: "Soft Stone", color: "#E8E4DF" },

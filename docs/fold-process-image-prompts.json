@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sketch",
+    "prompt": "Use case: product-mockup. Asset: premium ARCOS process website editorial image, landscape 3:2. Reference image is Fold tile geometry. Preserve its square outline and two opposing triangular ramps, each ramp has TWO slope stages with a bend halfway; not a simple pyramidal or single-slope tile. Restrained warm grey/charcoal palette, natural side light, believable materials. No text, logos, people or watermark. This is an illustrative process scene. Show the reference tile translated into precise graphite design sketches on cream drawing paper on a dark worktable: a large axonometric view and smaller side profile with two straight slope segments, with a mechanical pencil beside paper. Beautiful realistic editorial still life."
+  },
+  {
+    "id": "prototype",
+    "prompt": "Use case: product-mockup. Asset: premium ARCOS process website editorial image, landscape 3:2. Reference image is Fold tile geometry. Preserve its square outline and two opposing triangular ramps, each ramp has TWO slope stages with a bend halfway; not a simple pyramidal or single-slope tile. Restrained warm grey/charcoal palette, natural side light, believable materials. No text, logos, people or watermark. This is an illustrative process scene. Show a pale ivory polymer 3D-printed master of the exact reference tile on a clean workshop bench, visible fine layer lines. In background a softly out of focus enclosed 3D printer. Main master fully visible, no added geometry, refined documentary still life."
+  },
+  {
+    "id": "mould",
+    "prompt": "Use case: product-mockup. Asset: premium ARCOS process website editorial image, landscape 3:2. Reference image is Fold tile geometry. Preserve its square outline and two opposing triangular ramps, each ramp has TWO slope stages with a bend halfway; not a simple pyramidal or single-slope tile. Restrained warm grey/charcoal palette, natural side light, believable materials. No text, logos, people or watermark. This is an illustrative process scene. Show an illustrative mould-making still life: the reference tile master beside its open flexible pale blue silicone negative mould in a rigid support tray. The mould cavity is a negative impression of the same square two-stage relief. Objects separate and fully visible on a clean charcoal workbench, not stacked. Emphasize silicone edge and matching relief. No pouring or hands."
+  },
+  {
+    "id": "pour",
+    "prompt": "Use case: product-mockup. Create a premium photorealistic editorial process illustration for ARCOS website, landscape 3:2. Use reference for identical blue silicone mould of Fold two-stage ramp tile in rigid support tray, on same dark workbench and warm side light. Show actual action of casting: two gloved hands holding a small unbranded mixing bucket tipped gently above mould, a continuous thick stream of fine light-grey premixed GFRC entering mould. Partly filled cavity with viscous mix pooling and spreading, some blue relief still exposed, blue rim clean and visible. Fine cementitious mix, no coarse gravel, no watery splash, no exposed bundles of fibres. Keep the mould lying flat and supported, gravity-correct stream connecting bucket lip to cavity, realistic scale and hands. Remove separate finished tile to focus on pouring. Sleeved forearms only, no face. No text, logos or watermark. Illustration of premix casting route, not a documentation photo."
+  },
+  {
+    "id": "pour-grey-fibres",
+    "prompt": "Use case: precise-object-edit. Edit only the wet GFRC mixture in this ARCOS pouring process illustration. Change the pale beige fluid to a moderately darker neutral concrete grey (medium grey, not black). Make the wet premix visibly thicker, cohesive and fibrous: many short fine pale glass-fibre strands dispersed through and partially embedded in the wet grey cement paste, discernible especially at bucket lip, edges of pouring ribbon and pooled surface. Fibres remain small and believable relative to 300 mm mould, not long hair, steel needles, straw, cotton clumps or coarse aggregate. The stream should be a thicker textured ribbon with slight irregularities, not smooth cream; retain plausible gravity and wet sheen. Preserve EXACTLY the existing camera framing, blue silicone mould and its relief, rigid tray, bucket, hands, clothing, bench and lighting. No new objects, labels, text or watermark. Landscape 3:2, high quality editorial process visualisation."
+  },
+  {
+    "id": "pour-grey-paste",
+    "source": "original pale pouring illustration",
+    "instruction": "Medium-dark grey cohesive mortar consistency. No visible fibre strands; retain scene, mould and lighting.",
+    "output": "public/images/catalog/fold-process-pour-grey-paste.webp"
+  },
+  {
+    "id": "fold-finished-mineral-grey",
+    "prompt": "Use case: precise-object-edit. Image 1 is Fold's exact geometry and composition, image 2 is ONLY the finished concrete MATERIAL reference from Kraken. Refinish all concrete surfaces of Image 1 to closely match Image 2: medium grey mineral concrete, matte fine sandy texture, tiny natural pinholes and subtle tonal variations, tactile architectural cast surface. Match material realism, fine pore scale, tone and raking-light definition of Image 2. Preserve EXACTLY Image 1's angular two-stage ramp planes, central bend, edges, silhouette, viewpoint and crop. Do NOT transfer Kraken's curves or shape; Fold remains angular with its two distinct slopes. No visible glass fibres, no glossy plastic, no excessive coarse holes, no text. Keep background neutral. High-end close-up product photography."
+  }
+]

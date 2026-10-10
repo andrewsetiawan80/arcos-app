@@ -54,9 +54,6 @@ const PublicInspiration = lazyPage(() => import("./public/PublicInspiration"));
 const PublicFAQ = lazyPage(() => import("./public/PublicFAQ"));
 const PublicSurfaces = lazyPage(() => import("./public/PublicSurfaces"));
 const PublicBrandExample = lazyPage(() => import("./public/PublicBrandExample"));
-const SeriesUHPCSolis = lazyPage(() => import("./public/SeriesUHPCSolis"));
-const SeriesGFRCAeris = lazyPage(() => import("./public/SeriesGFRCAeris"));
-const SeriesMicrocement = lazyPage(() => import("./public/SeriesMicrocement"));
 const PublicQuoteView = lazyPage(() => import("./public/PublicQuoteView"));
 const PublicProjectPortal = lazyPage(() => import("./public/PublicProjectPortal"));
 const PublicVisualizer = lazyPage(() => import("./public/PublicVisualizer"));
@@ -126,9 +123,11 @@ export default function App() {
         <Route path="/product/:slug" element={<PublicProductDetail />} />
         <Route path="/services" element={<PublicServices />} />
         <Route path="/surfaces" element={<PublicSurfaces />} />
-        <Route path="/surfaces/uhpc-solis" element={<SeriesUHPCSolis />} />
-        <Route path="/surfaces/gfrc-aeris" element={<SeriesGFRCAeris />} />
-        <Route path="/surfaces/microcement" element={<SeriesMicrocement />} />
+        <Route path="/surfaces/uhpc" element={<Navigate to="/surfaces#uhpc" replace />} />
+        <Route path="/surfaces/uhpc-solis" element={<Navigate to="/surfaces#uhpc" replace />} />
+        <Route path="/surfaces/gfrc" element={<Navigate to="/surfaces#gfrc" replace />} />
+        <Route path="/surfaces/gfrc-aeris" element={<Navigate to="/surfaces#gfrc" replace />} />
+        <Route path="/surfaces/microcement" element={<Navigate to="/surfaces#microcement" replace />} />
         <Route path="/process" element={<PublicProcess />} />
         <Route path="/projects" element={<PublicProjects />} />
         <Route path="/projects/:projectId" element={<PublicProjects />} />

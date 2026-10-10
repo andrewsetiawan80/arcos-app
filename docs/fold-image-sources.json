@@ -1,0 +1,26 @@
+{
+  "revision": "V12 R1 — two-stage ramp",
+  "profileMm": [
+    [
+      0,
+      55
+    ],
+    [
+      150,
+      41
+    ],
+    [
+      300,
+      8
+    ]
+  ],
+  "sourceDirectory": "/Users/andrewsetiawan/Documents/ChatGPT/Concrete Tiles/",
+  "images": {
+    "object": "catalog-hero-v12-r1.png",
+    "detail": "catalog-detail-v12-r1.png",
+    "wall": "catalog-pattern-v12-r1.png",
+    "edge": "catalog-edge-v12-r1.png",
+    "room": "gfrc-v12-sushi-r1-polished.png"
+  },
+  "verification": "render_catalog_v12_r1.py checks imported mesh heights against the two-stage profile; room image is an AI-refined visualisation."
+}
