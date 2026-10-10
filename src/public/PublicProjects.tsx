@@ -1,349 +1,53 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useFadeIn } from "../utils/useAnimation";
-import { usePublicTheme } from "./PublicThemeContext";
-import { useLanguage } from "../i18n/LanguageContext";
-import { api } from "../lib/api";
-import AnimatedSection from "../components/AnimatedSection";
-
-// Import images
-import landmarkInstallation from "../assets/images/landmark-installation.webp";
-import mosaicFacadeDetail from "../assets/images/mosaic-facade-detail.webp";
-import structuralPanels from "../assets/images/structural-panels.webp";
-import concreteTexture2 from "../assets/images/concrete-texture-2.webp";
-import microcementInterior1 from "../assets/images/minimalist-concrete-interior-with-black-sphere-concrete-stairs-3d-rendering.webp";
-import microcementInterior2 from "../assets/images/modern-concrete-interior-design-with-stone-sculptures-steps.webp";
-import workshopCloseup from "../assets/images/workshop-closeup.webp";
-
-// Sample projects for display
-const SAMPLE_PROJECTS = [
-  {
-    id: "villa-tamarind",
-    title: "Villa Tamarind",
-    location: "Canggu, Bali",
-    material: "GFRC Aeris Series • Feature Wall & Interior Panels",
-    image: mosaicFacadeDetail,
-  },
-  {
-    id: "studio-k",
-    title: "Studio K",
-    location: "Surabaya",
-    material: "Microcement • Seamless Interior Surfaces",
-    image: microcementInterior1,
-  },
-  {
-    id: "private-residence-jakarta",
-    title: "Private Residence",
-    location: "Jakarta",
-    material: "UHPC Solis Series • Living Room Feature Wall",
-    image: structuralPanels,
-  },
-  {
-    id: "hotel-ayana",
-    title: "Hotel Ayana",
-    location: "Bali",
-    material: "GFRC • Lobby & Corridor Panels",
-    image: landmarkInstallation,
-  },
-  {
-    id: "creative-studio",
-    title: "Creative Studio",
-    location: "Bandung",
-    material: "Microcement • Floor & Wall Systems",
-    image: microcementInterior2,
-  },
-  {
-    id: "retail-space",
-    title: "Retail Space",
-    location: "Jakarta",
-    material: "UHPC • Sculptural Display Elements",
-    image: workshopCloseup,
-  },
-];
-
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { api } from '../lib/api';
+import PublicPageIntro, { PublicEnquiry, usePublicCopy } from './PublicPageIntro';
+import { useLanguage } from '../i18n/LanguageContext';
+type Project = {
+    id: string;
+    title: string;
+    titleId?: string;
+    location?: string;
+    category?: string;
+    categoryId?: string;
+    imageUrl: string;
+    description?: string;
+    descriptionId?: string;
+    gallery?: {url:string;label:string;labelId:string}[];
+};
+const study: Project = { id: 'graha-famili', title: 'Graha Famili', location: 'Surabaya', category: 'Client-supplied project imagery', categoryId: 'Visual proyek dari klien', imageUrl: '/images/editorial/graha-living.webp' };
+const somerset: Project = {
+ id: 'somerset-house', title: 'Somerset House', location: 'Citraland, Surabaya',
+ category: 'Client-supplied project imagery', categoryId: 'Visual proyek dari klien',
+ imageUrl: '/images/editorial/somerset-workspace.webp',
+ description: 'A study in texture and light across a workspace, bedroom, bathroom and staircase. Sculptural wall surfaces bring a distinct material character to each space.',
+ descriptionId: 'Studi tekstur dan cahaya pada ruang kerja, kamar tidur, kamar mandi, dan tangga. Permukaan dinding skulptural menghadirkan karakter material pada setiap ruang.',
+ gallery: [
+  {url:'/images/editorial/somerset-bedroom.webp',label:'Bedroom',labelId:'Kamar tidur'},
+  {url:'/images/editorial/somerset-bedroom-arrival.webp',label:'Bedroom / arrival',labelId:'Kamar tidur / pintu masuk'},
+  {url:'/images/editorial/somerset-bedroom-detail.webp',label:'Wall detail',labelId:'Detail dinding'},
+  {url:'/images/editorial/somerset-bathroom.webp',label:'Bathroom',labelId:'Kamar mandi'},
+  {url:'/images/editorial/somerset-staircase.webp',label:'Staircase',labelId:'Tangga'}
+ ]
+};
+const localProjects = [somerset, study];
 export default function PublicProjects() {
-  const { isDark } = usePublicTheme();
-  const { language } = useLanguage();
-  const [projects, setProjects] = useState(SAMPLE_PROJECTS);
-
-  // Animation refs
-  const heroAnim = useFadeIn({ delay: 100 });
-  const introAnim = useFadeIn({ delay: 150 });
-  const gridAnim = useFadeIn({ delay: 200 });
-  const calloutAnim = useFadeIn({ delay: 250 });
-  const ctaAnim = useFadeIn({ delay: 300 });
-
-  // Fetch featured projects from API
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await api.getFeaturedProjects();
-        if (res.data && res.data.length > 0) {
-          const apiProjects = res.data.map((project: any) => ({
-            id: project.id,
-            title: language === "id" ? project.titleId : project.title,
-            location: project.location || "",
-            material: language === "id" ? project.categoryId : project.category,
-            image: project.imageUrl,
-          }));
-          setProjects(apiProjects.length > 0 ? apiProjects : SAMPLE_PROJECTS);
-        }
-      } catch (err) {
-        console.error("Error fetching projects:", err);
-      }
-    };
-    fetchProjects();
-  }, [language]);
-
-  return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDark ? "bg-[#232323] text-white" : "bg-white text-[#232323]"
-    }`}>
-      
-      {/* ===== PAGE HEADER ===== */}
-      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
-        {/* Hero Background Image */}
-        <div className="absolute inset-0">
-          <img
-            src={landmarkInstallation}
-            alt="Architectural concrete wall"
-            className="w-full h-full object-cover"
-          />
-          {/* Overlay */}
-          <div className={`absolute inset-0 ${
-            isDark 
-              ? "bg-gradient-to-b from-[#232323]/60 via-[#232323]/40 to-[#232323]" 
-              : "bg-gradient-to-b from-white/70 via-white/50 to-white"
-          }`} />
-        </div>
-
-        <div 
-          ref={heroAnim.ref}
-          className={`relative z-10 max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 py-32 text-center ${
-            heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
-          {/* Main Title */}
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 ${
-            isDark ? "text-white" : "text-[#232323]"
-          }`}>
-            Spaces shaped through concrete.
-          </h1>
-          
-          {/* Subheadline */}
-          <p className={`text-lg sm:text-xl font-light leading-relaxed max-w-3xl mx-auto ${
-            isDark ? "text-white/80" : "text-[#4A4A4A]"
-          }`}>
-            A curated selection of projects where ARCOS surfaces define atmosphere, identity, and spatial emotion.
-          </p>
-        </div>
-      </section>
-
-      {/* ===== INTRODUCTION BLOCK ===== */}
-      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
-      }`}>
-        <div 
-          ref={introAnim.ref}
-          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 ${
-            introAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
-          <h2 className={`text-2xl sm:text-3xl font-light tracking-tight mb-10 ${
-            isDark ? "text-white" : "text-[#232323]"
-          }`}>
-            Designed to endure. Crafted to inspire.
-          </h2>
-
-          <div className="space-y-6">
-            <p className={`text-lg font-light leading-relaxed ${
-              isDark ? "text-white/70" : "text-[#6F6F6F]"
-            }`}>
-              Our work lives in villas, hotels, residences, commercial interiors, and creative environments across Indonesia. Every project is a collaboration — merging architectural vision with the expressive character of UHPC, GFRC, and microcement surfaces.
-            </p>
-            <p className={`text-lg font-light leading-relaxed ${
-              isDark ? "text-white/60" : "text-[#AFAFAF]"
-            }`}>
-              We design for permanence, quiet sophistication, and modern spatial clarity.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== PROJECT GRID ===== */}
-      <section className={`py-24 sm:py-32 transition-colors duration-300 ${
-        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
-      }`}>
-        <div 
-          ref={gridAnim.ref}
-          className={`max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 ${
-            gridAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {projects.map((project, idx) => (
-              <AnimatedSection key={project.id} animation="fade-up" delay={idx * 100}>
-              <Link
-                to={`/projects/${project.id}`}
-                className="group block"
-              >
-                {/* Image */}
-                <div className={`aspect-[4/3] overflow-hidden mb-6 ${
-                  isDark ? "bg-white/5" : "bg-[#E0E0E0]"
-                }`}>
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className={`w-full h-full object-cover transition-all duration-700 ${
-                      isDark 
-                        ? "opacity-80 group-hover:opacity-100 group-hover:scale-105" 
-                        : "group-hover:scale-105"
-                    }`}
-                    loading="lazy"
-                  />
-                </div>
-                
-                {/* Content */}
-                <div className="space-y-2">
-                  <h3 className={`text-lg font-medium transition-colors ${
-                    isDark 
-                      ? "text-white group-hover:text-white/80" 
-                      : "text-[#232323] group-hover:text-[#6F6F6F]"
-                  }`}>
-                    {project.title} — {project.location}
-                  </h3>
-                  <p className={`text-sm font-light ${
-                    isDark ? "text-white/50" : "text-[#AFAFAF]"
-                  }`}>
-                    {project.material}
-                  </p>
-                </div>
-              </Link>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CALLOUT SECTION ===== */}
-      <section className={`py-24 sm:py-32 border-b transition-colors duration-300 ${
-        isDark ? "border-white/10 bg-[#232323]" : "border-[#E0E0E0] bg-white"
-      }`}>
-        <div 
-          ref={calloutAnim.ref}
-          className={`max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
-            calloutAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
-          <h2 className={`text-2xl sm:text-3xl md:text-4xl font-light tracking-tight leading-relaxed mb-8 ${
-            isDark ? "text-white" : "text-[#232323]"
-          }`}>
-            Every project is a dialogue between material and space.
-          </h2>
-          
-          <p className={`text-lg font-light ${
-            isDark ? "text-white/60" : "text-[#6F6F6F]"
-          }`}>
-            We work closely with architects, designers, and builders to develop surfaces that reflect the intention of the environment.
-          </p>
-        </div>
-      </section>
-
-      {/* ===== VISUAL GALLERY ===== */}
-      <section className={`py-16 sm:py-24 transition-colors duration-300 ${
-        isDark ? "bg-[#232323]" : "bg-[#F8F8F8]"
-      }`}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
-          <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
-            {[
-              { image: mosaicFacadeDetail, alt: "Architectural detail" },
-              { image: structuralPanels, alt: "Surface texture" },
-              { image: concreteTexture2, alt: "Material closeup" },
-            ].map((item, index) => (
-              <div 
-                key={index} 
-                className={`aspect-[3/4] overflow-hidden ${
-                  isDark ? "bg-white/5" : "bg-[#E0E0E0]"
-                }`}
-              >
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  className={`w-full h-full object-cover transition-all duration-700 ${
-                    isDark ? "opacity-60 hover:opacity-100" : "hover:scale-105"
-                  }`}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CTA BLOCK ===== */}
-      <section className="relative py-32 sm:py-40 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0">
-          <img
-            src={concreteTexture2}
-            alt="Concrete texture"
-            className={`w-full h-full object-cover ${isDark ? "opacity-10" : "opacity-15"}`}
-          />
-          <div className={`absolute inset-0 ${
-            isDark 
-              ? "bg-gradient-to-b from-[#232323] via-[#232323]/95 to-[#232323]" 
-              : "bg-gradient-to-b from-white via-white/95 to-white"
-          }`} />
-        </div>
-
-        <div 
-          ref={ctaAnim.ref}
-          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-12 lg:px-20 text-center ${
-            ctaAnim.isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
-          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 ${
-            isDark ? "text-white" : "text-[#232323]"
-          }`}>
-            Let's shape your next space.
-          </h2>
-          
-          <p className={`text-lg font-light mb-12 max-w-xl mx-auto ${
-            isDark ? "text-white/60" : "text-[#6F6F6F]"
-          }`}>
-            For consultations, samples, or project discussions, connect with our team.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              to="/contact"
-              className={`group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wider transition-all duration-300 ${
-                isDark 
-                  ? "bg-white text-[#232323] hover:bg-white/90" 
-                  : "bg-[#232323] text-white hover:bg-[#353535]"
-              }`}
-            >
-              Start a Project
-              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-            <Link
-              to="/contact"
-              className={`group inline-flex items-center gap-3 px-8 py-4 border text-sm font-medium tracking-wider transition-all duration-300 ${
-                isDark 
-                  ? "border-white/30 text-white hover:bg-white hover:text-[#232323]" 
-                  : "border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white"
-              }`}
-            >
-              Contact Us
-              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+    const c = usePublicCopy();
+    const { language } = useLanguage();
+    const { projectId } = useParams();
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => { let active = true; api.getFeaturedProjects().then(r => { if (active && Array.isArray(r.data))
+        setProjects(r.data.filter((p: Project) => p.title && p.imageUrl).map((p: Project) => ({ ...p, id: String(p.id) }))); }).catch(() => { }).finally(() => { if (active)
+        setLoaded(true); }); return () => { active = false; }; }, []);
+    const title = (p: Project) => language === 'id' ? (p.titleId || p.title) : p.title;
+    const caption = (p: Project) => language === 'id' ? (p.categoryId || p.category) : p.category;
+    if (projectId) {
+        const project = [...localProjects, ...projects].find(p => p.id === projectId);
+        if (!project)
+            return <><PublicPageIntro label={c('Projects', 'Proyek')} title={loaded ? c('Project unavailable.', 'Proyek tidak tersedia.') : c('Loading project…', 'Memuat proyek…')} description={c('Explore the project gallery or speak with our team.', 'Jelajahi galeri proyek atau hubungi tim kami.')}/><div className="editorial-wrap public-story"><Link className="editorial-text-link" to="/projects">{c('Back to projects', 'Kembali ke proyek')} ↗</Link></div></>;
+        return <><PublicPageIntro label={c('Projects', 'Proyek')} title={title(project)} description={[project.location, caption(project)].filter(Boolean).join(' / ')} image={project.imageUrl} caption={caption(project)}/><section className="editorial-wrap public-story"><p>{language === 'id' ? (project.descriptionId || project.description) : project.description}</p><Link className="editorial-text-link" to="/projects">{c('All projects', 'Semua proyek')} ↗</Link></section>{project.gallery && <section className="editorial-wrap public-project-gallery">{project.gallery.map(image => <figure key={image.url}><img src={image.url} alt={`${title(project)} / ${c(image.label,image.labelId)}`} loading="lazy"/><figcaption>{c(image.label,image.labelId)}</figcaption></figure>)}</section>}<PublicEnquiry /></>;
+    }
+    const visible = [...localProjects, ...projects.filter(p => !localProjects.some(local => local.id === p.id || p.title.toLowerCase().includes(local.id === 'somerset-house' ? 'somerset' : 'graha famili')))];
+    return <><PublicPageIntro label={c('Projects', 'Proyek')} title={c('Spaces with character.', 'Ruang berkarakter.')} description={c('Material, proportion and light. Explore concrete in an architectural context.', 'Material, proporsi, dan cahaya. Jelajahi beton dalam konteks arsitektural.')}/><section className="editorial-wrap public-project-grid">{visible.map(p => <Link to={`/projects/${p.id}`} key={p.id}><figure><img src={p.imageUrl} alt={title(p)} loading="lazy"/><figcaption><h2>{title(p)} <span aria-hidden="true">↗</span></h2><p>{[p.location, caption(p)].filter(Boolean).join(' / ')}</p></figcaption></figure></Link>)}</section><PublicEnquiry /></>;
 }

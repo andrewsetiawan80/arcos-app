@@ -1,0 +1,37 @@
+{
+  "method": "Built-in image_gen",
+  "prompt_prefix": "Use case: product-mockup. Original ARCOS architectural concrete panel catalogue visualisation. ",
+  "prompt_suffix": " Photorealistic high-end architectural editorial photography, natural grazing daylight, tactile concrete, restrained warm neutral palette. Wall is main subject occupying 80% of frame; show panel boundaries clearly, straight verticals, believable scale. Landscape 3:2 image. No text, logos, watermarks, collage, labels or diagram. Create a completely original interior composition.",
+  "images": [
+    {
+      "id": "textured",
+      "source": "/Users/andrewsetiawan/.codex/generated_images/01a11dfe-8f8c-7b91-b998-3a0d21e92261/exec-c995e801-4b17-4609-a7d7-ef4460172b23.png",
+      "scene": "A quiet luxury entrance hall, rough textured grey concrete rectangular wall panels, subtle pores and expressive mineral surface, regular restrained joints, no anchor holes, oak door at edge."
+    },
+    {
+      "id": "four",
+      "source": "/Users/andrewsetiawan/.codex/generated_images/01a11dfe-8f8c-7b91-b998-3a0d21e92261/exec-e6d965cb-ec37-4673-bc9e-c1fdb3cb648d.png",
+      "scene": "Architectural double height stair hall, smooth warm-grey landscape rectangular concrete wall panels; every complete panel has EXACTLY FOUR small recessed circular anchor holes, one near each corner, regular clean joints, minimal dark steel stair at edge."
+    },
+    {
+      "id": "two",
+      "source": "/Users/andrewsetiawan/.codex/generated_images/01a11dfe-8f8c-7b91-b998-3a0d21e92261/exec-4fd4c7f9-fdd4-425c-8917-a16ac2b91c14.png",
+      "scene": "Refined reading room with warm-grey landscape rectangular concrete panels. Every complete panel has EXACTLY TWO recessed circular anchor holes on its horizontal centreline, one near left edge and one near right edge. Oak chair at lower edge, clean panel grid."
+    },
+    {
+      "id": "three",
+      "source": "/Users/andrewsetiawan/.codex/generated_images/01a11dfe-8f8c-7b91-b998-3a0d21e92261/exec-31f4f9eb-a8fc-4819-bcff-bbddbd1fb1b1.png",
+      "scene": "Contemporary quiet gallery, warm-grey rectangular concrete panels. Every complete panel has EXACTLY THREE recessed circular anchor holes arranged as a triangle: two near upper corners and one at bottom centre. Minimal stone plinth at edge, clear panel grid."
+    },
+    {
+      "id": "square",
+      "source": "/Users/andrewsetiawan/.codex/generated_images/01a11dfe-8f8c-7b91-b998-3a0d21e92261/exec-e2cc09d9-9cb4-4aa5-b9f3-d475e9348443.png",
+      "scene": "Refined contemporary dining space, square warm-grey concrete wall panels with precise equal height and width and fine recessed joints, absolutely no anchor holes, cropped walnut dining table at bottom edge."
+    },
+    {
+      "id": "large",
+      "source": "/Users/andrewsetiawan/.codex/generated_images/01a11dfe-8f8c-7b91-b998-3a0d21e92261/exec-ac0baf69-1b93-45f1-bb85-19db3802305a.png",
+      "scene": "Serene contemporary living space, monumental large-format warm-grey concrete wall panels, tall floor-to-ceiling slabs, very few vertical joints, absolutely no anchor holes, low cream sofa at lower edge."
+    }
+  ]
+}

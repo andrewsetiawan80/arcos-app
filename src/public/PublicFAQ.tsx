@@ -1,196 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useFadeIn } from "../utils/useAnimation";
-import { useLanguage } from "../i18n/LanguageContext";
-import { api } from "../lib/api";
-import tile01 from "../assets/images/inspiration/3d-tile-01.webp";
-import microcement01 from "../assets/images/inspiration/microcement-01.webp";
-import structuralPanels from "../assets/images/structural-panels.webp";
-
-interface FAQCategory {
-  id: string;
-  name: string;
-  nameId: string;
-  displayOrder: number;
-}
-
-interface FAQItem {
-  id: number;
-  categoryId: string;
-  question: string;
-  questionId: string;
-  answer: string;
-  answerId: string;
-  displayOrder: number;
-}
-
+import { useEffect, useState } from 'react';
+import { api } from '../lib/api';
+import PublicPageIntro, { PublicEnquiry, usePublicCopy } from './PublicPageIntro';
+type Category = {
+    id: string;
+    name: string;
+    nameId: string;
+};
+type Item = {
+    id: number;
+    categoryId: string;
+    question: string;
+    questionId: string;
+    answer: string;
+    answerId: string;
+};
 export default function PublicFAQ() {
-  const { language } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [categories, setCategories] = useState<FAQCategory[]>([]);
-  const [items, setItems] = useState<FAQItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const heroAnim = useFadeIn({ delay: 100 });
-  const contentAnim = useFadeIn({ delay: 200 });
-
-  // Fetch categories and items on mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const [categoriesRes, itemsRes] = await Promise.all([
-          api.getFAQCategories(),
-          api.getFAQItems(),
-        ]);
-
-        if (categoriesRes.error) {
-          throw new Error(categoriesRes.error);
-        }
-        if (itemsRes.error) {
-          throw new Error(itemsRes.error);
-        }
-
-        const fetchedCategories = categoriesRes.data || [];
-        setCategories(fetchedCategories);
-        setItems(itemsRes.data || []);
-
-        // Set first category as default
-        if (fetchedCategories.length > 0) {
-          setSelectedCategory(fetchedCategories[0].id);
-        }
-      } catch (err) {
-        console.error("Failed to fetch FAQ data:", err);
-        setError(err instanceof Error ? err.message : "Failed to load FAQ data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Filter items by selected category
-  const filteredItems = selectedCategory
-    ? items.filter((item) => item.categoryId === selectedCategory)
-    : items;
-
-  const getCategoryName = (categoryId: string) => {
-    const category = categories.find((c) => c.id === categoryId);
-    return language === "id" ? category?.nameId || category?.name : category?.name || "";
-  };
-
-  const getQuestion = (q: string, qId: string) => (language === "id" ? qId : q);
-  const getAnswer = (a: string, aId: string) => (language === "id" ? aId : a);
-
-  if (loading) {
-    return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading FAQ...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-400 mb-4">Error: {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-[#232323] text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative border-b border-white/10 overflow-hidden min-h-[50vh] flex items-center">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0">
-            <img
-              src={tile01}
-              alt="FAQ"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#353535]/80 via-[#353535]/60 to-[#353535]/80" />
-        </div>
-        <div ref={heroAnim.ref} className={`relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 w-full ${heroAnim.isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
-          <div className="max-w-3xl space-y-4">
-            <p className="text-xs uppercase tracking-[0.32em] text-white/60 font-semibold">
-              {language === "id" ? "Pertanyaan Umum" : "Frequently Asked Questions"}
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight">
-              {language === "id"
-                ? "Pertanyaan yang Sering Diajukan"
-                : "Frequently Asked Questions"}
-            </h1>
-            <p className="text-gray-200 text-base sm:text-lg leading-relaxed">
-              {language === "id"
-                ? "Temukan jawaban untuk pertanyaan umum tentang produk dan layanan kami."
-                : "Find answers to common questions about our products and services."}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Category Filter */}
-      <section className="border-b border-white/10 bg-[#353535] sticky top-16 sm:top-20 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-all ${
-                  selectedCategory === category.id
-                    ? "bg-white text-black"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white"
-                }`}
-              >
-                {getCategoryName(category.id)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Content */}
-      <section className="bg-[#353535]">
-        <div ref={contentAnim.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 transition-opacity duration-500 ${contentAnim.isVisible ? "animate-fade-in-up opacity-100" : "opacity-0"}`}>
-          {filteredItems.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-gray-400">No questions found in this category.</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {filteredItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-[#232323] border border-white/10 rounded-2xl p-6 sm:p-8 hover:border-white/20 transition-all"
-                >
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4">
-                    {getQuestion(item.question, item.questionId)}
-                  </h3>
-                  <div className="text-gray-300 leading-relaxed whitespace-pre-line">
-                    {getAnswer(item.answer, item.answerId)}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-    </div>
-  );
+    const c = usePublicCopy();
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
+    const [selected, setSelected] = useState('');
+    const [status, setStatus] = useState('loading');
+    const [retry, setRetry] = useState(0);
+    useEffect(() => { let active = true; setStatus('loading'); Promise.all([api.getFAQCategories(), api.getFAQItems()]).then(([a, b]) => { if (a.error || b.error)
+        throw new Error(); if (active) {
+        setCategories(Array.isArray(a.data) ? a.data : []);
+        setItems(Array.isArray(b.data) ? b.data : []);
+        setStatus('ready');
+    } }).catch(() => { if (active)
+        setStatus('error'); }); return () => { active = false; }; }, [retry]);
+    return <><PublicPageIntro label={c('Questions', 'Pertanyaan')} title={c('A little clarity.', 'Jawaban yang Anda butuhkan.')} description={c('Materials, specifications, installation and care. Find answers or speak with our team.', 'Material, spesifikasi, pemasangan, dan perawatan. Temukan jawaban atau hubungi tim kami.')}/><section className="editorial-wrap public-library"><div className="public-filters" aria-label={c('Question categories', 'Kategori pertanyaan')}><button aria-pressed={!selected} onClick={() => setSelected('')}>{c('All questions', 'Semua pertanyaan')}</button>{categories.map(cat => <button key={cat.id} aria-pressed={selected === cat.id} onClick={() => setSelected(cat.id)}>{c(cat.name, cat.nameId || cat.name)}</button>)}</div>{status === 'loading' ? <p role="status">{c('Loading answers…', 'Memuat jawaban…')}</p> : status === 'error' ? <div role="status"><p>{c('Answers are unavailable right now. Please try again or contact our team.', 'Jawaban belum tersedia. Silakan coba lagi atau hubungi tim kami.')}</p><button className="editorial-text-link" onClick={() => setRetry(x => x + 1)}>{c('Try again', 'Coba lagi')} ↗</button></div> : <div className="public-faq-list">{items.filter(i => !selected || i.categoryId === selected).map(i => <details key={i.id}><summary>{c(i.question, i.questionId || i.question)}</summary><p>{c(i.answer, i.answerId || i.answer)}</p></details>)}{!items.filter(i => !selected || i.categoryId === selected).length && <p>{c('No answers in this category yet. Our team can help with your question.', 'Belum ada jawaban dalam kategori ini. Tim kami siap membantu.')}</p>}</div>}</section><PublicEnquiry /></>;
 }

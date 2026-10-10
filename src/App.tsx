@@ -39,7 +39,10 @@ function lazyPage<T extends React.ComponentType<any>>(
 }
 
 // ===== Public (lazy) =====
+const PublicBespoke = lazyPage(() => import("./public/PublicBespoke"));
+const PublicSamples = lazyPage(() => import("./public/PublicSamples"));
 const PublicCollection = lazyPage(() => import("./public/PublicCollection"));
+const PublicSpecification = lazyPage(() => import("./public/PublicSpecification"));
 const PublicProductDetail = lazyPage(() => import("./public/PublicProductDetail"));
 const PublicPage = lazyPage(() => import("./public/PublicPage"));
 const PublicServices = lazyPage(() => import("./public/PublicServices"));
@@ -98,25 +101,7 @@ function PageFallback() {
 }
 
 // ===== 404s =====
-function PublicNotFound() {
-  return (
-    <div className="bg-[#232323] text-white min-h-screen flex items-center justify-center">
-      <div className="max-w-7xl mx-auto px-6 py-20 text-center">
-        <h1 className="text-7xl sm:text-8xl font-black uppercase mb-6">404</h1>
-        <p className="text-gray-400 mb-8 text-lg">Sorry, the page you're looking for doesn't exist.</p>
-        <Link 
-          to="/" 
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#353535] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#232323] transition-colors border border-white/10"
-        >
-          Back to Home
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </Link>
-      </div>
-    </div>
-  );
-}
+function PublicNotFound() { return <div className="editorial-wrap public-story"><p className="editorial-eyebrow">404 / ARCOS</p><h1>A different direction.</h1><p>This page is unavailable. Explore our surfaces or return home.</p><Link className="editorial-text-link" to="/">Back to home ↗</Link></div>; }
 
 function AppNotFound() {
   return (
@@ -134,7 +119,10 @@ export default function App() {
       {/* ========= PUBLIC ========= */}
       <Route element={<PublicLayout />}>
         <Route index element={<PublicHome />} /> {/* / */}
+        <Route path="/bespoke" element={<PublicBespoke />} />
+        <Route path="/samples" element={<PublicSamples />} />
         <Route path="/collection" element={<PublicCollection />} />
+        <Route path="/specification/:slug" element={<PublicSpecification />} />
         <Route path="/product/:slug" element={<PublicProductDetail />} />
         <Route path="/services" element={<PublicServices />} />
         <Route path="/surfaces" element={<PublicSurfaces />} />
@@ -143,6 +131,8 @@ export default function App() {
         <Route path="/surfaces/microcement" element={<SeriesMicrocement />} />
         <Route path="/process" element={<PublicProcess />} />
         <Route path="/projects" element={<PublicProjects />} />
+        <Route path="/projects/:projectId" element={<PublicProjects />} />
+        <Route path="/catalog" element={<Navigate to="/collection" replace />} />
         <Route path="/about" element={<PublicAbout />} />
         <Route path="/brand-example" element={<PublicBrandExample />} />
         <Route path="/inspiration" element={<PublicInspiration />} />
@@ -150,6 +140,7 @@ export default function App() {
         <Route path="/contact" element={<PublicContact />} />
         <Route path="/visualizer" element={<PublicVisualizer />} />
         <Route path="/page/:slug" element={<PublicPage />} />
+        <Route path="*" element={<PublicNotFound />} />
       </Route>
 
       {/* Public share views (no layout) */}
@@ -229,7 +220,7 @@ export default function App() {
       <Route path="/recipes/:id" element={<Navigate to="/app/recipes/:id" replace />} />
 
       {/* ========= FINAL CATCH-ALL (PUBLIC 404) ========= */}
-      <Route path="*" element={<PublicNotFound />} />
+
     </Routes>
     </Suspense>
   );

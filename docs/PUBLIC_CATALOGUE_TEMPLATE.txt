@@ -1,0 +1,54 @@
+ARCOS PUBLIC CATALOGUE TEMPLATE
+
+Scope: public website only. This mockup does not alter internal Products, Mixlab or production records.
+
+Hierarchy
+Product type -> Collection -> Product -> Format / colour / texture.
+Wall tiles -> Sculptural -> Fold, Voxy.
+Panels -> Plane -> Rectangular, Square.
+Floor tiles -> Field -> Square, Rectangle.
+Seamless finishes -> Mineral -> Fine, Textured microcement.
+Bespoke countertops, stair treads and one-off pieces stay at /bespoke.
+GFRC / UHPC describe materials, not product types. Microcement has a technical
+material page and a browsable product family under Seamless finishes.
+
+Data entry
+src/public/catalogModel.ts is the public content contract.
+1. Add a type to catalogTypes only when it is a distinct customer-facing category.
+2. Add a collection to catalogCollections with its parent type.
+3. Add a CatalogEntry to catalogEntries with a unique stable slug.
+4. Supply named gallery images: Tile/Panel/Material, Detail, Pattern, Room, Profile
+   as applicable. Each image has an explicit note describing its provenance.
+5. Enter format width/height/depth in mm for discrete products. Use null for a
+   continuous finish. Explain the measurement basis in dimensionNote.
+6. Supply texture options and application scope. Colours currently come from
+   catalogData.ts; these are illustrative palette choices, not approved codes.
+7. Pages, filters, breadcrumbs, related products and specification sheets are
+   generated from the same entry. No per-product component is necessary.
+
+Templates
+/collection: type cards, nested collection/material filters, search, 12/page.
+URL parameters: type, range, material, q, page. Changing filters resets page.
+/product/:slug: gallery/lightbox, colour and texture choices, dimensions,
+  application, ordering and sibling products.
+/specification/:slug?finish=Sand&texture=Fine+matte: printable A4 specification.
+  Use the browser's Print / Save as PDF action. It retains the selected finish.
+/samples: carries product and colour/texture preferences to the enquiry form.
+
+Mockup content requiring replacement before a production release
+Plane, Field and Mineral names and product definitions are proposed examples.
+Their tile/panel SVGs are purpose-made mockup illustrations, not photographs.
+Room imagery is illustrative and does not certify a completed installation.
+Fold's numeric envelope refers to V12 CAD; the polished visual is not verified
+against that geometry. Voxy dimensions are illustrative placeholders for the
+chosen earlier visual, not measurements. All dimension diagrams show bounding
+ envelopes only; they intentionally do not invent relief profiles or fixing holes.
+Physical samples, calibrated finish photos, actual geometry, tolerances, weight,
+performance, suitability, fixing/coating details, prices and lead times require
+product-owner confirmation. Do not remove the mockup/status labels before that.
+
+Production extension
+To connect this template to the CMS, persist the same hierarchy and image roles
+alongside published product records, then adapt published data into CatalogEntry.
+Keep a dedicated verified-specification status, dimensional basis and version.
+Do not infer test performance from render files or another brand's catalogue.
